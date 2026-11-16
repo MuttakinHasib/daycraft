@@ -1,26 +1,21 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
- */
-
-import '@/global.css';
-
 import { Platform } from 'react-native';
 
+// Legacy imperative colors for RN APIs that need raw values (nav chrome, native tab bar).
+// The styling source of truth is the token set in src/global.css — these mirror it.
 export const Colors = {
   light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
+    text: '#1B1916',
+    background: '#F7F5F2',
+    backgroundElement: '#EFECE7',
+    backgroundSelected: '#FFFFFF',
+    textSecondary: '#5F5953',
   },
   dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    text: '#F2EFEA',
+    background: '#121110',
+    backgroundElement: '#262422',
+    backgroundSelected: '#2C2A27',
+    textSecondary: '#B3ADA5',
   },
 } as const;
 
