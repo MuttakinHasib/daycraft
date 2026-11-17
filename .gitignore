@@ -49,3 +49,4 @@ yarn-error.log*
 # Tests stay local, never committed (owner preference)
 *.test.ts
 *.test.tsx
+__snapshots__/
