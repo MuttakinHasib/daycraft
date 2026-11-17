@@ -1,6 +1,6 @@
 # Timeline guide
 
-The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshots: [today-1440-dark.png](../../../../docs/design/reference/screens/desktop/today-1440-dark.png), [phone plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/desktop-dark.html](../../../../docs/design/reference/prototype/desktop-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
+The Plan timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshots: [today-1440-dark.png](../../../../docs/design/reference/screens/desktop/today-1440-dark.png), [phone plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/desktop-dark.html](../../../../docs/design/reference/prototype/desktop-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
 
 > Has a mobile counterpart in `apps/mobile/docs/product/`. The web app uses the **Desktop** column wherever the two differ; “pt” means CSS px here, and “tap” means click. Desktop values are verified against the boards “v2 · Desktop 1440 / Tablet 768 / Large desktop 1920”.
 
@@ -36,7 +36,7 @@ The timeline sits inside the Today panel (`surface`, `radius-sheet` top corners)
 
 ## 3. Layout algorithm (push-down + anchored time map)
 
-The timeline is proportional to time, but blocks never overlap visually. Implement this as a **pure function** in `src/domain/timeline/` with unit tests. The UI only renders its output.
+The timeline is proportional to time, but blocks never overlap visually. Implement this as a **pure function** in `packages/domain/src/timeline/` with unit tests. The UI only renders its output.
 
 1. Take the date's **scheduled** activities (`start !== null`) and sort them by `start`, then by `durationMinutes`.
 2. For each activity:
@@ -125,7 +125,7 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 - **Resize:** press on the bottom grip and drag. The grip is an 18pt-tall area at the bottom of capsules with duration ≥ 15 min, showing a 16×3 white bar at 75%.
 - **Threshold:** movement under 6pt is a tap. A tap opens the detail sheet; a drag must not also trigger it (suppress the press for ~80ms after a drag).
 - **Snap:** `deltaMinutes = round(dy / S / 5) × 5`. All times move in 5-minute steps.
-- **Clamp:** move keeps `start` within `[D0, D1 − max(duration, 5)]`. Resize keeps `duration` within `[5, D1 − start]`.
+- **Clamp:** move keeps `start` within `[D0, D1 − max(duration, 5)]`. Resize keeps `duration` within `[5, D1 − start]`. The editor applies the same limits (one rule in `@daycraft/domain`): nothing starts before 5:00 AM or ends after midnight.
 - **During drag:** layout is recomputed with the preview values, so other rows reflow (they animate; the dragged row does not). The floating time pill shows the new range.
 - **On release:** commit, then show a toast — “Moved to 11:15 AM–12:15 PM” or “Now 1 hr 15 min · ends 12:45 PM”.
 - **Cancel** (gesture interrupted): revert to the original values.

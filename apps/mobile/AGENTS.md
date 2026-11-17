@@ -6,7 +6,7 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 
 ## Daycraft in one minute
 
-- **What it is:** a calm personal planner. Its center is the **Today timeline**, a vertical day made of colored **capsules** (activity blocks) on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it. See [product overview](docs/product/product-overview.md).
+- **What it is:** a calm personal planner. Its center is the **Plan timeline**, a vertical day made of colored **capsules** (activity blocks) on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it. See [product overview](docs/product/product-overview.md).
 - **What it must feel like:** minimal, warm, readable, precise. Terracotta accent, warm neutrals, hairline borders, almost no shadows. Color belongs to the user's activities, not to chrome.
 - **Where the design lives:**
   - Tokens: values in `packages/design-tokens`, generated into the theme CSS that `src/global.css` imports. Names and rules: the root [design system](../../docs/design/design-system.md); shared component spec: root [components](../../docs/design/components.md).
@@ -44,7 +44,7 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 | Area | Read |
 |---|---|
 | Product, modules, vocabulary | [product-overview](docs/product/product-overview.md) · [navigation-and-modules](docs/product/navigation-and-modules.md) |
-| Today timeline (most important) | [timeline-guide](docs/product/timeline-guide.md) |
+| Plan timeline (most important) | [timeline-guide](docs/product/timeline-guide.md) |
 | Sheets, toasts, editing, completion, focus | [interaction-patterns](docs/product/interaction-patterns.md) |
 | Tokens: color, radius, shadow, motion, focus | [design-system](docs/design/design-system.md) |
 | Type scale and fonts | [typography](docs/design/typography.md) |

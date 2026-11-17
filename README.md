@@ -1,6 +1,6 @@
 # Daycraft
 
-Daycraft is a calm personal planner built around a vertical **Today timeline**: your day as colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline instead of competing with it.
+Daycraft is a calm personal planner built around a vertical **Plan timeline**: your day as colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline instead of competing with it.
 
 > Status: early development. Design tokens, fonts and the first UI primitives exist in the mobile app; screens are still starter templates. See each app's `docs/status-and-decisions.md`.
 

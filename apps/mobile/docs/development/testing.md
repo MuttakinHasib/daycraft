@@ -20,7 +20,7 @@ There is no test runner in `package.json`. The first task that adds testable dom
 
 | Layer | Tool (proposed) | What to test |
 |---|---|---|
-| Domain (`src/domain/`) | `jest-expo` preset (Expo's documented setup) | Timeline layout: push-down, the 12pt gap, anchors and the time map, hour-label hiding, gaps (≥ 60 min and ≥ 76pt). Snapping and clamping; next free slot. Streaks and weekly counts; progress; date utilities (week start, DST-safe day math, the no-UTC-parse rule); formatting (`9:30–11:30 AM`, `1 hr 30 min`). Validation. |
+| Domain (`packages/domain/src/`) | `jest-expo` preset (Expo's documented setup) | Timeline layout: push-down, the 12pt gap, anchors and the time map, hour-label hiding, gaps (≥ 60 min and ≥ 76pt). Snapping and clamping; next free slot. Streaks and weekly counts; progress; date utilities (week start, DST-safe day math, the no-UTC-parse rule); formatting (`9:30–11:30 AM`, `1 hr 30 min`). Validation. |
 | Components | `@testing-library/react-native` | Primitives' roles and states (`Chip` selected, `CheckRing` checked, `Button` disabled); editor validation keeps the sheet open; toasts appear. |
 | End-to-end | Maestro (proposed; check Expo's current recommendation) | The 12 workflows in [product-overview](../product/product-overview.md#key-user-workflows). Minimum: create task, complete, edit, reschedule via the editor, habit check-in, add routine, start and end focus, switch theme. |
 

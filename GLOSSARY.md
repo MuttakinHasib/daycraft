@@ -50,7 +50,7 @@ A responsibility that can be completed; may be unscheduled.
 _Avoid_: todo
 
 **Event**:
-A commitment at a fixed time, optionally with a location; shown tinted in the Calendar.
+A commitment at a fixed time, optionally with a location; never unscheduled.
 _Avoid_: appointment (in code)
 
 **Routine**:
@@ -86,6 +86,10 @@ _Avoid_: category
 **Repeat**:
 An activity's recurrence preset: never, daily, weekdays or weekly.
 _Avoid_: recurrence rule (in UI)
+
+**Occurrence**:
+One dated activity created from a repeating activity; editing it changes only that date.
+_Avoid_: instance (in code)
 
 **Streak**:
 The run of consecutive dates (or weeks, for weekly habits) a habit was checked in. Always derived, never stored.

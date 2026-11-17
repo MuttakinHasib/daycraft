@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Daycraft web
 
-This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Router, React 19, Tailwind CSS v4). Daycraft is a calm personal planner whose center is the **Today timeline**. The iPhone/Android app is `apps/mobile` in the same monorepo; it shares the product, design tokens and vocabulary. Root rules: [../../AGENTS.md](../../AGENTS.md).
+This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Router, React 19, Tailwind CSS v4). Daycraft is a calm personal planner whose center is the **Plan timeline**. The iPhone/Android app is `apps/mobile` in the same monorepo; it shares the product, design tokens and vocabulary. Root rules: [../../AGENTS.md](../../AGENTS.md).
 
 > Do not edit inside the `BEGIN:nextjs-*` / `END:nextjs-*` markers. `next dev` manages those blocks (`agentRules`, and `agentFeedback` because `experimental.agentFeedback` is on). Write everything else outside them.
 
@@ -40,7 +40,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 2. Read the guide(s) for the area and look at the matching prototype board.
 3. Read the bundled Next.js docs (`node_modules/next/dist/docs/`) for any Next API you touch.
 4. Inspect existing code: routes in `src/app/`, components in `src/components/ui/`, tokens in `src/app/globals.css`.
-5. Plan the smallest change that fits the architecture. Implement it, keeping domain logic in `src/domain/`.
+5. Plan the smallest change that fits the architecture. Implement it, keeping domain logic in `@daycraft/domain` (`packages/domain/src/`).
 6. Verify:
    - light and dark;
    - 1440 and 768 widths (plus 1920 for layout work);
@@ -54,7 +54,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 | Area | Read |
 |---|---|
 | Product, modules, vocabulary | [product-overview](docs/product/product-overview.md) · [navigation-and-modules](docs/product/navigation-and-modules.md) |
-| Today timeline (most important) | [timeline-guide](docs/product/timeline-guide.md) |
+| Plan timeline (most important) | [timeline-guide](docs/product/timeline-guide.md) |
 | Panels, toasts, editing, completion, focus | [interaction-patterns](docs/product/interaction-patterns.md) |
 | Tokens: color, radius, shadow, motion, focus | [design-system](docs/design/design-system.md) |
 | Type scale and fonts | [typography](docs/design/typography.md) |

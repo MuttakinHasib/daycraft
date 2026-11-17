@@ -68,7 +68,7 @@ Use these exact terms in code, UI copy, issues and tests. The vocabulary lives i
 
 ## Domain model (from the prototype)
 
-The prototype's in-memory model is the starting point for `src/domain/`. Field names below are the recommended production names. The prototype's short names are in brackets.
+The prototype's in-memory model is the starting point for `packages/domain/src/`. Field names below are the recommended production names. The prototype's short names are in brackets.
 
 ```ts
 type ISODate = string;          // 'YYYY-MM-DD', the user's local calendar date

@@ -1,6 +1,6 @@
 # Daycraft monorepo
 
-Daycraft is a calm personal planner built around the **Today timeline**. This is a Turborepo with bun workspaces:
+Daycraft is a calm personal planner built around the **Plan timeline**. This is a Turborepo with bun workspaces:
 
 | Workspace | What | Entry point |
 |---|---|---|

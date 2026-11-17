@@ -33,13 +33,14 @@ Keep three layers. Do not add more without a real need.
 
 ```text
 src/app/            Routes: compose features, read params, no business logic
-src/features/<x>/   Feature UI + hooks for one module (today, inbox, calendar, habits…)
+src/features/<x>/   Feature UI + hooks for one module (plan, inbox, habits…)
 src/components/ui/  Design-system primitives (no domain knowledge)
-src/domain/         Pure TypeScript: types, rules, calculations (no React, no RN imports)
 src/data/           Persistence and (later) API access behind small repository functions
 ```
 
-- `src/domain/` is where correctness lives, and it is unit-tested:
+Pure rules (types, calculations, no React) live in `@daycraft/domain` (`packages/domain/src/`), shared with the other app.
+
+- `packages/domain/src/` is where correctness lives, and it is unit-tested:
   - timeline layout (`layoutDay`, `mapTimeToY`, gap detection);
   - next free slot;
   - snapping and clamping;
@@ -68,7 +69,7 @@ Activities use **floating local time**:
 A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype and keeps the timeline math integer-based.
 
 - **Never** parse `'YYYY-MM-DD'` with `new Date(string)`: it is treated as UTC and can shift a day. Build dates with `new Date(year, monthIndex, day)` or a date library's local parser.
-- Keep all date math in `src/domain/time.ts` (add, diff in days, week start, relative labels like Today/Tomorrow/“Thu, Nov 19”, `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
+- Keep all date math in `packages/domain/src/time.ts` (add, diff in days, week start, relative labels like Today/Tomorrow/“Thu, Nov 19”, `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
 - **Week starts on Sunday** (prototype week strip and month grid). If this becomes a setting, it must flow through one function.
 - The day's timeline range is 05:00–24:00. Activities after midnight are not supported yet (record it if a feature needs them).
 - Real timestamps (`createdAt`, focus `endsAt`) are ISO-8601 UTC strings.
@@ -81,7 +82,7 @@ A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype a
   - habit name required;
   - routine name and ≥ 1 step required.
 - On failure, show the toast copy from [interaction-patterns](../product/interaction-patterns.md) and keep the sheet open. No form library until a form needs more than this.
-- Validation functions live in `src/domain/` and return typed results (`{ ok: true, value } | { ok: false, reason }`) so they are testable without UI.
+- Validation functions live in `packages/domain/src/` and return typed results (`{ ok: true, value } | { ok: false, reason }`) so they are testable without UI.
 
 ## Errors
 

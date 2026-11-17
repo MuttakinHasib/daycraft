@@ -4,7 +4,7 @@
 
 - Straightforward over clever. Abstract on the third real repetition.
 - Focused components without fragmentation. Extract a component when it has its own state, its own name in the design (WeekStrip, Capsule, DetailPanel), or a second caller.
-- Business logic in `src/domain/` (pure) or a feature hook, never inline in JSX.
+- Business logic in `packages/domain/src/` (pure) or a feature hook, never inline in JSX.
 - Do not duplicate logic across screens. One formatter, one layout function, one next-free-slot.
 - No dead code, no commented-out code, and no leftover template code in files you touch (the starter page, Geist, `zinc-*` classes).
 - Comments explain why, not what.

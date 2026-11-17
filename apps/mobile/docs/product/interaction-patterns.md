@@ -78,7 +78,7 @@ Toast behavior:
 | All tasks **Place** | Editor (edit) | suggested start; past dates move to today |
 | Routine **Add to today** | — (direct) | next free slot that fits the full routine; then switches to Plan and pops the new capsule |
 
-“Next free slot” = round up to the next 15 minutes from the reference time, then skip past any activity it would collide with (snap to 5 minutes after it). The algorithm lives in `src/domain/timeline/`.
+“Next free slot” = round up to the next 15 minutes from the reference time, then skip past any activity it would collide with (snap to 5 minutes after it). The algorithm lives in `packages/domain/src/timeline/`.
 
 ## Focus
 

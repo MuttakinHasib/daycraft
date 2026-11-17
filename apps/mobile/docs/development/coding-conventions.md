@@ -4,8 +4,8 @@
 
 - Straightforward code over clever code. Write the obvious version first. Abstract on the **third** real repetition, not the first.
 - Small, focused components, but no fragmentation. A 15-line piece used once stays inline. Extract when it has its own state, its own name in the design (Capsule, WeekStrip), or a second caller.
-- Business logic goes in `src/domain/` (pure) or a feature hook, never inline in JSX.
-- Do not duplicate logic across screens. Today, Calendar and Upcoming all read activities through the same hook and format time through `src/domain/time.ts`.
+- Business logic goes in `packages/domain/src/` (pure) or a feature hook, never inline in JSX.
+- Do not duplicate logic across screens. Plan, All tasks and Upcoming all read activities through the same hook and format time through `packages/domain/src/time.ts`.
 - No dead code, commented-out code, or template leftovers in files you touch.
 - Comments explain **why** (constraints, platform quirks), not what. The existing `// Complete string literals only: Tailwind scans at build time` is the model.
 

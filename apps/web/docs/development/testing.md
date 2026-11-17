@@ -20,7 +20,7 @@ There is no test runner. The first task that adds domain logic (the timeline lay
 
 | Layer | Tool (proposed) | What |
 |---|---|---|
-| Domain (`src/domain/`) | Vitest | Timeline layout (push-down, the 12px gap, anchors and time map, hour-label hiding, gap detection); snapping and clamping; next free slot; streaks and weekly counts; progress; date utilities (Sunday week start, no UTC parsing, DST-safe day math); formatting; validation |
+| Domain (`packages/domain/src/`) | Vitest | Timeline layout (push-down, the 12px gap, anchors and time map, hour-label hiding, gap detection); snapping and clamping; next free slot; streaks and weekly counts; progress; date utilities (Sunday week start, no UTC parsing, DST-safe day math); formatting; validation |
 | Components | Vitest + Testing Library (jsdom) | Client components' roles and states (`aria-pressed`, `aria-checked`, `aria-current`), keyboard behavior of the segmented control and dialog, toast announcements |
 | End-to-end | Playwright + `@axe-core/playwright` | Critical flows ([product-overview](../product/product-overview.md#key-user-workflows)) at 1440 and 768, light and dark: create task from a slot, rename in the panel, complete, drag to move and resize (with the keyboard alternative), habit check-in, date navigation, theme switch, focus start and end. axe scan on every page. |
 

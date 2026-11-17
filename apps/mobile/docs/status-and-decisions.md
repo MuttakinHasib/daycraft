@@ -29,7 +29,7 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 | Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17, with the System / Light / Dark preference saved in `expo-sqlite/kv-store` (ticket 07). New dependency: `expo-sqlite`. |
 | `cn()` from the `cn` package, configured with Daycraft token names (`src/lib/cn.ts`) | Done 2026-11-17. New dependency: `cn`. |
 | Domain model, data layer, persistence | Not started |
-| Today timeline, all modules | Not started (prototype only) |
+| Plan timeline, all modules | Not started (prototype only) |
 | Tests | Not set up |
 | Brand assets (icon, splash, app name) | Not applied: still Expo defaults, `name: daycraft_app`, splash `#208AEF` |
 
@@ -55,10 +55,11 @@ Settled in a design-system review; the spec and tickets live in the root `.scrat
 
 | ID | Question | Options | Current lean |
 |---|---|---|---|
-| D1 | Tab bar | (a) `expo-router/native-tabs` (native iOS tab bar, Liquid Glass) for Inbox · Today · Calendar · Browse, plus a separate floating **+** button. (b) Custom floating pill tab bar exactly like the prototype. | Undecided. The prototype's pill bar plus the round + button is the design reference. Native tabs match platform conventions. Decide before building navigation. |
-| D2 | Persistence / backend | Local-first store (e.g. SQLite via `expo-sqlite`) vs remote API + cache | Proposed, not accepted: offline-first `expo-sqlite` + Drizzle, syncing to a Hono API on Cloudflare (root [architecture-plan](../../../docs/architecture-plan.md)). Keep domain logic pure until it is accepted. |
+| D1 | Tab bar | Native tabs vs the design's floating pill | **Decided:** the v2 floating pill, Plan · Habits · + · Goals · More, built as a custom `tabBar` ([ADR-0003](../../../docs/adr/0003-custom-floating-pill-tab-bar.md)). |
+| D2 | Persistence / backend | Local-first store vs remote API + cache | **Decided:** local `expo-sqlite` + Drizzle, no account or sync in v1 ([ADR-0004](../../../docs/adr/0004-mobile-local-first-sqlite-drizzle.md)); schema per [ADR-0005](../../../docs/adr/0005-schema-follows-glossary.md). Sync to the planned API comes later. |
 | D3 | Web / desktop | This app is the **mobile** app (`apps/mobile`). The desktop design (prototype "Desktop 1440/768/1920") is the Next.js app in `apps/web`, sharing the same tokens. `app.json` still has an Expo web target from the template. | Decided: desktop and tablet are `apps/web`. Treat Expo web as a dev convenience, not a product surface. |
 | D4 | Icon set | Prototype icons are 24px, 1.9px stroke, round caps and joins. | **Decided:** Lucide with a custom-SVG fallback, keyed by Daycraft icon names ([ADR-0002](../../../docs/adr/0002-lucide-icons-with-custom-fallback.md)). |
 | D5 | Delete confirmation | Prototype deletes immediately with a toast | Proposed: toast with **Undo** (5s) instead of a confirm dialog |
+| D6 | First launch and the first slice | Demo day vs empty day | **Decided:** real users start on the v2 empty day ("A blank canvas"); a development-only seed fills in the prototype's demo day. First slice: domain rules, activity and subtask tables, Plan screen and timeline, completion, drag, detail and editor sheets. Habit row, month picker, Repeat ([ADR-0006](../../../docs/adr/0006-repeat-as-rrule-subset-with-materialized-occurrences.md)) and routines come later. Ids per [ADR-0007](../../../docs/adr/0007-uuid-v7-ids-and-v5-for-natural-keys.md). Items marked **Proposed** in the timeline guide stay out. |
 
 Record each resolved decision as an ADR in the monorepo root `docs/adr/` (see the root `docs/agents/domain.md`) and update this table.

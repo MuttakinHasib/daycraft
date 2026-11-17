@@ -27,13 +27,14 @@ Not chosen yet (do not introduce without a decision in [status-and-decisions](..
 
 ```text
 src/app/              Routes, layouts, loading/error boundaries, metadata. Thin.
-src/features/<x>/     UI + hooks for one module (today, inbox, calendar, habits, …)
+src/features/<x>/     UI + hooks for one module (plan, inbox, habits, …)
 src/components/ui/    Design-system components (no domain knowledge)
-src/domain/           Pure TypeScript: types, rules, calculations. No React, no Next imports.
 src/data/             Data access (server-only where it touches secrets or a database)
 ```
 
-- `src/domain/` holds the logic shared in spirit with the mobile app:
+Pure rules (types, calculations, no React) live in `@daycraft/domain` (`packages/domain/src/`), shared with the other app.
+
+- `packages/domain/src/` holds the logic shared in spirit with the mobile app:
   - timeline layout (`layoutDay`, `mapTimeToY`, gaps, slots), snapping and clamping, next free slot;
   - streaks, progress;
   - recurrence;
@@ -73,13 +74,13 @@ Activities use **floating local time**: `date: 'YYYY-MM-DD'` + `start` in minute
 - Never `new Date('YYYY-MM-DD')`: it parses as UTC. Construct local dates from parts.
 - Weeks start on **Sunday**. Day range 05:00–24:00.
 - **Server vs client time:** the server does not know the user's timezone or “now”. Anything that depends on now (today's date, the now line, active state, “left” labels) must be computed on the client, or from a timezone stored for the user. Render now-dependent UI in client components to avoid hydration mismatches. A `useNow()` hook ticks on minute boundaries and is injectable for tests.
-- Formatting (`9:30–11:30 AM`, `1 hr 30 min`, `Thu, Nov 19`) lives in `src/domain/time.ts` so both apps produce the same strings. Use `Intl` with an explicit locale when localization arrives.
+- Formatting (`9:30–11:30 AM`, `1 hr 30 min`, `Thu, Nov 19`) lives in `packages/domain/src/time.ts` so both apps produce the same strings. Use `Intl` with an explicit locale when localization arrives.
 
 ## Forms and validation
 
 - Small forms (title, duration, color) are controlled client components in the detail panel. They save on change or blur, with optimistic UI.
 - Create dialogs submit through the W1 mutation strategy (Server Actions with `useActionState` if W1 picks them).
-- Validation functions live in `src/domain/` and return typed results. Run them on the client for instant feedback and again on the server.
+- Validation functions live in `packages/domain/src/` and return typed results. Run them on the client for instant feedback and again on the server.
 - Error copy follows [interaction-patterns](../product/interaction-patterns.md#toast-copy).
 
 ## Errors

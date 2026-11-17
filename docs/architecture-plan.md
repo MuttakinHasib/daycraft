@@ -708,7 +708,7 @@ Decision: store an **RFC 5545 RRULE subset** in `activity_series.rrule`, and **m
 
 Why materialize: completion, drag and subtasks are per occurrence, so each occurrence needs a row anyway. With virtual expansion every query becomes "stored rows plus expanded rules minus exceptions", written twice (device SQL and API SQL).
 
-Open product question, needed before M1: when the user edits a repeating activity, does the editor ask "this one or all following"? Assumed until answered: time, duration and completion change this occurrence only. Changing **Repeat** changes the series from that date forward.
+Decided (2026-11-18): the editor never asks "this one or all following". Time, duration and completion change this occurrence only. Changing **Repeat** changes the series from that date forward.
 
 ### 5.6 Sync protocol
 
@@ -1023,6 +1023,8 @@ Exit criteria: Today shows the fixture day from SQLite, and complete, move and r
 - Exit criteria: one account shows the same day on iPhone, Android and web within one sync cycle (web: on focus). Web meets its §8 budgets. Android meets the mobile budgets in a store build.
 
 ## 11. Decision log
+
+> **Superseded by `docs/adr/`.** These drafts predate the real ADR files and their numbers clash with them. Accepted so far: ADR-0004 (local SQLite + Drizzle, drafts 0001–0002), ADR-0005 (schema, draft 0008), ADR-0006 (Repeat, draft 0009) and ADR-0007 (ids, draft 0007). The rest are still proposals.
 
 Formatted to append to `docs/status-and-decisions.md` under a new "Decided" section, and as one file each in `docs/adr/` at the monorepo root. In the Open decisions tables: mobile D2 becomes "Decided: ADR-0001, 0002, 0004, 0006"; web W1 becomes "Decided: ADR-0005".
 
