@@ -1,6 +1,6 @@
 # Design reference
 
-Exported from the Daycraft design canvas (page **v2 · Current**) so agents can see the design without canvas access. This is the visual source of truth for layout and behavior; token values now live in `@daycraft/design-tokens` (ADR-0001); [daycraft-tailwind-v1.1.css](daycraft-tailwind-v1.1.css) is the frozen v1.1 export kept for reference. Shared by every app in the monorepo.
+Exported from the Daycraft design canvas so agents can see the design without canvas access. Layout and behavior come from page **v2 · Current**; the visual style is design system v2 “Clean” from page **v3 · Clean (new direction)** ([ADR-0008](../../adr/0008-visual-direction-clean.md)). This is the visual source of truth; token values live in `@daycraft/design-tokens` (ADR-0001). [daycraft-tailwind-v1.1.css](daycraft-tailwind-v1.1.css) and `design-system-v1.1.png` are frozen exports of the old v1.1 look, kept for history only. Shared by every app in the monorepo.
 
 All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026, 10:40 AM**. Screens were rendered with the bundled runtime in `prototype/vendor/` and checked against the canvas.
 
@@ -13,10 +13,12 @@ All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026
 | `screens/desktop/today-1440-dark.png`, `today-1440-light.png` | Desktop Plan at 1440 (full page) |
 | `screens/desktop/today-768-dark.png` | Tablet 768: icon rail, details panel stacked under the timeline |
 | `screens/desktop/today-1920-light.png` | Large desktop 1920: content capped at 1360 |
-| `design-system-v1.1.png` | Design system board: tokens, type scale, component sizes, components in both themes, refinement log |
-| `brand/logo-concepts.png`, `brand/logo-system.png` | Logo exploration and the chosen Daybreak logo system |
+| `design-system-v2.png` | Design system v2 (Clean): neutrals, accent, activity hues and their capsule tints, Onest type scale, components, what changed from v1.1 |
+| `design-system-v1.1.png` | The old v1.1 board (history only) |
+| `brand/sunrise-pen.png` | The current logo: Sunrise Pen, app icon appearances, sizes, lockups |
+| `brand/logo-concepts.png`, `brand/logo-system.png` | Earlier logo exploration and the retired Daybreak system (history only) |
 | `prototype/*.html` | **Runnable prototype.** Open in a browser (works offline). Click through screens; the logic in each file's `<script>` is the reference implementation of behavior such as the timeline layout and drag/resize |
-| `daycraft-tailwind-v1.1.css` | Design system v1.1 tokens (web Tailwind v4 format) |
+| `daycraft-tailwind-v1.1.css` | Old v1.1 tokens (history only; current values are in `@daycraft/design-tokens`) |
 
 ## Phone screens
 
@@ -36,7 +38,7 @@ All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026
 | `project-list` | Project detail, List view |
 | `project-board` | Project detail, Board (kanban) view |
 | `journal` | More → Journal: mood, prompt, entry, history |
-| `sheet-detail` | Activity detail sheet (hue header, info rows, subtasks, Start focus) |
+| `sheet-detail` | Activity detail sheet (tinted hue header, info rows, subtasks, Start focus) |
 | `sheet-new-task` | Editor sheet, new task (center + on Plan) |
 | `sheet-new-event` | Editor sheet switched to Event |
 | `sheet-new-habit` | New habit sheet (center + on Habits) |
@@ -52,7 +54,7 @@ All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026
 |---|---|
 | `prototype/phone-dark.html` | iPhone app, dark (390×844 frame) |
 | `prototype/phone-light.html` | iPhone app, light |
-| `prototype/design-system.html` | Design system board |
+| `prototype/design-system.html` | Design system v2 board |
 
 The prototype is a reference, not production code:
 - Do not copy its structure: it is a single-file prototype with inline styles and `dk-*` classes. Implement with this repo's components and tokens.

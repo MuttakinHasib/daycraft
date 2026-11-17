@@ -77,7 +77,7 @@ export function CheckRingDemo() {
             aria-checked={checked}
             aria-label={`${checked ? "Mark not done" : "Complete"}: ${hue}`}
             onClick={() => toggle(hue)}
-            className={cn("check-ring text-white", HueBorder[hue], { [HueBackground[hue]]: checked })}
+            className={cn("check-ring text-on-hue", HueBorder[hue], { [HueBackground[hue]]: checked })}
           >
             {checked && <Icon name="check" size={14} strokeWidth={3.2} />}
           </button>

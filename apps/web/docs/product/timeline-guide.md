@@ -74,9 +74,9 @@ Draw one 2px segment between each pair of consecutive capsules, from the bottom 
 
 | State | Rule | Capsule | Text | Ring |
 |---|---|---|---|---|
-| **Upcoming** | not done, not active | solid hue, white icon (22pt) | title `activity` in `ink`; time line `meta` in `ink-muted` | 2px hue border, empty |
+| **Upcoming** | not done, not active | solid hue, `on-hue` (white) icon (22pt) | title `activity` in `ink`; time line `meta` in `ink-muted` | 2px hue border, empty |
 | **Active** | date is today, not done, `start ≤ now < start + duration`, duration > 0 | base = 42% hue mixed into `surface`; the elapsed part (from the top, % of duration) is solid hue; 4pt outer ring of hue at 28% | adds an `accent-soft` tag: dot + “Now · 50m left” | upcoming style |
-| **Done** | `done` | 45% opacity | title struck through, `ink-subtle` | filled with the hue, white 14pt check (3.2 stroke), pop animation |
+| **Done** | `done` | 45% opacity | title struck through, `ink-subtle` | filled with the hue, `on-hue` 14pt check (3.2 stroke), pop animation |
 | **Dragging** | being moved or resized | `shadow-lift`, no position transition, raised above other rows | a time pill (`ink` background, `canvas` text) floats 30pt above the text column showing the new range | — |
 | **New** (just created/added) | for ~0.9s after creation | pop animation (scale 0.6 → 1.12 → 1) | — | — |
 
@@ -122,7 +122,7 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 ## 10. Drag to move, drag to resize
 
 - **Move:** press on the capsule and drag vertically.
-- **Resize:** press on the bottom grip and drag. The grip is an 18pt-tall area at the bottom of capsules with duration ≥ 15 min, showing a 16×3 white bar at 75%.
+- **Resize:** press on the bottom grip and drag. The grip is an 18pt-tall area at the bottom of capsules with duration ≥ 15 min, showing a 16×3 `on-hue` bar at 35%.
 - **Threshold:** movement under 6pt is a tap. A tap opens the detail sheet; a drag must not also trigger it (suppress the press for ~80ms after a drag).
 - **Snap:** `deltaMinutes = round(dy / S / 5) × 5`. All times move in 5-minute steps.
 - **Clamp:** move keeps `start` within `[D0, D1 − max(duration, 5)]`. Resize keeps `duration` within `[5, D1 − start]`. The editor applies the same limits (one rule in `@daycraft/domain`): nothing starts before 5:00 AM or ends after midnight.

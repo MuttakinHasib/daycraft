@@ -70,7 +70,7 @@ One ladder. Components that do the same job share a height.
 
 - Lists and cards breathe at 12 gaps; never stack cards with no gap.
 - Do not wrap a single row in a card if the screen already shows it as a list group.
-- Cards: `bg-surface border border-line rounded-card`. No shadows.
+- Cards: `bg-card rounded-card`, no border. No shadows.
 - List groups: one card with hairline separators (`dk-list` / `dk-li` in the prototype). Rows are min 52 (48 for compact rows), with 16 side padding and 12 gaps.
 - Use a horizontal scroll (habits row, filter chips, kanban, milestone tags) instead of wrapping when items are peers and order matters.
 

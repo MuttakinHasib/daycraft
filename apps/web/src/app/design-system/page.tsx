@@ -31,7 +31,7 @@ export default function DesignSystemPage() {
           ‹ Plan
         </Link>
         <h1 className="type-display">Design system</h1>
-        <p className="type-body-sm text-ink-muted">Daycraft v1.1, rendered from @daycraft/design-tokens.</p>
+        <p className="type-body-sm text-ink-muted">Daycraft v2 (Clean), rendered from @daycraft/design-tokens.</p>
       </header>
       <AppearanceSection />
       <SemanticColorSection />

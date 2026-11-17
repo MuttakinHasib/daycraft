@@ -7,10 +7,10 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 ## Daycraft in one minute
 
 - **What it is:** a calm personal planner. Its center is the **Plan timeline**, a vertical day made of colored **capsules** (activity blocks) on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it. See [product overview](docs/product/product-overview.md).
-- **What it must feel like:** minimal, warm, readable, precise. Terracotta accent, warm neutrals, hairline borders, almost no shadows. Color belongs to the user's activities, not to chrome.
+- **What it must feel like:** clean, light, readable, precise (design system v2 "Clean", [ADR-0008](../../docs/adr/0008-visual-direction-clean.md)). White canvas, light-gray cards without borders, a blue accent, Onest at regular to semibold, almost no shadows. Color belongs to the user's activities, not to chrome; icons and text on a hue are white (`on-hue`).
 - **Where the design lives:**
   - Tokens: values in `packages/design-tokens`, generated into the theme CSS that `src/global.css` imports. Names and rules: the root [design system](../../docs/design/design-system.md); shared component spec: root [components](../../docs/design/components.md).
-  - See everything rendered on the in-app `/design-system` screen (linked from Plan).
+  - See everything rendered on the in-app `/more/design-system` screen (More → Design system).
   - Interactive prototype: the "Daycraft" design canvas, page **v2 · Current**. Every screen and interaction in the docs was taken from it.
   - **Exported for you:** [docs/design/reference/](../../docs/design/reference/README.md) has screenshots of every phone screen and sheet (light and dark), plus a runnable offline prototype (`prototype/phone-dark.html`). Look at the screenshot of a screen before building it.
 - **What exists in code today:** tokens, fonts, the Uniwind theme and the first UI primitives (`src/components/ui/`). Screens are placeholders (the Expo starter is deleted). The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
@@ -20,7 +20,7 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 1. **Tokens only.** Colors, type, radii, spacing and motion come from `@daycraft/design-tokens` and the docs below. No hex values, no `text-[13px]`-style arbitrary values, no new radii in feature code. If a token is missing, add it to `global.css` and document it. See [design system](docs/design/design-system.md).
 2. **Both themes, always.** Use semantic classes (`bg-surface`, `text-ink-muted`, …). Never hardcode light-only colors. White is allowed only for icons and text on activity hues and colored sheet headers. See [theming](docs/design/theming.md).
 3. **Reuse before you build.** Check `src/components/ui/` and [components](docs/design/components.md) first. Never fork a primitive to tweak one style; extend its props.
-4. **Fonts are families, not weights.** On native use `font-sans`, `font-sans-semibold`, `font-sans-bold`, `font-sans-extrabold`, or the `type-*` presets. Never `font-bold` and never `fontWeight`. See [typography](docs/design/typography.md).
+4. **Fonts are families, not weights.** On native use the `type-*` presets, or `font-sans`, `font-sans-medium`, `font-sans-semibold` (nothing in the UI is bolder than semibold). Never `font-bold` and never `fontWeight`. See [typography](docs/design/typography.md).
 5. **The timeline is precious.** Follow [timeline guide](docs/product/timeline-guide.md) exactly. Label any new timeline behavior as a proposal and get it approved before building it.
 6. **Smallest correct change.** No rewrites of working code, no speculative abstractions, no new dependencies without a reason written in the PR or issue.
 7. **Never claim a check you did not run.** See [testing](docs/development/testing.md).

@@ -1,12 +1,12 @@
-<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Plus Jakarta Sans';font-weight:400;src:url(vendor/plus-jakarta-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:500;src:url(vendor/plus-jakarta-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:600;src:url(vendor/plus-jakarta-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(vendor/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(vendor/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}</style>
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Onest';font-weight:400;src:url(vendor/onest-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:500;src:url(vendor/onest-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:600;src:url(vendor/onest-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:700;src:url(vendor/onest-latin-700-normal.woff2) format('woff2')}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap">
 <style>
 body{margin:0}
 a{color:#AD5236}a:hover{color:#97462D}
-.dk-light{--canvas:#F7F5F2;--surface:#FFFFFF;--sunken:#EFECE7;--elevated:#FFFFFF;--line:#E6E1DA;--line-strong:#D5CEC4;--ink:#1B1916;--ink-muted:#5F5953;--ink-subtle:#716B64;--accent:#AD5236;--accent-hover:#97462D;--accent-soft:#F6E4DB;--accent-text:#AD5236;--on-accent:#FFFFFF;--scrim:rgba(27,25,22,.34);--shadow:0 1px 2px rgba(27,25,22,.06),0 10px 28px rgba(27,25,22,.10);--success:#3C7D61;--danger:#B4473F;color-scheme:light}
-.dk-dark{--canvas:#121110;--surface:#1B1A18;--sunken:#262422;--elevated:#312E2B;--line:#2F2D2A;--line-strong:#45413C;--ink:#F2EFEA;--ink-muted:#B3ADA5;--ink-subtle:#9A948C;--accent:#E4815D;--accent-hover:#EC9475;--accent-soft:#3A251C;--accent-text:#EE936F;--on-accent:#241109;--scrim:rgba(0,0,0,.58);--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px rgba(0,0,0,.5);--success:#5FB08A;--danger:#E0796F;color-scheme:dark}
-.dk{--h-clay:#C8694A;--h-amber:#C47A34;--h-sun:#B08A2A;--h-sage:#5E9154;--h-pine:#3C7D61;--h-sky:#4F86C0;--h-iris:#7569C4;--h-rose:#C25E78;--h-slate:#66707F;font-family:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+.dk-light{--canvas:#FFFFFF;--surface:#FFFFFF;--card:#F4F3F0;--sunken:#EEEDE9;--elevated:#FFFFFF;--line:#E9E7E2;--line-strong:#D9D6CF;--ink:#1C1C1C;--ink-muted:#5C5C5C;--ink-subtle:#737373;--accent:#3366F0;--accent-hover:#2A57D6;--accent-soft:#E6EDFF;--accent-text:#2F5FE0;--on-accent:#FFFFFF;--on-hue:#1A1A1A;--scrim:rgba(20,20,20,.36);--shadow:0 10px 30px rgba(20,20,20,.08);--danger:#E5484D;--success:#3C7D61;}
+.dk-dark{--canvas:#111111;--surface:#171717;--card:#1F1F1F;--sunken:#292929;--elevated:#2A2A2A;--line:#2A2A2A;--line-strong:#3B3B3B;--ink:#F4F4F2;--ink-muted:#B4B4B4;--ink-subtle:#8F8F8F;--accent:#6E97FF;--accent-hover:#86A8FF;--accent-soft:#1D2A4D;--accent-text:#8EAEFF;--on-accent:#0B1530;--on-hue:#161616;--scrim:rgba(0,0,0,.6);--shadow:0 12px 34px rgba(0,0,0,.5);--danger:#FF6B6E;--success:#5FB08A;}
+.dk{--h-clay:#FF7648;--h-amber:#FFB23E;--h-sun:#FFD54F;--h-sage:#6CCB8B;--h-pine:#2FB3A0;--h-sky:#4A7FF8;--h-iris:#9A7CF5;--h-rose:#FF8FB1;--h-slate:#A3ACBD;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
 .dk :where(*){box-sizing:border-box}
 .dk :where(button){font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:inherit}
 .dk :where(input,textarea){font:inherit;color:var(--ink);background:transparent;border:0;outline:none;margin:0}
@@ -47,16 +47,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-seg.oh{background:rgba(0,0,0,.16)}
 .dk-seg.oh button{color:rgba(255,255,255,.86)}
 .dk-seg.oh button[aria-pressed="true"]{background:rgba(255,255,255,.96);color:#1B1916}
-.dk-btn{height:52px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background-color .2s ease,transform .14s ease}
+.dk-btn{height:52px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight: 600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background-color .2s ease,transform .14s ease}
 .dk-btn.md,.dk-btn2.md{height:44px}
 .dk-btn:hover{background:var(--accent-hover)}
 .dk-btn:active{transform:scale(.98)}
-.dk-btn2{height:52px;border-radius:999px;background:var(--sunken);color:var(--ink);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.dk-btn2{height:52px;border-radius:999px;background:var(--sunken);color:var(--ink);font-weight: 600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .dk-ib{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink);flex:none}
 .dk-ib.sm{width:32px;height:32px}
 .dk-card{background:var(--surface);border:1px solid var(--line);border-radius:20px}
-.dk-lab{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-subtle)}
-.dk-h1{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:0}
+.dk-lab{font-size:12px;font-weight: 600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-subtle)}
+.dk-h1{font-size:30px;font-weight: 600;letter-spacing:-.025em;line-height:1.1;margin:0}
 .dk-back{display:inline-flex;align-items:center;gap:2px;height:40px;font-size:15px;font-weight:600;color:var(--accent-text)}
 .dk-tab{flex:1;height:52px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--ink-muted);position:relative;transition:background-color .2s ease,color .2s ease}
 .dk-tab[aria-current="page"]{background:var(--sunken);color:var(--accent-text)}
@@ -83,6 +83,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-main{padding:24px!important}
 .dk-aside{max-width:none!important}
 }
+
+.dk{font-family:'Onest',ui-sans-serif,system-ui,sans-serif}
+.dk-h1{font-weight:600!important;letter-spacing:-.03em!important}
+.dk-tab5[aria-current="page"],.dk-tab[aria-current="page"]{background:var(--accent)!important;color:var(--on-accent)!important}
+.dk-tab5-badge{background:var(--h-clay)!important;color:#1A1A1A!important}
+.dk-card,.dk-list{border-color:transparent!important;background:var(--card)!important}
+.dk-chip[aria-pressed="true"]{background:var(--ink);color:var(--canvas)}
+.dk .oh::placeholder{color:rgba(0,0,0,.45)!important}
+.dk-seg.oh{background:rgba(0,0,0,.08)!important}
+.dk-seg.oh button{color:rgba(0,0,0,.65)!important}
 </style>
 
 <script src="vendor/react.production.min.js"></script>
@@ -157,8 +167,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 </defs>
 </svg>
 <nav aria-label="Main" class="dk-side" style="flex: 0 0 248px; display: flex; flex-direction: column; gap: 4px; padding: 24px 16px; border-right: 1px solid var(--line); background: var(--surface)">
-<div style="display: flex; align-items: center; gap: 12px; padding: 0 12px 24px"><svg width="15" height="32" viewBox="0 0 28 60" role="img" aria-label="Daycraft" style="color: var(--accent); flex: none"><path d="M0 38V14A14 14 0 0 1 28 14V38H22A8 8 0 0 0 6 38Z M0 43H28V46A14 14 0 0 1 0 46Z" fill="currentColor"></path></svg><svg class="dk-hide" width="88" height="22" viewBox="0 -800 4087 1020" aria-hidden="true" style="color: var(--ink)"><path d="M314 12Q235 12 173.0 -25.5Q111 -63 75.0 -128.0Q39 -193 39 -272Q39 -352 75.0 -416.0Q111 -480 173.5 -518.0Q236 -556 313 -556Q375 -556 424 -532Q456 -515 480 -489V-757H611V0H487V-60Q462 -30 423 -12Q373 12 314 12ZM328 -108Q373 -108 407.0 -129.0Q441 -150 460.5 -187.0Q480 -224 480 -272Q480 -319 460.5 -356.5Q441 -394 407.0 -415.0Q373 -436 328 -436Q284 -436 249.0 -414.5Q214 -393 194.5 -356.5Q175 -320 175.0 -272.0Q175 -224 194.5 -187.0Q214 -150 249.0 -129.0Q284 -108 328 -108Z M878 12Q821 12 779.0 -7.0Q737 -26 714.0 -61.5Q691 -97 691 -144Q691 -189 711.0 -224.5Q731 -260 773.0 -284.0Q815 -308 879 -318L1041 -344V-362Q1041 -397 1013.5 -420.5Q986 -444 941 -444Q899 -444 866.5 -421.5Q834 -399 819 -362L712 -414Q728 -457 762.5 -488.5Q797 -520 844.0 -538.0Q891 -556 946 -556Q1013 -556 1064.0 -531.5Q1115 -507 1143.5 -463.5Q1172 -420 1172 -362V0H1048V-57Q1038 -46 1026 -37Q997 -13 960.0 -0.5Q923 12 878 12ZM1041 -244 904 -221Q865 -214 846.0 -196.0Q827 -178 827 -149Q827 -121 848.5 -104.5Q870 -88 902 -88Q943 -88 974.5 -105.5Q1006 -123 1023.5 -154.0Q1041 -185 1041 -222Z M1339 220Q1317 220 1296.0 216.5Q1275 213 1258 204V95Q1271 98 1289.5 101.0Q1308 104 1324 104Q1369 104 1389.5 83.5Q1410 63 1426 29L1438 0L1223 -544H1364L1505 -169L1645 -544H1787L1550 55Q1529 107 1499.0 144.0Q1469 181 1429.5 200.5Q1390 220 1339 220Z M2091 12Q2010 12 1945.5 -25.5Q1881 -63 1844.0 -127.5Q1807 -192 1807 -273Q1807 -354 1844.0 -418.0Q1881 -482 1945.5 -519.0Q2010 -556 2091 -556Q2149 -556 2199.0 -535.5Q2249 -515 2285.5 -479.5Q2322 -444 2338 -395L2223 -345Q2208 -386 2172.5 -411.0Q2137 -436 2091 -436Q2048 -436 2014.5 -415.0Q1981 -394 1962.0 -357.0Q1943 -320 1943 -272Q1943 -224 1962.0 -187.0Q1981 -150 2014.5 -129.0Q2048 -108 2091 -108Q2138 -108 2173.0 -133.0Q2208 -158 2223 -200L2338 -148Q2322 -102 2286.0 -65.5Q2250 -29 2200.0 -8.5Q2150 12 2091 12Z M2417 0V-544H2540V-467Q2558 -508 2590 -526Q2630 -550 2687 -550H2719V-434H2672Q2616 -434 2582.0 -399.5Q2548 -365 2548 -303V0Z M2936 12Q2879 12 2837.0 -7.0Q2795 -26 2772.0 -61.5Q2749 -97 2749 -144Q2749 -189 2769.0 -224.5Q2789 -260 2831.0 -284.0Q2873 -308 2937 -318L3099 -344V-362Q3099 -397 3071.5 -420.5Q3044 -444 2999 -444Q2957 -444 2924.5 -421.5Q2892 -399 2877 -362L2770 -414Q2786 -457 2820.5 -488.5Q2855 -520 2902.0 -538.0Q2949 -556 3004 -556Q3071 -556 3122.0 -531.5Q3173 -507 3201.5 -463.5Q3230 -420 3230 -362V0H3106V-57Q3096 -46 3084 -37Q3055 -13 3018.0 -0.5Q2981 12 2936 12ZM3099 -244 2962 -221Q2923 -214 2904.0 -196.0Q2885 -178 2885 -149Q2885 -121 2906.5 -104.5Q2928 -88 2960 -88Q3001 -88 3032.5 -105.5Q3064 -123 3081.5 -154.0Q3099 -185 3099 -222Z M3387 0V-427H3291V-544H3387V-562Q3387 -624 3412.5 -667.5Q3438 -711 3484.0 -734.0Q3530 -757 3593 -757Q3605 -757 3619.5 -755.5Q3634 -754 3644 -752V-639Q3634 -641 3625.5 -641.5Q3617 -642 3610 -642Q3566 -642 3542.0 -622.5Q3518 -603 3518 -562V-544H3639V-427H3518V0Z M3983 6Q3891 6 3840.5 -44.5Q3790 -95 3790 -187V-427H3696V-544H3706Q3746 -544 3768.0 -565.0Q3790 -586 3790 -626V-668H3921V-544H4046V-427H3921V-194Q3921 -167 3930.5 -148.0Q3940 -129 3960.5 -119.0Q3981 -109 4013 -109Q4020 -109 4029.5 -110.0Q4039 -111 4048 -112V0Q4034 2 4016.0 4.0Q3998 6 3983 6Z M3633 -544H3704V-427H3633Z" fill="currentColor"></path></svg></div>
-<button onClick="{{newTask}}" aria-label="New task" class="dk-new dk-press" style="height: 44px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 16px"><svg class="ic" width="18" height="18" style="stroke-width: 2.6"><use href="#i-plus"></use></svg><span class="dk-hide">New task</span></button>
+<div style="display: flex; align-items: center; gap: 12px; padding: 0 12px 24px"><span role="img" aria-label="Daycraft" style="display: flex; align-items: center; gap: 8px"><svg width="38" height="32" viewBox="4 10 92 78" aria-hidden="true" style="flex: none"><path d="M18 76C18 63.85 27.85 54 40 54C52.15 54 62 63.85 62 76Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M37.25 48V39Q37.25 36.25 40 36.25Q42.75 36.25 42.75 39V48Q42.75 50.75 40 50.75Q37.25 50.75 37.25 48Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M51.62 50.37 56.12 42.58Q57.49 40.2 59.88 41.58Q62.26 42.95 60.88 45.34L56.38 53.13Q55.01 55.51 52.62 54.13Q50.24 52.76 51.62 50.37Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M62.87 59.62 70.66 55.12Q71.86 54.43 72.79 54.68Q73.73 54.93 74.42 56.12Q75.8 58.51 73.42 59.88L65.63 64.38Q63.24 65.76 61.87 63.38Q61.18 62.18 61.43 61.25Q61.68 60.31 62.87 59.62Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M23.62 53.13 19.12 45.34Q17.74 42.95 20.12 41.58Q21.32 40.89 22.25 41.14Q23.19 41.39 23.88 42.58L28.38 50.37Q29.76 52.76 27.38 54.13Q26.18 54.82 25.25 54.57Q24.31 54.32 23.62 53.13Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M14.37 64.38 6.58 59.88Q4.2 58.51 5.58 56.12Q6.95 53.74 9.34 55.12L17.13 59.62Q18.32 60.31 18.57 61.25Q18.82 62.18 18.13 63.38Q16.76 65.76 14.37 64.38Z" fill="var(--h-clay)" fill-opacity=".55"></path><path d="M15 80H85C86.24 80 87.25 81.01 87.25 82.25C87.25 83.49 86.24 84.5 85 84.5H15C13.76 84.5 12.75 83.49 12.75 82.25C12.75 81.01 13.76 80 15 80Z" fill="var(--ink)"></path><path d="M78 20C78 16.13 81.13 13 85 13C88.87 13 92 16.13 92 20V49H78ZM78 52H92V57L85.9 77.91V66.24C86.89 65.87 87.6 64.92 87.6 63.8C87.6 62.36 86.44 61.2 85 61.2C83.56 61.2 82.4 62.36 82.4 63.8C82.4 64.92 83.11 65.87 84.1 66.24V77.91L78 57ZM85.73 78.5 85 81 84.27 78.5Z" fill="var(--ink)"></path></svg><svg class="dk-hide" width="92" height="24" viewBox="0 -800 4016 1040" aria-hidden="true" style="flex: none"><path d="M315.2 12Q237.4 12 175.8 -25.3Q114.1 -62.6 78.5 -127Q42.9 -191.3 42.9 -270.7Q42.9 -351.2 78.8 -415Q114.7 -478.8 176.1 -516.2Q237.5 -553.5 314.6 -553.5Q378.7 -553.5 428.5 -527.6Q464.3 -509 489.2 -480.4V-757H605.4V0H494.7V-67.4Q468.8 -33.4 428.4 -13.5Q377 12 315.2 12ZM3374 0V-436.3H3275.2V-541.5H3374V-567.5Q3374 -628.5 3399.2 -670.5Q3424.5 -712.6 3469.4 -734.8Q3514.2 -757 3572.7 -757Q3584.4 -757 3598.5 -755.5Q3612.6 -754 3621.7 -752V-651Q3613 -653 3603.5 -653.5Q3594 -654 3587.3 -654Q3542.6 -654 3516.4 -633.5Q3490.2 -613 3490.2 -567.5V-541.5H3648.8Q3687.2 -541.5 3708.5 -563.2Q3729.9 -584.8 3729.9 -623.2V-665.5H3846.1V-541.5H3969.6V-436.3H3846.1V-184Q3846.1 -156.5 3855.2 -137.1Q3864.3 -117.7 3884.7 -107.3Q3905 -97 3936.9 -97Q3944.3 -97 3954.2 -98Q3964.1 -99 3973.2 -100V0Q3959.6 2.5 3942.4 4.2Q3925.2 6 3911.8 6Q3824.9 6 3777.4 -42.3Q3729.9 -90.6 3729.9 -178.5V-436.3H3670V-436.2H3578V-436.3H3490.2V0ZM2915.6 12Q2860.2 12 2818.6 -7.2Q2776.9 -26.5 2753.9 -61.3Q2730.9 -96.1 2730.9 -142.8Q2730.9 -187 2750.6 -222.1Q2770.2 -257.1 2811.2 -281.1Q2852.3 -305.1 2914.5 -315.1L3084.9 -343.1V-363.6Q3084.9 -402.3 3055.7 -427.3Q3026.5 -452.4 2978.2 -452.4Q2934.1 -452.4 2900.7 -429.2Q2867.2 -406.1 2851.4 -368.8L2754.9 -416.8Q2770.4 -457.4 2804.3 -488.1Q2838.2 -518.8 2884 -536.2Q2929.9 -553.5 2982 -553.5Q3046.5 -553.5 3096.1 -529.4Q3145.7 -505.3 3173.4 -462.6Q3201.1 -419.9 3201.1 -363.6V0H3090.4V-61.9Q3078.9 -48.8 3065.3 -37.7Q3036.1 -13.7 2998.5 -0.9Q2961 12 2915.6 12ZM883.6 12Q828.2 12 786.6 -7.2Q744.9 -26.5 721.9 -61.3Q698.9 -96.1 698.9 -142.8Q698.9 -187 718.6 -222.1Q738.2 -257.1 779.2 -281.1Q820.3 -305.1 882.5 -315.1L1052.9 -343.1V-363.6Q1052.9 -402.3 1023.7 -427.3Q994.5 -452.4 946.2 -452.4Q902.1 -452.4 868.7 -429.2Q835.2 -406.1 819.4 -368.8L722.9 -416.8Q738.4 -457.4 772.3 -488.1Q806.2 -518.8 852 -536.2Q897.9 -553.5 950 -553.5Q1014.5 -553.5 1064.1 -529.4Q1113.7 -505.3 1141.4 -462.6Q1169.1 -419.9 1169.1 -363.6V0H1058.4V-61.9Q1046.9 -48.8 1033.3 -37.7Q1004.1 -13.7 966.5 -0.9Q929 12 883.6 12ZM1328.6 220Q1308.2 220 1288.4 216.7Q1268.6 213.4 1252 205.7V106.6Q1264.2 109.2 1281.7 112Q1299.1 114.8 1315.1 114.8Q1361.3 114.8 1383.5 94.3Q1405.6 73.8 1423.5 33.4L1437.8 0.2L1223 -541.5H1348L1497.9 -148L1647.4 -541.5H1773.3L1534.3 58.7Q1515 107 1486.4 143.6Q1457.8 180.3 1418.9 200.1Q1379.9 220 1328.6 220ZM2086.5 12Q2005.9 12 1942.9 -25.3Q1879.9 -62.5 1843.4 -126.9Q1806.9 -191.2 1806.9 -271.7Q1806.9 -352.3 1843.1 -416.1Q1879.3 -479.9 1942.6 -516.7Q2005.9 -553.5 2086.5 -553.5Q2142.6 -553.5 2191 -533.8Q2239.4 -514.2 2275 -479.9Q2310.7 -445.5 2327.1 -399.5L2225.1 -352.9Q2208.4 -394.8 2171.5 -420.2Q2134.6 -445.5 2086.5 -445.5Q2041.2 -445.5 2005.3 -423.1Q1969.4 -400.8 1948.8 -361.1Q1928.1 -321.5 1928.1 -270.7Q1928.1 -220.4 1948.8 -180.8Q1969.4 -141.2 2005.3 -118.6Q2041.2 -96 2086.5 -96Q2135.2 -96 2171.5 -121.3Q2207.9 -146.7 2225.1 -189.5L2327.1 -141.5Q2311.2 -97.5 2275.6 -62.7Q2239.9 -27.8 2191.5 -7.9Q2143.1 12 2086.5 12ZM326.8 -96Q373.7 -96 410.3 -118.6Q447 -141.2 468.1 -180.8Q489.2 -220.4 489.2 -270.7Q489.2 -321.1 468.1 -360.7Q447 -400.3 410.3 -422.9Q373.7 -445.5 326.8 -445.5Q280.4 -445.5 243.2 -422.6Q206 -399.8 185.1 -360.6Q164.1 -321.5 164.1 -270.7Q164.1 -220.4 185.1 -180.8Q206 -141.2 243 -118.6Q280 -96 326.8 -96ZM2420.9 0V-541.5H2531.6V-470.5Q2549.6 -506.8 2580.2 -524.6Q2620.4 -547.9 2676.5 -547.9H2709.4V-442.7H2662.4Q2606 -442.7 2571.6 -408.1Q2537.1 -373.5 2537.1 -310.2V0ZM1052.9 -251.9 905.5 -226.5Q861.8 -218.7 841 -198.6Q820.1 -178.5 820.1 -146.9Q820.1 -117 843.4 -98Q866.7 -79.1 902.3 -79.1Q947.5 -79.1 981.3 -98.5Q1015.2 -117.8 1034 -151Q1052.9 -184.1 1052.9 -224.3V-251.9ZM3084.9 -251.9 2937.5 -226.5Q2893.8 -218.7 2873 -198.6Q2852.1 -178.5 2852.1 -146.9Q2852.1 -117 2875.4 -98Q2898.7 -79.1 2934.3 -79.1Q2979.5 -79.1 3013.3 -98.5Q3047.2 -117.8 3066 -151Q3084.9 -184.1 3084.9 -224.3V-251.9Z" fill="var(--ink)"></path></svg></span></div>
+<button onClick="{{newTask}}" aria-label="New task" class="dk-new dk-press" style="height: 44px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 16px"><svg class="ic" width="18" height="18" style="stroke-width: 2.6"><use href="#i-plus"></use></svg><span class="dk-hide">New task</span></button>
 <sc-for list="{{nav}}" as="n" hint-placeholder-count="10">
 <sc-if value="{{n.gap}}" hint-placeholder-val="{{ false }}"><div class="dk-lab dk-hide" style="padding: 16px 12px 8px">{{n.gapLabel}}</div></sc-if>
 <button class="dk-navi" aria-current="{{n.cur}}" aria-label="{{n.label}}" onClick="{{n.go}}">
@@ -172,8 +182,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{themeOpts}}" as="t" hint-placeholder-count="2"><button aria-pressed="{{t.on}}" onClick="{{t.pick}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px"><svg class="ic" width="15" height="15"><use href="#i-{{t.icon}}"></use></svg><span class="dk-hide">{{t.label}}</span></button></sc-for>
 </div>
 <div style="display: flex; align-items: center; gap: 12px; padding: 16px 8px 0">
-<span style="width: 32px; height: 32px; border-radius: 999px; background: var(--sunken); display: grid; place-items: center; font-size: 13px; font-weight: 800; color: var(--accent-text)">H</span>
-<span class="dk-hide" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 700">Hasib</span><span style="font-size: 12px; color: var(--ink-muted)">Personal workspace</span></span>
+<span style="width: 32px; height: 32px; border-radius: 999px; background: var(--sunken); display: grid; place-items: center; font-size: 13px; font-weight: 600; color: var(--accent-text)">H</span>
+<span class="dk-hide" style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Hasib</span><span style="font-size: 12px; color: var(--ink-muted)">Personal workspace</span></span>
 </div>
 </nav>
 
@@ -181,7 +191,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-content" style="display: flex; flex-direction: column; gap: 24px">
 <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
 <div>
-<div style="display: flex; align-items: center; gap: 4px; font-size: 30px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.1"><span>{{hdr.monthDay}},</span><span style="color: var(--accent-text); margin-left: 6px">{{hdr.year}}</span></div>
+<div style="display: flex; align-items: center; gap: 4px; font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1"><span>{{hdr.monthDay}},</span><span style="color: var(--accent-text); margin-left: 6px">{{hdr.year}}</span></div>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 4px">{{hdr.sub}}</div>
 </div>
 <div style="display: flex; align-items: center; gap: 8px">
@@ -191,7 +201,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
 <button class="dk-press" onClick="{{d.pick}}" aria-label="{{d.aria}}" style="width: 52px; height: 56px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: {{d.bg}}; color: {{d.fg}}; transition: background-color .2s ease">
 <span style="font-size: 11px; font-weight: 600; opacity: .8">{{d.wd}}</span>
-<span class="tnum" style="font-size: 16px; font-weight: 800">{{d.num}}</span>
+<span class="tnum" style="font-size: 16px; font-weight: 600">{{d.num}}</span>
 <span style="display: flex; height: 5px"><sc-for list="{{d.dots}}" as="dot" hint-placeholder-count="2"><span style="width: 5px; height: 5px; border-radius: 3px; background: {{dot.c}}; margin: 0 1px"></span></sc-for></span>
 </button>
 </sc-for>
@@ -230,13 +240,13 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-for>
 <sc-for list="{{tl.gaps}}" as="g" hint-placeholder-count="0">
 <div style="position: absolute; left: 128px; right: 24px; top: {{g.top}}px; z-index: 4; display: flex; align-items: center; gap: 12px; pointer-events: none">
-<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-muted); font-weight: 500"><svg class="ic" width="15" height="15"><use href="#i-clock"></use></svg><span style="font-weight: 700; color: var(--accent-text)">{{g.big}}</span>{{g.rest}}</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-muted); font-weight: 500"><svg class="ic" width="15" height="15"><use href="#i-clock"></use></svg><span style="font-weight: 600; color: var(--accent-text)">{{g.big}}</span>{{g.rest}}</span>
 <button class="dk-chip sm dk-press" onClick="{{g.add}}" style="pointer-events: auto; color: var(--accent-text)"><svg class="ic" width="13" height="13"><use href="#i-plus"></use></svg>Add task</button>
 </div>
 </sc-for>
 <sc-if value="{{tl.showNow}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 0; right: 0; top: {{tl.nowY}}px; height: 0; z-index: 2; pointer-events: none">
-<span class="tnum" style="position: absolute; left: 8px; top: -8px; width: 52px; text-align: right; font-size: 11px; font-weight: 800; color: var(--accent-text)">{{tl.nowLabel}}</span>
+<span class="tnum" style="position: absolute; left: 8px; top: -8px; width: 52px; text-align: right; font-size: 11px; font-weight: 600; color: var(--accent-text)">{{tl.nowLabel}}</span>
 <span style="position: absolute; left: 68px; right: 24px; top: 0; border-top: 1.5px solid var(--accent); opacity: .5"></span>
 <span style="position: absolute; left: 87px; top: -5px; width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 3px var(--surface)"></span>
 </div>
@@ -244,16 +254,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{tl.rows}}" as="r" hint-placeholder-count="6">
 <div style="position: absolute; left: 0; right: 0; top: {{r.top}}px; height: {{r.rowH}}px; z-index: {{r.z}}; transition: {{r.trans}}; pointer-events: none">
 <sc-if value="{{r.showGut}}" hint-placeholder-val="{{ true }}"><span class="tnum" style="position: absolute; left: 8px; top: 3px; width: 52px; text-align: right; font-size: 11px; font-weight: 600; color: var(--ink-muted)">{{r.gut}}</span></sc-if>
-<sc-if value="{{r.dragging}}" hint-placeholder-val="{{ false }}"><span class="tnum" style="position: absolute; left: 128px; top: -30px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--canvas); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center">{{r.dragLabel}}</span></sc-if>
+<sc-if value="{{r.dragging}}" hint-placeholder-val="{{ false }}"><span class="tnum" style="position: absolute; left: 128px; top: -30px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--canvas); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center">{{r.dragLabel}}</span></sc-if>
 <div style="position: absolute; left: 116px; right: 12px; top: -6px; height: {{r.selH}}px; border-radius: 16px; background: {{r.selBg}}; transition: background-color .2s ease"></div>
-<button class="{{r.capCls}}" aria-label="{{r.capAria}}" onPointerDown="{{r.down}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" onClick="{{r.open}}" style="pointer-events: auto; position: absolute; left: 68px; top: 0; width: 48px; height: {{r.capH}}px; border-radius: 24px; background: {{r.capBg}}; opacity: {{r.capOp}}; box-shadow: {{r.capShadow}}; color: #FFFFFF; display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; transition: opacity .25s ease, box-shadow .2s ease">
+<button class="{{r.capCls}}" aria-label="{{r.capAria}}" onPointerDown="{{r.down}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" onClick="{{r.open}}" style="pointer-events: auto; position: absolute; left: 68px; top: 0; width: 48px; height: {{r.capH}}px; border-radius: 24px; background: {{r.capBg}}; opacity: {{r.capOp}}; box-shadow: {{r.capShadow}}; color: var(--on-hue); display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; transition: opacity .25s ease, box-shadow .2s ease">
 <sc-if value="{{r.active}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 0; right: 0; top: 0; height: {{r.elapsed}}%; background: {{r.hueC}}"></span></sc-if>
 <svg class="ic" width="22" height="22" style="position: relative"><use href="#i-{{r.icon}}"></use></svg>
-<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.75)"></span></span></sc-if>
+<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.35)"></span></span></sc-if>
 </button>
 <button onClick="{{r.open}}" aria-label="{{r.openAria}}" style="pointer-events: auto; position: absolute; left: 128px; right: 60px; top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding-top: 2px">
 <span class="tnum" style="font-size: 12.5px; font-weight: 500; color: var(--ink-muted); display: flex; align-items: center; gap: 5px; white-space: nowrap">{{r.time}}<sc-if value="{{r.repeat}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12"><use href="#i-repeat"></use></svg></sc-if></span>
-<span style="max-width: 100%; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: {{r.titleColor}}; text-decoration: {{r.deco}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span>
+<span style="max-width: 100%; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: {{r.titleColor}}; text-decoration: {{r.deco}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span>
 <sc-if value="{{r.hasMeta}}" hint-placeholder-val="{{ false }}">
 <span style="display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap">
 <sc-if value="{{r.active}}" hint-placeholder-val="{{ false }}"><span class="dk-tag" style="background: var(--accent-soft); color: var(--accent-text)"><span style="width: 6px; height: 6px; border-radius: 999px; background: var(--accent)"></span>{{r.left}}</span></sc-if>
@@ -263,7 +273,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 </span>
 </sc-if>
 </button>
-<button class="dk-ring" onClick="{{r.check}}" aria-label="{{r.checkAria}}" aria-pressed="{{r.done}}" style="pointer-events: auto; position: absolute; right: 24px; top: 12px; border-color: {{r.hueC}}; background: {{r.ringBg}}; color: #FFFFFF">
+<button class="dk-ring" onClick="{{r.check}}" aria-label="{{r.checkAria}}" aria-pressed="{{r.done}}" style="pointer-events: auto; position: absolute; right: 24px; top: 12px; border-color: {{r.hueC}}; background: {{r.ringBg}}; color: var(--on-hue)">
 <sc-if value="{{r.done}}" hint-placeholder-val="{{ false }}"><svg class="ic dk-flash" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if>
 </button>
 </div>
@@ -275,28 +285,28 @@ a{color:#AD5236}a:hover{color:#97462D}
 <aside aria-label="Details" class="dk-aside" style="flex: 1 1 340px; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
 <sc-if value="{{dt.has}}" hint-placeholder-val="{{ false }}">
 <div class="dk-fade" style="background: var(--surface); border: 1px solid var(--line); border-radius: 24px; overflow: hidden">
-<div style="background: {{dt.hueC}}; color: #FFFFFF; padding: 16px 20px 24px; transition: background-color .25s ease">
+<div style="background: color-mix(in srgb, {{dt.hueC}} 40%, var(--canvas)); color: var(--ink); padding: 16px 20px 24px; transition: background-color .25s ease">
 <div style="display: flex; justify-content: space-between; align-items: center">
-<span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(0,0,0,.16); font-size: 12px; font-weight: 700">{{dt.kind}}</span>
-<button class="dk-ib sm" aria-label="Close details" onClick="{{dt.close}}" style="background: rgba(255,255,255,.2); color: #FFFFFF"><svg class="ic" width="16" height="16"><use href="#i-x"></use></svg></button>
+<span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(0,0,0,.16); font-size: 12px; font-weight: 600">{{dt.kind}}</span>
+<button class="dk-ib sm" aria-label="Close details" onClick="{{dt.close}}" style="background: rgba(0,0,0,.08); color: var(--on-hue)"><svg class="ic" width="16" height="16"><use href="#i-x"></use></svg></button>
 </div>
 <div style="display: flex; align-items: center; gap: 12px; margin-top: 16px">
-<span style="width: 48px; height: 64px; border-radius: 24px; display: grid; place-items: center; background: rgba(255,255,255,.2); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="22" height="22"><use href="#i-{{dt.icon}}"></use></svg></span>
+<span style="width: 48px; height: 64px; border-radius: 24px; display: grid; place-items: center; background: rgba(0,0,0,.08); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="22" height="22"><use href="#i-{{dt.icon}}"></use></svg></span>
 <div style="flex: 1; min-width: 0">
 <div class="tnum" style="font-size: 12.5px; font-weight: 600; opacity: .9">{{dt.time}}</div>
-<input class="oh" aria-label="Title" value="{{dt.title}}" onChange="{{dt.onTitle}}" style="width: 100%; font-size: 20px; font-weight: 800; color: #FFFFFF; padding: 2px 0 4px; border-bottom: 1.5px solid rgba(255,255,255,.4)">
+<input class="oh" aria-label="Title" value="{{dt.title}}" onChange="{{dt.onTitle}}" style="width: 100%; font-size: 20px; font-weight: 600; color: var(--on-hue); padding: 2px 0 4px; border-bottom: 1.5px solid rgba(255,255,255,.4)">
 </div>
 </div>
 </div>
 <div style="padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 16px">
-<div class="dk-field"><span style="font-size: 13px; font-weight: 700">Duration</span><div class="dk-seg" role="group" aria-label="Duration"><sc-for list="{{dt.durs}}" as="o" hint-placeholder-count="6"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
-<div class="dk-field"><span style="font-size: 13px; font-weight: 700">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{dt.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="width: 28px; height: 28px; background: {{c.c}}"></button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 13px; font-weight: 600">Duration</span><div class="dk-seg" role="group" aria-label="Duration"><sc-for list="{{dt.durs}}" as="o" hint-placeholder-count="6"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 13px; font-weight: 600">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{dt.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="width: 28px; height: 28px; background: {{c.c}}"></button></sc-for></div></div>
 <sc-if value="{{dt.hasSubs}}" hint-placeholder-val="{{ false }}">
 <div class="dk-list">
-<div class="dk-li" style="min-height: 44px; justify-content: space-between"><span style="font-size: 14px; font-weight: 700">Subtasks</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{dt.subsLabel}}</span></div>
+<div class="dk-li" style="min-height: 44px; justify-content: space-between"><span style="font-size: 14px; font-weight: 600">Subtasks</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{dt.subsLabel}}</span></div>
 <sc-for list="{{dt.subs}}" as="s" hint-placeholder-count="3">
 <button class="dk-li" onClick="{{s.toggle}}" aria-pressed="{{s.done}}" style="min-height: 44px">
-<span style="width: 18px; height: 18px; border-radius: 6px; border: 2px solid {{dt.hueC}}; background: {{s.bg}}; display: grid; place-items: center; color: #FFFFFF; flex: none"><sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="11" height="11" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
+<span style="width: 18px; height: 18px; border-radius: 6px; border: 2px solid {{dt.hueC}}; background: {{s.bg}}; display: grid; place-items: center; color: var(--on-hue); flex: none"><sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="11" height="11" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
 <span style="flex: 1; font-size: 14px; text-decoration: {{s.deco}}; color: {{s.fg}}">{{s.t}}</span>
 </button>
 </sc-for>
@@ -305,7 +315,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{dt.hasNotes}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 16px; border-radius: 16px; background: var(--sunken); font-size: 14px; line-height: 1.5; color: var(--ink-muted)">{{dt.notes}}</div></sc-if>
 <sc-if value="{{dt.focusOn}}" hint-placeholder-val="{{ false }}">
 <div class="dk-fade" style="display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 16px; background: var(--accent-soft)">
-<span class="tnum" style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: var(--accent-text)">{{dt.clock}}</span>
+<span class="tnum" style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: var(--accent-text)">{{dt.clock}}</span>
 <span style="flex: 1; font-size: 12.5px; font-weight: 600; color: var(--accent-text)">{{dt.focusState}}</span>
 <button class="dk-ib" aria-label="{{dt.focusAria}}" onClick="{{dt.focusToggle}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="17" height="17"><use href="#i-{{dt.focusIcon}}"></use></svg></button>
 <button class="dk-ib" aria-label="End focus" onClick="{{dt.focusEnd}}" style="background: var(--surface)"><svg class="ic" width="16" height="16"><use href="#i-stop"></use></svg></button>
@@ -323,26 +333,26 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 20px; display: flex; align-items: center; gap: 16px">
 <div role="img" aria-label="{{prog.aria}}" style="position: relative; width: 72px; height: 72px; flex: none">
 <svg width="72" height="72" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15.915" fill="none" stroke="var(--sunken)" stroke-width="3.6"></circle><circle cx="20" cy="20" r="15.915" fill="none" stroke="var(--accent)" stroke-width="3.6" stroke-linecap="round" stroke-dasharray="{{prog.dash}}" transform="rotate(-90 20 20)" style="transition: stroke-dasharray .5s ease"></circle></svg>
-<span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 16px; font-weight: 800">{{prog.pct}}</span>
+<span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 16px; font-weight: 600">{{prog.pct}}</span>
 </div>
 <div style="flex: 1; min-width: 0">
-<div style="font-size: 16px; font-weight: 700">Daily progress</div>
+<div style="font-size: 16px; font-weight: 600">Daily progress</div>
 <div class="tnum" style="font-size: 13px; color: var(--ink-muted); margin-top: 3px; line-height: 1.45">{{prog.line}}</div>
 </div>
 </div>
 
 <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 16px 20px">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"><span style="font-size: 16px; font-weight: 700">Up next</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{next.meta}}</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"><span style="font-size: 16px; font-weight: 600">Up next</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{next.meta}}</span></div>
 <sc-for list="{{next.list}}" as="u" hint-placeholder-count="3">
 <button onClick="{{u.open}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 8px 0">
-<span style="width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; background: {{u.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="16" height="16"><use href="#i-{{u.icon}}"></use></svg></span>
-<span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{u.title}}</span><span class="tnum" style="font-size: 12px; color: var(--ink-muted)">{{u.sub}}</span></span>
+<span style="width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; background: {{u.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="16" height="16"><use href="#i-{{u.icon}}"></use></svg></span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{u.title}}</span><span class="tnum" style="font-size: 12px; color: var(--ink-muted)">{{u.sub}}</span></span>
 </button>
 </sc-for>
 </div>
 
 <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 16px 20px">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"><span style="font-size: 16px; font-weight: 700">Inbox</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{inbox.count}} to sort</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"><span style="font-size: 16px; font-weight: 600">Inbox</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{inbox.count}} to sort</span></div>
 <div style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 4px 0 16px; border-radius: 999px; background: var(--sunken); margin-bottom: 8px">
 <input aria-label="Capture to Inbox" placeholder="Capture a thought…" value="{{inbox.value}}" onChange="{{inbox.change}}" onKeyDown="{{inbox.key}}" style="flex: 1; min-width: 0; height: 100%; font-size: 14px">
 <button aria-label="Add to Inbox" onClick="{{inbox.add}}" style="width: 32px; height: 32px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="15" height="15" style="stroke-width: 2.6"><use href="#i-plus"></use></svg></button>
@@ -606,7 +616,7 @@ class Component extends DCLogic {
       var hs = st.items.filter(function(x){ return x.date === d && x.start !== null && x.kind !== 'routine'; }).map(function(x){ return x.hue; }).filter(function(h, k, a){ return a.indexOf(h) === k; }).slice(0, 4);
       week.push({ wd: WD3[dd.getDay()], num: dd.getDate(), bg: isSel ? 'var(--accent)' : 'transparent', fg: isSel ? 'var(--on-accent)' : (isT ? 'var(--accent-text)' : 'var(--ink)'), dots: hs.map(function(h){ return { c: isSel ? 'var(--on-accent)' : hv(h) }; }), aria: fDate(d), pick: function(){ self.setState({ date: d }); } });
     })(addD(ws, i));
-    var habitStrip = st.habits.map(function(h){ var done = !!h.hist[date]; return { name: h.name, icon2: done ? 'check' : h.icon, done: done, bg: done ? hv(h.hue) : mix(h.hue, 18), fg: done ? '#FFFFFF' : hv(h.hue), chipBg: done ? mix(h.hue, 16) : 'transparent', border: done ? 'transparent' : 'var(--line-strong)',
+    var habitStrip = st.habits.map(function(h){ var done = !!h.hist[date]; return { name: h.name, icon2: done ? 'check' : h.icon, done: done, bg: done ? hv(h.hue) : mix(h.hue, 18), fg: done ? 'var(--on-hue)' : hv(h.hue), chipBg: done ? mix(h.hue, 16) : 'transparent', border: done ? 'transparent' : 'var(--line-strong)',
       toggle: function(){ if (date > TODAY) { self.toast('Habits can be checked in on or before today'); return; } var v = !h.hist[date]; self.setState(function(s){ return { habits: s.habits.map(function(x){ if (x.id !== h.id) return x; var hist = Object.assign({}, x.hist); hist[date] = v; return Object.assign({}, x, { hist: hist }); }) }; }); self.toast(h.name + (v ? ' · checked in' : ' · unchecked')); } }; });
     var L = this.layout(date), nowY = L.map(NOW);
     var rows = L.rows.map(function(r){
@@ -615,7 +625,7 @@ class Component extends DCLogic {
       return { title: it.title, icon: it.icon, top: r.top, capH: r.capH, rowH: r.rowH, z: dragging ? 20 : 5, trans: dragging ? 'none' : 'top .22s ease',
         gut: h12(it.start), showGut: !(isToday && Math.abs(nowY - (r.top + 10)) < 16), time: fR(it.start, it.dur) + (it.dur ? ' (' + fDur(it.dur) + ')' : ''),
         selH: r.rowH + 12, selBg: isSel ? 'color-mix(in srgb, var(--sunken) 60%, transparent)' : 'transparent',
-        capBg: r.active ? mix(it.hue, 42) : hv(it.hue), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
+        capBg: r.active ? mix(it.hue, 34, '#FFFFFF') : mix(it.hue, 62, '#FFFFFF'), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
         capShadow: dragging ? '0 12px 28px rgba(0,0,0,.28)' : (r.active ? '0 0 0 4px ' + mix(it.hue, 28, 'transparent') : 'none'),
         capCls: 'dk-press' + (st.flash === it.id ? ' dk-flash' : ''), active: r.active, elapsed: r.active ? Math.round((NOW - it.start) / it.dur * 100) : 0, left: 'Now · ' + fShort(it.start + it.dur - NOW) + ' left',
         resizable: it.dur >= 15, dragging: dragging, dragLabel: dragging ? fR(st.drag.start, st.drag.dur) : '', done: it.done, ringBg: it.done ? hv(it.hue) : 'transparent',

@@ -6,7 +6,7 @@
     "@daycraft/design-tokens": "workspace:*",
     "@daycraft/domain": "workspace:*",
     "@daycraft/icons": "workspace:*",
-    "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
+    "@expo-google-fonts/onest": "^0.4.2",
     "@expo/ui": "~58.0.28",
     "cn": "^0.5.2",
     "expo": "~58.0.25",

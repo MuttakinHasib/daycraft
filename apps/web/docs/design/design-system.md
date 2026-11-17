@@ -6,7 +6,7 @@ The tokens, their names and the rules for using them are in the root [design sys
 
 - `src/app/globals.css` imports `@daycraft/design-tokens/tailwind.css`, which the token package generates: semantic colors as CSS variables on `:root` (light) and `.dark`, exposed as utilities by `@theme inline` (`bg-canvas`, `text-ink-muted`; opacity modifiers work, `bg-ink/50`), hues, the type scale (`--text-*` with line height, tracking and weight), radii, shadows, the snap easing and the `animate-*` utilities. The `type-*` presets are `@utility` classes, so they work with `@apply` and variants (`md:type-display`). Never edit the generated file; change the package and run its `build`.
 - `globals.css` adds the base layer (font, canvas, ink, focus outline) and the reusable component classes (`.chip`, `.btn-primary`, `.segmented`, …) specified in the root [components](../../../../docs/design/components.md).
-- Plus Jakarta Sans loads through `next/font/google` (400–800) as `--font-plus-jakarta-sans`; `--font-sans` points at it. Use weight utilities (`font-semibold`) on the web.
+- Onest loads through `next/font/google` as `--font-onest`; `--font-sans` points at it. Use weight utilities up to `font-semibold` on the web.
 
 ## Colors and hues
 

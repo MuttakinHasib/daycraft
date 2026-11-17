@@ -13,17 +13,17 @@ Conventions:
 
 | Component | Spec |
 |---|---|
-| **Button** | `variant: 'primary' \| 'secondary'`, `size: 'lg' \| 'md'`. lg h 52, md h 44; pill, `text-body font-bold`, optional leading 17–18px icon, gap 8. Primary `bg-accent text-on-accent hover:bg-accent-hover`; secondary `bg-sunken text-ink`. `active:` scale .98. Real `<button>`. |
-| **IconButton** | sizes 40 / 32 (`sm`), pill, `bg-sunken text-ink`, 18 / 16 icon. Variants `ghost`, `onHue` (`bg-white/20 text-white`), `danger` (`text-danger`). **`aria-label` is required** in the type. |
+| **Button** | `variant: 'primary' \| 'secondary'`, `size: 'lg' \| 'md'`. lg h 52, md h 44; pill, `type-body font-semibold`, optional leading 17–18px icon, gap 8. Primary `bg-accent text-on-accent hover:bg-accent-hover`; secondary `bg-sunken text-ink`. `active:` scale .98. Real `<button>`. |
+| **IconButton** | sizes 40 / 32 (`sm`), pill, `bg-sunken text-ink`, 18 / 16 icon. Variants `ghost`, `onHue` (`bg-ink/10 text-on-hue`, for hue-tinted headers), `danger` (`text-danger`). **`aria-label` is required** in the type. |
 | **Chip** | h 36 (sm 32), pill, px 16 (sm 12), `text-control`, `bg-sunken text-ink-muted`. Toggle chips use `aria-pressed` → `bg-ink text-canvas`. Tones: `accent` (`bg-accent text-on-accent`), `accentSoft` (`bg-accent-soft text-accent-text`). Optional leading icon. |
 | **Tag** | h 24, pill, px 8, gap 4, 12 semibold, `bg-sunken text-ink-muted`. Tones: `accentSoft`, hue-tinted (events). Optional 12px icon. Not interactive. |
 | **Segmented** | track `bg-sunken rounded-tile p-0.75 flex gap-0.5`; buttons h 32, `rounded-segment` (track radius minus padding), `type-control text-ink-muted`; selected `bg-elevated text-ink shadow-sm`. Use `role="radiogroup"` + `role="radio"`/`aria-checked`, or `aria-pressed` toggle buttons, consistently. Arrow-key navigation inside the group. |
 | **CheckRing** | 24px circle, 2px border in the activity hue; checked → hue fill + white 14px check (3.2 stroke) with the pop animation. Hit area 44 (`::after` inset −10px, as in the reference CSS `.check-ring`). `role="checkbox"` + `aria-checked` (or a visually hidden native checkbox). |
 | **Capsule** | width 48, min height 48, `rounded-capsule`, hue background, white 22px icon, `touch-action: none`. States `data-state="idle" \| "active" \| "done"`: active → base 42% hue mix + elapsed solid fill + 4px 28% ring; done → `opacity-45`. Optional bottom resize grip (18px area, 16×3 bar `bg-white/75`). Renders as a `<button>`. |
 | **SectionLabel** | `type-label uppercase text-ink-subtle`. |
-| **Card / Panel** | Card `bg-surface border border-line rounded-card p-4`; Panel `rounded-panel` + p-5. |
+| **Card / Panel** | Card `bg-card rounded-card p-4` (no border); Panel `rounded-panel` + p-5. |
 | **ListGroup / ListRow** | Bordered container with `divide-y divide-line`; rows min 44, px 16, gap 12; leading icon or hue tile; trailing muted value. |
-| **TextField** | Variants `sunken` (h 48, `bg-sunken rounded-field px-4`), `pill` (h 40–48, `bg-surface` or `bg-sunken`, `rounded-full`, trailing 32–36 accent add button), `underline` (transparent with a bottom border, used for title inputs on hue headers with `placeholder:text-white/70`). Always paired with a `<label>` (visible or `sr-only`). Textarea: min h 88, p 12/16, `leading-normal`. |
+| **TextField** | Variants `sunken` (h 48, `bg-sunken rounded-field px-4`), `pill` (h 40–48, `bg-surface` or `bg-sunken`, `rounded-full`, trailing 32–36 accent add button), `underline` (transparent with a bottom border, used for title inputs on hue-tinted headers with `text-ink placeholder:text-ink-muted`). Always paired with a `<label>` (visible or `sr-only`). Textarea: min h 88, p 12/16, `leading-normal`. |
 | **ColorSwatches** | 9 hue buttons, 32 (28 in the desktop panel), pill; selected → `ring-2 ring-surface` + outer `ring-ink` (two-ring look). `aria-label` = hue name, `aria-pressed`. |
 | **ProgressRing** | SVG; sizes 40 / 56 / 72 / 250; track `line-strong` or `sunken`, progress `accent` or hue, round caps, starts at 12 o'clock (`-rotate-90`), `transition-[stroke-dasharray]`. `role="img"` + `aria-label` (“32% of today done”). |
 | **Toast** | h 40, pill, `bg-ink text-canvas`, 14 semibold, 15px check icon, px 16, `shadow-float`, fixed bottom 24 center, `role="status"`. A single instance from a client provider in the root layout. |
@@ -34,7 +34,7 @@ Conventions:
 | Component | Spec |
 |---|---|
 | **Sidebar / NavItem** | See [navigation-and-modules](../product/navigation-and-modules.md#app-shell). NavItem is a `<Link>` with `aria-current="page"` when active; 40 tall, `rounded-tile`; active `bg-accent-soft text-accent-text`; hover `bg-sunken text-ink`. |
-| **WeekStrip** | Container pill (`bg-surface border border-line rounded-panel p-1`); 7 day buttons 52×56, `rounded-card`; selected `bg-accent text-on-accent`; today's number `text-accent-text`; hue dots 5px. Arrow buttons are separate IconButtons. |
+| **WeekStrip** | Container pill (`bg-card rounded-panel p-1`); 7 day buttons 52×56, `rounded-card`; selected `bg-accent text-on-accent`; today's number `text-accent-text`; hue dots 5px. Arrow buttons are separate IconButtons. |
 | **HabitChip** | h 36, pill, `pl-1.5 pr-3`, a 26 hue circle + name; not done: dashed `border-line-strong`; done: hue 16% background, check icon. `aria-pressed`. |
 | **DetailPanel** | See [navigation-and-modules](../product/navigation-and-modules.md#today-desktop). Header band uses the activity hue (`style` from the hue variable) with white text. |
 | **Dialog** | For create flows on desktop. Centered, max width ~480, `rounded-panel bg-surface shadow-float`, scrim `bg-scrim`, focus trapped, Escape closes, focus returns to the opener. Use the native `<dialog>` element (`showModal()`) unless a requirement rules it out. |

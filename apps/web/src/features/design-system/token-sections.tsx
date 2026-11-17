@@ -86,7 +86,7 @@ export function HueSection() {
       <div className="grid grid-cols-3 gap-3 md:grid-cols-9">
         {Object.values(ActivityHue).map((hue) => (
           <div key={hue} className="flex flex-col gap-1.5">
-            <div className={cn("grid h-16 place-items-center rounded-tile text-white", HueBackground[hue])}>
+            <div className={cn("grid h-16 place-items-center rounded-tile text-on-hue", HueBackground[hue])}>
               <Icon name="check" size={22} />
             </div>
             <span className="type-control">{hue}</span>
@@ -117,7 +117,7 @@ export function ContrastSection() {
 
 export function TypeSection() {
   return (
-    <Section title="Type" description="Plus Jakarta Sans. Each preset is a type-* class on mobile and web.">
+    <Section title="Type" description="Onest. Each preset is a type-* class on mobile and web.">
       <div className="card flex flex-col gap-5">
         {Object.values(TypePreset).map((preset) => (
           <div key={preset} className="flex flex-col gap-1">

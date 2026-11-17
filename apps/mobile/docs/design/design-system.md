@@ -1,6 +1,6 @@
 # Design system on mobile
 
-The tokens, their names and the rules for using them are in the root [design system](../../../../docs/design/design-system.md); values live in `@daycraft/design-tokens`. This file covers how the mobile app (Uniwind + Reanimated) implements them. Every token renders on the in-app `/design-system` screen (linked from Plan).
+The tokens, their names and the rules for using them are in the root [design system](../../../../docs/design/design-system.md); values live in `@daycraft/design-tokens`. This file covers how the mobile app (Uniwind + Reanimated) implements them. Every token renders on the in-app `/more/design-system` screen (More → Design system).
 
 ## Where tokens come from
 
@@ -16,8 +16,8 @@ The tokens, their names and the rules for using them are in the root [design sys
 
 ## Type
 
-- Use the `type-*` presets. On native each weight is its own embedded family, so weight changes go through families: `font-sans`, `font-sans-medium`, `font-sans-semibold`, `font-sans-bold`, `font-sans-extrabold`. Never `font-bold` and never `fontWeight`. A family utility after a preset overrides the preset's family (`type-body font-sans-bold`). See [typography](typography.md).
-- Fonts come from `@expo-google-fonts/plus-jakarta-sans`, embedded at build time by the `expo-font` config plugin in `app.config.ts` (each weight registered under its PostScript name, which matches the token families). Expo Go cannot show them; use a development build.
+- Use the `type-*` presets. On native each weight is its own embedded family, so weight changes go through families: `font-sans`, `font-sans-medium`, `font-sans-semibold` (`-bold` and `-extrabold` exist but the v2 UI never goes above semibold). Never `font-bold` and never `fontWeight`. A family utility after a preset overrides the preset's family (`type-body font-sans-semibold`). See [typography](typography.md).
+- Fonts come from `@expo-google-fonts/onest`, embedded at build time by the `expo-font` config plugin in `app.config.ts` (each weight registered under its PostScript name, which matches the token families). Expo Go cannot show them; use a development build.
 
 ## Motion
 
@@ -29,4 +29,4 @@ Rely on the platform focus ring (iPad keyboard, Android); never remove it.
 
 ## Icons
 
-`Icon` from `@/components/ui`: the shared `@daycraft/icons` glyphs, colored by a class through `colorClassName` (`<Icon name="run" size={22} colorClassName="text-white" />`).
+`Icon` from `@/components/ui`: the shared `@daycraft/icons` glyphs, colored by a class through `colorClassName` (`<Icon name="run" size={22} colorClassName="text-on-hue" />` on a hue, `text-ink` elsewhere).

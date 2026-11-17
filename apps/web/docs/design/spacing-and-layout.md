@@ -50,7 +50,7 @@ Same ladder as mobile. Components that do the same job share a height.
 ## Density
 
 - Desktop shows more at once but keeps phone spacing inside components. Extra width goes to the timeline text column and the aside, not to bigger type or padding.
-- Cards: `bg-surface border border-line rounded-card` (aside cards and panels use `rounded-panel`). No shadows.
+- Cards: `bg-card rounded-card`, no border (aside cards and panels use `rounded-panel`). No shadows.
 - List groups: one bordered container with hairline-separated rows (min 44, px 16).
 
 ## Alignment

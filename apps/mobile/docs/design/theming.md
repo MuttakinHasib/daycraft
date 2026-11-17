@@ -11,11 +11,11 @@
 ## Rules
 
 1. Every component and screen must look correct in **both** themes before it is done. Check both on device or simulator.
-2. Use semantic classes: `bg-canvas/surface/sunken/elevated`, `text-ink/ink-muted/ink-subtle/accent-text/on-accent`, `border-line/line-strong`. Never use `bg-white`, `text-black`, `bg-gray-*`, hex values, or the `dark:` variant to patch a light-only color.
+2. Use semantic classes: `bg-canvas/surface/card/sunken/elevated`, `text-ink/ink-muted/ink-subtle/accent-text/on-accent/on-hue`, `border-line/line-strong`. Never use `bg-white`, `text-black`, `bg-gray-*`, hex values, or the `dark:` variant to patch a light-only color.
 3. The `dark:` variant is allowed only for a genuinely theme-specific design difference that has no semantic token. If you need one twice, add a token instead.
-4. Text on `accent` uses `text-on-accent`. In dark mode the accent is light (`#E4815D`), so on-accent is dark (`#241109`). Never hardcode white text on accent.
-5. Activity hues are the same in both themes and always carry white icons and text.
-6. Hairlines (`line`) separate surfaces; do not add shadows to separate things in dark mode.
+4. Text on `accent` uses `text-on-accent`. In dark mode the accent is a light blue, so on-accent is dark. Never hardcode white text on accent.
+5. Activity hues are the same in both themes and carry `text-on-hue` (white) icons and text. Hues are never used as a text color.
+6. Fills separate surfaces (`surface` sheets, gray `card` blocks); cards have no border. Hairlines (`line`) only separate rows. Do not add shadows to separate things.
 7. Images and illustrations must use token colors (or come in light and dark versions).
 8. The status bar follows the theme: the Stack's `statusBarStyle` in builds, an app-wide `<StatusBar>` in Expo Go.
 

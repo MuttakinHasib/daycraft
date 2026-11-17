@@ -21,7 +21,6 @@ interface ContrastPair {
   minimum: number;
 }
 
-const WHITE = '#ffffff';
 const TEXT_MINIMUM = 4.5;
 const ICON_MINIMUM = 3;
 
@@ -49,11 +48,14 @@ function pairsFor(tokens: ContrastTokens): ContrastPair[] {
     pairs.push(
       { pair: `${scheme}: ink-subtle on canvas`, foreground: colors['ink-subtle'], background: colors.canvas, minimum: TEXT_MINIMUM },
       { pair: `${scheme}: ink-subtle on surface`, foreground: colors['ink-subtle'], background: colors.surface, minimum: TEXT_MINIMUM },
+      { pair: `${scheme}: ink-subtle on card`, foreground: colors['ink-subtle'], background: colors.card, minimum: TEXT_MINIMUM },
       { pair: `${scheme}: on-accent on accent`, foreground: colors['on-accent'], background: colors.accent, minimum: TEXT_MINIMUM },
     );
   }
-  for (const hue of Object.values(ActivityHue)) {
-    pairs.push({ pair: `white icon on ${hue}`, foreground: WHITE, background: tokens.hues[hue], minimum: ICON_MINIMUM });
+  for (const scheme of Object.values(ColorScheme)) {
+    for (const hue of Object.values(ActivityHue)) {
+      pairs.push({ pair: `${scheme}: on-hue icon on ${hue}`, foreground: tokens.semantic[scheme]['on-hue'], background: tokens.hues[hue], minimum: ICON_MINIMUM });
+    }
   }
   return pairs;
 }

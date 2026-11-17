@@ -23,8 +23,8 @@ const SAMPLE: Record<TypePreset, string> = {
 
 export function TypeSection() {
   return (
-    <Section title="Type" description="Plus Jakarta Sans. Each preset is a type-* class on mobile and web.">
-      <View className="gap-4 rounded-card border border-line bg-surface p-4">
+    <Section title="Type" description="Onest. Each preset is a type-* class on mobile and web.">
+      <View className="gap-4 rounded-card bg-card p-4">
         {Object.values(TypePreset).map((preset) => (
           <View key={preset} className="gap-0.5">
             <Text className="type-meta text-ink-subtle">{`type-${preset} · ${describeTypeStyle(preset)} · ${typeScale[preset].use}`}</Text>

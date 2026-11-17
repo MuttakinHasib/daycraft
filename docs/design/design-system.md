@@ -1,13 +1,12 @@
 # Design system
 
-Design system v1.1 for every Daycraft app. This file names the tokens and the rules for using them. **Values live only in [`@daycraft/design-tokens`](../../packages/design-tokens/src)** (ADR-0001), which generates each app's theme CSS and checks contrast in its build. To see every token rendered, open the design-system page: `/design-system` in either app.
+Design system v2 (“Clean”) for every Daycraft app: a white canvas, light-gray cards, saturated activity colors with white icons on them, a blue accent and Onest at regular to semibold weights. It replaced v1.1 (cream, terracotta, Plus Jakarta Sans extra-bold) on 2026-11-17; see [ADR-0008](../adr/0008-visual-direction-clean.md). This file names the tokens and the rules for using them. **Values live only in [`@daycraft/design-tokens`](../../packages/design-tokens/src)** (ADR-0001), which generates each app's theme CSS and checks contrast in its build. To see every token rendered, open the design-system page: `/design-system` in either app.
 
-Sources of truth, in order: the design canvas page "v2 · Current" decides what values should be; the token package decides what the apps render and changes only to match the canvas; [reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is a frozen export.
+Sources of truth, in order: the design canvas page "v3 · Clean (new direction)" decides what values should be (layout and behavior still come from "v2 · Current"); the token package decides what the apps render and changes only to match the canvas; [reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is a frozen export of the old v1.1 look (history only).
 
 **Rule: feature code uses token classes only.** No hex, `rgb()` or arbitrary `[…]` values for color, type, radius or spacing. If a token is missing, add it to the token package (and its `cn` configuration follows automatically). The only exceptions:
 
 - Pixel positions computed by layout code (timeline geometry).
-- White for icons and text placed on activity hues or a hue-colored header.
 - Hue tints computed from a hue (see below).
 
 Platform notes: [mobile](../../apps/mobile/docs/design/design-system.md) (Uniwind, Reanimated) · [web](../../apps/web/docs/design/design-system.md) (Tailwind, CSS).
@@ -18,37 +17,40 @@ They change with the theme. Use them as `bg-*`, `text-*` and `border-*`.
 
 | Token | Use |
 |---|---|
-| `canvas` | App background behind everything |
-| `surface` | Cards, sheets, panels, the Plan timeline panel, lists |
+| `canvas` | App background behind everything (white in light) |
+| `surface` | Sheets, panels, the Plan timeline panel |
+| `card` | Cards, list groups, habit and goal cards, info blocks. A light-gray fill, no border |
 | `sunken` | Chips, segmented track, fields on surface, tags, kanban columns, nav hover |
-| `elevated` | Floating tab bar, selected segment |
-| `line` | Hairlines, card borders, hour lines |
+| `elevated` | Floating tab bar, selected segment, menus |
+| `line` | Hairlines, hour lines, row separators (cards have no border) |
 | `line-strong` | Dashed spine, unchecked checkbox borders, grabber |
 | `ink` | Primary text, selected chip background |
 | `ink-muted` | Secondary text, meta, inactive tabs |
 | `ink-subtle` | Tertiary text, hour labels, section labels, placeholders |
-| `accent` | Primary buttons, the + button, selected date, now line, progress |
+| `accent` | Primary buttons, the active tab pill, selected date, now line, progress |
 | `accent-hover` | Hover or pressed accent surfaces (web) |
 | `accent-soft` | “Now” tag, Plan and Place chips, prompt banner, Today chip, active nav item |
 | `accent-text` | Accent used as text: the year in the date, back links, gap durations |
-| `on-accent` | Text and icons on `accent`. Dark-theme accent is light, so this turns dark: never hardcode white on accent |
+| `on-accent` | Text and icons on `accent`: white in both themes (the dark-theme accent is deep enough to keep 4.5:1). Still use the token, never hardcode white |
+| `on-hue` | Icons and text on an activity hue: white in both themes (every hue is deep enough for 3:1) |
 | `success` | Positive states, sparingly |
 | `danger` | Delete, high priority |
 | `scrim` | Backdrop behind sheets and dialogs |
 
 ### Contrast (checked in the token build)
 
-- `ink-subtle` on `canvas` and on `surface` ≥ 4.5:1 in both themes.
+- `ink-subtle` on `canvas`, `surface` and `card` ≥ 4.5:1 in both themes.
 - `on-accent` on `accent` ≥ 4.5:1 in both themes.
-- White icons on every hue ≥ 3:1.
-- Never put `ink-subtle` text below 14px on `sunken` in light mode (about 4.1:1).
+- `on-hue` (white) icons on every hue ≥ 3:1 in both themes (the hues are tuned to about 3.2:1 or better).
+- Hues are not text colors (about 3.2:1 on white is below the 4.5:1 text bar). Never use a hue as a text color; use it as a fill, a ring, a tag or a marker behind text.
 
 ## Activity hues
 
 Nine hues, the same in both themes: `clay`, `amber`, `sun`, `sage`, `pine`, `sky`, `iris`, `rose`, `slate`. The names are domain data (`ActivityHue` in `@daycraft/domain`); the values are tokens.
 
 - Hues color **user content only**: capsules, hue tiles, habit circles, mood, the spine. Never chrome, buttons or brand.
-- Text on a hue is white at ≥ 16px bold or ≥ 18px. Smaller text on a hue sits on a white chip.
+- Icons and text on a hue use `text-on-hue` (white). Hue tags (WORK, HOME) are `on-hue` text on the solid hue.
+- To highlight a word in a headline, put a 42% hue marker behind it (`rounded-tile`, padding 0 6); never color the text.
 - Map hue → class with complete string literals (`bg-${hue}` is never built at runtime; Tailwind scans class names at build time).
 - Typical use: clay for deep work (the default task hue), amber for mornings and meals, sun for errands and calls, sage for movement and health, pine for writing and planning, sky for meetings (the default event hue), iris for learning and reflection, rose for people, slate for rest.
 
@@ -60,12 +62,14 @@ Nine hues, the same in both themes: `clay`, `amber`, `sun`, `sage`, `pine`, `sky
 | 16% fill / 40% border | Event agenda card |
 | 28% ring | Active capsule outline |
 | 30% | Event card tint (agenda, Upcoming) |
-| 42% | Active capsule base (the remaining part) |
+| 34% over white | Active capsule base (the remaining part); the elapsed part is the solid hue |
+| 40% over canvas | Detail and editor sheet header band (text stays `ink`) |
+| 42% | Headline highlight marker |
 | 60% border, dashed | Habit circle, not done |
 
 ## Type
 
-Plus Jakarta Sans. Each preset is a `type-*` class on both platforms, carrying size, line height, tracking and weight.
+**Onest** (Google Fonts, OFL). Weight comes from size, not from heavy type: titles are semibold, nothing in the UI is bolder than 600. Each preset is a `type-*` class on both platforms, carrying size, line height, tracking and weight.
 
 | Preset | Use |
 |---|---|
@@ -82,7 +86,7 @@ Plus Jakarta Sans. Each preset is a `type-*` class on both platforms, carrying s
 | `type-micro` | Timeline gutter, tab labels |
 | `type-clock` | Focus timer only |
 
-Weights: 400, 500, 600, 700, 800. Times and durations use tabular figures.
+Weights in use: 400, 500, 600 (700 and 800 stay embedded for edge cases but no preset uses them). Times and durations use tabular figures.
 
 ## Radii
 
@@ -92,11 +96,11 @@ Weights: 400, 500, 600, 700, 800. Times and durations use tabular figures.
 
 ## Elevation
 
-Flat by default: surfaces separate by color and hairlines. Shadows only on things that float.
+Flat by default: surfaces separate by fill (white `surface`, gray `card`), not borders. Shadows only on things that float.
 
 - `shadow-float`: tab bar, sheets, dialogs, toast, floating menus.
 - `shadow-lift`: a capsule while it is dragged.
-- The floating + button alone gets an accent glow.
+- The center + button is `ink` with `canvas` icon, no glow. The active tab is a solid `accent` pill with `on-accent` label.
 
 ## Motion
 
@@ -130,7 +134,9 @@ From `@daycraft/icons` (ADR-0002): Lucide at stroke 1.9, plus the prototype's ow
 
 ## Brand
 
-- **Logo:** Daybreak, a 28×60 capsule with a sunrise dome and horizon cut out, plus the lowercase “daycraft” wordmark (Plus Jakarta Sans Bold, joined f-t crossbar). Symbol color: `accent` on canvas.
-- **App icon:** canvas symbol on a terracotta tile (light); terracotta-dark symbol on the dark surface (dark).
-- **Web sidebar:** symbol 15×32 + wordmark 22 tall. **Favicon:** the pixel-fit 16/32 variant.
-- Assets: the `daycraft-logo/` package from the design canvas. Not in the repo yet; it will live in `packages/brand`.
+- **Logo:** Sunrise Pen (canvas board “12 · Final mark — Sunrise Pen”): a half sun with five short rays, a horizon line, and a fountain pen whose nib draws the horizon. Two tones: the sun and rays are the soft layer, the pen and horizon are solid. The wordmark is lowercase “daycraft”.
+- **Colors in the app:** sun and rays `clay` at 55%, pen and horizon `ink`. Below 40px use the small-size drawing (thicker rays and horizon, solid nib).
+- **App icon:** the appearances on the logo board (light, dark, tinted, cream).
+- **Splash:** the pen slides in and draws the horizon, the sun rises behind it, the rays pop out left to right, then the wordmark fades up; 2.6s, then a fade into onboarding (spec on the canvas page “Splash & onboarding”).
+- **Web sidebar:** mark 38×32 + wordmark 24 tall. **Favicon:** the small-size drawing.
+- Assets: export from the logo board into `packages/brand` (not in the repo yet).

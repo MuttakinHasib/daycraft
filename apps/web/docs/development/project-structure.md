@@ -16,7 +16,7 @@
 │   └── status-and-decisions.md
 └── src/
     ├── app/
-    │   ├── layout.tsx     # Plus Jakarta Sans, theme script, metadata
+    │   ├── layout.tsx     # Onest, theme script, metadata
     │   ├── page.tsx       # placeholder Plan
     │   ├── design-system/ # the design-system page
     │   ├── globals.css    # imports the generated token CSS; base layer and component classes

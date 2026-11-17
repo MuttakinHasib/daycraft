@@ -23,7 +23,7 @@ Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md)
 **Sidebar:**
 
 - 248 wide, `bg-surface`, right hairline, padding 24/16.
-- Logo: Daybreak mark 15×32 + wordmark 22 tall.
+- Logo: Sunrise Pen mark 38×32 + wordmark 24 tall.
 - **+ New task**: 44 tall, pill, accent. It creates a task at the next free slot and selects it.
 - Nav items: 40 tall, radius 12, 18pt icon, 14 semibold label, right-aligned count.
   - Active: `bg-accent-soft` + `text-accent-text`.

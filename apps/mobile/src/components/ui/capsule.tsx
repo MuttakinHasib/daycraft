@@ -50,11 +50,9 @@ export function Capsule({
         />
       )}
       <View
+        // Solid hue; icons inside use text-on-hue (white).
         style={height ? { height } : undefined}
-        className={cn(
-          'flex w-12 min-h-12 items-center justify-center overflow-hidden rounded-capsule',
-          ActivityHueBackground[hue],
-        )}
+        className={cn('flex w-12 min-h-12 items-center justify-center overflow-hidden rounded-capsule', ActivityHueBackground[hue])}
       >
         {children}
       </View>

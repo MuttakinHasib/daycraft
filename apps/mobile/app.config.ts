@@ -6,16 +6,16 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
 // Each weight is its own family; names must match `fontFamilies` in @daycraft/design-tokens.
 // iOS reads the name from the file (PostScript name), Android from `fontFamily`.
 const FONT_FILES = {
-  'PlusJakartaSans-Regular': { file: '400Regular/PlusJakartaSans_400Regular.ttf', weight: 400 },
-  'PlusJakartaSans-Medium': { file: '500Medium/PlusJakartaSans_500Medium.ttf', weight: 500 },
-  'PlusJakartaSans-SemiBold': { file: '600SemiBold/PlusJakartaSans_600SemiBold.ttf', weight: 600 },
-  'PlusJakartaSans-Bold': { file: '700Bold/PlusJakartaSans_700Bold.ttf', weight: 700 },
-  'PlusJakartaSans-ExtraBold': { file: '800ExtraBold/PlusJakartaSans_800ExtraBold.ttf', weight: 800 },
+  'Onest-Regular': { file: '400Regular/Onest_400Regular.ttf', weight: 400 },
+  'Onest-Medium': { file: '500Medium/Onest_500Medium.ttf', weight: 500 },
+  'Onest-SemiBold': { file: '600SemiBold/Onest_600SemiBold.ttf', weight: 600 },
+  'Onest-Bold': { file: '700Bold/Onest_700Bold.ttf', weight: 700 },
+  'Onest-ExtraBold': { file: '800ExtraBold/Onest_800ExtraBold.ttf', weight: 800 },
 } as const;
 
 // Resolved through Node so the path survives workspace hoisting.
 function fontPath(file: string): string {
-  return path.relative(__dirname, require.resolve(`@expo-google-fonts/plus-jakarta-sans/${file}`));
+  return path.relative(__dirname, require.resolve(`@expo-google-fonts/onest/${file}`));
 }
 
 const fonts = Object.entries(FONT_FILES).map(([fontFamily, { file, weight }]) => ({

@@ -14,10 +14,10 @@ import { ElevationSection, RadiusSection, TypeSection } from './type-shape-secti
 
 export function DesignSystemScreen() {
   return (
-    <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-8 px-5 pt-safe-offset-4 pb-safe-offset-10">
+    <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-8 px-5 pt-safe-offset-4 pb-safe-offset-30">
       <View className="gap-1">
         <Text className="type-display text-ink">Design system</Text>
-        <Text className="type-body-sm text-ink-muted">Daycraft v1.1, rendered from @daycraft/design-tokens.</Text>
+        <Text className="type-body-sm text-ink-muted">Daycraft v2 (Clean), rendered from @daycraft/design-tokens.</Text>
       </View>
       <AppearanceSection />
       <SemanticColorSection />

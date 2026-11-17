@@ -2,16 +2,16 @@
 
 ## Typeface
 
-**Plus Jakarta Sans**, loaded with `next/font/google` in `src/app/layout.tsx`:
+**Onest** (design system v2, [ADR-0008](../../../../docs/adr/0008-visual-direction-clean.md)), loaded with `next/font/google` in `src/app/layout.tsx`:
 
-- weights 400, 500, 600, 700, 800;
+- variable font; UI uses 400, 500 and 600 only;
 - `subsets: ["latin"]`;
 - `display: "swap"`;
-- exposed as `--font-plus-jakarta-sans`, which the generated token CSS maps to `--font-sans`.
+- exposed as `--font-onest`, which the generated token CSS maps to `--font-sans`.
 
 Read `node_modules/next/dist/docs/01-app/01-getting-started/13-fonts.md` before changing the font setup.
 
-The web font provides real weights (the mobile app instead picks one font family per weight), so use Tailwind's `font-medium`/`font-semibold`/`font-bold`/`font-extrabold` together with the type tokens.
+The web font provides real weights (the mobile app instead picks one font family per weight), so use Tailwind's `font-normal`/`font-medium`/`font-semibold` together with the type tokens. Nothing in the UI is bolder than semibold.
 
 Use `tabular-nums` for times, durations, counts, percentages, the week strip and the focus clock.
 
@@ -21,18 +21,18 @@ Generated from `typeScale` in `@daycraft/design-tokens`: `--text-*` variables (w
 
 | Utility | Size / line | Tracking | Weight | Use |
 |---|---|---|---|---|
-| `text-display` | 30 / 1.1 | −0.025em | 800 | Page titles; the desktop Today date header |
-| `text-date` | 27 / 1.15 | −0.025em | 800 | Phone Today header (not used on desktop) |
-| `text-title` | 24 / 1.15 | −0.02em | 800 | Secondary titles (project detail), “Session complete” |
-| `text-heading` | 20 / 1.25 | −0.015em | 800 | Panel/dialog titles, the detail title input, empty states, Calendar header |
-| `text-activity` | 16 / 1.35 | −0.01em | 700 | Activity titles, card titles, panel section titles (“Up next”, “Daily progress”) |
-| `text-body` | 15 / 1.5 | 0 | 400–500 | Body copy, inputs, buttons (bold) |
+| `text-display` | 30 / 1.1 | −0.03em | 600 | Page titles; the desktop Today date header |
+| `text-date` | 27 / 1.15 | −0.03em | 600 | Phone Today header (not used on desktop) |
+| `text-title` | 24 / 1.15 | −0.025em | 600 | Secondary titles (project detail), “Session complete” |
+| `text-heading` | 20 / 1.25 | −0.015em | 600 | Panel/dialog titles, the detail title input, empty states, Calendar header |
+| `text-activity` | 16 / 1.35 | −0.01em | 600 | Activity titles, card titles, panel section titles (“Up next”, “Daily progress”) |
+| `text-body` | 15 / 1.5 | 0 | 400–500 | Body copy, inputs, buttons (semibold) |
 | `text-body-sm` | 14 / 1.45 | 0 | 500 | Subtitles, descriptions, notes, nav labels (600) |
-| `text-control` | 13 / — | 0 | 600 | Chips, segmented controls |
+| `text-control` | 13 / — | 0 | 500 | Chips, segmented controls |
 | `text-meta` | 12.5 / 1.35 | 0 | 500 | Time ranges, counts, secondary lines |
-| `text-label` | 12 | +0.06em, uppercase | 700 | Section labels (“HABITS”, “GROW”) |
-| `text-micro` | 11 | 0 | 600 | Timeline gutter, weekday labels, tiny captions |
-| `text-clock` | 56 | −0.03em | 800 | Focus timer (the desktop inline timer uses 30 / 800) |
+| `text-label` | 12 | +0.06em, uppercase | 600 | Section labels (“HABITS”, “GROW”) |
+| `text-micro` | 11 | 0 | 500 | Timeline gutter, weekday labels, tiny captions |
+| `text-clock` | 56 | −0.03em | 500 | Focus timer (the desktop inline timer uses 30 / 600) |
 
 Do not use Tailwind's default `text-sm`/`text-lg`/… sizes for UI copy. Map stray values to the nearest token:
 
@@ -60,7 +60,8 @@ Emphasis comes from color contrast (`ink` vs `ink-muted`), not extra bold.
 | Tertiary / placeholders | `text-ink-subtle` |
 | Accent text | `text-accent-text` |
 | On accent | `text-on-accent` |
-| On hue / hue header | `text-white` (secondary lines `text-white/90`) |
+| On hue | `text-on-hue` (white) |
+| Tinted sheet header | `text-ink` |
 | Done | `text-ink-subtle line-through` |
 
 ## Wrapping

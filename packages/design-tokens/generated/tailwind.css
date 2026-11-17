@@ -3,45 +3,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --canvas: #f7f5f2;
+  --canvas: #ffffff;
   --surface: #ffffff;
-  --sunken: #efece7;
+  --card: #f4f3f0;
+  --sunken: #eeede9;
   --elevated: #ffffff;
-  --line: #e6e1da;
-  --line-strong: #d5cec4;
-  --ink: #1b1916;
-  --ink-muted: #5f5953;
-  --ink-subtle: #716b64;
-  --accent: #ad5236;
-  --accent-hover: #97462d;
-  --accent-soft: #f6e4db;
-  --accent-text: #ad5236;
+  --line: #e9e7e2;
+  --line-strong: #d9d6cf;
+  --ink: #1c1c1c;
+  --ink-muted: #5c5c5c;
+  --ink-subtle: #6b6b6b;
+  --accent: #3366f0;
+  --accent-hover: #2a57d6;
+  --accent-soft: #e6edff;
+  --accent-text: #2f5fe0;
   --on-accent: #ffffff;
-  --success: #3c7d61;
-  --danger: #b4473f;
-  --scrim: rgba(27, 25, 22, 0.34);
-  --shadow-float-color: rgba(27, 25, 22, 0.1);
+  --on-hue: #ffffff;
+  --success: #1e8a5c;
+  --danger: #d93d42;
+  --scrim: rgba(20, 20, 20, 0.36);
+  --shadow-float-color: rgba(20, 20, 20, 0.08);
   color-scheme: light;
 }
 
 .dark {
-  --canvas: #121110;
-  --surface: #1b1a18;
-  --sunken: #262422;
-  --elevated: #312e2b;
-  --line: #2f2d2a;
-  --line-strong: #45413c;
-  --ink: #f2efea;
-  --ink-muted: #b3ada5;
-  --ink-subtle: #9a948c;
-  --accent: #e4815d;
-  --accent-hover: #ec9475;
-  --accent-soft: #3a251c;
-  --accent-text: #ee936f;
-  --on-accent: #241109;
-  --success: #5fb08a;
-  --danger: #e0796f;
-  --scrim: rgba(0, 0, 0, 0.58);
+  --canvas: #111111;
+  --surface: #171717;
+  --card: #1f1f1f;
+  --sunken: #292929;
+  --elevated: #2a2a2a;
+  --line: #2a2a2a;
+  --line-strong: #3b3b3b;
+  --ink: #f4f4f2;
+  --ink-muted: #b4b4b4;
+  --ink-subtle: #8f8f8f;
+  --accent: #3a6af2;
+  --accent-hover: #3060e0;
+  --accent-soft: #1d2a4d;
+  --accent-text: #8eaeff;
+  --on-accent: #ffffff;
+  --on-hue: #ffffff;
+  --success: #4cc38a;
+  --danger: #ff6b6e;
+  --scrim: rgba(0, 0, 0, 0.6);
   --shadow-float-color: rgba(0, 0, 0, 0.5);
   color-scheme: dark;
 }
@@ -49,6 +53,7 @@
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
+  --color-card: var(--card);
   --color-sunken: var(--sunken);
   --color-elevated: var(--elevated);
   --color-line: var(--line);
@@ -61,6 +66,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-text: var(--accent-text);
   --color-on-accent: var(--on-accent);
+  --color-on-hue: var(--on-hue);
   --color-success: var(--success);
   --color-danger: var(--danger);
   --color-scrim: var(--scrim);
@@ -68,38 +74,38 @@
 
 @theme {
   /* Activity hues: the same in light and dark */
-  --color-clay: #c8694a;
-  --color-amber: #c47a34;
-  --color-sun: #b08a2a;
-  --color-sage: #5e9154;
-  --color-pine: #3c7d61;
-  --color-sky: #4f86c0;
-  --color-iris: #7569c4;
-  --color-rose: #c25e78;
-  --color-slate: #66707f;
+  --color-clay: #ff541a;
+  --color-amber: #cd7b00;
+  --color-sun: #b28800;
+  --color-sage: #39a25b;
+  --color-pine: #2a9f8e;
+  --color-sky: #4a7ff8;
+  --color-iris: #987af5;
+  --color-rose: #ff4a81;
+  --color-slate: #8490a7;
   
-  --font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
   
   --text-display: 1.875rem;
   --text-display--line-height: 1.1;
-  --text-display--letter-spacing: -0.025em;
-  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 600;
   --text-date: 1.6875rem;
   --text-date--line-height: 1.15;
-  --text-date--letter-spacing: -0.025em;
-  --text-date--font-weight: 800;
+  --text-date--letter-spacing: -0.03em;
+  --text-date--font-weight: 600;
   --text-title: 1.5rem;
   --text-title--line-height: 1.15;
-  --text-title--letter-spacing: -0.02em;
-  --text-title--font-weight: 800;
+  --text-title--letter-spacing: -0.025em;
+  --text-title--font-weight: 600;
   --text-heading: 1.25rem;
   --text-heading--line-height: 1.25;
   --text-heading--letter-spacing: -0.015em;
-  --text-heading--font-weight: 800;
+  --text-heading--font-weight: 600;
   --text-activity: 1rem;
   --text-activity--line-height: 1.35;
   --text-activity--letter-spacing: -0.01em;
-  --text-activity--font-weight: 700;
+  --text-activity--font-weight: 600;
   --text-body: 0.9375rem;
   --text-body--line-height: 1.5;
   --text-body--font-weight: 400;
@@ -107,18 +113,18 @@
   --text-body-sm--line-height: 1.45;
   --text-body-sm--font-weight: 400;
   --text-control: 0.8125rem;
-  --text-control--font-weight: 600;
+  --text-control--font-weight: 500;
   --text-meta: 0.78125rem;
   --text-meta--line-height: 1.35;
   --text-meta--font-weight: 400;
   --text-label: 0.75rem;
   --text-label--letter-spacing: 0.06em;
-  --text-label--font-weight: 700;
+  --text-label--font-weight: 600;
   --text-micro: 0.6875rem;
-  --text-micro--font-weight: 600;
+  --text-micro--font-weight: 500;
   --text-clock: 3.5rem;
   --text-clock--letter-spacing: -0.03em;
-  --text-clock--font-weight: 800;
+  --text-clock--font-weight: 500;
   
   /* Radii: pills use rounded-full */
   --radius-check: 0.375rem;
@@ -150,31 +156,31 @@
   font-size: var(--text-display);
   line-height: var(--text-display--line-height);
   letter-spacing: var(--text-display--letter-spacing);
-  font-weight: 800;
+  font-weight: 600;
 }
 @utility type-date {
   font-size: var(--text-date);
   line-height: var(--text-date--line-height);
   letter-spacing: var(--text-date--letter-spacing);
-  font-weight: 800;
+  font-weight: 600;
 }
 @utility type-title {
   font-size: var(--text-title);
   line-height: var(--text-title--line-height);
   letter-spacing: var(--text-title--letter-spacing);
-  font-weight: 800;
+  font-weight: 600;
 }
 @utility type-heading {
   font-size: var(--text-heading);
   line-height: var(--text-heading--line-height);
   letter-spacing: var(--text-heading--letter-spacing);
-  font-weight: 800;
+  font-weight: 600;
 }
 @utility type-activity {
   font-size: var(--text-activity);
   line-height: var(--text-activity--line-height);
   letter-spacing: var(--text-activity--letter-spacing);
-  font-weight: 700;
+  font-weight: 600;
 }
 @utility type-body {
   font-size: var(--text-body);
@@ -188,7 +194,7 @@
 }
 @utility type-control {
   font-size: var(--text-control);
-  font-weight: 600;
+  font-weight: 500;
 }
 @utility type-meta {
   font-size: var(--text-meta);
@@ -198,14 +204,14 @@
 @utility type-label {
   font-size: var(--text-label);
   letter-spacing: var(--text-label--letter-spacing);
-  font-weight: 700;
+  font-weight: 600;
 }
 @utility type-micro {
   font-size: var(--text-micro);
-  font-weight: 600;
+  font-weight: 500;
 }
 @utility type-clock {
   font-size: var(--text-clock);
   letter-spacing: var(--text-clock--letter-spacing);
-  font-weight: 800;
+  font-weight: 500;
 }

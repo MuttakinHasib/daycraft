@@ -126,19 +126,19 @@ export function CapsuleSection() {
       <View className="flex-row items-start gap-6">
         <View className="items-center gap-2">
           <Capsule hue={ActivityHue.CLAY} height={72} accessibilityLabel="Upcoming capsule">
-            <Icon name="laptop" size={22} colorClassName="text-white" />
+            <Icon name="laptop" size={22} colorClassName="text-on-hue" />
           </Capsule>
           <Text className="type-meta text-ink-subtle">upcoming</Text>
         </View>
         <View className="items-center gap-2">
           <Capsule hue={ActivityHue.SKY} state={CapsuleState.ACTIVE} height={72} accessibilityLabel="Active capsule">
-            <Icon name="video" size={22} colorClassName="text-white" />
+            <Icon name="video" size={22} colorClassName="text-on-hue" />
           </Capsule>
           <Text className="type-meta text-ink-subtle">active</Text>
         </View>
         <View className="items-center gap-2">
           <Capsule hue={ActivityHue.SAGE} state={CapsuleState.DONE} accessibilityLabel="Done capsule">
-            <Icon name="run" size={22} colorClassName="text-white" />
+            <Icon name="run" size={22} colorClassName="text-on-hue" />
           </Capsule>
           <Text className="type-meta text-ink-subtle">done</Text>
         </View>

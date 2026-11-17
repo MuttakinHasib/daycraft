@@ -20,14 +20,14 @@ Decision W2. The preference (`system` by default, `light`, `dark`; `ThemePrefere
 
 1. Every component must be checked in **both** themes before it is done.
 2. Use semantic utilities only:
-   - backgrounds: `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-elevated`;
-   - text: `text-ink`, `text-ink-muted`, `text-ink-subtle`, `text-accent-text`, `text-on-accent`;
+   - backgrounds: `bg-canvas`, `bg-surface`, `bg-card`, `bg-sunken`, `bg-elevated`;
+   - text: `text-ink`, `text-ink-muted`, `text-ink-subtle`, `text-accent-text`, `text-on-accent`, `text-on-hue`;
    - borders: `border-line`, `border-line-strong`.
    Never use `bg-white`, `text-black`, `zinc-*`/`gray-*`, hex values, or `dark:` to patch a light-only color.
 3. Use `dark:` only for a genuine design difference with no token. If it repeats, add a token.
 4. Text on `accent` is `text-on-accent`: it is dark in dark mode.
-5. Activity hues are identical in both themes and carry white icons and text.
-6. Separate surfaces with hairlines, not shadows, in both themes.
+5. Activity hues are identical in both themes and carry `text-on-hue` (white) icons and text. Hues are never a text color.
+6. Separate surfaces with fills (`surface`, gray `card`), not borders or shadows; hairlines only between rows.
 7. Images and illustrations use token colors or ship in light and dark versions (`dark:hidden` / `hidden dark:block`).
 
 ## Changing a token

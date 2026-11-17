@@ -42,12 +42,12 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 
 ### Card and ListGroup / ListRow
 
-- **Card:** `bg-surface border border-line rounded-card p-4`.
-- **ListGroup:** a card with no padding and hairline-separated **ListRow**s (min 52, px 16, gap 12; leading 32pt hue tile or 18pt subtle icon; trailing value in `text-ink-muted` tabular; optional chevron).
+- **Card:** `bg-card rounded-card p-4`, no border.
+- **ListGroup:** a `bg-card` card with no padding and `line` hairlines between its **ListRow**s (min 52, px 16, gap 12; leading 32pt hue tile or 18pt subtle icon; trailing value in `text-ink-muted` tabular; optional chevron).
 
 ### TabBar (with the center +)
 
-- Implementation choice is decision D1; the layout below is the design reference.
+- Built as a custom Expo Router `tabBar` ([ADR-0003](../../../../docs/adr/0003-custom-floating-pill-tab-bar.md)). On iOS 26+ the pill's background is interactive Liquid Glass (`expo-glass-effect` with `isInteractive`, `colorScheme` from the app theme); elsewhere it is the solid pill below.
 - **Bar:** one pill, 16 from each side and 24 above the bottom inset, h 64, p 6, `bg-elevated`, border `line`, `shadow-float`.
 - **Order:** Plan · Habits · **+** · Goals · More. Tabs are `flex-1`, 52 tall, 22pt icon over an 11pt semibold label, gap 3.
   - Icons: Plan `timeline`, Habits `flame`, Goals `target`, More `grid`.

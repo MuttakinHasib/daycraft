@@ -3,64 +3,68 @@
 @layer theme {
   :root {
     @variant light {
-      --color-canvas: #f7f5f2;
+      --color-canvas: #ffffff;
       --color-surface: #ffffff;
-      --color-sunken: #efece7;
+      --color-card: #f4f3f0;
+      --color-sunken: #eeede9;
       --color-elevated: #ffffff;
-      --color-line: #e6e1da;
-      --color-line-strong: #d5cec4;
-      --color-ink: #1b1916;
-      --color-ink-muted: #5f5953;
-      --color-ink-subtle: #716b64;
-      --color-accent: #ad5236;
-      --color-accent-hover: #97462d;
-      --color-accent-soft: #f6e4db;
-      --color-accent-text: #ad5236;
+      --color-line: #e9e7e2;
+      --color-line-strong: #d9d6cf;
+      --color-ink: #1c1c1c;
+      --color-ink-muted: #5c5c5c;
+      --color-ink-subtle: #6b6b6b;
+      --color-accent: #3366f0;
+      --color-accent-hover: #2a57d6;
+      --color-accent-soft: #e6edff;
+      --color-accent-text: #2f5fe0;
       --color-on-accent: #ffffff;
-      --color-success: #3c7d61;
-      --color-danger: #b4473f;
-      --color-scrim: rgba(27, 25, 22, 0.34);
+      --color-on-hue: #ffffff;
+      --color-success: #1e8a5c;
+      --color-danger: #d93d42;
+      --color-scrim: rgba(20, 20, 20, 0.36);
     }
     @variant dark {
-      --color-canvas: #121110;
-      --color-surface: #1b1a18;
-      --color-sunken: #262422;
-      --color-elevated: #312e2b;
-      --color-line: #2f2d2a;
-      --color-line-strong: #45413c;
-      --color-ink: #f2efea;
-      --color-ink-muted: #b3ada5;
-      --color-ink-subtle: #9a948c;
-      --color-accent: #e4815d;
-      --color-accent-hover: #ec9475;
-      --color-accent-soft: #3a251c;
-      --color-accent-text: #ee936f;
-      --color-on-accent: #241109;
-      --color-success: #5fb08a;
-      --color-danger: #e0796f;
-      --color-scrim: rgba(0, 0, 0, 0.58);
+      --color-canvas: #111111;
+      --color-surface: #171717;
+      --color-card: #1f1f1f;
+      --color-sunken: #292929;
+      --color-elevated: #2a2a2a;
+      --color-line: #2a2a2a;
+      --color-line-strong: #3b3b3b;
+      --color-ink: #f4f4f2;
+      --color-ink-muted: #b4b4b4;
+      --color-ink-subtle: #8f8f8f;
+      --color-accent: #3a6af2;
+      --color-accent-hover: #3060e0;
+      --color-accent-soft: #1d2a4d;
+      --color-accent-text: #8eaeff;
+      --color-on-accent: #ffffff;
+      --color-on-hue: #ffffff;
+      --color-success: #4cc38a;
+      --color-danger: #ff6b6e;
+      --color-scrim: rgba(0, 0, 0, 0.6);
     }
   }
 }
 
 @theme {
   /* Activity hues: the same in light and dark */
-  --color-clay: #c8694a;
-  --color-amber: #c47a34;
-  --color-sun: #b08a2a;
-  --color-sage: #5e9154;
-  --color-pine: #3c7d61;
-  --color-sky: #4f86c0;
-  --color-iris: #7569c4;
-  --color-rose: #c25e78;
-  --color-slate: #66707f;
+  --color-clay: #ff541a;
+  --color-amber: #cd7b00;
+  --color-sun: #b28800;
+  --color-sage: #39a25b;
+  --color-pine: #2a9f8e;
+  --color-sky: #4a7ff8;
+  --color-iris: #987af5;
+  --color-rose: #ff4a81;
+  --color-slate: #8490a7;
   
   /* Type families: one embedded family per weight (React Native has no font stacks) */
-  --font-sans: 'PlusJakartaSans-Regular';
-  --font-sans-medium: 'PlusJakartaSans-Medium';
-  --font-sans-semibold: 'PlusJakartaSans-SemiBold';
-  --font-sans-bold: 'PlusJakartaSans-Bold';
-  --font-sans-extrabold: 'PlusJakartaSans-ExtraBold';
+  --font-sans: 'Onest-Regular';
+  --font-sans-medium: 'Onest-Medium';
+  --font-sans-semibold: 'Onest-SemiBold';
+  --font-sans-bold: 'Onest-Bold';
+  --font-sans-extrabold: 'Onest-ExtraBold';
   
   /* Type sizes (the type-* presets below carry line height, tracking and family) */
   --text-display: 1.875rem;
@@ -88,7 +92,7 @@
 }
 
 @utility shadow-float {
-  box-shadow: 0 1px 2px light-dark(rgba(27, 25, 22, 0.1), rgba(0, 0, 0, 0.5)), 0 12px 32px light-dark(rgba(27, 25, 22, 0.1), rgba(0, 0, 0, 0.5));
+  box-shadow: 0 1px 2px light-dark(rgba(20, 20, 20, 0.08), rgba(0, 0, 0, 0.5)), 0 12px 32px light-dark(rgba(20, 20, 20, 0.08), rgba(0, 0, 0, 0.5));
 }
 @utility shadow-lift {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
@@ -99,32 +103,32 @@
   .type-display {
     font-size: 30px;
     line-height: 33px;
-    letter-spacing: -0.75px;
-    font-family: var(--font-sans-extrabold);
+    letter-spacing: -0.9px;
+    font-family: var(--font-sans-semibold);
   }
   .type-date {
     font-size: 27px;
     line-height: 31.05px;
-    letter-spacing: -0.68px;
-    font-family: var(--font-sans-extrabold);
+    letter-spacing: -0.81px;
+    font-family: var(--font-sans-semibold);
   }
   .type-title {
     font-size: 24px;
     line-height: 27.6px;
-    letter-spacing: -0.48px;
-    font-family: var(--font-sans-extrabold);
+    letter-spacing: -0.6px;
+    font-family: var(--font-sans-semibold);
   }
   .type-heading {
     font-size: 20px;
     line-height: 25px;
     letter-spacing: -0.3px;
-    font-family: var(--font-sans-extrabold);
+    font-family: var(--font-sans-semibold);
   }
   .type-activity {
     font-size: 16px;
     line-height: 21.6px;
     letter-spacing: -0.16px;
-    font-family: var(--font-sans-bold);
+    font-family: var(--font-sans-semibold);
   }
   .type-body {
     font-size: 15px;
@@ -138,7 +142,7 @@
   }
   .type-control {
     font-size: 13px;
-    font-family: var(--font-sans-semibold);
+    font-family: var(--font-sans-medium);
   }
   .type-meta {
     font-size: 12.5px;
@@ -148,15 +152,15 @@
   .type-label {
     font-size: 12px;
     letter-spacing: 0.72px;
-    font-family: var(--font-sans-bold);
+    font-family: var(--font-sans-semibold);
   }
   .type-micro {
     font-size: 11px;
-    font-family: var(--font-sans-semibold);
+    font-family: var(--font-sans-medium);
   }
   .type-clock {
     font-size: 56px;
     letter-spacing: -1.68px;
-    font-family: var(--font-sans-extrabold);
+    font-family: var(--font-sans-medium);
   }
 }

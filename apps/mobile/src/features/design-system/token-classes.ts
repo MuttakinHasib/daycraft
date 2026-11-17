@@ -5,6 +5,7 @@ import type { Radius, SemanticColor, TypePreset } from '@daycraft/design-tokens'
 export const SemanticColorBackground: Record<SemanticColor, string> = {
   canvas: 'bg-canvas',
   surface: 'bg-surface',
+  card: 'bg-card',
   sunken: 'bg-sunken',
   elevated: 'bg-elevated',
   line: 'bg-line',
@@ -17,6 +18,7 @@ export const SemanticColorBackground: Record<SemanticColor, string> = {
   'accent-soft': 'bg-accent-soft',
   'accent-text': 'bg-accent-text',
   'on-accent': 'bg-on-accent',
+  'on-hue': 'bg-on-hue',
   success: 'bg-success',
   danger: 'bg-danger',
   scrim: 'bg-scrim',

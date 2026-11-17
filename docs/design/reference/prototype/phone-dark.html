@@ -1,12 +1,12 @@
-<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Plus Jakarta Sans';font-weight:400;src:url(vendor/plus-jakarta-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:500;src:url(vendor/plus-jakarta-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:600;src:url(vendor/plus-jakarta-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(vendor/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(vendor/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}</style>
+<!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Onest';font-weight:400;src:url(vendor/onest-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:500;src:url(vendor/onest-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:600;src:url(vendor/onest-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Onest';font-weight:700;src:url(vendor/onest-latin-700-normal.woff2) format('woff2')}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&amp;display=swap">
 <style>
 body{margin:0}
 a{color:#AD5236}a:hover{color:#97462D}
-.dk-light{--canvas:#F7F5F2;--surface:#FFFFFF;--sunken:#EFECE7;--elevated:#FFFFFF;--line:#E6E1DA;--line-strong:#D5CEC4;--ink:#1B1916;--ink-muted:#5F5953;--ink-subtle:#716B64;--accent:#AD5236;--accent-hover:#97462D;--accent-soft:#F6E4DB;--accent-text:#AD5236;--on-accent:#FFFFFF;--scrim:rgba(27,25,22,.34);--shadow:0 1px 2px rgba(27,25,22,.06),0 10px 28px rgba(27,25,22,.10);--success:#3C7D61;--danger:#B4473F;color-scheme:light}
-.dk-dark{--canvas:#121110;--surface:#1B1A18;--sunken:#262422;--elevated:#312E2B;--line:#2F2D2A;--line-strong:#45413C;--ink:#F2EFEA;--ink-muted:#B3ADA5;--ink-subtle:#9A948C;--accent:#E4815D;--accent-hover:#EC9475;--accent-soft:#3A251C;--accent-text:#EE936F;--on-accent:#241109;--scrim:rgba(0,0,0,.58);--shadow:0 1px 2px rgba(0,0,0,.4),0 14px 34px rgba(0,0,0,.5);--success:#5FB08A;--danger:#E0796F;color-scheme:dark}
-.dk{--h-clay:#C8694A;--h-amber:#C47A34;--h-sun:#B08A2A;--h-sage:#5E9154;--h-pine:#3C7D61;--h-sky:#4F86C0;--h-iris:#7569C4;--h-rose:#C25E78;--h-slate:#66707F;font-family:'Plus Jakarta Sans',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+.dk-light{--canvas:#FFFFFF;--surface:#FFFFFF;--card:#F4F3F0;--sunken:#EEEDE9;--elevated:#FFFFFF;--line:#E9E7E2;--line-strong:#D9D6CF;--ink:#1C1C1C;--ink-muted:#5C5C5C;--ink-subtle:#737373;--accent:#3366F0;--accent-hover:#2A57D6;--accent-soft:#E6EDFF;--accent-text:#2F5FE0;--on-accent:#FFFFFF;--on-hue:#1A1A1A;--scrim:rgba(20,20,20,.36);--shadow:0 10px 30px rgba(20,20,20,.08);--danger:#E5484D;--success:#3C7D61;}
+.dk-dark{--canvas:#111111;--surface:#171717;--card:#1F1F1F;--sunken:#292929;--elevated:#2A2A2A;--line:#2A2A2A;--line-strong:#3B3B3B;--ink:#F4F4F2;--ink-muted:#B4B4B4;--ink-subtle:#8F8F8F;--accent:#6E97FF;--accent-hover:#86A8FF;--accent-soft:#1D2A4D;--accent-text:#8EAEFF;--on-accent:#0B1530;--on-hue:#161616;--scrim:rgba(0,0,0,.6);--shadow:0 12px 34px rgba(0,0,0,.5);--danger:#FF6B6E;--success:#5FB08A;}
+.dk{--h-clay:#FF7648;--h-amber:#FFB23E;--h-sun:#FFD54F;--h-sage:#6CCB8B;--h-pine:#2FB3A0;--h-sky:#4A7FF8;--h-iris:#9A7CF5;--h-rose:#FF8FB1;--h-slate:#A3ACBD;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
 .dk :where(*){box-sizing:border-box}
 .dk :where(button){font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:inherit}
 .dk :where(input,textarea){font:inherit;color:var(--ink);background:transparent;border:0;outline:none;margin:0}
@@ -48,22 +48,22 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-seg.oh{background:rgba(0,0,0,.16)}
 .dk-seg.oh button{color:rgba(255,255,255,.86)}
 .dk-seg.oh button[aria-pressed="true"]{background:rgba(255,255,255,.96);color:#1B1916}
-.dk-btn{height:52px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background-color .2s ease,transform .14s ease}
+.dk-btn{height:52px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-weight: 600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;transition:background-color .2s ease,transform .14s ease}
 .dk-btn.md,.dk-btn2.md{height:44px}
 .dk-btn:hover{background:var(--accent-hover)}
 .dk-btn:active{transform:scale(.98)}
-.dk-btn2{height:52px;border-radius:999px;background:var(--sunken);color:var(--ink);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.dk-btn2{height:52px;border-radius:999px;background:var(--sunken);color:var(--ink);font-weight: 600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .dk-ib{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink);flex:none}
 .dk-ib.sm{width:32px;height:32px}
 .dk-card{background:var(--surface);border:1px solid var(--line);border-radius:20px}
-.dk-lab{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-subtle)}
-.dk-h1{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:0}
+.dk-lab{font-size:12px;font-weight: 600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-subtle)}
+.dk-h1{font-size:30px;font-weight: 600;letter-spacing:-.025em;line-height:1.1;margin:0}
 .dk-back{display:inline-flex;align-items:center;gap:2px;height:40px;font-size:15px;font-weight:600;color:var(--accent-text)}
 .dk-tab{flex:1;height:52px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--ink-muted);position:relative;transition:background-color .2s ease,color .2s ease}
 .dk-tab[aria-current="page"]{background:var(--sunken);color:var(--accent-text)}
 .dk-tab5{flex:1 1 0;min-width:0;height:52px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--ink-muted);position:relative;transition:background-color .2s ease,color .2s ease}
 .dk-tab5[aria-current="page"]{background:var(--sunken);color:var(--accent-text)}
-.dk-tab5-badge{position:absolute;top:3px;left:calc(50% + 5px);min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--elevated)}
+.dk-tab5-badge{position:absolute;top:3px;left:calc(50% + 5px);min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight: 600;display:grid;place-items:center;box-shadow:0 0 0 2px var(--elevated)}
 .dk-sw{width:32px;height:32px;border-radius:999px;flex:none;transition:box-shadow .15s ease}
 .dk-sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink)}
 .dk-icn{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink-muted);flex:none}
@@ -73,6 +73,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-li{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 16px;width:100%;border-top:1px solid var(--line)}
 .dk-li:first-child{border-top:0}
 .dk-step{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink)}
+
+.dk{font-family:'Onest',ui-sans-serif,system-ui,sans-serif}
+.dk-h1{font-weight:600!important;letter-spacing:-.03em!important}
+.dk-tab5[aria-current="page"],.dk-tab[aria-current="page"]{background:var(--accent)!important;color:var(--on-accent)!important}
+.dk-tab5-badge{background:var(--h-clay)!important;color:#1A1A1A!important}
+.dk-card,.dk-list{border-color:transparent!important;background:var(--card)!important}
+.dk-chip[aria-pressed="true"]{background:var(--ink);color:var(--canvas)}
+.dk .oh::placeholder{color:rgba(0,0,0,.45)!important}
+.dk-seg.oh{background:rgba(0,0,0,.08)!important}
+.dk-seg.oh button{color:rgba(0,0,0,.65)!important}
 </style>
 
 <script src="vendor/react.production.min.js"></script>
@@ -151,7 +161,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
 <div style="padding: 24px 20px 8px">
 <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
-<button class="dk-press" onClick="{{openMonth}}" aria-label="Choose a date" style="display: flex; align-items: center; gap: 4px; font-size: 27px; font-weight: 800; letter-spacing: -0.025em; white-space: nowrap">
+<button class="dk-press" onClick="{{openMonth}}" aria-label="Choose a date" style="display: flex; align-items: center; gap: 4px; font-size: 27px; font-weight: 600; letter-spacing: -0.025em; white-space: nowrap">
 <span>{{hdr.monthDay}},</span><span style="color: var(--accent-text)">{{hdr.year}}</span>
 <svg class="ic" width="20" height="20" style="color: var(--accent-text); stroke-width: 2.6"><use href="#i-chev-r"></use></svg>
 </button>
@@ -164,7 +174,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <circle cx="22" cy="22" r="19" fill="none" stroke="var(--line-strong)" stroke-width="4"></circle>
 <sc-if value="{{prog.some}}" hint-placeholder-val="{{ true }}"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="{{prog.dash}}" transform="rotate(-90 22 22)" style="transition: stroke-dasharray .5s ease"></circle></sc-if>
 </svg>
-<sc-if value="{{prog.partial}}" hint-placeholder-val="{{ true }}"><span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 800; letter-spacing: -0.02em">{{prog.num}}</span></sc-if>
+<sc-if value="{{prog.partial}}" hint-placeholder-val="{{ true }}"><span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 600; letter-spacing: -0.02em">{{prog.num}}</span></sc-if>
 <sc-if value="{{prog.full}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; color: var(--accent-text)"><svg class="ic dk-flash" width="18" height="18" style="stroke-width: 3"><use href="#i-check"></use></svg></span></sc-if>
 </div>
 </div>
@@ -175,7 +185,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{week}}" as="d" hint-placeholder-count="7">
 <button class="dk-press" onClick="{{d.pick}}" aria-label="{{d.aria}}" style="display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 2px 0">
 <span style="font-size: 12px; font-weight: 600; color: var(--ink-subtle)">{{d.wd}}</span>
-<span class="tnum" style="width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; font-size: 16px; font-weight: 700; background: {{d.bg}}; color: {{d.fg}}; transition: background-color .2s ease">{{d.num}}</span>
+<span class="tnum" style="width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; font-size: 16px; font-weight: 600; background: {{d.bg}}; color: {{d.fg}}; transition: background-color .2s ease">{{d.num}}</span>
 <span style="display: flex; height: 7px; align-items: center">
 <sc-for list="{{d.dots}}" as="dot" hint-placeholder-count="2"><span style="width: 7px; height: 7px; border-radius: 4px; background: {{dot.c}}; margin-left: -2px; box-shadow: 0 0 0 1.5px var(--canvas)"></span></sc-for>
 </span>
@@ -221,13 +231,13 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-for>
 <sc-for list="{{tl.gaps}}" as="g" hint-placeholder-count="0">
 <div style="position: absolute; left: 112px; right: 20px; top: {{g.top}}px; z-index: 4; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: none">
-<span style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink-muted); font-weight: 500"><svg class="ic" width="15" height="15"><use href="#i-clock"></use></svg><span style="font-weight: 700; color: var(--accent-text)">{{g.big}}</span>{{g.rest}}</span>
+<span style="display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink-muted); font-weight: 500"><svg class="ic" width="15" height="15"><use href="#i-clock"></use></svg><span style="font-weight: 600; color: var(--accent-text)">{{g.big}}</span>{{g.rest}}</span>
 <button class="dk-chip sm dk-press" onClick="{{g.add}}" style="pointer-events: auto; background: var(--sunken); color: var(--accent-text)"><span style="width: 18px; height: 18px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="12" height="12" style="stroke-width: 2.8"><use href="#i-plus"></use></svg></span>Add task</button>
 </div>
 </sc-for>
 <sc-if value="{{tl.showNow}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 0; right: 0; top: {{tl.nowY}}px; height: 0; z-index: 2; pointer-events: none">
-<span class="tnum" style="position: absolute; left: 4px; top: -8px; width: 40px; text-align: right; font-size: 11px; font-weight: 800; color: var(--accent-text)">{{tl.nowLabel}}</span>
+<span class="tnum" style="position: absolute; left: 4px; top: -8px; width: 40px; text-align: right; font-size: 11px; font-weight: 600; color: var(--accent-text)">{{tl.nowLabel}}</span>
 <span style="position: absolute; left: 52px; right: 20px; top: 0; border-top: 1.5px solid var(--accent); opacity: .5"></span>
 <span style="position: absolute; left: 71px; top: -5px; width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 3px var(--surface)"></span>
 </div>
@@ -235,15 +245,15 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{tl.rows}}" as="r" hint-placeholder-count="6">
 <div style="position: absolute; left: 0; right: 0; top: {{r.top}}px; height: {{r.rowH}}px; z-index: {{r.z}}; transition: {{r.trans}}; pointer-events: none">
 <sc-if value="{{r.showGut}}" hint-placeholder-val="{{ true }}"><span class="tnum" style="position: absolute; left: 4px; top: 3px; width: 40px; text-align: right; font-size: 11px; font-weight: 600; color: var(--ink-muted)">{{r.gut}}</span></sc-if>
-<sc-if value="{{r.dragging}}" hint-placeholder-val="{{ false }}"><span class="tnum" style="position: absolute; left: 112px; top: -30px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--canvas); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; white-space: nowrap">{{r.dragLabel}}</span></sc-if>
-<button class="{{r.capCls}}" aria-label="{{r.capAria}}" onPointerDown="{{r.down}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" onClick="{{r.open}}" style="pointer-events: auto; position: absolute; left: 52px; top: 0; width: 48px; height: {{r.capH}}px; border-radius: 24px; background: {{r.capBg}}; opacity: {{r.capOp}}; box-shadow: {{r.capShadow}}; color: #FFFFFF; display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; transition: opacity .25s ease, box-shadow .2s ease">
+<sc-if value="{{r.dragging}}" hint-placeholder-val="{{ false }}"><span class="tnum" style="position: absolute; left: 112px; top: -30px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--ink); color: var(--canvas); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; white-space: nowrap">{{r.dragLabel}}</span></sc-if>
+<button class="{{r.capCls}}" aria-label="{{r.capAria}}" onPointerDown="{{r.down}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" onClick="{{r.open}}" style="pointer-events: auto; position: absolute; left: 52px; top: 0; width: 48px; height: {{r.capH}}px; border-radius: 24px; background: {{r.capBg}}; opacity: {{r.capOp}}; box-shadow: {{r.capShadow}}; color: var(--on-hue); display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; transition: opacity .25s ease, box-shadow .2s ease">
 <sc-if value="{{r.active}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 0; right: 0; top: 0; height: {{r.elapsed}}%; background: {{r.hueC}}"></span></sc-if>
 <svg class="ic" width="22" height="22" style="position: relative"><use href="#i-{{r.icon}}"></use></svg>
-<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.75)"></span></span></sc-if>
+<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.35)"></span></span></sc-if>
 </button>
 <button onClick="{{r.open}}" aria-label="{{r.openAria}}" style="pointer-events: auto; position: absolute; left: 112px; right: 56px; top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding-top: 2px">
 <span class="tnum" style="font-size: 12.5px; font-weight: 500; color: var(--ink-muted); display: flex; align-items: center; gap: 5px; white-space: nowrap">{{r.time}}<sc-if value="{{r.repeat}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12"><use href="#i-repeat"></use></svg></sc-if><sc-if value="{{r.prioHigh}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12" style="color: var(--danger)"><use href="#i-flag"></use></svg></sc-if></span>
-<span style="max-width: 100%; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: {{r.titleColor}}; text-decoration: {{r.deco}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span>
+<span style="max-width: 100%; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; color: {{r.titleColor}}; text-decoration: {{r.deco}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.title}}</span>
 <sc-if value="{{r.hasMeta}}" hint-placeholder-val="{{ false }}">
 <span style="display: flex; gap: 6px; margin-top: 8px; align-items: center; max-width: 100%; overflow: hidden">
 <sc-if value="{{r.active}}" hint-placeholder-val="{{ false }}"><span class="dk-tag" style="background: var(--accent-soft); color: var(--accent-text)"><span style="width: 6px; height: 6px; border-radius: 999px; background: var(--accent)"></span>{{r.left}}</span></sc-if>
@@ -252,14 +262,14 @@ a{color:#AD5236}a:hover{color:#97462D}
 </span>
 </sc-if>
 </button>
-<button class="dk-ring" onClick="{{r.check}}" aria-label="{{r.checkAria}}" aria-pressed="{{r.done}}" style="pointer-events: auto; position: absolute; right: 20px; top: 12px; border-color: {{r.hueC}}; background: {{r.ringBg}}; color: #FFFFFF">
+<button class="dk-ring" onClick="{{r.check}}" aria-label="{{r.checkAria}}" aria-pressed="{{r.done}}" style="pointer-events: auto; position: absolute; right: 20px; top: 12px; border-color: {{r.hueC}}; background: {{r.ringBg}}; color: var(--on-hue)">
 <sc-if value="{{r.done}}" hint-placeholder-val="{{ false }}"><svg class="ic dk-flash" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if>
 </button>
 </div>
 </sc-for>
 <sc-if value="{{tl.empty}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 112px; right: 24px; top: 40px; z-index: 4; display: flex; flex-direction: column; gap: 10px; align-items: flex-start">
-<span style="font-size: 20px; font-weight: 800">A blank canvas</span>
+<span style="font-size: 20px; font-weight: 600">A blank canvas</span>
 <span style="font-size: 14px; color: var(--ink-muted); line-height: 1.45">Nothing planned for this day yet. Tap any hour to drop something in, or start from a routine.</span>
 <button class="dk-chip dk-press" onClick="{{newTask}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14"><use href="#i-plus"></use></svg>Plan this day</button>
 </div>
@@ -299,7 +309,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{inbox.empty}}" hint-placeholder-val="{{ false }}">
 <div style="margin-top: 60px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 0 30px">
 <svg width="120" height="96" viewBox="0 0 120 96" aria-hidden="true"><rect x="16" y="30" width="88" height="56" rx="18" fill="var(--sunken)"></rect><path d="M16 58h26l6 10h24l6-10h26" fill="none" stroke="var(--line-strong)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="60" cy="18" r="10" fill="var(--accent)"></circle><path d="M55 18l3.5 3.5L66 14" fill="none" stroke="var(--on-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-<div style="font-size: 20px; font-weight: 800">Inbox zero</div>
+<div style="font-size: 20px; font-weight: 600">Inbox zero</div>
 <div style="font-size: 14px; color: var(--ink-muted); line-height: 1.45">Everything has a home. Jot down anything new above and sort it when you plan.</div>
 </div>
 </sc-if>
@@ -325,12 +335,12 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 0 20px 120px">
 <sc-if value="{{cal.isMonth}}" hint-placeholder-val="{{ true }}">
 <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding: 4px 0 6px">
-<sc-for list="{{cal.wdh}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-subtle)">{{w.l}}</span></sc-for>
+<sc-for list="{{cal.wdh}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; font-weight: 600; color: var(--ink-subtle)">{{w.l}}</span></sc-for>
 </div>
 <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px">
 <sc-for list="{{cal.cells}}" as="c" hint-placeholder-count="35">
 <button class="dk-press" onClick="{{c.pick}}" aria-label="{{c.aria}}" style="height: 50px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; opacity: {{c.op}}">
-<span class="tnum" style="width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center; font-size: 14px; font-weight: 700; background: {{c.bg}}; color: {{c.fg}}">{{c.num}}</span>
+<span class="tnum" style="width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center; font-size: 14px; font-weight: 600; background: {{c.bg}}; color: {{c.fg}}">{{c.num}}</span>
 <span style="display: flex; gap: 2px; height: 5px"><sc-for list="{{c.dots}}" as="dot" hint-placeholder-count="2"><span style="width: 5px; height: 5px; border-radius: 3px; background: {{dot.c}}"></span></sc-for></span>
 </button>
 </sc-for>
@@ -342,7 +352,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{cal.wcols}}" as="w" hint-placeholder-count="7">
 <button onClick="{{w.pick}}" aria-label="{{w.aria}}" style="display: flex; flex-direction: column; align-items: center; gap: 2px">
 <span style="font-size: 11px; font-weight: 600; color: var(--ink-subtle)">{{w.wd}}</span>
-<span class="tnum" style="width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: {{w.bg}}; color: {{w.fg}}">{{w.num}}</span>
+<span class="tnum" style="width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; font-size: 13px; font-weight: 600; background: {{w.bg}}; color: {{w.fg}}">{{w.num}}</span>
 </button>
 </sc-for>
 </div>
@@ -364,7 +374,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 <sc-if value="{{cal.showAgenda}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 18px 4px 10px">
-<span style="font-size: 16px; font-weight: 700; letter-spacing: -0.01em">{{cal.agTitle}}</span>
+<span style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em">{{cal.agTitle}}</span>
 <span style="font-size: 12.5px; color: var(--ink-muted)">{{cal.agMeta}}</span>
 </div>
 <div style="display: flex; flex-direction: column; gap: 8px">
@@ -372,16 +382,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="display: flex; align-items: stretch; gap: 10px">
 <span class="tnum" style="width: 52px; flex: none; text-align: right; padding-top: 12px; font-size: 12px; font-weight: 600; color: var(--ink-muted)">{{a.time}}</span>
 <button onClick="{{a.open}}" aria-label="{{a.aria}}" style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; background: {{a.bg}}; border: 1px solid {{a.border}}; text-align: left; opacity: {{a.op}}">
-<span style="width: 32px; height: 32px; border-radius: 999px; flex: none; display: grid; place-items: center; background: {{a.hueC}}; color: #FFFFFF"><svg class="ic" width="17" height="17"><use href="#i-{{a.icon}}"></use></svg></span>
+<span style="width: 32px; height: 32px; border-radius: 999px; flex: none; display: grid; place-items: center; background: {{a.hueC}}; color: var(--on-hue)"><svg class="ic" width="17" height="17"><use href="#i-{{a.icon}}"></use></svg></span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
-<span style="font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: {{a.deco}}">{{a.title}}</span>
+<span style="font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: {{a.deco}}">{{a.title}}</span>
 <span style="font-size: 12px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{a.sub}}</span>
 </span>
 <span class="dk-tag" style="background: {{a.tagBg}}; color: {{a.tagFg}}">{{a.kind}}</span>
 </button>
 </div>
 </sc-for>
-<sc-if value="{{cal.agEmpty}}" hint-placeholder-val="{{ false }}"><div style="padding: 26px 10px; text-align: center; color: var(--ink-muted); font-size: 14px">A free day. Tap <span style="font-weight: 700; color: var(--accent-text)">Event</span> to add a commitment.</div></sc-if>
+<sc-if value="{{cal.agEmpty}}" hint-placeholder-val="{{ false }}"><div style="padding: 26px 10px; text-align: center; color: var(--ink-muted); font-size: 14px">A free day. Tap <span style="font-weight: 600; color: var(--accent-text)">Event</span> to add a commitment.</div></sc-if>
 </div>
 </sc-if>
 </div>
@@ -398,7 +408,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-list">
 <sc-for list="{{grp.rows}}" as="b" hint-placeholder-count="3">
 <button class="dk-li" onClick="{{b.go}}">
-<span style="width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: {{b.bg}}; color: #FFFFFF"><svg class="ic" width="17" height="17"><use href="#i-{{b.icon}}"></use></svg></span>
+<span style="width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: {{b.bg}}; color: var(--on-hue)"><svg class="ic" width="17" height="17"><use href="#i-{{b.icon}}"></use></svg></span>
 <span style="flex: 1; font-size: 15px; font-weight: 600">{{b.label}}</span>
 <span class="tnum" style="font-size: 14px; color: var(--ink-muted)">{{b.meta}}</span>
 <svg class="ic" width="16" height="16" style="color: var(--ink-subtle)"><use href="#i-chev-r"></use></svg>
@@ -424,7 +434,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <h1 class="dk-h1">Upcoming</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 4px">The next two weeks, in order.</div>
 <sc-for list="{{upcoming}}" as="grp" hint-placeholder-count="4">
-<div style="display: flex; align-items: baseline; gap: 8px; margin: 24px 4px 8px"><span style="font-size: 16px; font-weight: 700">{{grp.label}}</span><span style="font-size: 12.5px; color: var(--ink-muted)">{{grp.sub}}</span></div>
+<div style="display: flex; align-items: baseline; gap: 8px; margin: 24px 4px 8px"><span style="font-size: 16px; font-weight: 600">{{grp.label}}</span><span style="font-size: 12.5px; color: var(--ink-muted)">{{grp.sub}}</span></div>
 <div class="dk-list">
 <sc-for list="{{grp.rows}}" as="u" hint-placeholder-count="3">
 <button class="dk-li" onClick="{{u.open}}" style="min-height: 58px">
@@ -454,9 +464,9 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <sc-for list="{{tasks.list}}" as="t" hint-placeholder-count="6">
 <div class="dk-card dk-fade" style="padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; opacity: {{t.op}}">
-<button class="dk-ring" onClick="{{t.check}}" aria-label="{{t.checkAria}}" aria-pressed="{{t.done}}" style="margin-top: 2px; border-color: {{t.hueC}}; background: {{t.ringBg}}; color: #FFFFFF"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
+<button class="dk-ring" onClick="{{t.check}}" aria-label="{{t.checkAria}}" aria-pressed="{{t.done}}" style="margin-top: 2px; border-color: {{t.hueC}}; background: {{t.ringBg}}; color: var(--on-hue)"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
 <button onClick="{{t.edit}}" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; text-align: left">
-<span style="font-size: 15px; font-weight: 700; text-decoration: {{t.deco}}">{{t.title}}</span>
+<span style="font-size: 15px; font-weight: 600; text-decoration: {{t.deco}}">{{t.title}}</span>
 <span style="display: flex; flex-wrap: wrap; gap: 6px">
 <span class="dk-tag tnum"><svg class="ic" width="12" height="12"><use href="#i-{{t.whenIcon}}"></use></svg>{{t.when}}</span>
 <span class="dk-tag tnum"><svg class="ic" width="12" height="12"><use href="#i-timer"></use></svg>{{t.dur}}</span>
@@ -468,7 +478,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{t.unsched}}" hint-placeholder-val="{{ false }}"><button class="dk-chip sm dk-press" onClick="{{t.schedule}}" style="background: var(--accent-soft); color: var(--accent-text)">Place</button></sc-if>
 </div>
 </sc-for>
-<sc-if value="{{tasks.empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 50px 20px; text-align: center; color: var(--ink-muted); font-size: 14px; line-height: 1.5"><div style="font-size: 20px; font-weight: 800; color: var(--ink); margin-bottom: 4px">Nothing here</div>Tasks that match this filter will show up here.</div></sc-if>
+<sc-if value="{{tasks.empty}}" hint-placeholder-val="{{ false }}"><div style="padding: 50px 20px; text-align: center; color: var(--ink-muted); font-size: 14px; line-height: 1.5"><div style="font-size: 20px; font-weight: 600; color: var(--ink); margin-bottom: 4px">Nothing here</div>Tasks that match this filter will show up here.</div></sc-if>
 </div>
 </div>
 </sc-if>
@@ -481,9 +491,9 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{habitCards}}" as="h" hint-placeholder-count="5">
 <div class="dk-card" style="padding: 16px">
 <div style="display: flex; align-items: center; gap: 12px">
-<span style="width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: {{h.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="20" height="20"><use href="#i-{{h.icon}}"></use></svg></span>
+<span style="width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: {{h.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="20" height="20"><use href="#i-{{h.icon}}"></use></svg></span>
 <button onClick="{{h.expand}}" aria-expanded="{{h.open}}" style="flex: 1; min-width: 0; text-align: left">
-<div style="font-size: 16px; font-weight: 700">{{h.name}}</div>
+<div style="font-size: 16px; font-weight: 600">{{h.name}}</div>
 <div style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-muted); margin-top: 2px"><span>{{h.freq}}</span><span>·</span><svg class="ic" width="13" height="13" style="color: var(--h-amber)"><use href="#i-flame"></use></svg><span class="tnum">{{h.streak}}</span></div>
 </button>
 <button class="dk-press" onClick="{{h.toggle}}" aria-label="{{h.aria}}" aria-pressed="{{h.done}}" style="width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: {{h.btnBg}}; color: {{h.btnFg}}; border: 2px solid {{h.hueC}}; transition: background-color .2s ease"><svg class="ic" width="20" height="20" style="stroke-width: 2.8"><use href="#i-check"></use></svg></button>
@@ -491,7 +501,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin-top: 12px">
 <sc-for list="{{h.week}}" as="w" hint-placeholder-count="7"><div style="display: flex; flex-direction: column; align-items: center; gap: 4px"><span style="width: 100%; height: 8px; border-radius: 999px; background: {{w.bg}}"></span><span style="font-size: 11px; font-weight: 600; color: {{w.fg}}">{{w.l}}</span></div></sc-for>
 </div>
-<sc-if value="{{h.weekly}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 10px; font-size: 12.5px; color: var(--ink-muted); display: flex; justify-content: space-between"><span>This week</span><span class="tnum" style="font-weight: 700; color: var(--ink)">{{h.weekCount}}</span></div></sc-if>
+<sc-if value="{{h.weekly}}" hint-placeholder-val="{{ false }}"><div style="margin-top: 10px; font-size: 12.5px; color: var(--ink-muted); display: flex; justify-content: space-between"><span>This week</span><span class="tnum" style="font-weight: 600; color: var(--ink)">{{h.weekCount}}</span></div></sc-if>
 <sc-if value="{{h.open}}" hint-placeholder-val="{{ false }}">
 <div class="dk-fade" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line)">
 <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-muted); margin-bottom: 8px"><span>Last 5 weeks</span><span class="tnum">{{h.rate}}</span></div>
@@ -515,8 +525,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{routineCards}}" as="r" hint-placeholder-count="4">
 <div class="dk-card" style="overflow: hidden">
 <button onClick="{{r.expand}}" aria-expanded="{{r.open}}" style="width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px">
-<span style="width: 40px; height: 56px; border-radius: 20px; display: grid; place-items: center; background: {{r.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="20" height="20"><use href="#i-{{r.icon}}"></use></svg></span>
-<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 16px; font-weight: 700">{{r.name}}</span><span class="tnum" style="display: block; font-size: 12.5px; color: var(--ink-muted); margin-top: 2px">{{r.meta}}</span></span>
+<span style="width: 40px; height: 56px; border-radius: 20px; display: grid; place-items: center; background: {{r.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="20" height="20"><use href="#i-{{r.icon}}"></use></svg></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 16px; font-weight: 600">{{r.name}}</span><span class="tnum" style="display: block; font-size: 12.5px; color: var(--ink-muted); margin-top: 2px">{{r.meta}}</span></span>
 <svg class="ic" width="18" height="18" style="color: var(--ink-subtle); transform: rotate({{r.rot}}deg); transition: transform .2s ease"><use href="#i-chev-d"></use></svg>
 </button>
 <sc-if value="{{r.open}}" hint-placeholder-val="{{ false }}">
@@ -544,10 +554,10 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="display: flex; gap: 14px; align-items: flex-start">
 <div role="img" aria-label="{{g.aria}}" style="position: relative; width: 56px; height: 56px; flex: none">
 <svg width="56" height="56" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15.915" fill="none" stroke="var(--sunken)" stroke-width="4"></circle><circle cx="20" cy="20" r="15.915" fill="none" stroke="{{g.hueC}}" stroke-width="4" stroke-linecap="round" stroke-dasharray="{{g.dash}}" transform="rotate(-90 20 20)" style="transition: stroke-dasharray .5s ease"></circle></svg>
-<span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 800">{{g.pct}}</span>
+<span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 600">{{g.pct}}</span>
 </div>
 <div style="flex: 1; min-width: 0">
-<div style="font-size: 16px; font-weight: 700">{{g.title}}</div>
+<div style="font-size: 16px; font-weight: 600">{{g.title}}</div>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 4px; line-height: 1.4">{{g.desc}}</div>
 <div class="tnum" style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: var(--ink-muted); margin-top: 8px"><svg class="ic" width="13" height="13"><use href="#i-flag"></use></svg>{{g.target}}</div>
 </div>
@@ -555,7 +565,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 2px">
 <sc-for list="{{g.ms}}" as="m" hint-placeholder-count="4">
 <button onClick="{{m.toggle}}" aria-pressed="{{m.done}}" style="display: flex; align-items: center; gap: 10px; min-height: 36px">
-<span style="width: 20px; height: 20px; border-radius: 6px; border: 2px solid {{m.border}}; background: {{m.bg}}; display: grid; place-items: center; color: #FFFFFF; flex: none"><sc-if value="{{m.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
+<span style="width: 20px; height: 20px; border-radius: 6px; border: 2px solid {{m.border}}; background: {{m.bg}}; display: grid; place-items: center; color: var(--on-hue); flex: none"><sc-if value="{{m.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
 <span style="font-size: 14px; font-weight: 500; color: {{m.fg}}; text-decoration: {{m.deco}}">{{m.t}}</span>
 </button>
 </sc-for>
@@ -579,11 +589,11 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{proj.cards}}" as="p" hint-placeholder-count="3">
 <button class="dk-card dk-press" onClick="{{p.open}}" style="padding: 16px; display: flex; flex-direction: column; gap: 12px; text-align: left; width: 100%">
 <span style="display: flex; align-items: center; gap: 12px; width: 100%">
-<span style="width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: {{p.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="19" height="19"><use href="#i-{{p.icon}}"></use></svg></span>
-<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 16px; font-weight: 700">{{p.name}}</span><span class="tnum" style="display: block; font-size: 12.5px; color: var(--ink-muted); margin-top: 2px">{{p.meta}}</span></span>
+<span style="width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: {{p.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="19" height="19"><use href="#i-{{p.icon}}"></use></svg></span>
+<span style="flex: 1; min-width: 0"><span style="display: block; font-size: 16px; font-weight: 600">{{p.name}}</span><span class="tnum" style="display: block; font-size: 12.5px; color: var(--ink-muted); margin-top: 2px">{{p.meta}}</span></span>
 <svg class="ic" width="16" height="16" style="color: var(--ink-subtle)"><use href="#i-chev-r"></use></svg>
 </span>
-<span style="display: flex; align-items: center; gap: 10px; width: 100%"><span style="flex: 1; height: 6px; border-radius: 999px; background: var(--sunken); overflow: hidden"><span style="display: block; height: 100%; width: {{p.pct}}%; background: {{p.hueC}}; border-radius: 3px"></span></span><span class="tnum" style="font-size: 12px; font-weight: 700">{{p.pct}}%</span></span>
+<span style="display: flex; align-items: center; gap: 10px; width: 100%"><span style="flex: 1; height: 6px; border-radius: 999px; background: var(--sunken); overflow: hidden"><span style="display: block; height: 100%; width: {{p.pct}}%; background: {{p.hueC}}; border-radius: 3px"></span></span><span class="tnum" style="font-size: 12px; font-weight: 600">{{p.pct}}%</span></span>
 </button>
 </sc-for>
 </div>
@@ -592,11 +602,11 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{proj.back}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Projects</button></div>
 <div style="padding: 4px 20px 0">
 <div style="display: flex; align-items: center; gap: 12px">
-<span style="width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: {{proj.d.hueC}}; color: #FFFFFF"><svg class="ic" width="21" height="21"><use href="#i-{{proj.d.icon}}"></use></svg></span>
+<span style="width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: {{proj.d.hueC}}; color: var(--on-hue)"><svg class="ic" width="21" height="21"><use href="#i-{{proj.d.icon}}"></use></svg></span>
 <div style="flex: 1; min-width: 0"><h1 class="dk-h1" style="font-size: 24px">{{proj.d.name}}</h1><div class="tnum" style="font-size: 12.5px; color: var(--ink-muted); margin-top: 3px">{{proj.d.meta}}</div></div>
 </div>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 10px; line-height: 1.45">{{proj.d.desc}}</div>
-<div style="display: flex; align-items: center; gap: 10px; margin-top: 12px"><span style="flex: 1; height: 6px; border-radius: 999px; background: var(--sunken); overflow: hidden"><span style="display: block; height: 100%; width: {{proj.d.pct}}%; background: {{proj.d.hueC}}; transition: width .4s ease"></span></span><span class="tnum" style="font-size: 12px; font-weight: 700">{{proj.d.pct}}%</span></div>
+<div style="display: flex; align-items: center; gap: 10px; margin-top: 12px"><span style="flex: 1; height: 6px; border-radius: 999px; background: var(--sunken); overflow: hidden"><span style="display: block; height: 100%; width: {{proj.d.pct}}%; background: {{proj.d.hueC}}; transition: width .4s ease"></span></span><span class="tnum" style="font-size: 12px; font-weight: 600">{{proj.d.pct}}%</span></div>
 <div class="dk-hs" style="display: flex; gap: 8px; margin-top: 12px">
 <sc-for list="{{proj.d.ms}}" as="m" hint-placeholder-count="3"><span class="dk-tag" style="background: {{m.bg}}; color: {{m.fg}}"><svg class="ic" width="12" height="12"><use href="#i-{{m.icon}}"></use></svg>{{m.t}} · {{m.date}}</span></sc-for>
 </div>
@@ -611,7 +621,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-list">
 <sc-for list="{{col.tasks}}" as="t" hint-placeholder-count="2">
 <div class="dk-li">
-<button class="dk-ring" onClick="{{t.done}}" aria-label="{{t.doneAria}}" aria-pressed="{{t.isDone}}" style="border-color: {{proj.d.hueC}}; background: {{t.ringBg}}; color: #FFFFFF"><sc-if value="{{t.isDone}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
+<button class="dk-ring" onClick="{{t.done}}" aria-label="{{t.doneAria}}" aria-pressed="{{t.isDone}}" style="border-color: {{proj.d.hueC}}; background: {{t.ringBg}}; color: var(--on-hue)"><sc-if value="{{t.isDone}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="14" height="14" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
 <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 500; text-decoration: {{t.deco}}; color: {{t.fg}}">{{t.t}}</span>
 <span class="tnum" style="font-size: 12px; color: var(--ink-muted)">{{t.due}}</span>
 </div>
@@ -628,7 +638,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-hs" style="flex: 1; min-height: 0; display: flex; gap: 12px; padding: 16px 20px 120px; align-items: flex-start">
 <sc-for list="{{proj.cols}}" as="col" hint-placeholder-count="3">
 <div style="width: 250px; flex: none; background: var(--sunken); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 8px; max-height: 100%; overflow-y: auto">
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 4px"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700"><span style="width: 8px; height: 8px; border-radius: 999px; background: {{col.dot}}"></span>{{col.label}}</span><span class="tnum" style="font-size: 12px; color: var(--ink-muted)">{{col.n}}</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 4px"><span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 999px; background: {{col.dot}}"></span>{{col.label}}</span><span class="tnum" style="font-size: 12px; color: var(--ink-muted)">{{col.n}}</span></div>
 <sc-for list="{{col.tasks}}" as="t" hint-placeholder-count="2">
 <div class="dk-fade" style="background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 10px">
 <span style="font-size: 14px; font-weight: 600; line-height: 1.35">{{t.t}}</span>
@@ -653,7 +663,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <h1 class="dk-h1">Journal</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">{{jr.dateLabel}}</div>
 <div class="dk-card" style="padding: 16px; display: flex; flex-direction: column; gap: 14px">
-<div style="font-size: 15px; font-weight: 700">How are you feeling?</div>
+<div style="font-size: 15px; font-weight: 600">How are you feeling?</div>
 <div style="display: flex; justify-content: space-between">
 <sc-for list="{{jr.moods}}" as="m" hint-placeholder-count="5"><button class="dk-press" onClick="{{m.pick}}" aria-label="{{m.label}}" aria-pressed="{{m.on}}" style="width: 54px; display: flex; flex-direction: column; align-items: center; gap: 4px"><span style="width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; background: {{m.bg}}; color: {{m.fg}}; transition: background-color .2s ease"><svg class="ic" width="26" height="26"><use href="#i-m{{m.n}}"></use></svg></span><span style="font-size: 11px; font-weight: 600; color: var(--ink-muted)">{{m.label}}</span></button></sc-for>
 </div>
@@ -669,7 +679,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-for list="{{jr.history}}" as="e" hint-placeholder-count="4">
 <button class="dk-card" onClick="{{e.toggle}}" aria-expanded="{{e.open}}" style="padding: 16px; display: flex; gap: 12px; text-align: left; width: 100%">
 <span style="width: 36px; height: 36px; border-radius: 999px; display: grid; place-items: center; background: {{e.bg}}; color: {{e.fg}}; flex: none"><svg class="ic" width="20" height="20"><use href="#i-m{{e.mood}}"></use></svg></span>
-<span style="flex: 1; min-width: 0"><span class="tnum" style="display: block; font-size: 12.5px; font-weight: 700; color: var(--ink-muted)">{{e.date}}</span><span style="display: block; font-size: 14px; line-height: 1.45; margin-top: 3px; white-space: {{e.ws}}; overflow: hidden; text-overflow: ellipsis">{{e.text}}</span></span>
+<span style="flex: 1; min-width: 0"><span class="tnum" style="display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-muted)">{{e.date}}</span><span style="display: block; font-size: 14px; line-height: 1.45; margin-top: 3px; white-space: {{e.ws}}; overflow: hidden; text-overflow: ellipsis">{{e.text}}</span></span>
 </button>
 </sc-for>
 </div>
@@ -680,13 +690,13 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--canvas)">
 <div style="padding: 24px 20px 0; display: flex; justify-content: space-between; align-items: center">
 <button class="dk-ib" aria-label="Leave focus" onClick="{{fc.close}}"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
-<span style="font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-subtle)">Focus</span>
+<span style="font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-subtle)">Focus</span>
 <span style="width: 40px"></span>
 </div>
 <sc-if value="{{fc.hasItem}}" hint-placeholder-val="{{ true }}">
 <div style="margin: 24px 20px 0; padding: 12px 16px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); display: flex; align-items: center; gap: 12px">
-<span style="width: 40px; height: 52px; border-radius: 20px; display: grid; place-items: center; background: {{fc.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="19" height="19"><use href="#i-{{fc.icon}}"></use></svg></span>
-<span style="flex: 1; min-width: 0"><span class="tnum" style="display: block; font-size: 12px; color: var(--ink-muted)">{{fc.time}}</span><span style="display: block; font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{fc.title}}</span></span>
+<span style="width: 40px; height: 52px; border-radius: 20px; display: grid; place-items: center; background: {{fc.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="19" height="19"><use href="#i-{{fc.icon}}"></use></svg></span>
+<span style="flex: 1; min-width: 0"><span class="tnum" style="display: block; font-size: 12px; color: var(--ink-muted)">{{fc.time}}</span><span style="display: block; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{fc.title}}</span></span>
 </div>
 </sc-if>
 <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 0 24px">
@@ -697,7 +707,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <circle cx="125" cy="125" r="110" fill="none" stroke="{{fc.hueC}}" stroke-width="10" stroke-linecap="round" stroke-dasharray="{{fc.dash}}" transform="rotate(-90 125 125)" style="transition: stroke-dasharray 1s linear"></circle>
 </svg>
 <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px">
-<span class="tnum" style="font-size: 56px; font-weight: 800; letter-spacing: -0.03em">{{fc.clock}}</span>
+<span class="tnum" style="font-size: 56px; font-weight: 600; letter-spacing: -0.03em">{{fc.clock}}</span>
 <span style="font-size: 14px; font-weight: 600; color: var(--ink-muted)">{{fc.state}}</span>
 </div>
 </div>
@@ -709,17 +719,17 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 <sc-if value="{{fc.isRun}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; align-items: center; gap: 18px">
-<button class="dk-step" aria-label="Five minutes less" onClick="{{fc.minus}}" style="font-size: 13px; font-weight: 700">−5</button>
+<button class="dk-step" aria-label="Five minutes less" onClick="{{fc.minus}}" style="font-size: 13px; font-weight: 600">−5</button>
 <button class="dk-press" aria-label="{{fc.toggleAria}}" onClick="{{fc.toggle}}" style="width: 76px; height: 76px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="28" height="28" style="stroke-width: 2.6"><use href="#i-{{fc.toggleIcon}}"></use></svg></button>
-<button class="dk-step" aria-label="Five minutes more" onClick="{{fc.plus}}" style="font-size: 13px; font-weight: 700">+5</button>
+<button class="dk-step" aria-label="Five minutes more" onClick="{{fc.plus}}" style="font-size: 13px; font-weight: 600">+5</button>
 </div>
 <button class="dk-chip dk-press" onClick="{{fc.end}}" style="background: transparent; color: var(--ink-muted)"><svg class="ic" width="14" height="14"><use href="#i-stop"></use></svg>End session</button>
 </sc-if>
 </sc-if>
 <sc-if value="{{fc.isDone}}" hint-placeholder-val="{{ false }}">
 <div class="dk-fade" style="display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center">
-<span class="dk-flash" style="width: 96px; height: 96px; border-radius: 999px; background: {{fc.hueC}}; color: #FFFFFF; display: grid; place-items: center"><svg class="ic" width="44" height="44" style="stroke-width: 2.6"><use href="#i-check"></use></svg></span>
-<div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em">Session complete</div>
+<span class="dk-flash" style="width: 96px; height: 96px; border-radius: 999px; background: {{fc.hueC}}; color: var(--on-hue); display: grid; place-items: center"><svg class="ic" width="44" height="44" style="stroke-width: 2.6"><use href="#i-check"></use></svg></span>
+<div style="font-size: 24px; font-weight: 600; letter-spacing: -0.02em">Session complete</div>
 <div class="tnum" style="font-size: 15px; color: var(--ink-muted); line-height: 1.5; max-width: 280px">{{fc.summary}}</div>
 <div style="display: flex; flex-direction: column; gap: 10px; width: 280px; margin-top: 10px">
 <sc-if value="{{fc.canComplete}}" hint-placeholder-val="{{ true }}"><button class="dk-btn" onClick="{{fc.complete}}">Mark task as done</button></sc-if>
@@ -741,7 +751,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span class="tnum dk-tab5-badge">{{t.n}}</span></sc-if>
 </button>
 </sc-for>
-<span style="flex: none; width: 72px; display: grid; place-items: center"><button class="dk-press" aria-label="{{fab.aria}}" onClick="{{fab.go}}" style="width: 52px; height: 52px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button></span>
+<span style="flex: none; width: 72px; display: grid; place-items: center"><button class="dk-press" aria-label="{{fab.aria}}" onClick="{{fab.go}}" style="width: 52px; height: 52px; border-radius: 999px; background: var(--ink); color: var(--canvas); display: grid; place-items: center"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button></span>
 <sc-for list="{{tabsB}}" as="t" hint-placeholder-count="2">
 <button class="dk-tab5" aria-current="{{t.cur}}" aria-label="{{t.aria}}" onClick="{{t.go}}">
 <svg class="ic" width="22" height="22"><use href="#i-{{t.icon}}"></use></svg>
@@ -758,19 +768,19 @@ a{color:#AD5236}a:hover{color:#97462D}
 <div class="dk-sheet" role="dialog" aria-modal="true" aria-label="{{sh.aria}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: {{sh.h}}; max-height: 800px; background: var(--surface); border-radius: 30px 30px 0 0; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow)">
 
 <sc-if value="{{sh.detail}}" hint-placeholder-val="{{ false }}">
-<div style="background: {{dt.hueC}}; color: #FFFFFF; padding: 16px 20px 24px; flex: none">
+<div style="background: color-mix(in srgb, {{dt.hueC}} 40%, var(--canvas)); color: var(--ink); padding: 16px 20px 24px; flex: none">
 <div style="display: flex; justify-content: space-between; align-items: center">
-<button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}" style="background: rgba(255,255,255,.2); color: #FFFFFF"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
-<span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(0,0,0,.16); font-size: 12px; font-weight: 700">{{dt.kind}}</span>
-<button class="dk-ib" aria-label="Edit" onClick="{{dt.edit}}" style="background: rgba(255,255,255,.2); color: #FFFFFF"><svg class="ic" width="17" height="17"><use href="#i-edit"></use></svg></button>
+<button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}" style="background: rgba(0,0,0,.08); color: var(--on-hue)"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
+<span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(0,0,0,.16); font-size: 12px; font-weight: 600">{{dt.kind}}</span>
+<button class="dk-ib" aria-label="Edit" onClick="{{dt.edit}}" style="background: rgba(0,0,0,.08); color: var(--on-hue)"><svg class="ic" width="17" height="17"><use href="#i-edit"></use></svg></button>
 </div>
 <div style="display: flex; align-items: center; gap: 14px; margin-top: 18px">
-<span style="width: 56px; height: 72px; border-radius: 24px; display: grid; place-items: center; background: rgba(255,255,255,.2); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="25" height="25"><use href="#i-{{dt.icon}}"></use></svg></span>
+<span style="width: 56px; height: 72px; border-radius: 24px; display: grid; place-items: center; background: rgba(0,0,0,.08); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="25" height="25"><use href="#i-{{dt.icon}}"></use></svg></span>
 <div style="flex: 1; min-width: 0">
 <div class="tnum" style="font-size: 12.5px; font-weight: 600; opacity: .9">{{dt.time}}</div>
-<div style="font-size: 20px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.2; text-decoration: {{dt.deco}}">{{dt.title}}</div>
+<div style="font-size: 20px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; text-decoration: {{dt.deco}}">{{dt.title}}</div>
 </div>
-<button class="dk-ring" onClick="{{dt.check}}" aria-label="{{dt.checkAria}}" aria-pressed="{{dt.done}}" style="width: 32px; height: 32px; border-radius: 999px; border-color: #FFFFFF; background: {{dt.ringBg}}; color: {{dt.hueC}}"><sc-if value="{{dt.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="17" height="17" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
+<button class="dk-ring" onClick="{{dt.check}}" aria-label="{{dt.checkAria}}" aria-pressed="{{dt.done}}" style="width: 32px; height: 32px; border-radius: 999px; border-color: var(--on-hue); background: {{dt.ringBg}}; color: {{dt.hueC}}"><sc-if value="{{dt.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="17" height="17" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></button>
 </div>
 </div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 16px 20px; display: flex; flex-direction: column; gap: 16px">
@@ -785,10 +795,10 @@ a{color:#AD5236}a:hover{color:#97462D}
 </div>
 <sc-if value="{{dt.hasSubs}}" hint-placeholder-val="{{ false }}">
 <div class="dk-list">
-<div class="dk-li" style="min-height: 44px; justify-content: space-between"><span style="font-size: 14px; font-weight: 700">Subtasks</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{dt.subsLabel}}</span></div>
+<div class="dk-li" style="min-height: 44px; justify-content: space-between"><span style="font-size: 14px; font-weight: 600">Subtasks</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{dt.subsLabel}}</span></div>
 <sc-for list="{{dt.subs}}" as="s" hint-placeholder-count="3">
 <button class="dk-li" onClick="{{s.toggle}}" aria-pressed="{{s.done}}" style="min-height: 48px">
-<span style="width: 20px; height: 20px; border-radius: 6px; border: 2px solid {{dt.hueC}}; background: {{s.bg}}; display: grid; place-items: center; color: #FFFFFF; flex: none"><sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
+<span style="width: 20px; height: 20px; border-radius: 6px; border: 2px solid {{dt.hueC}}; background: {{s.bg}}; display: grid; place-items: center; color: var(--on-hue); flex: none"><sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12" style="stroke-width: 3.2"><use href="#i-check"></use></svg></sc-if></span>
 <span style="flex: 1; font-size: 15px; text-decoration: {{s.deco}}; color: {{s.fg}}">{{s.t}}</span>
 </button>
 </sc-for>
@@ -806,19 +816,19 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 
 <sc-if value="{{sh.edit}}" hint-placeholder-val="{{ false }}">
-<div style="background: {{ed.hueC}}; color: #FFFFFF; padding: 16px 20px 24px; flex: none; transition: background-color .25s ease">
+<div style="background: color-mix(in srgb, {{ed.hueC}} 40%, var(--canvas)); color: var(--ink); padding: 16px 20px 24px; flex: none; transition: background-color .25s ease">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
-<button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}" style="background: rgba(255,255,255,.2); color: #FFFFFF"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
+<button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}" style="background: rgba(0,0,0,.08); color: var(--on-hue)"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
 <div class="dk-seg oh" role="group" aria-label="Type" style="width: 190px">
 <sc-for list="{{ed.kinds}}" as="k" hint-placeholder-count="2"><button aria-pressed="{{k.on}}" onClick="{{k.pick}}">{{k.label}}</button></sc-for>
 </div>
 <span style="width: 40px"></span>
 </div>
 <div style="display: flex; align-items: center; gap: 14px; margin-top: 18px">
-<span style="width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.2); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="25" height="25"><use href="#i-{{ed.icon}}"></use></svg></span>
+<span style="width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: rgba(0,0,0,.08); border: 2px solid rgba(255,255,255,.55); flex: none"><svg class="ic" width="25" height="25"><use href="#i-{{ed.icon}}"></use></svg></span>
 <div style="flex: 1; min-width: 0">
 <div class="tnum" style="font-size: 12.5px; font-weight: 600; opacity: .9">{{ed.timeLabel}}</div>
-<input class="oh" aria-label="Title" placeholder="{{ed.ph}}" value="{{ed.title}}" onChange="{{ed.onTitle}}" style="width: 100%; font-size: 20px; font-weight: 800; color: #FFFFFF; padding: 4px 0 6px; border-bottom: 1.5px solid rgba(255,255,255,.5)">
+<input class="oh" aria-label="Title" placeholder="{{ed.ph}}" value="{{ed.title}}" onChange="{{ed.onTitle}}" style="width: 100%; font-size: 20px; font-weight: 600; color: var(--on-hue); padding: 4px 0 6px; border-bottom: 1.5px solid rgba(255,255,255,.5)">
 </div>
 </div>
 </div>
@@ -832,41 +842,41 @@ a{color:#AD5236}a:hover{color:#97462D}
 </div>
 </div>
 <div class="dk-field">
-<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 15px; font-weight: 700">Time</span>
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 15px; font-weight: 600">Time</span>
 <sc-if value="{{ed.isTask}}" hint-placeholder-val="{{ true }}"><div class="dk-seg" role="group" aria-label="Scheduling" style="width: 190px"><sc-for list="{{ed.schedOpts}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></sc-if>
 </div>
 <sc-if value="{{ed.scheduled}}" hint-placeholder-val="{{ true }}">
 <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px; border-radius: 20px; background: var(--sunken)">
 <button class="dk-step" aria-label="15 minutes earlier" onClick="{{ed.earlier}}" style="background: var(--surface)"><svg class="ic" width="18" height="18"><use href="#i-minus"></use></svg></button>
-<span class="tnum" style="font-size: 20px; font-weight: 800; letter-spacing: -0.02em">{{ed.timeRange}}</span>
+<span class="tnum" style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em">{{ed.timeRange}}</span>
 <button class="dk-step" aria-label="15 minutes later" onClick="{{ed.later}}" style="background: var(--surface)"><svg class="ic" width="18" height="18"><use href="#i-plus"></use></svg></button>
 </div>
 </sc-if>
 <sc-if value="{{ed.unscheduled}}" hint-placeholder-val="{{ false }}"><div style="padding: 12px 16px; border-radius: 16px; background: var(--sunken); font-size: 14px; color: var(--ink-muted); line-height: 1.45">This task will wait in your Tasks list until you place it on the timeline.</div></sc-if>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Duration</span>
+<span style="font-size: 15px; font-weight: 600">Duration</span>
 <div class="dk-seg" role="group" aria-label="Duration"><sc-for list="{{ed.durs}}" as="o" hint-placeholder-count="6"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Color</span>
+<span style="font-size: 15px; font-weight: 600">Color</span>
 <div style="display: flex; justify-content: space-between"><sc-for list="{{ed.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="background: {{c.c}}"></button></sc-for></div>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Icon</span>
+<span style="font-size: 15px; font-weight: 600">Icon</span>
 <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; justify-items: center"><sc-for list="{{ed.icons}}" as="c" hint-placeholder-count="12"><button class="dk-icn" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><svg class="ic" width="20" height="20"><use href="#i-{{c.name}}"></use></svg></button></sc-for></div>
 </div>
 <sc-if value="{{ed.isTask}}" hint-placeholder-val="{{ true }}">
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Priority</span>
+<span style="font-size: 15px; font-weight: 600">Priority</span>
 <div class="dk-seg" role="group" aria-label="Priority"><sc-for list="{{ed.prios}}" as="o" hint-placeholder-count="4"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Labels</span>
+<span style="font-size: 15px; font-weight: 600">Labels</span>
 <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{ed.labels}}" as="l" hint-placeholder-count="5"><button class="dk-chip" aria-pressed="{{l.on}}" onClick="{{l.pick}}"><svg class="ic" width="13" height="13"><use href="#i-tag"></use></svg>{{l.t}}</button></sc-for></div>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Subtasks</span>
+<span style="font-size: 15px; font-weight: 600">Subtasks</span>
 <div class="dk-list">
 <sc-for list="{{ed.subs}}" as="s" hint-placeholder-count="2">
 <div class="dk-li" style="min-height: 48px">
@@ -885,16 +895,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 <sc-if value="{{ed.isEvent}}" hint-placeholder-val="{{ false }}">
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Location</span>
+<span style="font-size: 15px; font-weight: 600">Location</span>
 <div style="display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px; border-radius: 16px; background: var(--sunken)"><svg class="ic" width="18" height="18" style="color: var(--ink-subtle)"><use href="#i-pin"></use></svg><input aria-label="Location" placeholder="Add a place or link" value="{{ed.location}}" onChange="{{ed.onLoc}}" style="flex: 1; min-width: 0; height: 100%; font-size: 15px"></div>
 </div>
 </sc-if>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Repeat</span>
+<span style="font-size: 15px; font-weight: 600">Repeat</span>
 <div class="dk-seg" role="group" aria-label="Repeat"><sc-for list="{{ed.repeats}}" as="o" hint-placeholder-count="4"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div>
 </div>
 <div class="dk-field">
-<span style="font-size: 15px; font-weight: 700">Notes</span>
+<span style="font-size: 15px; font-weight: 600">Notes</span>
 <textarea aria-label="Notes" placeholder="Add details, links or a reminder to self" value="{{ed.notes}}" onChange="{{ed.onNotes}}" style="min-height: 88px; resize: none; padding: 12px 16px; border-radius: 16px; background: var(--sunken); font-size: 15px; line-height: 1.5"></textarea>
 </div>
 </div>
@@ -906,38 +916,38 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{sh.habit}}" hint-placeholder-val="{{ false }}">
 <div style="padding: 20px 20px 8px; display: flex; align-items: center; justify-content: space-between; flex: none">
-<span style="font-size: 20px; font-weight: 800; letter-spacing: -0.015em">New habit</span>
+<span style="font-size: 20px; font-weight: 600; letter-spacing: -0.015em">New habit</span>
 <button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
 </div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 12px 20px 24px; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; align-items: center; gap: 14px">
-<span style="width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: {{hb.hueC}}; color: #FFFFFF; flex: none; transition: background-color .2s ease"><svg class="ic" width="24" height="24"><use href="#i-{{hb.icon}}"></use></svg></span>
-<input aria-label="Habit name" placeholder="e.g. Drink water, Stretch" value="{{hb.name}}" onChange="{{hb.onName}}" style="flex: 1; min-width: 0; font-size: 20px; font-weight: 700; padding: 6px 0; border-bottom: 1.5px solid var(--line-strong)">
+<span style="width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: {{hb.hueC}}; color: var(--on-hue); flex: none; transition: background-color .2s ease"><svg class="ic" width="24" height="24"><use href="#i-{{hb.icon}}"></use></svg></span>
+<input aria-label="Habit name" placeholder="e.g. Drink water, Stretch" value="{{hb.name}}" onChange="{{hb.onName}}" style="flex: 1; min-width: 0; font-size: 20px; font-weight: 600; padding: 6px 0; border-bottom: 1.5px solid var(--line-strong)">
 </div>
-<div class="dk-field"><span style="font-size: 15px; font-weight: 700">How often</span><div class="dk-seg" role="group" aria-label="Frequency"><sc-for list="{{hb.freqs}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
-<sc-if value="{{hb.weekly}}" hint-placeholder-val="{{ false }}"><div class="dk-field"><span style="font-size: 15px; font-weight: 700">Times per week</span><div class="dk-seg" role="group" aria-label="Times per week"><sc-for list="{{hb.targets}}" as="o" hint-placeholder-count="5"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div></sc-if>
-<div class="dk-field"><span style="font-size: 15px; font-weight: 700">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{hb.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="background: {{c.c}}"></button></sc-for></div></div>
-<div class="dk-field"><span style="font-size: 15px; font-weight: 700">Icon</span><div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; justify-items: center"><sc-for list="{{hb.icons}}" as="c" hint-placeholder-count="12"><button class="dk-icn" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><svg class="ic" width="20" height="20"><use href="#i-{{c.name}}"></use></svg></button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 15px; font-weight: 600">How often</span><div class="dk-seg" role="group" aria-label="Frequency"><sc-for list="{{hb.freqs}}" as="o" hint-placeholder-count="2"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div>
+<sc-if value="{{hb.weekly}}" hint-placeholder-val="{{ false }}"><div class="dk-field"><span style="font-size: 15px; font-weight: 600">Times per week</span><div class="dk-seg" role="group" aria-label="Times per week"><sc-for list="{{hb.targets}}" as="o" hint-placeholder-count="5"><button aria-pressed="{{o.on}}" onClick="{{o.pick}}">{{o.label}}</button></sc-for></div></div></sc-if>
+<div class="dk-field"><span style="font-size: 15px; font-weight: 600">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{hb.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="background: {{c.c}}"></button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 15px; font-weight: 600">Icon</span><div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; justify-items: center"><sc-for list="{{hb.icons}}" as="c" hint-placeholder-count="12"><button class="dk-icn" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><svg class="ic" width="20" height="20"><use href="#i-{{c.name}}"></use></svg></button></sc-for></div></div>
 </div>
 <div style="padding: 12px 20px 32px; border-top: 1px solid var(--line); flex: none"><button class="dk-btn" onClick="{{hb.save}}">Add habit</button></div>
 </sc-if>
 
 <sc-if value="{{sh.routine}}" hint-placeholder-val="{{ false }}">
 <div style="padding: 20px 20px 8px; display: flex; align-items: center; justify-content: space-between; flex: none">
-<span style="font-size: 20px; font-weight: 800; letter-spacing: -0.015em">New routine</span>
+<span style="font-size: 20px; font-weight: 600; letter-spacing: -0.015em">New routine</span>
 <button class="dk-ib" aria-label="Close" onClick="{{closeSheet}}"><svg class="ic" width="18" height="18"><use href="#i-x"></use></svg></button>
 </div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 12px 20px 24px; display: flex; flex-direction: column; gap: 24px">
 <div style="display: flex; align-items: center; gap: 14px">
-<span style="width: 48px; height: 64px; border-radius: 24px; display: grid; place-items: center; background: {{rt.hueC}}; color: #FFFFFF; flex: none"><svg class="ic" width="23" height="23"><use href="#i-{{rt.icon}}"></use></svg></span>
-<input aria-label="Routine name" placeholder="e.g. Evening wind-down" value="{{rt.name}}" onChange="{{rt.onName}}" style="flex: 1; min-width: 0; font-size: 20px; font-weight: 700; padding: 6px 0; border-bottom: 1.5px solid var(--line-strong)">
+<span style="width: 48px; height: 64px; border-radius: 24px; display: grid; place-items: center; background: {{rt.hueC}}; color: var(--on-hue); flex: none"><svg class="ic" width="23" height="23"><use href="#i-{{rt.icon}}"></use></svg></span>
+<input aria-label="Routine name" placeholder="e.g. Evening wind-down" value="{{rt.name}}" onChange="{{rt.onName}}" style="flex: 1; min-width: 0; font-size: 20px; font-weight: 600; padding: 6px 0; border-bottom: 1.5px solid var(--line-strong)">
 </div>
 <div class="dk-field">
-<div style="display: flex; justify-content: space-between"><span style="font-size: 15px; font-weight: 700">Steps</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{rt.total}}</span></div>
+<div style="display: flex; justify-content: space-between"><span style="font-size: 15px; font-weight: 600">Steps</span><span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{rt.total}}</span></div>
 <div class="dk-list">
 <sc-for list="{{rt.steps}}" as="s" hint-placeholder-count="2">
 <div class="dk-li dk-fade" style="min-height: 48px">
-<span class="tnum" style="width: 24px; height: 24px; border-radius: 999px; background: {{rt.hueC}}; color: #FFFFFF; font-size: 11px; font-weight: 800; display: grid; place-items: center; flex: none">{{s.n}}</span>
+<span class="tnum" style="width: 24px; height: 24px; border-radius: 999px; background: {{rt.hueC}}; color: var(--on-hue); font-size: 11px; font-weight: 600; display: grid; place-items: center; flex: none">{{s.n}}</span>
 <span style="flex: 1; font-size: 15px">{{s.t}}</span>
 <span class="tnum" style="font-size: 12.5px; color: var(--ink-muted)">{{s.d}}</span>
 <button class="dk-ib sm" aria-label="{{s.aria}}" onClick="{{s.remove}}" style="background: transparent; color: var(--ink-subtle)"><svg class="ic" width="15" height="15"><use href="#i-x"></use></svg></button>
@@ -954,8 +964,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 </div>
 </div>
 </div>
-<div class="dk-field"><span style="font-size: 15px; font-weight: 700">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{rt.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="background: {{c.c}}"></button></sc-for></div></div>
-<div class="dk-field"><span style="font-size: 15px; font-weight: 700">Icon</span><div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; justify-items: center"><sc-for list="{{rt.icons}}" as="c" hint-placeholder-count="12"><button class="dk-icn" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><svg class="ic" width="20" height="20"><use href="#i-{{c.name}}"></use></svg></button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 15px; font-weight: 600">Color</span><div style="display: flex; justify-content: space-between"><sc-for list="{{rt.hues}}" as="c" hint-placeholder-count="9"><button class="dk-sw" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="background: {{c.c}}"></button></sc-for></div></div>
+<div class="dk-field"><span style="font-size: 15px; font-weight: 600">Icon</span><div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; justify-items: center"><sc-for list="{{rt.icons}}" as="c" hint-placeholder-count="12"><button class="dk-icn" aria-label="{{c.label}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}"><svg class="ic" width="20" height="20"><use href="#i-{{c.name}}"></use></svg></button></sc-for></div></div>
 </div>
 <div style="padding: 12px 20px 32px; border-top: 1px solid var(--line); flex: none"><button class="dk-btn" onClick="{{rt.save}}">Save routine</button></div>
 </sc-if>
@@ -963,7 +973,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{sh.month}}" hint-placeholder-val="{{ false }}">
 <div style="padding: 20px 20px 8px; display: flex; align-items: center; justify-content: space-between; flex: none">
 <div style="display: flex; align-items: center; gap: 2px">
-<span style="font-size: 20px; font-weight: 800">{{mp.monthName}}</span><span style="font-size: 20px; font-weight: 800; color: var(--accent-text); margin-left: 6px">{{mp.year}}</span>
+<span style="font-size: 20px; font-weight: 600">{{mp.monthName}}</span><span style="font-size: 20px; font-weight: 600; color: var(--accent-text); margin-left: 6px">{{mp.year}}</span>
 <button class="dk-ib sm" aria-label="Previous month" onClick="{{mp.prev}}" style="background: transparent; margin-left: 8px"><svg class="ic" width="18" height="18"><use href="#i-chev-l"></use></svg></button>
 <button class="dk-ib sm" aria-label="Next month" onClick="{{mp.next}}" style="background: transparent"><svg class="ic" width="18" height="18"><use href="#i-chev-r"></use></svg></button>
 </div>
@@ -971,12 +981,12 @@ a{color:#AD5236}a:hover{color:#97462D}
 </div>
 <div style="padding: 4px 16px 32px">
 <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding-bottom: 6px">
-<sc-for list="{{cal.wdh}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; font-weight: 700; color: var(--ink-subtle)">{{w.l}}</span></sc-for>
+<sc-for list="{{cal.wdh}}" as="w" hint-placeholder-count="7"><span style="text-align: center; font-size: 11px; font-weight: 600; color: var(--ink-subtle)">{{w.l}}</span></sc-for>
 </div>
 <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 4px">
 <sc-for list="{{mp.cells}}" as="c" hint-placeholder-count="35">
 <button class="dk-press" onClick="{{c.pick}}" aria-label="{{c.aria}}" style="height: 52px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 4px; opacity: {{c.op}}">
-<span class="tnum" style="width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; font-size: 15px; font-weight: 700; background: {{c.bg}}; color: {{c.fg}}">{{c.num}}</span>
+<span class="tnum" style="width: 32px; height: 32px; border-radius: 999px; display: grid; place-items: center; font-size: 15px; font-weight: 600; background: {{c.bg}}; color: {{c.fg}}">{{c.num}}</span>
 <span style="display: flex; gap: 2px; height: 5px"><sc-for list="{{c.dots}}" as="dot" hint-placeholder-count="2"><span style="width: 5px; height: 5px; border-radius: 3px; background: {{dot.c}}"></span></sc-for></span>
 </button>
 </sc-for>
@@ -1383,7 +1393,7 @@ class Component extends DCLogic {
 
     var habitStrip = st.habits.map(function(h){
       var done = !!h.hist[date];
-      return { name: h.name, icon: h.icon, done: done, bg: done ? hv(h.hue) : mix(h.hue, 14), fg: done ? '#FFFFFF' : hv(h.hue), border: done ? 'transparent' : mix(h.hue, 60), aria: h.name + (done ? ', done' : ', not done yet'), toggle: function(){ self.toggleHabit(h.id, date); } };
+      return { name: h.name, icon: h.icon, done: done, bg: done ? hv(h.hue) : mix(h.hue, 14), fg: done ? 'var(--on-hue)' : hv(h.hue), border: done ? 'transparent' : mix(h.hue, 60), aria: h.name + (done ? ', done' : ', not done yet'), toggle: function(){ self.toggleHabit(h.id, date); } };
     });
 
     var L = this.layout(date), nowY = L.map(NOW);
@@ -1396,7 +1406,7 @@ class Component extends DCLogic {
         trans: dragging ? 'none' : 'top .22s ease',
         gut: h12(it.start), showGut: !(isToday && Math.abs(nowY - (r.top + 10)) < 16),
         time: fR(it.start, it.dur) + (it.dur ? ' (' + fDur(it.dur) + ')' : ''),
-        capBg: r.active ? mix(it.hue, 42) : hv(it.hue), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
+        capBg: r.active ? mix(it.hue, 34, '#FFFFFF') : mix(it.hue, 62, '#FFFFFF'), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
         capShadow: dragging ? '0 12px 28px rgba(0,0,0,.28)' : (r.active ? '0 0 0 4px ' + mix(it.hue, 28, 'transparent') : 'none'),
         capCls: 'dk-press' + (st.flash === it.id ? ' dk-flash' : ''),
         active: r.active, elapsed: r.active ? Math.round((NOW - it.start) / it.dur * 100) : 0, left: 'Now · ' + fShort(left) + ' left',
@@ -1529,7 +1539,7 @@ class Component extends DCLogic {
       return { name: h.name, icon: h.icon, hueC: hv(h.hue), done: done, open: open, weekly: h.freq === 'weekly',
         freq: h.freq === 'weekly' ? h.target + '× a week' : 'Every day', streak: streak ? streak + (h.freq === 'weekly' ? '-week streak' : '-day streak') : 'Start a streak',
         weekCount: weekCount(h) + ' of ' + h.target, week: weekR, heat: heat, rate: Math.round(cnt / past * 100) + '% completion',
-        btnBg: done ? hv(h.hue) : 'transparent', btnFg: done ? '#FFFFFF' : hv(h.hue), aria: (done ? 'Undo check-in: ' : 'Check in: ') + h.name,
+        btnBg: done ? hv(h.hue) : 'transparent', btnFg: done ? 'var(--on-hue)' : hv(h.hue), aria: (done ? 'Undo check-in: ' : 'Check in: ') + h.name,
         toggle: function(){ self.toggleHabit(h.id, TODAY); }, expand: function(){ self.setState({ habitOpen: open ? null : h.id }); } };
     });
     var hd = st.habits.filter(function(h){ return h.hist[TODAY]; }).length;
@@ -1571,11 +1581,11 @@ class Component extends DCLogic {
     var todayEntry = st.journal.find(function(e){ return e.date === TODAY; });
     var jr = {
       dateLabel: WDF[pD(TODAY).getDay()] + ', ' + MON[pD(TODAY).getMonth()] + ' ' + pD(TODAY).getDate(),
-      moods: MOODS.map(function(l, i){ var on = st.jMood === i + 1; return { n: i + 1, label: l, on: on, bg: on ? hv(MOODHUE[i]) : 'var(--sunken)', fg: on ? '#FFFFFF' : 'var(--ink-muted)', pick: function(){ self.setState({ jMood: i + 1 }); } }; }),
+      moods: MOODS.map(function(l, i){ var on = st.jMood === i + 1; return { n: i + 1, label: l, on: on, bg: on ? hv(MOODHUE[i]) : 'var(--sunken)', fg: on ? 'var(--on-hue)' : 'var(--ink-muted)', pick: function(){ self.setState({ jMood: i + 1 }); } }; }),
       prompt: PROMPTS[st.jPrompt % PROMPTS.length], shuffle: function(){ self.setState({ jPrompt: st.jPrompt + 1 }); },
       text: st.jText, change: function(e){ self.setState({ jText: e.target.value }); }, saveLabel: todayEntry ? 'Update entry' : 'Save entry',
       save: function(){ if (!st.jMood && !st.jText.trim()) { self.toast('Pick a mood or write a line first'); return; } self.setState(function(s){ return { journal: [{ date: TODAY, mood: s.jMood || 3, text: s.jText.trim() || 'Checked in.' }].concat(s.journal.filter(function(e){ return e.date !== TODAY; })) }; }); self.toast('Journal entry saved'); },
-      history: st.journal.filter(function(e){ return e.date !== TODAY || true; }).map(function(e, i){ var open = st.jOpen === e.date; return { date: rel(e.date) + (rel(e.date) === fDate(e.date) ? '' : ' · ' + fDate(e.date)), mood: e.mood, text: e.text, open: open, ws: open ? 'normal' : 'nowrap', bg: hv(MOODHUE[e.mood - 1]), fg: '#FFFFFF', toggle: function(){ self.setState({ jOpen: open ? null : e.date }); } }; })
+      history: st.journal.filter(function(e){ return e.date !== TODAY || true; }).map(function(e, i){ var open = st.jOpen === e.date; return { date: rel(e.date) + (rel(e.date) === fDate(e.date) ? '' : ' · ' + fDate(e.date)), mood: e.mood, text: e.text, open: open, ws: open ? 'normal' : 'nowrap', bg: hv(MOODHUE[e.mood - 1]), fg: 'var(--on-hue)', toggle: function(){ self.setState({ jOpen: open ? null : e.date }); } }; })
     };
 
     var f = st.focus || { phase: 'setup', mins: 25, total: 1500, remaining: 1500, elapsed: 0, running: false, itemId: null };
@@ -1625,7 +1635,7 @@ class Component extends DCLogic {
         if (x.location) rowsD.push({ icon: 'pin', k: 'Location', v: x.location });
         if (x.project) { var pp = st.projects.find(function(p){ return p.id === x.project; }); if (pp) rowsD.push({ icon: 'folder', k: 'Project', v: pp.name }); }
         if (x.labels.length) rowsD.push({ icon: 'tag', k: 'Labels', v: x.labels.join(', ') });
-        dt = { title: x.title, icon: x.icon, hueC: hv(x.hue), kind: x.kind === 'event' ? 'Event' : (x.kind === 'routine' ? 'Routine' : 'Task'), time: x.start === null ? 'No set time' : fR(x.start, x.dur), done: x.done, deco: x.done ? 'line-through' : 'none', ringBg: x.done ? '#FFFFFF' : 'transparent', checkAria: (x.done ? 'Mark not done: ' : 'Complete: ') + x.title,
+        dt = { title: x.title, icon: x.icon, hueC: hv(x.hue), kind: x.kind === 'event' ? 'Event' : (x.kind === 'routine' ? 'Routine' : 'Task'), time: x.start === null ? 'No set time' : fR(x.start, x.dur), done: x.done, deco: x.done ? 'line-through' : 'none', ringBg: x.done ? 'var(--on-hue)' : 'transparent', checkAria: (x.done ? 'Mark not done: ' : 'Complete: ') + x.title,
           rows: rowsD, hasSubs: x.subs.length > 0, subsLabel: sdn + ' of ' + x.subs.length,
           subs: x.subs.map(function(s){ return { t: s.t, done: s.done, bg: s.done ? hv(x.hue) : 'transparent', deco: s.done ? 'line-through' : 'none', fg: s.done ? 'var(--ink-muted)' : 'var(--ink)', toggle: function(){ self.patchItem(x.id, function(y){ y.subs = y.subs.map(function(z){ return z.id === s.id ? Object.assign({}, z, { done: !z.done }) : z; }); return y; }); } }; }),
           hasNotes: !!x.notes, notes: x.notes, canFocus: x.kind !== 'event', isEvent: x.kind === 'event',

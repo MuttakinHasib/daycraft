@@ -30,7 +30,7 @@ export function CheckRing({ checked = false, hue = ActivityHue.SAGE, onPress, ac
         { [ActivityHueBackground[hue]]: checked },
       )}
     >
-      {checked && <Icon name="check" size={14} strokeWidth={3.2} colorClassName="text-white" />}
+      {checked && <Icon name="check" size={14} strokeWidth={3.2} colorClassName="text-on-hue" />}
     </Pressable>
   );
 }

@@ -110,7 +110,7 @@ export function generateTailwindCss(): string {
     '/* Activity hues: the same in light and dark */',
     ...hueVariables(),
     '',
-    '--font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;',
+    '--font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;',
     '',
     ...typeVariables,
     '',

@@ -10,7 +10,7 @@
 | Styling | **Uniwind** 1.13 + **Tailwind CSS v4** (`tailwindcss` ^4.3) | `className` on RN components; tokens in `src/global.css`; Metro wrapped with `withUniwindConfig` (must stay outermost) |
 | Animation | `react-native-reanimated` 4.7 + `react-native-worklets` | All motion. CSS animations/transitions are Uniwind Pro features and are not used. |
 | Gestures | `react-native-gesture-handler` 3.3 | Timeline drag and resize |
-| Fonts | `expo-font` config plugin | Plus Jakarta Sans ×4 weights |
+| Fonts | `expo-font` config plugin | Onest, one family per weight |
 | Images / symbols | `expo-image`, `expo-symbols` | Icon library undecided (D4) |
 | Compiler | React Compiler enabled | Do not hand-memoize by default |
 | Lint | ESLint 9 flat config + `eslint-config-expo` | `bun run lint` (`expo lint`) |

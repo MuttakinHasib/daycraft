@@ -27,7 +27,7 @@
 @layer components {
   /* Timeline capsule: set --capsule-hue: var(--color-sage) etc. on the element */
   .capsule {
-    @apply relative grid w-12 min-h-12 place-items-center overflow-hidden rounded-capsule text-white touch-none transition active:scale-95;
+    @apply relative grid w-12 min-h-12 place-items-center overflow-hidden rounded-capsule text-on-hue touch-none transition active:scale-95;
   }
   .capsule[data-state="done"] {
     @apply opacity-45;
@@ -62,10 +62,10 @@
   }
 
   .btn-primary {
-    @apply flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent type-body font-bold text-on-accent transition hover:bg-accent-hover active:scale-98 disabled:opacity-50 disabled:hover:bg-accent;
+    @apply flex h-13 w-full items-center justify-center gap-2 rounded-full bg-accent type-body font-semibold text-on-accent transition hover:bg-accent-hover active:scale-98 disabled:opacity-50 disabled:hover:bg-accent;
   }
   .btn-secondary {
-    @apply flex h-13 w-full items-center justify-center gap-2 rounded-full bg-sunken type-body font-bold text-ink transition hover:bg-line disabled:opacity-50 disabled:hover:bg-sunken;
+    @apply flex h-13 w-full items-center justify-center gap-2 rounded-full bg-sunken type-body font-semibold text-ink transition hover:bg-line disabled:opacity-50 disabled:hover:bg-sunken;
   }
   .btn-md {
     @apply h-11;
@@ -80,7 +80,7 @@
     @apply flex h-12 items-center gap-3 rounded-field bg-sunken px-4 type-body focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent;
   }
   .card {
-    @apply rounded-card border border-line bg-surface p-4;
+    @apply rounded-card bg-card p-4;
   }
 
   .segmented {

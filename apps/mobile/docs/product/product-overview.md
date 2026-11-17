@@ -6,7 +6,7 @@
 
 Daycraft is a personal productivity and life planner. People use it to shape their day intentionally: see the whole day at a glance, place responsibilities and commitments on it, keep habits and routines going, and make visible progress on goals and projects.
 
-It should feel like a **personal life-management workspace**, not a task manager with a calendar bolted on. The visual and interaction language comes from the timeline-first reference app the founder liked (calm, vertical day timeline, pill-shaped activity blocks, floating navigation). Daycraft keeps that familiarity and adds its own identity: terracotta brand, warm neutrals, Plus Jakarta Sans, and the Daybreak logo (a capsule with a sunrise cut through it).
+It should feel like a **personal life-management workspace**, not a task manager with a calendar bolted on. The visual and interaction language comes from the timeline-first reference app the founder liked (calm, vertical day timeline, pill-shaped activity blocks, floating navigation). Daycraft keeps that familiarity and adds its own identity: a white canvas with light-gray cards, saturated activity colors with white icons, a blue accent, Onest, and the Sunrise Pen logo (a fountain pen drawing the horizon under a rising sun). See [ADR-0008](../../../../docs/adr/0008-visual-direction-clean.md).
 
 ## Product philosophy
 

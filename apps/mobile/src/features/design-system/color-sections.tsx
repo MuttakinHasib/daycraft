@@ -14,7 +14,7 @@ export function SemanticColorSection() {
   const colors = useThemeColors();
   return (
     <Section title="Semantic colors" description={`Values for the ${scheme} theme. They flip with the theme.`}>
-      <View className="overflow-hidden rounded-card border border-line bg-surface">
+      <View className="overflow-hidden rounded-card bg-card">
         {Object.values(SemanticColor).map((name, index) => (
           <View
             key={name}
@@ -37,7 +37,7 @@ export function HueSection() {
         {Object.values(ActivityHue).map((hue) => (
           <View key={hue} className="w-24 gap-1.5">
             <View className={cn('h-14 items-center justify-center rounded-tile', ActivityHueBackground[hue])}>
-              <Icon name="check" size={22} colorClassName="text-white" />
+              <Icon name="check" size={22} colorClassName="text-on-hue" />
             </View>
             <Text className="type-control text-ink">{hue}</Text>
             <Text className="type-meta text-ink-subtle">{hueColors[hue]}</Text>
@@ -52,7 +52,7 @@ export function ContrastSection() {
   const results = checkContrast();
   return (
     <Section title="Contrast" description="Checked in the token build; a failing pair fails the build.">
-      <View className="overflow-hidden rounded-card border border-line bg-surface">
+      <View className="overflow-hidden rounded-card bg-card">
         {results.map((result, index) => (
           <View
             key={result.pair}

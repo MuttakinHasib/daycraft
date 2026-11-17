@@ -58,7 +58,7 @@ export function Button({
       )}
     >
       {icon && <Icon name={icon} size={18} colorClassName={textColor} />}
-      <Text className={cn('type-body font-sans-bold', textColor)}>{children}</Text>
+      <Text className={cn('type-body font-sans-semibold', textColor)}>{children}</Text>
     </Pressable>
   );
 }
