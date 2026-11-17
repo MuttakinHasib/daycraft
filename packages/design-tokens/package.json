@@ -1,0 +1,26 @@
+{
+  "name": "@daycraft/design-tokens",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./uniwind.css": "./generated/uniwind.css",
+    "./tailwind.css": "./generated/tailwind.css"
+  },
+  "scripts": {
+    "build": "bun ./scripts/generate.ts",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@daycraft/domain": "workspace:*"
+  },
+  "devDependencies": {
+    "@daycraft/typescript-config": "workspace:*",
+    "@types/node": "^24",
+    "cn": "^0.5.2",
+    "typescript": "~6.0.3",
+    "vitest": "^5.1.0"
+  }
+}
