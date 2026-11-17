@@ -1,12 +1,23 @@
 # Daycraft
 
-Daycraft is a calm personal planner whose center is the **Today timeline** — a vertical day made of colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it.
+Daycraft is a calm personal planner whose center is the **Plan timeline**: a vertical day made of colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it.
 
 > One copy for the whole monorepo: `apps/mobile`, `apps/web` and future apps and packages all use these terms. How to use this vocabulary: [docs/agents/domain.md](docs/agents/domain.md).
 
 ## Language
 
 ### The timeline
+
+**Plan**:
+The main tab and module: the timeline for the selected date, with its week strip, progress ring and habit row.
+_Avoid_: Today (for the screen), Calendar, day view
+
+**Timeline**:
+The vertical, time-proportional day of capsules on a spine, shown in Plan.
+
+**Today**:
+The current calendar date only, as in the Today chip, the Today filter and "Add to today".
+_Avoid_: using it as the name of the Plan screen
 
 **Activity**:
 Anything placed on a day: a task, an event, or a routine instance.

@@ -20,7 +20,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 - **What it must feel like:** minimal, warm, readable, precise. Terracotta accent, warm neutrals, hairlines, almost no shadows. Color belongs to the user's activities, not to chrome.
 - **Where the design lives:**
   - Tokens: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css) (target for `src/app/globals.css`).
-  - Desktop prototype: “Daycraft” design canvas, page **v2 · Refined**, boards “Desktop 1440”, “Tablet 768”, “Large desktop 1920”.
+  - Desktop prototype: “Daycraft” design canvas, page **v2 · Current**, boards “Desktop 1440”, “Tablet 768”, “Large desktop 1920”.
   - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots (desktop 1440/768/1920, all phone screens in both themes) and a runnable offline prototype (`prototype/desktop-dark.html`). Look at the screenshot before building a screen.
 - **What exists in code today:** only the `create-next-app` starter. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 

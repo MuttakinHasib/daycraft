@@ -42,3 +42,6 @@ yarn-error.log*
 .claude/.cc-writes/
 .zcode/
 
+
+# Local issue tracker (see docs/agents/issue-tracker.md)
+.scratch/

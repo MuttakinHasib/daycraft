@@ -11,7 +11,7 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 - **Where the design lives:**
   - Tokens: `src/global.css`.
   - Design-system reference: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css).
-  - Interactive prototype: the "Daycraft" design canvas, page **v2 · Refined**. Every screen and interaction in the docs was taken from it.
+  - Interactive prototype: the "Daycraft" design canvas, page **v2 · Current**. Every screen and interaction in the docs was taken from it.
   - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots of every phone screen and sheet (light and dark), plus a runnable offline prototype (`prototype/phone-dark.html`). Look at the screenshot of a screen before building it.
 - **What exists in code today:** tokens, fonts, the Uniwind theme and the first UI primitives (`src/components/ui/`). Screens are still the Expo starter. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 
