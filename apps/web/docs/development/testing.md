@@ -2,11 +2,11 @@
 
 ## Checks that exist today
 
-| Check | Command | Status at `d2c5688` |
+| Check | Command | Status (2026-11-17) |
 |---|---|---|
-| Typecheck | `npx tsc --noEmit` | passes |
-| Lint | `npm run lint` | passes |
-| Build | `npm run build` | run for any route, data, caching or config change: it catches Cache Components and prerender errors that typecheck and lint do not |
+| Typecheck | `bun run check-types` (`next typegen && tsc --noEmit`) | passes |
+| Lint | `bun run lint` | passes |
+| Build | `bun run build` | run for any route, data, caching or config change: it catches Cache Components and prerender errors that typecheck and lint do not |
 
 **Run typecheck and lint before calling any task done** (and build when relevant). Report the actual output.
 

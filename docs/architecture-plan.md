@@ -1,6 +1,6 @@
 # Daycraft architecture plan: mobile, API, web
 
-Status: **Proposed**, 2026-11-17. Written against mobile commit `43ba9e8` and the web repo's initial commit. No ADR here is decided until it is accepted and copied into `docs/status-and-decisions.md` / `docs/adr/`. No application code was written.
+Status: **Proposed**, 2026-11-17. Written against mobile commit `43ba9e8` and the web repo's initial commit. No ADR here is decided until it is accepted and copied into root `docs/adr/` (and the affected app's `docs/status-and-decisions.md`). No application code was written. Moved from `apps/mobile/docs/development/data-layer-plan.md` to the monorepo root on 2026-11-17 because it covers every app.
 
 This version replaces the earlier backend sections (self-hosted PostgreSQL on a VPS). What changed and why:
 
@@ -24,12 +24,12 @@ Things in the original brief or the repos that this plan does not follow, or cor
 
 - The brief asked for timeline virtualization (FlashList vs FlatList). `architecture.md` already says: "A day has tens of rows, not thousands, so do not virtualize it." This plan keeps that rule (§8).
 - The "previous PRD direction" (NestJS + PostgreSQL) is not recorded in either repo. It is treated as the brief's statement, not a decided item.
-- `project-structure.md` lists `GLOSSARY.md` under "Not present yet". It exists. Fix that line when this plan lands.
+- `project-structure.md` listed `GLOSSARY.md` under "Not present yet". It now lives once at the monorepo root.
 - Web is on TypeScript `^5`, mobile on `~6.0.3`. The monorepo needs one version (§3).
 
 ## 1. Executive summary
 
-- **One monorepo: npm workspaces + Turborepo.** `apps/mobile`, `apps/web`, `apps/api`, plus two shared packages: `packages/domain` (pure TypeScript rules) and `packages/sync` (row schemas and the sync protocol).
+- **One monorepo: bun workspaces + Turborepo** (set up 2026-11-17). `apps/mobile`, `apps/web`, `apps/api`, plus two shared packages: `packages/domain` (pure TypeScript rules) and `packages/sync` (row schemas and the sync protocol).
 - **Mobile:** Expo SDK 58 as it is today. `expo-sqlite` + Drizzle is the source of truth on the device. Every screen reads live queries. No state library.
 - **API:** Hono on Cloudflare Workers. Three jobs: sign-in, sync (`push`, `pull`), and a few read endpoints for web.
 - **Server database:** Cloudflare D1. It is SQLite, the same dialect as the device, so the server tables are the device tables plus `user_id` and `server_seq`, built from the same column definitions.
@@ -54,7 +54,7 @@ A candidate had to pass all five, in this order:
 
 | Layer | Pick | Status |
 |---|---|---|
-| Repository | Monorepo: npm workspaces for installs, Turborepo for tasks and caching | New. Gate at M0 |
+| Repository | Monorepo: bun workspaces for installs, Turborepo for tasks and caching | Done 2026-11-17 (M0 monorepo gate passed) |
 | Mobile app | Expo SDK 58, Expo Router, Uniwind, Reanimated, gesture-handler | Already in the repo |
 | Mobile data | `expo-sqlite` + Drizzle ORM, live queries, no state library | Gate at M0 |
 | Shared rules | `packages/domain`: time, ids, recurrence, timeline layout, validation | New |
@@ -74,7 +74,7 @@ Gates that can still change a pick. Each fallback keeps the schema and the app c
 
 | Gate | When | If it fails |
 |---|---|---|
-| Expo, Metro and Uniwind work from `apps/mobile` in an npm workspace | M0, first day | Separate repos. Shared code becomes a private package published from one of them. |
+| Expo, Metro and Uniwind work from `apps/mobile` in a bun workspace | Passed 2026-11-17 | Separate repos. Shared code becomes a private package published from one of them. |
 | Drizzle works with SDK 58, the React Compiler and Uniwind's Metro wrapper | M0, first day | Raw `expo-sqlite` with SQL files. Same repository functions. |
 | Better Auth runs on Workers with D1, Apple id tokens and the Expo client | M2, first days | A managed auth service, verified in the API. Same tables for app data. |
 | A 50-row push stays under the free plan's 10 ms CPU limit | M2 | Move to Workers Paid early ($5 a month). No code change. |
@@ -132,7 +132,7 @@ What each client is responsible for:
 ```text
 daycraft/
   package.json            # "private": true, "workspaces": ["apps/*", "packages/*"]
-  package-lock.json       # one lockfile
+  bun.lock                # one lockfile
   turbo.json              # task graph and cache rules
   tsconfig.base.json      # strict, shared compiler options
   GLOSSARY.md             # single copy (today it is mirrored in both repos)
@@ -140,8 +140,8 @@ daycraft/
     product/              # single copy of the shared product docs
     adr/                  # decisions that span apps
   apps/
-    mobile/               # today's mobile.daycraft.com, history kept
-    web/                  # today's web.daycraft.com, history kept
+    mobile/               # was mobile.daycraft.com, history kept
+    web/                  # was web.daycraft.com, history kept
     api/                  # new at M2
   packages/
     domain/               # pure TypeScript. No React, no React Native, no SQL, no dependencies.
@@ -150,8 +150,9 @@ daycraft/
 
 Rules:
 
-- **Turborepo on top of npm workspaces.** npm owns installs and the lockfile; Turborepo only runs tasks (`build`, `typecheck`, `lint`, `test`) in dependency order and caches their results. Use the 2.x line with the `tasks` key in `turbo.json`.
-- **Mobile dependencies are still added with `npx expo install`,** run inside `apps/mobile`. Web and API use `npm install -w apps/web` / `-w apps/api`.
+- **Turborepo on top of bun workspaces.** bun owns installs and the lockfile (hoisted layout); Turborepo only runs tasks (`build`, `check-types`, `lint`, `test`) in dependency order and caches their results. Use the 2.x line with the `tasks` key in `turbo.json`.
+- **Mobile dependencies are still added with `bunx expo install`,** run inside `apps/mobile`. Web and API use `bun add` inside their folder. `npx` refuses to run because the root declares bun in `devEngines`.
+- **Keep Babel 7 at the root.** The create-turbo `@repo/eslint-config` package pulled `@babel/core` 8, bun hoisted it, and Metro's worklets plugin failed. That package was removed; any shared ESLint package must not bring Babel 8.
 - **`packages/domain` is the domain layer from `architecture.md`, moved, not replaced.** The three layers stay: routes, features, primitives, and domain. Domain now lives in a package with no dependencies, which enforces "no React, no RN imports" by construction rather than by review.
 - **Design tokens stay per app for v1.** Both apps use Tailwind v4, so a shared `packages/tokens` CSS file is possible later. **Verify** that Uniwind's theme layer accepts an imported token file before doing it.
 - **One React version.** Both apps are on React 19.3.0 today. Expo's monorepo guide says duplicate React or React Native versions are not supported.
@@ -164,7 +165,7 @@ Rules:
   "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**", "out/**"] },
-    "typecheck": { "dependsOn": ["^build"] },
+    "check-types": { "dependsOn": ["^build"] },
     "lint": {},
     "test": { "dependsOn": ["^build"] },
     "dev": { "cache": false, "persistent": true }
@@ -172,15 +173,15 @@ Rules:
 }
 ```
 
-- `^build` means "build my dependencies first", so `packages/domain` and `packages/sync` are built before any app typechecks against them. If the packages are consumed as TypeScript source instead of built output, `build` is dropped from them and `typecheck` loses the `dependsOn`.
+- `^build` means "build my dependencies first", so `packages/domain` and `packages/sync` are built before any app typechecks against them. If the packages are consumed as TypeScript source instead of built output, `build` is dropped from them and `check-types` loses the `dependsOn`. The live `turbo.json` is still the create-turbo default (`check-types` depends on `^check-types`); change it when the first package lands.
 - `dev` runs Metro, `next dev` and `wrangler dev`. It is never cached and nothing depends on it.
 - Mobile store builds stay on EAS. Turborepo does not run `eas build`; caching a native build locally gains nothing.
 - Environment: strict mode is the default, so variables a task reads (for example `EXPO_PUBLIC_API_URL`) go in that task's `env` list, or the cache can serve a build made with a different value.
 - Remote cache: optional. Vercel's is free on all plans, even for apps not hosted on Vercel, and a self-hosted one is possible. Turn it on when GitHub Actions runs the checks, not before.
 
-Checked against Turborepo's docs on 2026-11-17 (`turborepo.dev`): the `tasks` key, `dependsOn` with `^`, `outputs`, `cache`, `persistent`, strict environment mode by default, and free optional remote caching. Not found in those docs: npm workspaces named explicitly, and any Expo or React Native guidance. Turborepo reads the package manager from the root `package.json` (`devEngines.packageManager`, or the older `packageManager` field), so the root declares npm there.
+Checked against Turborepo's docs on 2026-11-17 (`turborepo.dev`): the `tasks` key, `dependsOn` with `^`, `outputs`, `cache`, `persistent`, strict environment mode by default, and free optional remote caching. Not found in those docs: npm workspaces named explicitly, and any Expo or React Native guidance. Turborepo reads the package manager from the root `package.json` (`devEngines.packageManager`, or the older `packageManager` field), so the root declares bun there (`devEngines.packageManager`, bun 1.2.17).
 
-Checked against Expo's monorepo guide on 2026-11-17: npm workspaces have first-class support; Metro is configured automatically for monorepos since SDK 52 when `expo/metro-config` is used; the guide's own layout is `apps/` plus `packages/`. Not checked: whether `withUniwindConfig` keeps that automatic configuration working. That is the first M0 gate.
+Checked against Expo's monorepo guide on 2026-11-17: npm workspaces have first-class support; Metro is configured automatically for monorepos since SDK 52 when `expo/metro-config` is used; the guide's own layout is `apps/` plus `packages/`. Checked 2026-11-17: `withUniwindConfig` keeps it working; the iOS export from `apps/mobile` bundles the same 1,750 modules (3.9 MB) as before the move.
 
 Moving the two repos in: import each with its history (for example `git subtree add --prefix apps/mobile <repo> <branch>`). Mobile has seven commits and web has one, so this is a small, one-time step.
 
@@ -196,7 +197,7 @@ Read from each vendor's page on 2026-11-17.
 | Cloudflare D1 | 5 million rows read and 100,000 rows written a day, 5 GB total, 10 databases, **500 MB per database** | Queries return errors until 00:00 UTC. A full database blocks inserts | Included in Workers Paid: 25 billion reads and 50 million writes a month, 10 GB per database |
 | D1 backups (Time Travel) | 7 days | — | 30 days on Paid |
 | Resend | 3,000 emails a month, 100 a day | **verify** what happens at the cap | Paid plan |
-| EAS Build | 15 iOS and 15 Android builds a month, low-priority queue (the page warns of 90+ minute waits at peak) | — | Local builds with `npx expo run:*` are free |
+| EAS Build | 15 iOS and 15 Android builds a month, low-priority queue (the page warns of 90+ minute waits at peak) | — | Local builds with `bunx expo run:*` are free |
 | EAS Update | 1,000 monthly active users | No overage on Free | Paid plan |
 | Sentry | 5,000 errors, 1 user, 30-day lookback | — | Paid plan |
 
@@ -904,7 +905,7 @@ apps/web/src/
 
 | Concern | Pick | Why | Rejected | Revisit when |
 |---|---|---|---|---|
-| Repository | npm workspaces + Turborepo | Shared rules are one copy. Product docs and glossary stop being mirrored. Turborepo runs tasks in dependency order, skips unchanged work, and needs no change to how packages are installed. | Separate repos + a published package: version bumps for every shared change. Nx: generators, plugins and its own project graph, built for many teams. pnpm or Bun workspaces: break the repo's npm rule, and Expo warns isolated installs can break some React Native libraries. | Remote cache when CI exists (§3). |
+| Repository | bun workspaces + Turborepo | Shared rules are one copy. Product docs and glossary stop being mirrored. Turborepo runs tasks in dependency order, skips unchanged work, and needs no change to how packages are installed. | Separate repos + a published package: version bumps for every shared change. Nx: generators, plugins and its own project graph, built for many teams. npm or pnpm workspaces: npm was the original pick; the owner chose bun on 2026-11-17. pnpm's isolated installs can break some React Native libraries. | Remote cache when CI exists (§3). |
 | Mobile sync stance | Offline-first | A planner must open instantly with no network. | Online-first with a cache: the timeline breaks on the subway. | Shared or collaborative data appears. |
 | Web sync stance | Online-first | A browser tab is online. Keeps web simple. | A browser database with the same sync engine: a second storage engine to maintain. | Users ask for offline web. |
 | Mobile database | `expo-sqlite` | Expo module, SDK-versioned, works with CNG. Change listeners, WAL, a key-value store, SQLCipher. | `op-sqlite`: faster, third-party, speed not needed. WatermelonDB: own models and sync protocol. | Day query p95 over 5 ms, or PowerSync is adopted (it requires `@op-engineering/op-sqlite` 1.17+). |
@@ -931,7 +932,7 @@ apps/web/src/
 | Monetization | After v1. RevenueCat if a pricing decision exists | The docs say nothing about pricing. | StoreKit and Play Billing directly. | A pricing decision exists. |
 | Encryption at rest (device) | Decide once before M1 ships | SQLCipher is one config flag but must be on before data exists. Journal text is the reason to say yes. | — | Before M1. |
 
-Dependencies by milestone. Mobile ones with `npx expo install`, each recorded in `docs/status-and-decisions.md`:
+Dependencies by milestone. Mobile ones with `bunx expo install`, each recorded in `docs/status-and-decisions.md`:
 
 | Milestone | Mobile | Packages | API | Web | Dev |
 |---|---|---|---|---|---|
@@ -952,7 +953,7 @@ Test device: one mid-tier Android phone from the last three years (Pixel 6a or G
 | Drag commit (one `UPDATE` + outbox row) | < 16 ms | Timer in the repository |
 | Timeline scroll, 100 rows | 60 fps, no frame over 32 ms | Perf Monitor and `adb shell dumpsys gfxinfo` |
 | Drag and resize | Zero JS-thread calls between touch down and release | A debug button blocks the JS thread for 3 s. Drag meanwhile: capsule, time pill and reflow keep moving. |
-| Mobile JS bundle | Record at M0, fail on +15% | `npx expo export`, compare sizes |
+| Mobile JS bundle | Record at M0, fail on +15% | `bunx expo export`, compare sizes |
 | API push (50 rows) | CPU p95 < 8 ms on the free plan | Workers dashboard CPU metrics during the M2 load script |
 | API pull and reads | p95 < 150 ms at the Worker | Workers analytics |
 | Web first load of the app shell | LCP < 2.5 s on a mid-range laptop, throttled to Fast 4G | Lighthouse in CI on the static build |
@@ -994,8 +995,8 @@ The decision in step 4 is made with data in hand. It is recorded here so that re
 
 ### M0: monorepo, data layer, Today on the device
 
-1. **Monorepo gate (first day).** Create the workspace root with Turborepo, move both repos into `apps/` with history, align TypeScript. `npx turbo run typecheck lint` must pass across all workspaces, and a second run must be served from cache. Mobile must build and run from `apps/mobile`; `npx tsc --noEmit` and `npx expo lint` must pass. If Metro or Uniwind fight the workspace and no fix is found in a day, go back to separate repos (the gate's fallback).
-2. **Drizzle gate (half a day).** The Drizzle Expo page currently shows pre-release install tags (`drizzle-orm@rc`, `expo-sqlite@next`), which conflicts with this repo's `npx expo install` rule. Check a stable Drizzle release with SDK 58's `expo-sqlite`, that a `babel.config.js` with `inline-import` leaves the React Compiler working, and that `sourceExts.push('sql')` works with `withUniwindConfig` kept outermost. Fallback: raw `expo-sqlite` with SQL files and `PRAGMA user_version`.
+1. **Monorepo gate (first day).** Create the workspace root with Turborepo, move both repos into `apps/` with history, align TypeScript. `bunx turbo run check-types lint` must pass across all workspaces, and a second run must be served from cache. Mobile must build and run from `apps/mobile`. **Passed 2026-11-17** (build, check-types and lint; iOS export matches; running on a device not yet checked). If Metro or Uniwind fight the workspace and no fix is found in a day, go back to separate repos (the gate's fallback).
+2. **Drizzle gate (half a day).** The Drizzle Expo page currently shows pre-release install tags (`drizzle-orm@rc`, `expo-sqlite@next`), which conflicts with this repo's `bunx expo install` rule. Check a stable Drizzle release with SDK 58's `expo-sqlite`, that a `babel.config.js` with `inline-import` leaves the React Compiler working, and that `sourceExts.push('sql')` works with `withUniwindConfig` kept outermost. Fallback: raw `expo-sqlite` with SQL files and `PRAGMA user_version`.
 3. `packages/domain` with Vitest: `time.ts`, `id.ts`, `timeline/` (`layoutDay`, `mapTimeToY`, snapping, next free slot), `activity.ts`.
 4. Mobile `data/`: `client.ts`, schema for `activity`, `subtask`, `activity_series`, migration 0001, `activity-repository.ts`, `use-live.ts`, fixtures.
 5. Today: timeline rendering, complete, drag to move, drag to resize, week-strip navigation.
@@ -1038,10 +1039,10 @@ Formatted to append to `docs/status-and-decisions.md` under a new "Decided" sect
 - **Decision:** `expo-sqlite` as the engine. Drizzle ORM for schema, queries, migrations and live queries, used only inside `apps/mobile/src/data/`. Fallback: raw `expo-sqlite` behind the same repositories.
 - **Consequence:** New dependencies: `expo-sqlite`, `drizzle-orm`, `drizzle-kit`, `babel-plugin-inline-import`. A `babel.config.js` is added and Metro gains the `sql` extension. A development build is required.
 
-### ADR-0003: One monorepo with npm workspaces
+### ADR-0003: One monorepo with bun workspaces
 - **Context:** Mobile, web and API must share ids, recurrence, timeline layout and sync row schemas. The product docs and glossary are already mirrored by hand in two repos.
-- **Decision:** One repository: `apps/mobile`, `apps/web`, `apps/api`, `packages/domain`, `packages/sync`. npm workspaces own installs and the lockfile; Turborepo (2.x) runs `build`, `typecheck`, `lint` and `test` in dependency order with local caching. Dev servers (`expo start`, `next dev`, `wrangler dev`) are persistent, uncached tasks. Remote cache is off until CI exists. The domain layer from `architecture.md` moves to `packages/domain` and keeps its rule: no React, no React Native, no SQL, no dependencies. Product docs and `GLOSSARY.md` have one copy at the root.
-- **Consequence:** One lockfile, one TypeScript version, one React version. Every environment variable a task reads must be listed in `turbo.json`, because Turborepo's strict environment mode is the default. Mobile dependencies are still added with `npx expo install` inside `apps/mobile`. If Expo, Metro and Uniwind cannot work in the workspace, the fallback is separate repos with a private shared package.
+- **Decision:** One repository: `apps/mobile`, `apps/web`, `apps/api`, `packages/domain`, `packages/sync`. bun workspaces own installs and the lockfile; Turborepo (2.x) runs `build`, `check-types`, `lint` and `test` in dependency order with local caching. Dev servers (`expo start`, `next dev`, `wrangler dev`) are persistent, uncached tasks. Remote cache is off until CI exists. The domain layer from `architecture.md` moves to `packages/domain` and keeps its rule: no React, no React Native, no SQL, no dependencies. Product docs and `GLOSSARY.md` have one copy at the root.
+- **Consequence:** One lockfile and one React version (19.3.0). TypeScript is not yet aligned: mobile uses ~6.0.3 (hoisted), web ^5 (nested in `apps/web`); align it before `packages/*` land. Every environment variable a task reads must be listed in `turbo.json`, because Turborepo's strict environment mode is the default. Mobile dependencies are still added with `bunx expo install` inside `apps/mobile`. `npx` and `npm` refuse to run because the root declares bun in `devEngines`. If Expo, Metro and Uniwind cannot work in the workspace, the fallback is separate repos with a private shared package.
 
 ### ADR-0004: API is Hono on Cloudflare Workers; server database is Cloudflare D1
 - **Context:** v1 must run on free hosting. Mobile and web must sync through one account. One developer. Options: Hono on Workers, a server on our VPS, NestJS, FastAPI, Go, Rust, Supabase, Firebase; for the database D1, Neon PostgreSQL, Supabase PostgreSQL, a Durable Object per user.

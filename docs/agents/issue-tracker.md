@@ -1,6 +1,6 @@
 # Issue tracker: Local Markdown
 
-Issues and specs for this repo live as markdown files in `.scratch/`.
+Issues and specs for the whole monorepo live as markdown files in `.scratch/` at the **monorepo root** (next to `turbo.json`). Create it there even when you are working inside `apps/mobile` or `apps/web`.
 
 ## Conventions
 
@@ -8,6 +8,7 @@ Issues and specs for this repo live as markdown files in `.scratch/`.
 - The spec is `.scratch/<feature-slug>/spec.md`
 - Implementation issues are one file per ticket at `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`, never a single combined tickets file
 - Triage state is recorded as a `Status:` line near the top of each issue file (see `triage-labels.md` for the role strings)
+- An `App:` line near the top names the workspace the issue touches: `mobile`, `web`, `api`, `packages`, or `all`
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading
 
 ## When a skill says "publish to the issue tracker"

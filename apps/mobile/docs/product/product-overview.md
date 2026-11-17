@@ -1,6 +1,6 @@
 # Product overview
 
-> Shared with the web repo (`web.daycraft.com`). Keep both copies identical except for platform notes.
+> Has a web counterpart in `apps/web/docs/product/`. Keep both in step except for platform notes.
 
 ## What Daycraft is
 
@@ -63,7 +63,7 @@ Every one of these gives visible feedback (toast, state change, or animation). S
 
 ## Vocabulary
 
-Use these exact terms in code, UI copy, issues and tests. The vocabulary lives in the root [`GLOSSARY.md`](../../GLOSSARY.md), which is the canonical reference (see `docs/agents/domain.md` for the rules).
+Use these exact terms in code, UI copy, issues and tests. The vocabulary lives in the monorepo root [`GLOSSARY.md`](../../../../GLOSSARY.md), which is the canonical reference (see the root [`docs/agents/domain.md`](../../../../docs/agents/domain.md) for the rules).
 
 ## Domain model (from the prototype)
 

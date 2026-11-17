@@ -2,7 +2,7 @@
 
 Daycraft is a calm personal planner whose center is the **Today timeline** — a vertical day made of colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it.
 
-> Shared with the sibling repo (`mobile.daycraft.com` / `web.daycraft.com`). Keep both copies identical. How to use this vocabulary: [docs/agents/domain.md](docs/agents/domain.md).
+> One copy for the whole monorepo: `apps/mobile`, `apps/web` and future apps and packages all use these terms. How to use this vocabulary: [docs/agents/domain.md](docs/agents/domain.md).
 
 ## Language
 
@@ -65,6 +65,27 @@ A habit's completion record for one date.
 A raw capture in the Inbox, not yet an activity.
 _Avoid_: note
 
+**Priority**:
+A task's importance: none, low, medium or high. High shows a flag on the capsule.
+
+**Label**:
+A grouping name on an activity (Work, Personal, Health, Errand, Learning), shown with the `Tag` primitive.
+_Avoid_: category
+
+**Repeat**:
+An activity's recurrence preset: never, daily, weekdays or weekly.
+_Avoid_: recurrence rule (in UI)
+
+**Streak**:
+The run of consecutive dates (or weeks, for weekly habits) a habit was checked in. Always derived, never stored.
+
+**Daily progress**:
+Completed activities plus checked-in habits, divided by the total for the date. Derived.
+
+**Focus session**:
+A timed run of attention on one activity, started from its detail.
+_Avoid_: pomodoro
+
 ### Longer horizons
 
 **Goal**:
@@ -78,6 +99,9 @@ Related work with a deadline, tracked as a list or a board.
 
 **Journal entry**:
 A dated reflection with a mood and free text.
+
+**Mood**:
+A journal entry's rating from 1 (Rough) to 5 (Great); each level has a hue.
 
 ### Color
 

@@ -1,6 +1,6 @@
 # Interaction patterns
 
-> Shared with the mobile repo. Web specifics: phone **sheets** map to the desktop **right detail panel** (selected activity) or a centered dialog (create/edit flows that do not start from a selection); hover states exist; Escape closes panels and dialogs.
+> Has a mobile counterpart in `apps/mobile/docs/product/`. Web specifics: phone **sheets** map to the desktop **right detail panel** (selected activity) or a centered dialog (create/edit flows that do not start from a selection); hover states exist; Escape closes panels and dialogs.
 
 The shared behaviors every screen uses. Component dimensions are in [components](../design/components.md). The timeline's own gestures are in [timeline-guide](timeline-guide.md).
 

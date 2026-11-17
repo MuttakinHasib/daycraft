@@ -1,6 +1,6 @@
 # Product overview
 
-> Shared with the mobile repo (`mobile.daycraft.com`). Keep both copies identical except for platform notes like this one. On the web: “tap” means click or keyboard activation, phone **sheets** become the right-hand **detail panel** or centered dialogs, and Browse items live in the sidebar.
+> Has a mobile counterpart in `apps/mobile/docs/product/`. Keep both in step except for platform notes like this one. On the web: “tap” means click or keyboard activation, phone **sheets** become the right-hand **detail panel** or centered dialogs, and Browse items live in the sidebar.
 
 ## What Daycraft is
 
@@ -63,7 +63,7 @@ Every one of these gives visible feedback (toast, state change, or animation). S
 
 ## Vocabulary
 
-Use these exact terms in code, UI copy, issues and tests. The vocabulary lives in the root [`GLOSSARY.md`](../../GLOSSARY.md), which is the canonical reference (see `docs/agents/domain.md` for the rules).
+Use these exact terms in code, UI copy, issues and tests. The vocabulary lives in the monorepo root [`GLOSSARY.md`](../../../../GLOSSARY.md), which is the canonical reference (see the root [`docs/agents/domain.md`](../../../../docs/agents/domain.md) for the rules).
 
 ## Domain model (from the prototype)
 

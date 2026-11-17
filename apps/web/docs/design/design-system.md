@@ -1,6 +1,6 @@
 # Design system: tokens
 
-[reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is the token file for this app. Wire it into `src/app/globals.css` first (see [status](../status-and-decisions.md#first-implementation-steps-in-order)). Everything below describes those tokens. The mobile repo implements the same names and values with Uniwind.
+[reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is the token file for this app. Wire it into `src/app/globals.css` first (see [status](../status-and-decisions.md#first-implementation-steps-in-order)). Everything below describes those tokens. `apps/mobile` implements the same names and values with Uniwind.
 
 Rule: **feature code uses token classes only.** None of the following:
 
@@ -140,7 +140,7 @@ Wrap movement in `motion-safe:`, or disable it under `prefers-reduced-motion` (s
   - 18 for nav items, panel rows and icon buttons;
   - 15–17 in buttons and chips;
   - 12–13 in tags.
-- The library is open decision W4. Icon names are listed in the mobile repo's design-system doc and on the Design system board.
+- The library is open decision W4. Icon names are listed in `apps/mobile/docs/design/design-system.md` and on the Design system board.
 - No emoji in UI.
 
 ## Brand

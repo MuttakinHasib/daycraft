@@ -2,10 +2,7 @@
 
 This is the one place that records where the code, the tokens and the design disagree, and what is decided versus still open. Other docs link here instead of repeating it. Update it whenever you close or discover a gap.
 
-Last reviewed against commit `43ba9e8` (“Add the ESLint config and fix template lint and type errors”). At that commit:
-
-- `npx tsc --noEmit` passed.
-- `eslint .` passed (the same config `npx expo lint` uses).
+Last reviewed 2026-11-17, after the move into the monorepo: `bun run check-types` and `bun run lint` pass, and `bunx expo export --platform ios` bundles.
 
 ## Sources of truth (in priority order)
 
@@ -25,6 +22,7 @@ The canvas page "v1 · Original" is **superseded**. Do not copy values from it.
 
 | Area | State |
 |---|---|
+| Monorepo: this app is `apps/mobile` (`@daycraft/mobile`) in the Daycraft Turborepo, with bun workspaces and one root `bun.lock`. Scaffolded with `create-turbo`; history imported with `git subtree`. New root dev dependencies: `turbo` (task runner and cache), `prettier` (from the scaffold). | Done 2026-11-17. `turbo run build check-types lint` passes and the iOS export matches the pre-move bundle. |
 | Uniwind + Tailwind v4 pipeline (`metro.config.js`, `src/global.css`) | Done |
 | Semantic light/dark tokens, activity hues, radii, type sizes | Done (v1.0 values, see gaps) |
 | Plus Jakarta Sans (Regular, SemiBold, Bold, ExtraBold) via `expo-font` plugin | Done |
@@ -72,9 +70,9 @@ When you implement a v1.1 token, also replace the arbitrary values it replaces (
 | ID | Question | Options | Current lean |
 |---|---|---|---|
 | D1 | Tab bar | (a) `expo-router/native-tabs` (native iOS tab bar, Liquid Glass) for Inbox · Today · Calendar · Browse, plus a separate floating **+** button. (b) Custom floating pill tab bar exactly like the prototype. | Undecided. The prototype's pill bar plus the round + button is the design reference. Native tabs match platform conventions. Decide before building navigation. |
-| D2 | Persistence / backend | Local-first store (e.g. SQLite via `expo-sqlite`) vs remote API + cache | Undecided. Keep domain logic pure so either works. |
-| D3 | Web / desktop | This repo is the **mobile** app (`mobile.daycraft.com`). The desktop design (prototype "Desktop 1440/768/1920") is planned as a separate Next.js app sharing the same tokens. `app.json` still has an Expo web target from the template. | Treat Expo web as a dev convenience, not a product surface, until decided. |
+| D2 | Persistence / backend | Local-first store (e.g. SQLite via `expo-sqlite`) vs remote API + cache | Proposed, not accepted: offline-first `expo-sqlite` + Drizzle, syncing to a Hono API on Cloudflare (root [architecture-plan](../../../docs/architecture-plan.md)). Keep domain logic pure until it is accepted. |
+| D3 | Web / desktop | This app is the **mobile** app (`apps/mobile`). The desktop design (prototype "Desktop 1440/768/1920") is the Next.js app in `apps/web`, sharing the same tokens. `app.json` still has an Expo web target from the template. | Decided: desktop and tablet are `apps/web`. Treat Expo web as a dev convenience, not a product surface. |
 | D4 | Icon set | Prototype icons are 24px, 1.9px stroke, round caps and joins. The template uses `expo-symbols` (SF Symbols). | Undecided. Whatever is chosen must match stroke weight and optical size across the app. |
 | D5 | Delete confirmation | Prototype deletes immediately with a toast | Proposed: toast with **Undo** (5s) instead of a confirm dialog |
 
-Record each resolved decision as an ADR in `docs/adr/` (see `docs/agents/domain.md`) and update this table.
+Record each resolved decision as an ADR in the monorepo root `docs/adr/` (see the root `docs/agents/domain.md`) and update this table.

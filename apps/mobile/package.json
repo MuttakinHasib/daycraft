@@ -1,5 +1,5 @@
 {
-  "name": "daycraft_app",
+  "name": "@daycraft/mobile",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
@@ -37,6 +37,8 @@
   },
   "scripts": {
     "start": "expo start",
+    "dev": "expo start",
+    "check-types": "tsc --noEmit",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",

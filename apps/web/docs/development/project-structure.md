@@ -1,17 +1,17 @@
 # Project structure
 
-## Current tree (commit `d2c5688`)
+## Current tree (`apps/web`, 2026-11-17)
 
 ```text
 .
-├── AGENTS.md              # agent entry point (contains next-managed blocks)
+├── AGENTS.md              # agent entry point (CLAUDE.md imports it; contains next-managed blocks)
+├── package.json           # @daycraft/web; scripts dev, build, check-types, lint
 ├── next.config.ts         # cacheComponents, partialPrefetching, reactCompiler, agentFeedback, Tailwind turbopack loader
 ├── eslint.config.mjs      # next core-web-vitals + typescript
 ├── tsconfig.json          # strict, @/* → src/*
 ├── public/                # template SVGs (next, vercel, file, globe, window): replace with Daycraft assets
 ├── docs/
-│   ├── agents/            # issue tracker, triage labels, domain-docs conventions
-│   ├── product/           # product overview, navigation, timeline, interactions (mirrored in mobile repo)
+│   ├── product/           # product overview, navigation, timeline, interactions (mobile counterpart in apps/mobile)
 │   ├── design/            # tokens, type, spacing, components, theming, responsive, a11y
 │   │   └── reference/     # design system v1.1 CSS (the tokens to wire into globals.css)
 │   ├── development/       # architecture, structure, conventions, testing
@@ -23,7 +23,7 @@
     └── favicon.ico        # template
 ```
 
-Not present yet: `GLOSSARY.md` and `docs/adr/` (created lazily, see `docs/agents/domain.md`), and `.scratch/` (the issue tracker).
+`GLOSSARY.md`, `docs/agents/`, `docs/adr/` (created lazily) and `.scratch/` (the issue tracker, created lazily) live at the monorepo root, not in this app.
 
 ## Target structure (grow into it; no empty scaffolding)
 

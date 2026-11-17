@@ -2,11 +2,11 @@
 
 ## Checks that exist today
 
-| Check | Command | Status at `43ba9e8` |
+| Check | Command | Status (2026-11-17) |
 |---|---|---|
-| Typecheck | `npx tsc --noEmit` | passes |
-| Lint | `npx expo lint` (ESLint 9, `eslint-config-expo`) | passes |
-| Dependency health | `npx expo-doctor` | run when you add or upgrade packages |
+| Typecheck | `bun run check-types` (`tsc --noEmit`) | passes |
+| Lint | `bun run lint` (`expo lint`, ESLint 9, `eslint-config-expo`) | passes |
+| Dependency health | `bunx expo-doctor` (3 checks error under bun: they shell out to `npm explain`) | run when you add or upgrade packages |
 
 **Run typecheck and lint before calling any task done.** Report the actual output.
 
@@ -24,7 +24,7 @@ There is no test runner in `package.json`. The first task that adds testable dom
 | Components | `@testing-library/react-native` | Primitives' roles and states (`Chip` selected, `CheckRing` checked, `Button` disabled); editor validation keeps the sheet open; toasts appear. |
 | End-to-end | Maestro (proposed; check Expo's current recommendation) | The 12 workflows in [product-overview](../product/product-overview.md#key-user-workflows). Minimum: create task, complete, edit, reschedule via the editor, habit check-in, add routine, start and end focus, switch theme. |
 
-Add the setup with `npx expo install`, follow the SDK 58 docs, and add an `npm test` script. Then update this table.
+Add the setup with `bunx expo install`, follow the SDK 58 docs, and add a `test` script (Turborepo runs it as a task). Then update this table.
 
 Rules once tests exist:
 

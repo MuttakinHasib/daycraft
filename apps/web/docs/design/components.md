@@ -1,6 +1,6 @@
 # Components
 
-No Daycraft components exist in this repo yet. Build them in `src/components/ui/` as they are first needed, to these specs (taken from the prototype and from the `@layer components` in the [reference CSS](reference/daycraft-tailwind-v1.1.css)). Keep the API aligned with the mobile repo's primitives (`Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`) so both apps speak the same component language.
+No Daycraft components exist in this app yet. Build them in `src/components/ui/` as they are first needed, to these specs (taken from the prototype and from the `@layer components` in the [reference CSS](reference/daycraft-tailwind-v1.1.css)). Keep the API aligned with `apps/mobile`'s primitives (`Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`) so both apps speak the same component language.
 
 Conventions:
 

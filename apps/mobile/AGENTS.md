@@ -1,4 +1,6 @@
-This is **Daycraft**, an Expo/React Native app (iPhone first, Android second) for planning your day on a visual timeline. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+# Daycraft mobile
+
+This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root rules in [../../AGENTS.md](../../AGENTS.md)), an Expo/React Native app (iPhone first, Android second) for planning your day on a visual timeline. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
 > Read this file first, then the guide for the area you are touching (table below). If a guide disagrees with the code, check [docs/status-and-decisions.md](docs/status-and-decisions.md) — it records every known discrepancy and which side is the source of truth.
 
@@ -11,12 +13,7 @@ This is **Daycraft**, an Expo/React Native app (iPhone first, Android second) fo
   - Design-system reference: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css).
   - Interactive prototype: the "Daycraft" design canvas, page **v2 · Refined**. Every screen and interaction in the docs was taken from it.
   - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots of every phone screen and sheet (light and dark), plus a runnable offline prototype (`prototype/phone-dark.html`). Look at the screenshot of a screen before building it.
-- **What exists in code today:**
-  - Tokens and fonts are wired up.
-  - The Uniwind theme is wired into the app root.
-  - UI primitives live in `src/components/ui/`: `Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`, `Sheet`, `SectionLabel`, plus `hues.ts` for the nine activity hues.
-  - The two screens are still the Expo starter template.
-  - Status: [docs/status-and-decisions.md](docs/status-and-decisions.md).
+- **What exists in code today:** tokens, fonts, the Uniwind theme and the first UI primitives (`src/components/ui/`). Screens are still the Expo starter. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 
 ## Non-negotiables
 
@@ -30,7 +27,7 @@ This is **Daycraft**, an Expo/React Native app (iPhone first, Android second) fo
 
 ## Workflow for every task
 
-1. Understand the request. Read the matching issue in `.scratch/<feature-slug>/` if there is one.
+1. Understand the request. Read the matching issue in the root `.scratch/<feature-slug>/` if there is one.
 2. Read the guide(s) for the area and the related prototype screen.
 3. Inspect existing code: routes in `src/app/`, primitives in `src/components/ui/`, tokens in `src/global.css`.
 4. Identify reusable components, tokens and helpers. Plan the smallest change that fits the existing architecture.
@@ -39,7 +36,7 @@ This is **Daycraft**, an Expo/React Native app (iPhone first, Android second) fo
    - Light and dark themes.
    - iPhone 390×844 and 375×812 (plus iPad if the screen supports it).
    - Accessibility labels and roles.
-7. Run `npx tsc --noEmit` and `npx expo lint`, plus tests once they exist. Report the real results.
+7. Run `bun run check-types` and `bun run lint` (in `apps/mobile`), or `bunx turbo run check-types lint` from the root, plus tests once they exist. Report the real results.
 8. If you changed an established pattern or a token, update the relevant doc in the same change.
 
 ## Guides
@@ -74,16 +71,18 @@ The same applies to **Uniwind** (`uniwind` 1.13) — check https://docs.uniwind.
 
 ## Commands
 
-This repo uses **npm** (`package-lock.json`).
+This app is the `@daycraft/mobile` workspace in the Daycraft Turborepo (`apps/mobile`). The monorepo uses **bun** (one `bun.lock` at the root). `npx` refuses to run here because the root `package.json` declares bun in `devEngines`, so use `bunx`. Run these inside `apps/mobile`:
 
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+bunx expo install <package>  # ALWAYS use instead of bun/npm add — resolves SDK-compatible versions
+bunx expo start              # start the dev server (or `bun run dev`)
+bun run lint                 # expo lint
+bun run check-types          # tsc --noEmit
+bunx expo-doctor             # diagnose dependency and config issues
+bunx expo install --fix      # fix incompatible package versions
 ```
+
+From the repo root, `bunx turbo run check-types lint` checks every workspace with caching.
 
 Run lint and typecheck before declaring any task done. Restart Metro after changing `metro.config.js` or adding theme variants in `global.css`.
 
@@ -96,36 +95,26 @@ Run lint and typecheck before declaring any task done. Restart Metro after chang
 
 ## Building with EAS
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `npx eas-cli@latest <command>`; substitute that for bare `eas` in docs examples.
+Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli@latest <command>`; substitute that for bare `eas` in docs examples.
 Docs: https://docs.expo.dev/eas/index.md
 
 ## Rules
 
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
+- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `bunx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
 - `src/uniwind-types.d.ts` is generated by Uniwind — do not edit it.
 - The React Compiler is enabled (`experiments.reactCompiler`). Do not add `useMemo`/`useCallback`/`memo` by reflex; add them only for a measured problem or a referential-identity requirement.
 
-## Agent skills
+## Agent skills and shared docs
 
-### Issue tracker
-
-Issues live as local markdown files under `.scratch/<feature-slug>/` in this repo. See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-The five canonical triage roles map 1:1 to labels of the same name (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root; `docs/adr/` is created lazily. See `docs/agents/domain.md`. Root [`GLOSSARY.md`](GLOSSARY.md) is the vocabulary reference. Use those exact terms.
+Configured once at the monorepo root; see the root [`AGENTS.md`](../../AGENTS.md#agent-skills). Issues live in the root `.scratch/`, the vocabulary is the root [`GLOSSARY.md`](../../GLOSSARY.md) (use those exact terms), and ADRs go in the root `docs/adr/`. The cross-app architecture plan is [docs/architecture-plan.md](../../docs/architecture-plan.md).
 
 ## Keeping these docs true
 
 - New reusable UI patterns must follow the design system. Add them to [components](docs/design/components.md).
-- Token names and values are shared with the web repo (`web.daycraft.com`, `src/app/globals.css`); change both together. Product docs in `docs/product/` are mirrored there too.
+- Token names and values are shared with the web app (`apps/web/src/app/globals.css`); change both together. Product docs in `docs/product/` have a web counterpart in `apps/web/docs/product/` with platform-specific differences; update both when the product changes.
 - Any token change in `src/global.css` must update [design-system](docs/design/design-system.md) / [typography](docs/design/typography.md) and, if it diverges from the reference CSS, [status-and-decisions](docs/status-and-decisions.md).
-- New architectural conventions go in [architecture](docs/development/architecture.md) (and an ADR in `docs/adr/` when it is a real decision).
+- New architectural conventions go in [architecture](docs/development/architecture.md) (and an ADR in the root `docs/adr/` when it is a real decision).
 - Never silently introduce a convention that conflicts with these docs. Raise it, then update the doc.
 - Preserve existing working behavior unless the task explicitly asks to change it.

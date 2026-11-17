@@ -35,5 +35,5 @@ Decision W2 ([status](../status-and-decisions.md#open-decisions)). Whichever opt
 ## Changing a token
 
 1. Change it in both `:root` and `.dark` (or in `@theme` if it is theme-independent).
-2. Make the **same change in the mobile repo's `src/global.css`**, where the names are prefixed `--color-*` inside Uniwind `@variant light/dark`.
+2. Make the **same change in `apps/mobile/src/global.css`**, where the names are prefixed `--color-*` inside Uniwind `@variant light/dark`.
 3. Update [design-system](design-system.md). Record any temporary divergence in [status-and-decisions](../status-and-decisions.md).

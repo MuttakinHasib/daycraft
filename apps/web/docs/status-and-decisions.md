@@ -2,10 +2,7 @@
 
 The one place that records where code, tokens and design disagree, and what is decided versus open. Other docs link here. Update it when you close or discover a gap.
 
-Last reviewed against commit `d2c5688` (“Initial commit from Create Next App”). At that commit:
-
-- `npx tsc --noEmit` passed.
-- `eslint .` passed.
+Last reviewed 2026-11-17, after the move into the monorepo: `bun run check-types`, `bun run lint` and `bun run build` pass.
 
 ## Sources of truth (in priority order)
 
@@ -15,7 +12,7 @@ Last reviewed against commit `d2c5688` (“Initial commit from Create Next App�
    - Mirrored as CSS in [design/reference/daycraft-tailwind-v1.1.css](design/reference/daycraft-tailwind-v1.1.css).
    - This file was written for exactly this stack (Tailwind v4 on the web, `.dark` class), so it can become `globals.css` almost verbatim.
 3. **Desktop prototype**: canvas boards “v2 · Desktop 1440”, “v2 · Tablet 768”, “v2 · Large desktop 1920 · light”. Phone boards (“v2 · iPhone …”) define the modules the desktop has not designed yet. All of them are exported as screenshots and a runnable prototype in [design/reference/](design/reference/README.md).
-4. **The mobile repo** (`mobile.daycraft.com`) shares token names, values, product behavior and vocabulary. If the two repos disagree on a token, design system v1.1 wins and the other repo gets fixed.
+4. **The mobile app** (`apps/mobile`) shares token names, values, product behavior and vocabulary. If the two apps disagree on a token, design system v1.1 wins and the other app gets fixed.
 
 The canvas page “v1 · Original” is superseded. Do not copy values from it.
 
@@ -23,6 +20,7 @@ The canvas page “v1 · Original” is superseded. Do not copy values from it.
 
 | Area | State |
 |---|---|
+| Monorepo: this app is `apps/web` (`@daycraft/web`) in the Daycraft Turborepo, with bun workspaces and one root `bun.lock`. ESLint now ignores `docs/**` (vendored prototype bundles failed lint). | Done 2026-11-17. `turbo run build check-types lint` passes. |
 | Next.js 16.4 App Router, React 19.3, TypeScript strict, `@/*` → `src/*` | Done (template) |
 | Tailwind v4 via the `@tailwindcss/turbopack` loader in `next.config.ts` (no PostCSS config) | Done (template) |
 | `cacheComponents`, `partialPrefetching`, `reactCompiler`, `experimental.agentFeedback` | Enabled in `next.config.ts` |
@@ -48,13 +46,13 @@ The canvas page “v1 · Original” is superseded. Do not copy values from it.
 
 | ID | Question | Options | Current lean |
 |---|---|---|---|
-| W1 | Data & mutations | Server Components + Server Actions against a backend, a client data library against an API, or local-first in the browser | Undecided. It must match the mobile app's choice (mobile D2). Keep domain logic pure so either works. |
+| W1 | Data & mutations | Server Components + Server Actions against a backend, a client data library against an API, or local-first in the browser | Proposed, not accepted: static export + TanStack Query against the shared Hono API (root [architecture-plan](../../../docs/architecture-plan.md)). Must match mobile D2. Keep domain logic pure until it is accepted. |
 | W2 | Theme persistence | `localStorage` + inline pre-paint script, or a cookie read on the server | Proposed: cookie, so the server renders the right class without a flash (see [theming](design/theming.md)). |
 | W3 | Widths below 768 | The web app is designed for 768–1920. Below 768: reuse the phone layouts, or show a reduced layout plus a prompt to use the app | Undecided. Pages must still not break or overflow horizontally at 375. |
 | W4 | Icon set | Prototype icons are 24 grid, 1.9 stroke, round caps (close to Lucide) | Undecided. Must stay consistent with the mobile app's choice (mobile D4). |
 | W5 | Desktop screens other than Today | Only Today is designed for desktop | Proposed: reuse the sidebar + main + right-panel pattern; phone sheets become the right panel or centered dialogs. Design review required per screen. |
 | W6 | Delete confirmation | Prototype deletes immediately with a toast | Proposed: toast with Undo (shared with mobile D5). |
 | W8 | Keyboard rescheduling on desktop | The desktop detail panel has Duration but no start-time stepper | Required before launch: add the −15 / +15 stepper (as in the phone editor) or keyboard capsule moves (timeline guide §14). |
-| W7 | Sharing tokens with mobile | Two repos with duplicated token CSS | Proposed: keep both files in sync by hand for now. Revisit a shared package if the duplication causes drift. |
+| W7 | Sharing code and tokens with mobile | Both apps now live in one monorepo, but token CSS and domain logic are still duplicated | Proposed: shared `packages/domain` for pure logic (see the root architecture plan). Token CSS stays in sync by hand until drift shows up. |
 
-Record each resolved decision as an ADR in `docs/adr/` (see `docs/agents/domain.md`) and update this table.
+Record each resolved decision as an ADR in the monorepo root `docs/adr/` (see the root `docs/agents/domain.md`) and update this table.

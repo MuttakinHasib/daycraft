@@ -12,15 +12,17 @@ If any of these files don't exist, **proceed silently**. Don't flag their absenc
 
 ## File structure
 
-Single-context repo (most repos):
+Single-context repo (this repo). Mobile and web are two platforms of one product with one vocabulary, so the glossary and ADRs live once at the monorepo root, not per app:
 
 ```
 /
 ├── GLOSSARY.md
-├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-postgres-for-write-model.md
-└── src/
+├── docs/adr/              ← created lazily
+│   ├── 0001-….md
+│   └── 0002-….md
+└── apps/
+    ├── mobile/            ← app-specific docs only (apps/mobile/docs/)
+    └── web/               ← app-specific docs only (apps/web/docs/)
 ```
 
 Multi-context repo (presence of `GLOSSARY-MAP.md` at the root):

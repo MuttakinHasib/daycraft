@@ -14,9 +14,8 @@
 - `strict`, no `any`. Use `unknown` and narrow it.
 - Avoid `as` casts. Validate external data at the boundary.
 - Explicit return types on exported domain functions.
-- `as const` objects + same-named types instead of `enum` (`ActivityHue`, matching the mobile repo).
 - Discriminated unions for variants and results.
-- Functions with more than two parameters, or two of the same type, take a single object parameter.
+- Parameters and enum-likes follow the root [code rules](../../../../AGENTS.md#code-rules-every-workspace): at most two positional parameters, otherwise one object parameter typed by a named type at the top of the file; const objects instead of `enum`.
 - Use the generated route types (`PageProps`, `LayoutProps`) instead of hand-typing `params` / `searchParams`.
 
 ## React and Next.js
@@ -56,4 +55,4 @@
 
 - Small commits, imperative sentence-case messages (“Add Daycraft tokens to globals.css”).
 - Commit `AGENTS.md` when `next dev` updates its managed blocks (see the block at the top of that file).
-- Work from `.scratch/<feature-slug>/` issues (`docs/agents/issue-tracker.md`) and update their `Status:`.
+- Work from the root `.scratch/<feature-slug>/` issues (root `docs/agents/issue-tracker.md`) and update their `Status:`.

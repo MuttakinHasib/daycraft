@@ -13,8 +13,9 @@
 | Fonts | `expo-font` config plugin | Plus Jakarta Sans ×4 weights |
 | Images / symbols | `expo-image`, `expo-symbols` | Icon library undecided (D4) |
 | Compiler | React Compiler enabled | Do not hand-memoize by default |
-| Lint | ESLint 9 flat config + `eslint-config-expo` | `npx expo lint` |
-| Package manager | npm | `npx expo install` for every dependency |
+| Lint | ESLint 9 flat config + `eslint-config-expo` | `bun run lint` (`expo lint`) |
+| Package manager | bun, in the root Turborepo (`apps/mobile` workspace) | `bunx expo install` for every dependency |
+| Monorepo | Turborepo 2.x on bun workspaces | Root `turbo.json`: `build`, `check-types`, `lint`, `dev` |
 | Tests | none yet | see [testing](testing.md) |
 
 Not chosen yet (do not introduce without a decision recorded in [status-and-decisions](../status-and-decisions.md#open-decisions)):

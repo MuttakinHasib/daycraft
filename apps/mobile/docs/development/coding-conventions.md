@@ -14,9 +14,8 @@
 - `strict` is on. No `any`. Use `unknown` and narrow it.
 - No non-null `!` except where the type system cannot know (document why).
 - Explicit return types on exported domain functions.
-- Enums as `as const` objects + a same-named type (the `ActivityHue` pattern), not TS `enum`.
 - Discriminated unions for variants and results (`{ ok: true } | { ok: false; reason }`, `kind: 'task' | 'event' | 'routine'`).
-- Functions with **more than two parameters, or any two of the same type**, take one object parameter: `findNextFreeSlot({ activities, date, durationMinutes, from })`.
+- Parameters and enum-likes follow the root [code rules](../../../../AGENTS.md#code-rules-every-workspace): at most two positional parameters, otherwise one object parameter typed by a named type at the top of the file (`findNextFreeSlot(input: FindNextFreeSlotInput)`); const objects instead of `enum`.
 - IDs are opaque strings. Do not encode meaning in them.
 
 ## React / React Native
@@ -52,11 +51,11 @@
 
 ## Dependencies
 
-- Add with `npx expo install <pkg>`.
+- Add with `bunx expo install <pkg>`, run inside `apps/mobile`.
 - Every new dependency needs a reason in the issue or PR: what it replaces, why the standard library or Expo modules are not enough, and that it supports the New Architecture and SDK 58.
 - Prefer Expo modules. Native modules require a development build: note this in the PR.
 
 ## Git and issues
 
 - Small commits with imperative, sentence-case messages, as in the existing history (“Add Daycraft UI primitives”).
-- Work from `.scratch/<feature>/` issues when they exist (`docs/agents/issue-tracker.md`). Update the issue's `Status:` line.
+- Work from the root `.scratch/<feature>/` issues when they exist (root `docs/agents/issue-tracker.md`). Update the issue's `Status:` line.

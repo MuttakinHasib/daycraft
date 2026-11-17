@@ -1,6 +1,6 @@
 # Timeline guide
 
-> Shared with the web repo (`web.daycraft.com`). Keep both copies identical except for platform notes.
+> Has a web counterpart in `apps/web/docs/product/`. Keep both in step except for platform notes.
 
 The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Refined”, boards “v2 · iPhone 390/375”). Screenshot: [today.png](../design/reference/screens/phone/dark/today.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/phone-dark.html](../design/reference/prototype/phone-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
 

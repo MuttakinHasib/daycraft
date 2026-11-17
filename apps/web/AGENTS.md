@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Daycraft web
 
-This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Router, React 19, Tailwind CSS v4). Daycraft is a calm personal planner whose center is the **Today timeline**. The iPhone/Android app is a separate Expo repo (`mobile.daycraft.com`) that shares the same product, design tokens and vocabulary.
+This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Router, React 19, Tailwind CSS v4). Daycraft is a calm personal planner whose center is the **Today timeline**. The iPhone/Android app is `apps/mobile` in the same monorepo; it shares the product, design tokens and vocabulary. Root rules: [../../AGENTS.md](../../AGENTS.md).
 
 > Do not edit inside the `BEGIN:nextjs-*` / `END:nextjs-*` markers. `next dev` manages those blocks (`agentRules`, and `agentFeedback` because `experimental.agentFeedback` is on). Write everything else outside them.
 
@@ -22,7 +22,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
   - Tokens: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css) (target for `src/app/globals.css`).
   - Desktop prototype: “Daycraft” design canvas, page **v2 · Refined**, boards “Desktop 1440”, “Tablet 768”, “Large desktop 1920”.
   - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots (desktop 1440/768/1920, all phone screens in both themes) and a runnable offline prototype (`prototype/desktop-dark.html`). Look at the screenshot before building a screen.
-- **What exists in code today:** only the `create-next-app` starter (Geist font, template page, template `globals.css`). Nothing Daycraft-specific is implemented yet. See [status-and-decisions](docs/status-and-decisions.md).
+- **What exists in code today:** only the `create-next-app` starter. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 
 ## Non-negotiables
 
@@ -36,7 +36,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 
 ## Workflow for every task
 
-1. Understand the request. Read the issue in `.scratch/<feature-slug>/` if one exists.
+1. Understand the request. Read the issue in the root `.scratch/<feature-slug>/` if one exists.
 2. Read the guide(s) for the area and look at the matching prototype board.
 3. Read the bundled Next.js docs (`node_modules/next/dist/docs/`) for any Next API you touch.
 4. Inspect existing code: routes in `src/app/`, components in `src/components/ui/`, tokens in `src/app/globals.css`.
@@ -46,7 +46,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
    - 1440 and 768 widths (plus 1920 for layout work);
    - keyboard navigation and focus;
    - no console errors.
-7. Run `npx tsc --noEmit` and `npm run lint`. Also run `npm run build` for routing, caching or config changes. Report the real results.
+7. Run `bun run check-types` and `bun run lint`. Also run `bun run build` for routing, caching or config changes. Report the real results.
 8. If you changed an established pattern or token, update the matching doc in the same change.
 
 ## Guides
@@ -71,34 +71,26 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 
 ## Commands
 
-This repo uses **npm** (`package-lock.json`).
+This app is the `@daycraft/web` workspace in the Daycraft Turborepo (`apps/web`). The monorepo uses **bun** (one `bun.lock` at the root). `npx` refuses to run here because the root `package.json` declares bun in `devEngines`, so use `bunx`. Run these inside `apps/web`:
 
 ```bash
-npm run dev         # next dev (also refreshes the managed AGENTS.md blocks)
-npm run build       # production build: catches Cache Components / prerender errors
-npm run lint        # eslint (eslint-config-next core-web-vitals + typescript)
-npx tsc --noEmit    # typecheck
-npm install <pkg>   # only with a written reason (see coding-conventions)
+bun run dev           # next dev (also refreshes the managed AGENTS.md blocks)
+bun run build         # production build: catches Cache Components / prerender errors
+bun run lint          # eslint (eslint-config-next core-web-vitals + typescript)
+bun run check-types   # next typegen && tsc --noEmit
+bun add <pkg>         # only with a written reason (see coding-conventions)
 ```
 
-## Agent skills
+From the repo root, `bunx turbo run build check-types lint` checks every workspace with caching.
 
-### Issue tracker
+## Agent skills and shared docs
 
-Issues live as local markdown files under `.scratch/<feature-slug>/` in this repo. See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-Five canonical triage roles with their default label strings. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context: root `GLOSSARY.md` + `docs/adr/`; `docs/adr/` is created lazily. See `docs/agents/domain.md`. Root [`GLOSSARY.md`](GLOSSARY.md) is the vocabulary reference. Use those exact terms.
+Configured once at the monorepo root; see the root [`AGENTS.md`](../../AGENTS.md#agent-skills). Issues live in the root `.scratch/`, the vocabulary is the root [`GLOSSARY.md`](../../GLOSSARY.md) (use those exact terms), and ADRs go in the root `docs/adr/`. The cross-app architecture plan is [docs/architecture-plan.md](../../docs/architecture-plan.md).
 
 ## Keeping these docs true
 
 - New reusable UI patterns must follow the design system and be added to [components](docs/design/components.md).
-- Token changes must update [design-system](docs/design/design-system.md) / [typography](docs/design/typography.md), and **the mobile repo's `src/global.css` too**. Token names and values are shared.
-- Product docs (`docs/product/`) are mirrored in the mobile repo. When the product changes, update both.
-- New architectural conventions go in [architecture](docs/development/architecture.md), with an ADR in `docs/adr/` for real decisions.
+- Token changes must update [design-system](docs/design/design-system.md) / [typography](docs/design/typography.md), and **`apps/mobile/src/global.css` too**. Token names and values are shared.
+- Product docs (`docs/product/`) have a mobile counterpart in `apps/mobile/docs/product/` with platform-specific differences. When the product changes, update both.
+- New architectural conventions go in [architecture](docs/development/architecture.md), with an ADR in the root `docs/adr/` for real decisions.
 - Never silently introduce a conflicting convention. Preserve existing behavior unless the task explicitly asks to change it.

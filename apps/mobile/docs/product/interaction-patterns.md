@@ -1,6 +1,6 @@
 # Interaction patterns
 
-> Shared with the web repo (`web.daycraft.com`). Keep both copies identical except for platform notes.
+> Has a web counterpart in `apps/web/docs/product/`. Keep both in step except for platform notes.
 
 The shared behaviors every screen uses. Component dimensions are in [components](../design/components.md). The timeline's own gestures are in [timeline-guide](timeline-guide.md).
 
