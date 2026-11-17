@@ -1,35 +1,84 @@
-import type { ReactNode } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { springs } from '@daycraft/design-tokens';
+import { useEffect, useState } from 'react';
+import { Pressable, Text, View, type LayoutChangeEvent } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-interface SegmentedProps {
-  children: ReactNode;
+import { cn } from '@/lib/cn';
+
+interface SegmentedOption<TValue extends string> {
+  value: TValue;
+  label: string;
 }
 
-export function Segmented({ children }: SegmentedProps) {
-  return <View className="segmented">{children}</View>;
+interface SegmentedProps<TValue extends string> {
+  options: readonly SegmentedOption<TValue>[];
+  value: TValue;
+  onChange: (value: TValue) => void;
+  /** Names the control for screen readers, e.g. "Task filter". */
+  accessibilityLabel: string;
 }
 
-interface SegmentedButtonProps {
-  selected?: boolean;
-  onPress?: () => void;
-  children: ReactNode;
-}
+// Must match the track's p-0.75 and gap-0.5.
+const TRACK_PADDING = 3;
+const SEGMENT_GAP = 2;
 
-export function SegmentedButton({ selected = false, onPress, children }: SegmentedButtonProps) {
+/** A segmented control: options in, the selected value out. The selection springs between options. */
+export function Segmented<TValue extends string>({ options, value, onChange, accessibilityLabel }: SegmentedProps<TValue>) {
+  const [segmentWidth, setSegmentWidth] = useState(0);
+  const offset = useSharedValue(0);
+  const selectedIndex = Math.max(
+    0,
+    options.findIndex((option) => option.value === value),
+  );
+  const targetOffset = selectedIndex * (segmentWidth + SEGMENT_GAP);
+
+  useEffect(() => {
+    if (segmentWidth > 0) offset.set(withSpring(targetOffset, springs.snap));
+  }, [offset, segmentWidth, targetOffset]);
+
+  const onTrackLayout = (event: LayoutChangeEvent) => {
+    const inner = event.nativeEvent.layout.width - TRACK_PADDING * 2 - SEGMENT_GAP * (options.length - 1);
+    const width = inner / options.length;
+    // The first measurement places the selection without animating it in from the left.
+    offset.set(selectedIndex * (width + SEGMENT_GAP));
+    setSegmentWidth(width);
+  };
+
+  const indicatorStyle = useAnimatedStyle(() => ({
+    width: segmentWidth,
+    transform: [{ translateX: offset.get() }],
+  }));
+
   return (
-    <Pressable
-      accessibilityRole="tab"
-      accessibilityState={{ selected }}
-      data-pressed={selected}
-      onPress={onPress}
-      className="flex h-8 flex-1 items-center justify-center rounded-[10px] data-[pressed=true]:bg-elevated"
+    <View
+      accessibilityRole="tablist"
+      accessibilityLabel={accessibilityLabel}
+      onLayout={onTrackLayout}
+      className="flex-row gap-0.5 rounded-tile bg-sunken p-0.75"
     >
-      <Text
-        data-pressed={selected}
-        className="text-[13px] font-sans-semibold text-ink-muted data-[pressed=true]:text-ink"
-      >
-        {children}
-      </Text>
-    </Pressable>
+      {segmentWidth > 0 && (
+        <Animated.View
+          style={indicatorStyle}
+          className="absolute top-0.75 bottom-0.75 left-0.75 rounded-segment bg-elevated shadow-sm"
+        />
+      )}
+      {options.map((option) => {
+        const selected = option.value === value;
+        return (
+          <Pressable
+            key={option.value}
+            accessibilityRole="tab"
+            accessibilityState={{ selected }}
+            hitSlop={{ top: 6, bottom: 6 }}
+            onPress={() => onChange(option.value)}
+            className="h-8 flex-1 items-center justify-center"
+          >
+            <Text className={cn('type-control', { 'text-ink-muted': !selected, 'text-ink': selected })}>
+              {option.label}
+            </Text>
+          </Pressable>
+        );
+      })}
+    </View>
   );
 }

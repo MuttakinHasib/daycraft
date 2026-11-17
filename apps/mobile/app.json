@@ -8,7 +8,8 @@
     "scheme": "daycraftapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.muttakinhasib.daycraft-app"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,17 +32,6 @@
           "backgroundColor": "#208AEF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
-        }
-      ],
-      [
-        "expo-font",
-        {
-          "font": {
-            "PlusJakartaSans-Regular": "./assets/fonts/PlusJakartaSans-Regular.ttf",
-            "PlusJakartaSans-SemiBold": "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
-            "PlusJakartaSans-Bold": "./assets/fonts/PlusJakartaSans-Bold.ttf",
-            "PlusJakartaSans-ExtraBold": "./assets/fonts/PlusJakartaSans-ExtraBold.ttf"
-          }
         }
       ]
     ],

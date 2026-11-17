@@ -1,23 +1,36 @@
-import type { ReactNode } from 'react';
+import { ActivityHue } from '@daycraft/domain';
 import { Pressable } from 'react-native';
+
+import { cn } from '@/lib/cn';
+
+import { ActivityHueBackground, ActivityHueBorder } from './hues';
+import { Icon } from './icon';
 
 interface CheckRingProps {
   checked?: boolean;
+  /** The activity's hue: the ring is drawn in it and fills with it when done. */
+  hue?: ActivityHue;
   onPress?: () => void;
-  children?: ReactNode;
+  /** "Complete: {title}" or "Mark not done: {title}". */
+  accessibilityLabel: string;
 }
 
-export function CheckRing({ checked = false, onPress, children }: CheckRingProps) {
+/** 24pt ring with a 44pt touch target. */
+export function CheckRing({ checked = false, hue = ActivityHue.SAGE, onPress, accessibilityLabel }: CheckRingProps) {
   return (
     <Pressable
       accessibilityRole="checkbox"
       accessibilityState={{ checked }}
-      data-checked={checked}
-      hitSlop={9}
+      accessibilityLabel={accessibilityLabel}
+      hitSlop={10}
       onPress={onPress}
-      className="relative flex size-[26px] items-center justify-center rounded-full border-2 border-ink-subtle data-[checked=true]:border-success"
+      className={cn(
+        'size-6 items-center justify-center rounded-full border-2 active:opacity-80',
+        ActivityHueBorder[hue],
+        { [ActivityHueBackground[hue]]: checked },
+      )}
     >
-      {children}
+      {checked && <Icon name="check" size={14} strokeWidth={3.2} colorClassName="text-white" />}
     </Pressable>
   );
 }

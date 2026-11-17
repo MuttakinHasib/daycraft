@@ -1,9 +1,9 @@
+import { durations, easing } from '@daycraft/design-tokens';
 import type { ReactNode } from 'react';
-import Animated, { Easing, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, withTiming, type EntryExitAnimationFunction } from 'react-native-reanimated';
 
-import type { EntryExitAnimationFunction } from 'react-native-reanimated';
+const snap = Easing.bezier(...easing.snap);
 
-// Web equivalent: --animate-sheet-up: sheet-up 0.34s var(--ease-snap)
 const sheetUp: EntryExitAnimationFunction = () => {
   'worklet';
   return {
@@ -12,10 +12,8 @@ const sheetUp: EntryExitAnimationFunction = () => {
       transform: [{ translateY: 48 }],
     },
     animations: {
-      opacity: withTiming(1, { duration: 220 }),
-      transform: [
-        { translateY: withTiming(0, { duration: 340, easing: Easing.bezier(0.2, 0.9, 0.25, 1) }) },
-      ],
+      opacity: withTiming(1, { duration: durations.fadeIn }),
+      transform: [{ translateY: withTiming(0, { duration: durations.sheetUp, easing: snap }) }],
     },
   };
 };

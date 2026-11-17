@@ -1,57 +1,29 @@
+import { semanticColors, type SemanticColor } from '@daycraft/design-tokens';
+import { ColorScheme, isThemePreference, ThemePreference } from '@daycraft/domain';
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import type { ReactNode } from 'react';
-import { useCSSVariable, useUniwind } from 'uniwind';
+import { Storage } from 'expo-sqlite/kv-store';
+import { createContext, use, useLayoutEffect, useState, type ReactNode } from 'react';
+import { Uniwind, useUniwind } from 'uniwind';
 
-/**
- * The one theme module. Uniwind decides light or dark (following the OS, or a theme set
- * through Uniwind.setTheme); everything that cannot take a className — the navigation
- * theme, the status bar, native APIs — reads the scheme and colors from here, never from
- * React Native's useColorScheme or hand-copied hex values.
- */
+// Uniwind applies the saved preference to every className; code that cannot take a className
+// reads the scheme and token values from here, never from React Native's useColorScheme.
 
-export const ColorScheme = {
-  LIGHT: 'light',
-  DARK: 'dark',
-} as const;
+const THEME_PREFERENCE_KEY = 'daycraft.theme-preference';
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
-export type ColorScheme = (typeof ColorScheme)[keyof typeof ColorScheme];
-
-export interface ThemeColors {
-  canvas: string;
-  surface: string;
-  sunken: string;
-  elevated: string;
-  line: string;
-  ink: string;
-  inkMuted: string;
-  accent: string;
-  onAccent: string;
+interface ThemePreferenceState {
+  preference: ThemePreference;
+  setPreference: (preference: ThemePreference) => void;
 }
 
 interface AppThemeProps {
   children: ReactNode;
 }
 
-// Each variable must also be used by some className, or Uniwind cannot resolve it.
-const COLOR_VARIABLES = [
-  '--color-canvas',
-  '--color-surface',
-  '--color-sunken',
-  '--color-elevated',
-  '--color-line',
-  '--color-ink',
-  '--color-ink-muted',
-  '--color-accent',
-  '--color-on-accent',
-] as const;
+const ThemePreferenceContext = createContext<ThemePreferenceState | null>(null);
 
-function toColor(value: string | number | undefined, variable: string): string {
-  if (typeof value !== 'string') {
-    throw new Error(`Theme color ${variable} did not resolve. Use it in a className so Uniwind keeps it.`);
-  }
-  return value;
+function readStoredPreference(): ThemePreference {
+  const stored = Storage.getItemSync(THEME_PREFERENCE_KEY);
+  return isThemePreference(stored) ? stored : ThemePreference.SYSTEM;
 }
 
 export function useColorScheme(): ColorScheme {
@@ -59,26 +31,42 @@ export function useColorScheme(): ColorScheme {
   return theme === ColorScheme.DARK ? ColorScheme.DARK : ColorScheme.LIGHT;
 }
 
-export function useThemeColors(): ThemeColors {
-  const [canvas, surface, sunken, elevated, line, ink, inkMuted, accent, onAccent] =
-    useCSSVariable([...COLOR_VARIABLES]);
-  return {
-    canvas: toColor(canvas, '--color-canvas'),
-    surface: toColor(surface, '--color-surface'),
-    sunken: toColor(sunken, '--color-sunken'),
-    elevated: toColor(elevated, '--color-elevated'),
-    line: toColor(line, '--color-line'),
-    ink: toColor(ink, '--color-ink'),
-    inkMuted: toColor(inkMuted, '--color-ink-muted'),
-    accent: toColor(accent, '--color-accent'),
-    onAccent: toColor(onAccent, '--color-on-accent'),
-  };
+/**
+ * Status bar content for the current theme. iOS gives each native-stack screen its own status
+ * bar (view-controller based), so pass this as the Stack's `statusBarStyle` screen option.
+ */
+export function useStatusBarStyle(): 'light' | 'dark' {
+  return useColorScheme() === ColorScheme.DARK ? 'light' : 'dark';
 }
 
-/** Wraps the app: gives React Navigation and the status bar the Daycraft theme. */
+/** Semantic token values for the current theme, for APIs that cannot take a className. */
+export function useThemeColors(): Record<SemanticColor, string> {
+  return semanticColors[useColorScheme()];
+}
+
+/** The saved theme preference and a setter that applies and stores it. */
+export function useThemePreference(): ThemePreferenceState {
+  const state = use(ThemePreferenceContext);
+  if (!state) throw new Error('useThemePreference must be used inside <AppTheme>.');
+  return state;
+}
+
+/** Wraps the app: applies the saved preference and gives navigation the theme. */
 export function AppTheme({ children }: AppThemeProps) {
+  const [preference, setStoredPreference] = useState(readStoredPreference);
+
+  // Before paint, so a saved Light or Dark never flashes the OS scheme first.
+  useLayoutEffect(() => {
+    Uniwind.setTheme(preference);
+  }, [preference]);
+
+  const setPreference = (next: ThemePreference) => {
+    Storage.setItemSync(THEME_PREFERENCE_KEY, next);
+    setStoredPreference(next);
+  };
+
   const scheme = useColorScheme();
-  const colors = useThemeColors();
+  const colors = semanticColors[scheme];
   const base = scheme === ColorScheme.DARK ? DarkTheme : DefaultTheme;
   const navigationTheme: Theme = {
     ...base,
@@ -94,9 +82,8 @@ export function AppTheme({ children }: AppThemeProps) {
   };
 
   return (
-    <ThemeProvider value={navigationTheme}>
-      <StatusBar style={scheme === ColorScheme.DARK ? 'light' : 'dark'} />
-      {children}
-    </ThemeProvider>
+    <ThemePreferenceContext value={{ preference, setPreference }}>
+      <ThemeProvider value={navigationTheme}>{children}</ThemeProvider>
+    </ThemePreferenceContext>
   );
 }

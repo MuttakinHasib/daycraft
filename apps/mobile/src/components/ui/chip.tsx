@@ -1,27 +1,48 @@
-import type { ReactNode } from 'react';
+import type { IconName } from '@daycraft/domain';
 import { Pressable, Text } from 'react-native';
 
+import { cn } from '@/lib/cn';
+
+import { Icon } from './icon';
+
+export const ChipSize = {
+  /** 36 tall. */
+  MD: 'md',
+  /** 32 tall: dense rows such as Plan and Place on list items. */
+  SM: 'sm',
+} as const;
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
+export type ChipSize = (typeof ChipSize)[keyof typeof ChipSize];
+
 interface ChipProps {
-  pressed?: boolean;
+  selected?: boolean;
+  size?: ChipSize;
+  icon?: IconName;
   onPress?: () => void;
-  children: ReactNode;
+  children: string;
 }
 
-export function Chip({ pressed = false, onPress, children }: ChipProps) {
+// Extra touch area so each size reaches the 44pt minimum (36 and 32 tall).
+const CHIP_HIT_SLOP: Record<ChipSize, number> = { md: 4, sm: 6 };
+
+export function Chip({ selected = false, size = ChipSize.MD, icon, onPress, children }: ChipProps) {
+  const textColor = cn({ 'text-ink-muted': !selected, 'text-canvas': selected });
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ selected: pressed }}
-      data-pressed={pressed}
+      accessibilityState={{ selected }}
+      hitSlop={CHIP_HIT_SLOP[size]}
       onPress={onPress}
-      className="chip data-[pressed=true]:bg-ink"
+      className={cn('shrink-0 flex-row items-center self-start rounded-full', {
+        'h-9 gap-1.5 px-4': size === ChipSize.MD,
+        'h-8 gap-1 px-3': size === ChipSize.SM,
+        'bg-sunken': !selected,
+        'bg-ink': selected,
+      })}
     >
-      <Text
-        data-pressed={pressed}
-        className="text-[13px] font-sans-bold text-ink-muted data-[pressed=true]:text-canvas"
-      >
-        {children}
-      </Text>
+      {icon && <Icon name={icon} size={16} colorClassName={textColor} />}
+      <Text className={cn('type-control', textColor)}>{children}</Text>
     </Pressable>
   );
 }

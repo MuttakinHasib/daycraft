@@ -3,7 +3,7 @@ const { withUniwindConfig } = require('uniwind/metro');
 
 const config = getDefaultConfig(__dirname);
 
-// withUniwindConfig MUST be the outermost wrapper
+// withUniwindConfig must be the outermost wrapper
 module.exports = withUniwindConfig(config, {
   cssEntryFile: './src/global.css',
   dtsFile: './src/uniwind-types.d.ts',

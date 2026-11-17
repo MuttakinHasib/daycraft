@@ -1,9 +1,10 @@
-export * from './hues';
-export { Capsule } from './capsule';
+export { Button, ButtonSize, ButtonVariant } from './button';
+export { Capsule, CapsuleState } from './capsule';
 export { CheckRing } from './check-ring';
-export { Chip } from './chip';
-export { Tag } from './tag';
-export { Button } from './button';
-export { Segmented, SegmentedButton } from './segmented';
-export { Sheet } from './sheet';
+export { Chip, ChipSize } from './chip';
+export { ActivityHueBackground, ActivityHueBorder } from './hues';
+export { Icon } from './icon';
 export { SectionLabel } from './section-label';
+export { Segmented } from './segmented';
+export { Sheet } from './sheet';
+export { Tag } from './tag';
