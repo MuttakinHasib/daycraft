@@ -13,8 +13,8 @@ export const ActivityHue = {
 
 export type ActivityHue = (typeof ActivityHue)[keyof typeof ActivityHue];
 
-const activityHues: ReadonlySet<string> = new Set(Object.values(ActivityHue));
+const activityHues: ReadonlySet<unknown> = new Set(Object.values(ActivityHue));
 
-export function isActivityHue(value: string): value is ActivityHue {
+export function isActivityHue(value: unknown): value is ActivityHue {
   return activityHues.has(value);
 }

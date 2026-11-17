@@ -74,8 +74,22 @@ export const IconName = {
 
 export type IconName = (typeof IconName)[keyof typeof IconName];
 
-const iconNames: ReadonlySet<string> = new Set(Object.values(IconName));
+const iconNames: ReadonlySet<unknown> = new Set(Object.values(IconName));
 
-export function isIconName(value: string): value is IconName {
+export function isIconName(value: unknown): value is IconName {
   return iconNames.has(value);
 }
+
+/** Icons offered when picking an icon for an activity, habit or routine. */
+export const ACTIVITY_ICONS: readonly IconName[] = [
+  'check', 'alarm', 'sun', 'moon', 'run', 'dumbbell', 'coffee', 'utensils', 'book', 'cap', 'laptop', 'video',
+  'doc', 'phone', 'pen', 'heart', 'leaf', 'drop', 'wind', 'cart', 'home', 'music', 'briefcase', 'spark',
+];
+
+/** Mood faces from 1 (Rough) to 5 (Great), in order. */
+export const MOOD_ICONS: readonly IconName[] = ['m1', 'm2', 'm3', 'm4', 'm5'];
+
+/** Navigation, action and metadata icons: everything that is neither an activity icon nor a mood. */
+export const INTERFACE_ICONS: readonly IconName[] = Object.values(IconName).filter(
+  (name) => !ACTIVITY_ICONS.includes(name) && !MOOD_ICONS.includes(name),
+);
