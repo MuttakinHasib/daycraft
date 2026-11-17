@@ -6,7 +6,7 @@
 - The active theme follows the saved preference: System follows the OS (`app.json → userInterfaceStyle: "automatic"`), Light and Dark override it through `Uniwind.setTheme` (which also sets React Native's `Appearance`, so native alerts match). There is no `.dark` class on native.
 - Activity hues, fonts, type sizes and radii live in `@theme` and do not change per theme.
 - Shadows that change per theme use `light-dark()` inside `@utility` (`shadow-float`).
-- **One theme module** (`src/theme/app-theme.tsx`) owns everything that cannot take a className. Uniwind decides light or dark; the module reads it with `useUniwind()` and exposes `useColorScheme()` and `useThemeColors()` (token values, reactive to theme changes), and `AppTheme` gives React Navigation the Daycraft colors, and `useStatusBarStyle()` feeds the Stack's `statusBarStyle` screen option (iOS status bars are per screen here, so `expo-status-bar` alone has no effect). Never call React Native's `useColorScheme` or copy hex values into code.
+- **One theme module** (`src/theme/app-theme.tsx`) owns everything that cannot take a className. Uniwind decides light or dark; the module reads it with `useUniwind()` and exposes `useColorScheme()` and `useThemeColors()` (token values, reactive to theme changes), and `AppTheme` gives React Navigation the Daycraft colors, and themes the status bar. Builds keep the SDK template's `UIViewControllerBasedStatusBarAppearance = YES`, so each screen owns its status bar: the Stack gets `statusBarStyle` from `useScreenStatusBarStyle()`, and a screen that needs a different style sets that option itself. Expo Go hard-codes the key to NO and rejects per-screen styles, so there `AppTheme` renders one app-wide `expo-status-bar` instead. Never call React Native's `useColorScheme` or copy hex values into code.
 
 ## Rules
 
@@ -17,7 +17,7 @@
 5. Activity hues are the same in both themes and always carry white icons and text.
 6. Hairlines (`line`) separate surfaces; do not add shadows to separate things in dark mode.
 7. Images and illustrations must use token colors (or come in light and dark versions).
-8. The status bar follows the theme through the Stack's `statusBarStyle` option (`useStatusBarStyle()`).
+8. The status bar follows the theme: the Stack's `statusBarStyle` in builds, an app-wide `<StatusBar>` in Expo Go.
 
 ## Adding or changing a token
 
