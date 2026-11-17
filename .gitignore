@@ -45,3 +45,7 @@ yarn-error.log*
 
 # Local issue tracker (see docs/agents/issue-tracker.md)
 .scratch/
+
+# Tests stay local, never committed (owner preference)
+*.test.ts
+*.test.tsx

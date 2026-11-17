@@ -40,7 +40,7 @@ Contrast (checked):
 
 ## Activity hues
 
-Nine constant hues: the same in both themes, defined in `@theme`, used via `bg-clay`, `border-sky`, etc. The TypeScript source is `ActivityHue` in `src/components/ui/hues.ts`.
+Nine constant hues: the same in both themes, defined in `@theme`, used via `bg-clay`, `border-sky`, etc. The hue names are `ActivityHue` in `@daycraft/domain`.
 
 | Hue | Hex | White-icon contrast | Typical use |
 |---|---|---|---|

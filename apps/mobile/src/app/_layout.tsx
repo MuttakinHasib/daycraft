@@ -1,27 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme, View } from 'react-native';
+import { Stack } from 'expo-router';
 import { SafeAreaListener, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Uniwind } from 'uniwind';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { AppTheme } from '@/theme/app-theme';
 
 import '@/global.css';
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+// Placeholder navigator until decision D1 (native tabs vs the custom Plan · Habits · + · Goals · More bar).
+export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <View className="flex-1 bg-canvas">
-            <AnimatedSplashOverlay />
-            <AppTabs />
-          </View>
-        </ThemeProvider>
+        <AppTheme>
+          <Stack screenOptions={{ headerShown: false }} />
+        </AppTheme>
       </SafeAreaListener>
     </SafeAreaProvider>
   );

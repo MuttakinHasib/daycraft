@@ -10,7 +10,8 @@ Daycraft is a calm personal planner built around a vertical **Today timeline**: 
 |---|---|---|
 | [`apps/mobile`](apps/mobile) | `@daycraft/mobile` | Expo SDK 58 app (iPhone first, Android second) |
 | [`apps/web`](apps/web) | `@daycraft/web` | Next.js 16 app for desktop and tablet |
-| [`packages/typescript-config`](packages/typescript-config) | `@repo/typescript-config` | Shared tsconfig presets |
+| [`packages/domain`](packages/domain) | `@daycraft/domain` | Pure TypeScript domain vocabulary and rules, shared by every app |
+| [`packages/typescript-config`](packages/typescript-config) | `@daycraft/typescript-config` | Shared tsconfig presets |
 
 ## Getting started
 

@@ -37,6 +37,7 @@
 - Style with `className`. `StyleSheet.create` is for values classes cannot express. Inline `style` is only for **computed** values (timeline `top`/`height`, progress widths, gesture transforms).
 - Only token classes (see [design-system](../design/design-system.md)). No arbitrary values (`text-[13px]`, `rounded-[10px]`, `#fff`). If you need one, the token is missing: add it to `global.css` and the docs.
 - **Never build class names dynamically** (``bg-${hue}``). Use literal maps like `ActivityHueBackground`.
+- Combine and toggle classes with `cn` from `@/lib/cn` in object notation ([rule](../../../../docs/agents/rules/cn-object-notation.md)). When you add a font-size, radius, font-family or `type-*` token, add its name to `@/lib/cn` too.
 - State styling through `data-*` attributes and `data-[key=value]:` variants (equality only), plus `active:`, `disabled:`, `focus:`.
 - Shared multi-property styles belong in `@layer components` in `global.css` (as `.chip`, `.btn-primary` do), so utilities can still override them. Keep selectors flat.
 - Third-party components without `className`: wrap them with `withUniwind`.
@@ -57,5 +58,5 @@
 
 ## Git and issues
 
-- Small commits with imperative, sentence-case messages, as in the existing history (“Add Daycraft UI primitives”).
+- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) (“Add Daycraft UI primitives”).
 - Work from the root `.scratch/<feature>/` issues when they exist (root `docs/agents/issue-tracker.md`). Update the issue's `Status:` line.

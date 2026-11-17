@@ -47,7 +47,7 @@ Settled in a design-system review; the spec and tickets live in the root `.scrat
 - **Tokens:** `@daycraft/design-tokens` holds every value in TypeScript and generates each app's `theme.generated.css`; contrast pairs are checked in `build` ([ADR-0001](../../../docs/adr/0001-design-tokens-generated-from-typescript.md)).
 - **Version:** both apps move to design system v1.1 before any screen is built.
 - **Icons:** `@daycraft/icons`, Lucide at stroke 1.9 with the prototype's SVG for `m1`–`m5`, `run` and `timeline`; data stores Daycraft icon names ([ADR-0002](../../../docs/adr/0002-lucide-icons-with-custom-fallback.md)).
-- **Names owned by the domain:** `ActivityHue` and `IconName` move to `packages/domain`; the visual packages map them.
+- **Names owned by the domain:** `ActivityHue` and `IconName` live in `@daycraft/domain` (done 2026-11-17); the visual packages map them.
 - **Fonts:** `@expo-google-fonts/plus-jakarta-sans` through the `expo-font` config plugin (mobile) and `next/font/google` (web), weights 400, 500, 600, 700, 800. Medium (500) is now embedded on native as `font-sans-medium`.
 - **Theme:** System / Light / Dark, System by default, a per-device preference (mobile: `expo-sqlite/kv-store`; web: a cookie).
 - **Components:** one spec in the root `docs/design/`; each platform implements its own primitives.

@@ -2,7 +2,11 @@ import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 import { useCSSVariable } from 'uniwind';
 
-import { ActivityHue, ActivityHueBackground } from './hues';
+import { ActivityHue } from '@daycraft/domain';
+
+import { cn } from '@/lib/cn';
+
+import { ActivityHueBackground } from './hues';
 
 interface CapsuleProps {
   hue?: ActivityHue;
@@ -37,7 +41,10 @@ export function Capsule({ hue = ActivityHue.SAGE, state = 'idle', height, onPres
       )}
       <View
         style={height ? { height } : undefined}
-        className={`flex w-12 min-h-12 items-center justify-center overflow-hidden rounded-capsule ${ActivityHueBackground[hue]}`}
+        className={cn(
+          'flex w-12 min-h-12 items-center justify-center overflow-hidden rounded-capsule',
+          ActivityHueBackground[hue],
+        )}
       >
         {children}
       </View>

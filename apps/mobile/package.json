@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
+    "@daycraft/domain": "workspace:*",
     "@expo/ui": "~58.0.28",
+    "cn": "^0.5.2",
     "expo": "~58.0.25",
     "expo-constants": "~58.0.16",
     "expo-device": "~58.0.5",
@@ -39,7 +41,6 @@
     "start": "expo start",
     "dev": "expo start",
     "check-types": "tsc --noEmit",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

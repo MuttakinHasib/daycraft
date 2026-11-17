@@ -21,8 +21,6 @@ No other values in feature code (no 6, 10, 14, 18, 22…). Two exceptions:
 - Values inside primitives that the design system fixes (for example segmented padding 3, tag gap 4). They stay inside the primitive.
 - Timeline geometry computed by the layout function.
 
-`src/constants/theme.ts → Spacing` uses different names for a different scale. Do not use it (see [status](../status-and-decisions.md#template-leftovers-that-conflict-with-the-design-system)).
-
 ## Screen layout (phone)
 
 | Region | Rule |

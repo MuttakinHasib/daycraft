@@ -22,9 +22,7 @@ Conventions for primitives:
 | `Segmented` / `SegmentedButton` | container; button `selected`, `onPress` | track sunken p-3 r-13; button h 32 r-10, selected → `bg-elevated` + `text-ink`; role tab | v1.1 radii 12/9; text should use `type-control` |
 | `Sheet` | `children` | absolute bottom, `rounded-t-sheet`, `bg-surface`, `shadow-float`, Reanimated sheet-up entry | no scrim/close/drag-to-dismiss; prefer Expo Router modal presentation for routed sheets and keep this for inline sheets |
 | `SectionLabel` | `children` | `.section-label` 12 bold uppercase +0.72 tracking, `ink-subtle` | none |
-| `ActivityHue`, `ActivityHueBackground` | const + type; literal class map | — | add maps for border/text when needed (literal strings only) |
-
-Template components (`ThemedText`, `ThemedView`, `HintRow`, `Collapsible`, `animated-icon`, `web-badge`, `external-link`, `app-tabs*`) are **not** Daycraft components. Do not use them in new screens. Delete them when the screens that use them are replaced.
+| `ActivityHueBackground` | literal class map keyed by `ActivityHue` from `@daycraft/domain` | — | add maps for border/text when needed (literal strings only) |
 
 ## Components to build (specs from the prototype)
 

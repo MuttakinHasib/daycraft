@@ -6,7 +6,8 @@
 - The active theme follows the OS (`app.json → userInterfaceStyle: "automatic"`). There is no `.dark` class on native. The app can override at runtime with `Uniwind.setTheme(...)`; check the Uniwind docs for the accepted values, including returning to system.
 - Activity hues, fonts, type sizes and radii live in `@theme` and do not change per theme.
 - Shadows that change per theme use `light-dark()` inside `@utility` (`shadow-float`).
-- React Navigation chrome gets `DarkTheme`/`DefaultTheme` in `src/app/_layout.tsx`. `src/constants/theme.ts → Colors` mirrors a few tokens for APIs that need raw values (native tab bar colors). Keep those values identical to `global.css`. Prefer `useCSSVariable('--color-…')` when you need a token value in JS: it is reactive to theme changes (see `capsule.tsx`).
+- **One theme module** (`src/theme/app-theme.tsx`) owns everything that cannot take a className. Uniwind decides light or dark; the module reads it with `useUniwind()` and exposes `useColorScheme()` and `useThemeColors()` (token values, reactive to theme changes), and `AppTheme` gives React Navigation and the status bar the Daycraft colors. Never call React Native's `useColorScheme` or copy hex values into code.
+- A color read through `useThemeColors()` must also be used by some className, or Uniwind cannot resolve it; the module throws with the variable's name when that happens.
 
 ## Rules
 
@@ -17,13 +18,13 @@
 5. Activity hues are the same in both themes and always carry white icons and text.
 6. Hairlines (`line`) separate surfaces; do not add shadows to separate things in dark mode.
 7. Images and illustrations must use token colors (or come in light and dark versions).
-8. The status bar follows the theme (`expo-status-bar` `style="auto"`).
+8. The status bar follows the theme (set by `AppTheme`).
 
 ## Adding or changing a token
 
 1. Add or change it in **both** `@variant light` and `@variant dark` (or in `@theme` if it is theme-independent).
 2. Restart Metro (Uniwind regenerates `src/uniwind-types.d.ts`).
-3. If `Colors` in `constants/theme.ts` mirrors it, update that too.
+3. If native code needs it as a value, add it to `useThemeColors()` in the theme module.
 4. Update [design-system](design-system.md). If it diverges from the v1.1 reference, record it in [status-and-decisions](../status-and-decisions.md).
 
 ## Theme preference (planned)

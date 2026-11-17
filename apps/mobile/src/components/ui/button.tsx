@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { Pressable, Text } from 'react-native';
 
+import { cn } from '@/lib/cn';
+
 interface ButtonProps {
   variant?: 'primary' | 'secondary';
   onPress?: () => void;
@@ -15,9 +17,17 @@ export function Button({ variant = 'primary', onPress, disabled = false, childre
       accessibilityRole="button"
       disabled={disabled}
       onPress={onPress}
-      className={`${isPrimary ? 'btn-primary' : 'btn-secondary'} active:opacity-90 disabled:opacity-50`}
+      className={cn('active:opacity-90 disabled:opacity-50', {
+        'btn-primary': isPrimary,
+        'btn-secondary': !isPrimary,
+      })}
     >
-      <Text className={`text-base font-sans-bold ${isPrimary ? 'text-on-accent' : 'text-ink'}`}>
+      <Text
+        className={cn('text-base font-sans-bold', {
+          'text-on-accent': isPrimary,
+          'text-ink': !isPrimary,
+        })}
+      >
         {children}
       </Text>
     </Pressable>

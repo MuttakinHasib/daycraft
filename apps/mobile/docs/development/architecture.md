@@ -48,7 +48,7 @@ src/data/           Persistence and (later) API access behind small repository f
   - recurrence expansion;
   - formatting of times, durations and relative dates.
 - Feature hooks (`useDayActivities(date)`, `useHabits()`) connect domain and data to UI. Screens stay declarative.
-- Primitives never import from `features/` or `domain/`, except `ActivityHue`, which is a shared design type and may move to `src/domain/` if the domain needs it first. Keep a single definition.
+- Primitives never import from `features/` or `domain/`. Shared domain vocabulary such as `ActivityHue` comes from the `@daycraft/domain` package, which primitives may import.
 
 ## State
 

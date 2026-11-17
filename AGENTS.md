@@ -6,6 +6,7 @@ Daycraft is a calm personal planner built around the **Today timeline**. This is
 |---|---|---|
 | `apps/mobile` | Expo SDK 58 app, iPhone first | [apps/mobile/AGENTS.md](apps/mobile/AGENTS.md) |
 | `apps/web` | Next.js 16 app, desktop and tablet | [apps/web/AGENTS.md](apps/web/AGENTS.md) |
+| `packages/domain` | Pure TypeScript domain vocabulary and rules (`ActivityHue`, `IconName`); no dependencies, consumed as TypeScript source | — |
 | `packages/typescript-config` | Shared tsconfig presets | — |
 
 Before changing files in an app, read that app's `AGENTS.md`; its rules apply inside it.
@@ -14,13 +15,19 @@ Before changing files in an app, read that app's `AGENTS.md`; its rules apply in
 
 - bun is the package manager: `bun install`, `bun run <script>`, `bunx <bin>`. The root `package.json` declares bun in `devEngines`, so npm and npx refuse to run.
 - Mobile dependencies go in with `bunx expo install <pkg>` inside `apps/mobile`, so Expo picks SDK-compatible versions.
-- Verify with `bunx turbo run build check-types lint` from the root and report the real output.
+- Verify with `bunx turbo run build check-types lint test` from the root and report the real output. Packages are tested with Vitest; test files (`*.test.ts(x)`) are gitignored, so they run locally and are never committed.
 - Keep the root `node_modules` on Babel 7 and one React version. Metro's worklets plugin fails on Babel 8 (a create-turbo ESLint package once pulled it in), and Expo rejects duplicate React or React Native copies. Check `node -p "require('@babel/core/package.json').version"` after adding a package that brings its own Babel.
 
 ## Code rules (every workspace)
 
 - A function, method or constructor takes at most two positional parameters. With three or more, it takes one object parameter typed by a named `interface`/`type` declared at the top of the file, never an inline object type. Framework dependency-injection constructors are the exception.
-- Enum-likes are a const object plus a same-named union type (the `ActivityHue` pattern in `apps/mobile/src/components/ui/hues.ts`), never a TypeScript `enum`.
+- Enum-likes are a const object plus a same-named union type (the `ActivityHue` pattern in `packages/domain`), never a TypeScript `enum`.
+- Conditional class names go through the app's configured `cn()` in object notation (`cn('base', { 'opacity-50': isDisabled })`), never ternaries or string concatenation. Before writing or changing a className, read [docs/agents/rules/cn-object-notation.md](docs/agents/rules/cn-object-notation.md).
+- Import a symbol from where it lives. Never create a file that only re-exports another module, and never leave one behind when moving code: update every caller in the same change. Curated barrel `index.ts` files are the exception. See [docs/agents/rules/no-pass-through-re-exports.md](docs/agents/rules/no-pass-through-re-exports.md).
+
+## Commits
+
+A commit title is one line that completes "If merged, this commit will …": imperative, first letter capitalized, no `fix:`-style prefix, no attribution trailer. Multi-line only when the user asks. Before every commit, read [docs/agents/rules/commit-conventions.md](docs/agents/rules/commit-conventions.md).
 
 ## Shared docs (one copy, root)
 

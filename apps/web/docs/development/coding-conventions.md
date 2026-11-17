@@ -37,7 +37,7 @@
 - Token utilities only. No arbitrary values (`text-[13px]`, `bg-[#fff]`, `rounded-[10px]`), no palette colors (`zinc`, `gray`, `white`, `black`), no off-scale spacing. Need one? Add a token, document it, and sync mobile.
 - Inline `style` only for computed values: timeline `top` and `height`, progress, hue CSS variables, drag transforms.
 - **No dynamic class strings** (``bg-${hue}``): use literal maps.
-- Build class lists with plain template strings or a tiny `cx()` helper. Add `clsx` / `tailwind-merge` only if a real need appears.
+- Combine and toggle classes with a configured `cn` (the [`cn`](https://www.npmjs.com/package/cn) package) in object notation ([rule](../../../../docs/agents/rules/cn-object-notation.md)). Web adds its configured instance when the tokens land (ticket 05); no `clsx` or `tailwind-merge`.
 - State styling via ARIA and data attributes plus variants (`aria-pressed:bg-ink`, `data-[state=done]:opacity-45`), so semantics and styles stay in sync.
 
 ## Imports
@@ -53,6 +53,6 @@
 
 ## Git and issues
 
-- Small commits, imperative sentence-case messages (“Add Daycraft tokens to globals.css”).
+- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) (“Add Daycraft tokens to globals.css”).
 - Commit `AGENTS.md` when `next dev` updates its managed blocks (see the block at the top of that file).
 - Work from the root `.scratch/<feature-slug>/` issues (root `docs/agents/issue-tracker.md`) and update their `Status:`.

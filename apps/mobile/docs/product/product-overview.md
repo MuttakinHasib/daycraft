@@ -84,7 +84,7 @@ interface Activity {
   start: MinutesOfDay | null;   // null = unscheduled (tasks only)
   durationMinutes: number;      // [dur] 0 = point in time (e.g. “Rise and shine”)
   title: string;
-  hue: ActivityHue;             // see src/components/ui/hues.ts
+  hue: ActivityHue;             // from @daycraft/domain
   icon: IconName;
   kind: ActivityKind;
   done: boolean;

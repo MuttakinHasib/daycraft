@@ -22,8 +22,10 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 | Semantic light/dark tokens, activity hues, radii, type sizes | Done (v1.0 values, see gaps) |
 | Plus Jakarta Sans (Regular, SemiBold, Bold, ExtraBold) via `expo-font` plugin | Done |
 | Theme at root (`bg-canvas`, `Uniwind.updateInsets`, React Navigation `ThemeProvider`) | Done |
-| UI primitives in `src/components/ui/`: `Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`, `ActivityHue` | Done (first pass) |
-| Screens (`src/app/index.tsx`, `explore.tsx`), `app-tabs`, `ThemedText`, `ThemedView`, `HintRow`, `Collapsible`, `animated-icon`, `web-badge`, `external-link` | **Expo starter template.** Replace, do not extend. |
+| UI primitives in `src/components/ui/`: `Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`, `ActivityHueBackground` | Done (first pass) |
+| Expo starter template (screens, themed components, theme hooks, `constants/theme.ts`, reset script, template images) | **Deleted 2026-11-17.** `src/app` holds a placeholder Stack and a placeholder Plan screen until D1. |
+| Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17 (follows the OS; the System / Light / Dark preference is ticket 07) |
+| `cn()` from the `cn` package, configured with Daycraft token names (`src/lib/cn.ts`) | Done 2026-11-17. New dependency: `cn`. |
 | Domain model, data layer, persistence | Not started |
 | Today timeline, all modules | Not started (prototype only) |
 | Tests | Not set up |
@@ -51,15 +53,6 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 
 When you implement a v1.1 token, also replace the arbitrary values it replaces (for example `text-[13px]`, `rounded-[10px]`) in the primitives.
 
-## Template leftovers that conflict with the design system
-
-- `src/constants/theme.ts`:
-  - `Colors` mirrors some tokens for imperative APIs. Keep it only for APIs that cannot take a class or `useCSSVariable`, and keep the values identical to `global.css`.
-  - Its `Spacing` names (`one`=4 … `three`=16, `six`=64) do **not** match the 4px Tailwind scale. Do not use `Spacing` in new code; use Tailwind spacing classes.
-  - `Fonts` and `MaxContentWidth` are template values.
-- `ThemedText` / `ThemedView` use `StyleSheet`, template sizes (48px titles) and `fontWeight`. Do not use them in Daycraft screens. Use `Text` with `type-*` classes and `View` with semantic classes.
-- `app-tabs.tsx` / `app-tabs.web.tsx` render the template's Home/Explore tabs. They will be replaced by Daycraft navigation (see open decision D1).
-
 ## Design system decisions (2026-11-17)
 
 Settled in a design-system review; the spec and tickets live in the root `.scratch/design-system/`.
@@ -68,7 +61,7 @@ Settled in a design-system review; the spec and tickets live in the root `.scrat
 - **Tokens:** `@daycraft/design-tokens` holds every value in TypeScript and generates each app's `theme.generated.css`; contrast pairs are checked in `build` ([ADR-0001](../../../docs/adr/0001-design-tokens-generated-from-typescript.md)).
 - **Version:** both apps move to design system v1.1 before any screen is built.
 - **Icons:** `@daycraft/icons`, Lucide at stroke 1.9 with the prototype's SVG for `m1`–`m5`, `run` and `timeline`; data stores Daycraft icon names ([ADR-0002](../../../docs/adr/0002-lucide-icons-with-custom-fallback.md)).
-- **Names owned by the domain:** `ActivityHue` and `IconName` move to `packages/domain`; the visual packages map them.
+- **Names owned by the domain:** `ActivityHue` and `IconName` live in `@daycraft/domain` (done 2026-11-17); the visual packages map them. New dev dependency: Vitest (package tests).
 - **Fonts:** `@expo-google-fonts/plus-jakarta-sans` through the `expo-font` config plugin (mobile) and `next/font/google` (web), weights 400, 500, 600, 700, 800. Medium (500) is now embedded on native as `font-sans-medium`.
 - **Theme:** System / Light / Dark, System by default, a per-device preference (mobile: `expo-sqlite/kv-store`; web: a cookie).
 - **Components:** one spec in the root `docs/design/`; each platform implements its own primitives.
