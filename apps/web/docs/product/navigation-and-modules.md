@@ -10,11 +10,11 @@ Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md)
 ┌──────────── sidebar 248 ────────────┬───────────────────────── main (padding 24 / 32 / 32) ─────────────────────────┐
 │ ▮ daycraft                          │  ┌──────────────── content (max 1360, centered) ───────────────────────────┐ │
 │ [ + New task ]                      │  │ November 17, 2026            ‹  Sun Mon [Tue] Wed Thu Fri Sat  ›        │ │
-│ ▸ Today (active)                    │  │ Tuesday · Today · drag to reschedule…                                    │ │
-│   Upcoming · Inbox 4 · Tasks        │  │ ┌──────── timeline panel (flex) ───────────┐  ┌─ aside 340–420 ───────┐ │ │
-│   Calendar                          │  │ │ HABITS  (chips)                          │  │ detail panel          │ │ │
-│ GROW  Habits 3/5 · Routines · Goals │  │ │ timeline (scroll, height 700)            │  │ daily progress        │ │ │
-│ ORGANIZE  Projects · Journal        │  │ └──────────────────────────────────────────┘  │ up next · inbox       │ │ │
+│ ▸ Plan (active)                     │  │ Tuesday · Today · drag to reschedule…                                    │ │
+│   Habits 3/5 · Goals 3              │  │ ┌──────── timeline panel (flex) ───────────┐  ┌─ aside 340–420 ───────┐ │ │
+│ MORE                                │  │ │ HABITS  (chips)                          │  │ detail panel          │ │ │
+│   Inbox 4 · Upcoming · All tasks    │  │ │ timeline (scroll, height 700)            │  │ daily progress        │ │ │
+│   Routines 4 · Projects 3 · Journal │  │ └──────────────────────────────────────────┘  │ up next · inbox       │ │ │
 │ [ Light | Dark ]                    │  │                                                └───────────────────────┘ │ │
 │ (H) Hasib · Personal workspace      │  └──────────────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────┘
@@ -28,7 +28,7 @@ Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md)
 - Nav items: 40 tall, radius 12, 18pt icon, 14 semibold label, right-aligned count.
   - Active: `bg-accent-soft` + `text-accent-text`.
   - Hover: `bg-sunken` + `text-ink`.
-- Group labels “GROW” and “ORGANIZE” use the `label` preset.
+- Items mirror the phone tab bar, then its More screen: **Plan, Habits, Goals**, then a “MORE” group label (`label` preset) with **Inbox, Upcoming, All tasks, Routines, Projects, Journal**. There is no Calendar item. Focus starts from an activity's detail panel.
 - Bottom: Light/Dark segmented control, then the user row (32 avatar, name, “Personal workspace”).
 
 **Rail mode** (container ≤ 1100, tablet): the sidebar becomes 80 wide.
@@ -52,21 +52,20 @@ src/app/
   layout.tsx                 # html/body, fonts, theme class, Toast provider
   (app)/
     layout.tsx               # sidebar + main shell
-    page.tsx                 # Today (default, ?date=YYYY-MM-DD)
-    upcoming/page.tsx
-    inbox/page.tsx
-    tasks/page.tsx
-    calendar/page.tsx        # ?view=day|week|month&date=
+    page.tsx                 # Plan (default, ?date=YYYY-MM-DD)
     habits/page.tsx
-    routines/page.tsx
     goals/page.tsx
+    inbox/page.tsx
+    upcoming/page.tsx
+    tasks/page.tsx           # All tasks
+    routines/page.tsx
     projects/page.tsx
     projects/[projectId]/page.tsx   # ?view=list|board
     journal/page.tsx
     focus/[activityId]/page.tsx
 ```
 
-- **URL state:** the selected date, the selected activity (`?activity=id`, which drives the right panel), calendar view and project view all live in the URL. Back/forward and shared links must restore them.
+- **URL state:** the selected date, the selected activity (`?activity=id`, which drives the right panel) and project view all live in the URL. Back/forward and shared links must restore them.
 - Use `<Link>` for navigation. Partial prefetching is on, so static parts prefetch automatically; add `prefetch` only where a measured need exists.
 
 ## Today (desktop)

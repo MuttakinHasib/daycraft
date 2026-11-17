@@ -69,7 +69,7 @@ The prototype mixes hues into the surface for tinted states. In the docs and the
 | 14% (habit circle, not done) | Habit row |
 | 16% / 40% border | Event agenda card |
 | 28% ring | Active capsule outline |
-| 30% | Event block in Week view |
+| 30% | Event card tint (agenda, Upcoming) |
 | 42% | Active capsule base (the remaining part) |
 | 60% border, dashed | Habit circle, not done |
 

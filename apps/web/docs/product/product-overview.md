@@ -1,6 +1,6 @@
 # Product overview
 
-> Has a mobile counterpart in `apps/mobile/docs/product/`. Keep both in step except for platform notes like this one. On the web: “tap” means click or keyboard activation, phone **sheets** become the right-hand **detail panel** or centered dialogs, and Browse items live in the sidebar.
+> Has a mobile counterpart in `apps/mobile/docs/product/`. Keep both in step except for platform notes like this one. On the web: “tap” means click or keyboard activation, phone **sheets** become the right-hand **detail panel** or centered dialogs, and the tab bar plus More become one sidebar.
 
 ## What Daycraft is
 
@@ -27,18 +27,19 @@ It should feel like a **personal life-management workspace**, not a task manager
 
 | Module | Purpose | Prototype screen |
 |---|---|---|
-| **Today** | Date header, week strip, daily progress ring, habit check-in row, the timeline | Today (tab) |
-| **Inbox** | Quick capture; each item can be planned onto the timeline or cleared | Inbox (tab) |
-| **Calendar** | Day / Week / Month views; events vs tasks distinguished; create events | Calendar (tab) |
-| **Upcoming** | Chronological next 14 days of scheduled items, plus due-but-unscheduled tasks | Browse → Upcoming |
-| **Tasks** | All open tasks with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | Browse → Tasks |
-| **Habits** | Daily or N×/week habits, streaks, 7-day row, 5-week history heatmap | Browse → Habits |
-| **Routines** | Reusable step sequences; “Add to today” drops one onto the timeline as a single block with steps as subtasks | Browse → Routines |
-| **Goals** | Target date, progress from milestones, related habits/tasks | Browse → Goals |
-| **Projects** | Progress, deadline, milestones, tasks in List or Board (To do / In progress / Done) | Browse → Projects |
-| **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task | From an activity's detail sheet, or Browse → Focus |
-| **Journal** | Mood (5 levels), rotating reflection prompt, free text, history | Browse → Journal |
-| **Settings / Appearance** | Light / Dark (System to be added) | Browse → Appearance |
+| **Plan** | Date header (title opens the month picker), week strip, daily progress ring, habit check-in row, the timeline. Scheduled tasks and events both live here | Sidebar → Plan |
+| **Habits** | Daily or N×/week habits, streaks, 7-day row, 5-week history heatmap | Sidebar → Habits |
+| **Goals** | Target date, progress from milestones, related habits/tasks | Sidebar → Goals |
+| **Inbox** | Quick capture; each item can be planned onto the timeline or cleared | Sidebar → Inbox |
+| **Upcoming** | Chronological next 14 days of scheduled items, plus due-but-unscheduled tasks | Sidebar → Upcoming |
+| **All tasks** | Every task with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | Sidebar → All tasks |
+| **Routines** | Reusable step sequences; “Add to today” drops one onto the timeline as a single block with steps as subtasks | Sidebar → Routines |
+| **Projects** | Progress, deadline, milestones, tasks in List or Board (To do / In progress / Done) | Sidebar → Projects |
+| **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task | From an activity's detail panel |
+| **Journal** | Mood (5 levels), rotating reflection prompt, free text, history | Sidebar → Journal |
+| **Settings / Appearance** | Light / Dark (System to be added) | Sidebar → Light/Dark switch |
+
+There is no separate Calendar module: the Plan timeline is the day view, the month picker covers month navigation, and Upcoming covers the days ahead.
 
 Navigation and screen specs: [navigation-and-modules.md](navigation-and-modules.md).
 
@@ -46,18 +47,18 @@ Navigation and screen specs: [navigation-and-modules.md](navigation-and-modules.
 
 These are the flows every release must keep working. They are the end-to-end test candidates in [testing](../development/testing.md).
 
-1. **See today:** open the app → Today scrolled so the current time is near the top third → current block shows progress and time left.
-2. **Move between dates:** tap a day in the week strip, use the ‹ › week arrows, tap the date title to open the month picker, tap **Today** to return.
-3. **Create a task:** tap **+** (or an empty half-hour on the timeline, or “Add task” in a free-time gap) → editor sheet → title, time, duration, color, icon, priority, labels, subtasks, repeat, notes → **Add to timeline**.
+1. **See today:** open the app → Plan scrolled so the current time is near the top third → current block shows progress and time left.
+2. **Move between dates:** tap a day in the week strip, use the ‹ › week arrows, tap the date title to open the month picker, tap the **Today** chip to return.
+3. **Create a task:** tap the center **+** (or an empty half-hour on the timeline, or “Add task” in a free-time gap) → editor sheet → title, time, duration, color, icon, priority, labels, subtasks, repeat, notes → **Add to timeline**.
 4. **Edit a task:** tap a block → detail sheet → edit (pencil) → **Save changes**.
-5. **Complete:** tap the check ring on a block, in the detail sheet, or in Tasks.
+5. **Complete:** tap the check ring on a block, in the detail sheet, or in All tasks.
 6. **Reschedule:** drag a block vertically (5-minute snapping). **Resize:** drag its bottom grip.
-7. **Create an event:** Calendar → **+ Event**, or switch the editor's Task/Event toggle.
-8. **Habits:** tap a habit circle on Today, or the check button in Habits. Add a habit from either place.
+7. **Create an event:** tap **+** (or an empty slot), then switch the editor's Task/Event toggle to Event.
+8. **Habits:** tap a habit circle on Plan, or the check button in Habits. Add a habit from the “+ Habit” circle on Plan or the center + on Habits.
 9. **Routines:** create one (name, steps with durations, color, icon). **Add to today** places it at the next free slot.
 10. **Focus:** from an activity's detail → Start focus → choose a length → run → end → “Mark task as done”.
 11. **Capture and plan:** type in Inbox → item appears → **Plan** opens the editor pre-filled; saving removes it from Inbox.
-12. **Theme:** Browse → Appearance → Light / Dark (web: the sidebar's Light/Dark switch).
+12. **Theme:** More → Appearance → Light / Dark (web: the sidebar's Light/Dark switch).
 
 Every one of these gives visible feedback (toast, state change, or animation). See [interaction-patterns](interaction-patterns.md).
 

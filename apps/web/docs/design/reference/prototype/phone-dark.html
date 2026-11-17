@@ -1,4 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Plus Jakarta Sans';font-weight:400;src:url(vendor/plus-jakarta-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:500;src:url(vendor/plus-jakarta-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:600;src:url(vendor/plus-jakarta-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(vendor/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(vendor/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
 <style>
 body{margin:0}
 a{color:#AD5236}a:hover{color:#97462D}
@@ -59,6 +61,9 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-back{display:inline-flex;align-items:center;gap:2px;height:40px;font-size:15px;font-weight:600;color:var(--accent-text)}
 .dk-tab{flex:1;height:52px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--ink-muted);position:relative;transition:background-color .2s ease,color .2s ease}
 .dk-tab[aria-current="page"]{background:var(--sunken);color:var(--accent-text)}
+.dk-tab5{flex:1 1 0;min-width:0;height:52px;border-radius:999px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:600;color:var(--ink-muted);position:relative;transition:background-color .2s ease,color .2s ease}
+.dk-tab5[aria-current="page"]{background:var(--sunken);color:var(--accent-text)}
+.dk-tab5-badge{position:absolute;top:3px;left:calc(50% + 5px);min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--elevated)}
 .dk-sw{width:32px;height:32px;border-radius:999px;flex:none;transition:box-shadow .15s ease}
 .dk-sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink)}
 .dk-icn{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink-muted);flex:none}
@@ -154,12 +159,13 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{hdr.notToday}}" hint-placeholder-val="{{ false }}">
 <button class="dk-chip sm dk-press" onClick="{{goToday}}" style="background: var(--accent-soft); color: var(--accent-text)">Today</button>
 </sc-if>
-<div role="img" aria-label="{{prog.aria}}" style="position: relative; width: 40px; height: 40px">
-<svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-<circle cx="20" cy="20" r="15.915" fill="none" stroke="var(--line-strong)" stroke-width="3.5"></circle>
-<circle cx="20" cy="20" r="15.915" fill="none" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="{{prog.dash}}" transform="rotate(-90 20 20)" style="transition: stroke-dasharray .5s ease"></circle>
+<div role="img" aria-label="{{prog.aria}}" style="position: relative; width: 44px; height: 44px; flex: none">
+<svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+<circle cx="22" cy="22" r="19" fill="none" stroke="var(--line-strong)" stroke-width="4"></circle>
+<sc-if value="{{prog.some}}" hint-placeholder-val="{{ true }}"><circle cx="22" cy="22" r="19" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" pathLength="100" stroke-dasharray="{{prog.dash}}" transform="rotate(-90 22 22)" style="transition: stroke-dasharray .5s ease"></circle></sc-if>
 </svg>
-<span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 800">{{prog.pct}}</span>
+<sc-if value="{{prog.partial}}" hint-placeholder-val="{{ true }}"><span class="tnum" style="position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 800; letter-spacing: -0.02em">{{prog.num}}</span></sc-if>
+<sc-if value="{{prog.full}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; inset: 0; display: grid; place-items: center; color: var(--accent-text)"><svg class="ic dk-flash" width="18" height="18" style="stroke-width: 3"><use href="#i-check"></use></svg></span></sc-if>
 </div>
 </div>
 </div>
@@ -266,7 +272,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.inbox}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 24px 20px 12px">
+<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button></div>
+<div style="padding: 4px 20px 12px">
 <h1 class="dk-h1">Inbox</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 4px">Capture now, organize later.</div>
 <div style="margin-top: 16px; display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 6px 0 16px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line)">
@@ -384,8 +391,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{scr.browse}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen dk-scroll" style="position: absolute; inset: 0; padding: 24px 20px 120px">
 <div style="display: flex; align-items: center; gap: 12px">
-<svg width="15" height="32" viewBox="0 0 28 60" aria-hidden="true" style="color: var(--accent); flex: none"><path d="M0 38V14A14 14 0 0 1 28 14V38H22A8 8 0 0 0 6 38Z M0 43H28V46A14 14 0 0 1 0 46Z" fill="currentColor"></path></svg>
-<h1 class="dk-h1">Browse</h1>
+<h1 class="dk-h1">More</h1>
 </div>
 <sc-for list="{{browse}}" as="grp" hint-placeholder-count="3">
 <div class="dk-lab" style="margin: 24px 4px 8px">{{grp.label}}</div>
@@ -413,7 +419,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.upcoming}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button></div>
+<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button></div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 0 20px 120px">
 <h1 class="dk-h1">Upcoming</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin-top: 4px">The next two weeks, in order.</div>
@@ -438,7 +444,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.tasks}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0; display: flex; justify-content: space-between; align-items: center"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button><button class="dk-chip dk-press" onClick="{{newTaskUnsched}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14" style="stroke-width: 2.6"><use href="#i-plus"></use></svg>Task</button></div>
+<div style="padding: 16px 14px 0; display: flex; justify-content: space-between; align-items: center"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button><button class="dk-chip dk-press" onClick="{{newTaskUnsched}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14" style="stroke-width: 2.6"><use href="#i-plus"></use></svg>Task</button></div>
 <div style="padding: 4px 20px 12px">
 <h1 class="dk-h1">Tasks</h1>
 <div class="dk-hs" style="display: flex; gap: 8px; margin-top: 16px">
@@ -469,8 +475,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.habits}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0; display: flex; justify-content: space-between; align-items: center"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button><button class="dk-chip dk-press" onClick="{{openHabitSheet}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14" style="stroke-width: 2.6"><use href="#i-plus"></use></svg>Habit</button></div>
-<div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
+<div class="dk-scroll" style="flex: 1; min-height: 0; padding: 24px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <h1 class="dk-h1">Habits</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">{{habitsSum}}</div>
 <sc-for list="{{habitCards}}" as="h" hint-placeholder-count="5">
@@ -503,7 +508,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.routines}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0; display: flex; justify-content: space-between; align-items: center"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button><button class="dk-chip dk-press" onClick="{{openRoutineSheet}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14" style="stroke-width: 2.6"><use href="#i-plus"></use></svg>Routine</button></div>
+<div style="padding: 16px 14px 0; display: flex; justify-content: space-between; align-items: center"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button><button class="dk-chip dk-press" onClick="{{openRoutineSheet}}" style="background: var(--accent); color: var(--on-accent)"><svg class="ic" width="14" height="14" style="stroke-width: 2.6"><use href="#i-plus"></use></svg>Routine</button></div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <h1 class="dk-h1">Routines</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">Reusable sequences you can drop into any day.</div>
@@ -531,8 +536,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.goals}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button></div>
-<div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
+<div class="dk-scroll" style="flex: 1; min-height: 0; padding: 24px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <h1 class="dk-h1">Goals</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">Long-term direction, broken into milestones.</div>
 <sc-for list="{{goalCards}}" as="g" hint-placeholder-count="3">
@@ -568,7 +572,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{scr.projects}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
 <sc-if value="{{proj.isList}}" hint-placeholder-val="{{ true }}">
-<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button></div>
+<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button></div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <h1 class="dk-h1">Projects</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">Related work, kept together.</div>
@@ -644,7 +648,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 
 <sc-if value="{{scr.journal}}" hint-placeholder-val="{{ false }}">
 <div class="dk-screen" style="position: absolute; inset: 0; display: flex; flex-direction: column">
-<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>Browse</button></div>
+<div style="padding: 16px 14px 0"><button class="dk-back" onClick="{{goBrowse}}"><svg class="ic" width="20" height="20"><use href="#i-chev-l"></use></svg>More</button></div>
 <div class="dk-scroll" style="flex: 1; min-height: 0; padding: 4px 20px 120px; display: flex; flex-direction: column; gap: 12px">
 <h1 class="dk-h1">Journal</h1>
 <div style="font-size: 14px; color: var(--ink-muted); margin: -4px 0 8px">{{jr.dateLabel}}</div>
@@ -729,16 +733,23 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 
 <sc-if value="{{showTabs}}" hint-placeholder-val="{{ true }}">
-<div style="position: absolute; left: 16px; bottom: 24px; right: 96px; height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; gap: 2px; z-index: 30">
-<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
-<button class="dk-tab" aria-current="{{t.cur}}" onClick="{{t.go}}">
-<svg class="ic" width="21" height="21"><use href="#i-{{t.icon}}"></use></svg>
-<span>{{t.label}}</span>
-<sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span class="tnum" style="position: absolute; top: 4px; right: 10px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 11px; font-weight: 700; display: grid; place-items: center">{{t.n}}</span></sc-if>
+<nav aria-label="Main" style="position: absolute; left: 16px; right: 16px; bottom: 24px; height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; align-items: center; z-index: 30">
+<sc-for list="{{tabsA}}" as="t" hint-placeholder-count="2">
+<button class="dk-tab5" aria-current="{{t.cur}}" aria-label="{{t.aria}}" onClick="{{t.go}}">
+<svg class="ic" width="22" height="22"><use href="#i-{{t.icon}}"></use></svg>
+<span aria-hidden="true">{{t.label}}</span>
+<sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span class="tnum dk-tab5-badge">{{t.n}}</span></sc-if>
 </button>
 </sc-for>
-</div>
-<button class="dk-press" aria-label="New task" onClick="{{newTask}}" style="position: absolute; right: 16px; bottom: 24px; width: 64px; height: 64px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 45%, transparent); z-index: 30"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button>
+<span style="flex: none; width: 72px; display: grid; place-items: center"><button class="dk-press" aria-label="{{fab.aria}}" onClick="{{fab.go}}" style="width: 52px; height: 52px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button></span>
+<sc-for list="{{tabsB}}" as="t" hint-placeholder-count="2">
+<button class="dk-tab5" aria-current="{{t.cur}}" aria-label="{{t.aria}}" onClick="{{t.go}}">
+<svg class="ic" width="22" height="22"><use href="#i-{{t.icon}}"></use></svg>
+<span aria-hidden="true">{{t.label}}</span>
+<sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span class="tnum dk-tab5-badge">{{t.n}}</span></sc-if>
+</button>
+</sc-for>
+</nav>
 </sc-if>
 
 <sc-if value="{{sh.open}}" hint-placeholder-val="{{ false }}">
@@ -1349,7 +1360,7 @@ class Component extends DCLogic {
     var theme = st.theme || (this.props.theme === 'Light' ? 'light' : 'dark');
     var date = st.date, isToday = date === TODAY, sel = pD(date);
     var scr = {}; ['today','inbox','calendar','browse','upcoming','tasks','habits','routines','goals','projects','journal','focus'].forEach(function(k){ scr[k] = st.screen === k; });
-    var tabOf = { today: 'today', inbox: 'inbox', calendar: 'calendar' };
+    var tabOf = { today: 'plan', habits: 'habits', goals: 'goals' };
     var curTab = tabOf[st.screen] || 'browse';
     var go = function(screen){ return function(){ self.setState({ screen: screen, sheet: null, project: null }); }; };
 
@@ -1358,7 +1369,7 @@ class Component extends DCLogic {
     var doneN = dayItems.filter(function(x){ return x.done; }).length + habitsDaily.filter(function(h){ return h.hist[date]; }).length;
     var totalN = dayItems.length + habitsDaily.length;
     var pct = totalN ? Math.round(doneN / totalN * 100) : 0;
-    var prog = { dash: pct + ' 100', pct: pct + '%', aria: doneN + ' of ' + totalN + ' done today' };
+    var prog = { dash: pct + ' 100', pct: pct + '%', num: '' + pct, some: pct > 0, partial: pct < 100, full: pct >= 100, aria: pct + ' percent, ' + doneN + ' of ' + totalN + ' done today' };
     var hdr = { monthDay: MON[sel.getMonth()] + ' ' + sel.getDate(), year: sel.getFullYear(), notToday: !isToday, sub: WDF[sel.getDay()] + (isToday ? ' · Today' : ' · ' + rel(date)) + ' · ' + doneN + ' of ' + totalN + ' done' };
 
     var ws = addD(date, -sel.getDay()), week = [];
@@ -1467,18 +1478,17 @@ class Component extends DCLogic {
     };
 
     var browse = [
-      { label: 'Plan', rows: [
+      { label: 'Capture and plan ahead', rows: [
+        { label: 'Inbox', icon: 'inbox', bg: hv('clay'), meta: st.inbox.length ? '' + st.inbox.length : '', go: go('inbox') },
         { label: 'Upcoming', icon: 'upcoming', bg: hv('sky'), meta: '', go: go('upcoming') },
-        { label: 'Tasks', icon: 'checksq', bg: hv('clay'), meta: '' + st.items.filter(function(x){ return x.kind === 'task' && !x.done && (x.start === null || x.date >= TODAY); }).length, go: go('tasks') },
-        { label: 'Focus', icon: 'timer', bg: hv('rose'), meta: '', go: function(){ var a = st.items.find(function(x){ return x.date === TODAY && !x.done && x.start !== null && NOW >= x.start && NOW < x.start + x.dur; }); self.startFocus(a ? a.id : null); } }
+        { label: 'All tasks', icon: 'checksq', bg: hv('pine'), meta: '' + st.items.filter(function(x){ return x.kind === 'task' && !x.done && x.start === null; }).length + ' unscheduled', go: go('tasks') }
       ] },
-      { label: 'Grow', rows: [
-        { label: 'Habits', icon: 'flame', bg: hv('amber'), meta: st.habits.filter(function(h){ return h.hist[TODAY]; }).length + '/' + st.habits.length, go: go('habits') },
+      { label: 'Build', rows: [
         { label: 'Routines', icon: 'routine', bg: hv('iris'), meta: '' + st.routines.length, go: go('routines') },
-        { label: 'Goals', icon: 'target', bg: hv('sage'), meta: '' + st.goals.length, go: go('goals') }
+        { label: 'Projects', icon: 'folder', bg: hv('sage'), meta: '' + st.projects.length, go: go('projects') }
       ] },
-      { label: 'Organize', rows: [
-        { label: 'Projects', icon: 'folder', bg: hv('pine'), meta: '' + st.projects.length, go: go('projects') },
+      { label: 'Focus and reflect', rows: [
+        { label: 'Focus', icon: 'timer', bg: hv('rose'), meta: '', go: function(){ var a = st.items.find(function(x){ return x.date === TODAY && !x.done && x.start !== null && NOW >= x.start && NOW < x.start + x.dur; }); self.startFocus(a ? a.id : null); } },
         { label: 'Journal', icon: 'journal', bg: hv('slate'), meta: '', go: go('journal') }
       ] }
     ];
@@ -1592,9 +1602,14 @@ class Component extends DCLogic {
       close: function(){ clearInterval(self.tick); self.setState({ screen: 'today', focus: null }); }
     };
 
-    var tabs = [['inbox', 'Inbox', 'inbox'], ['today', 'Today', 'timeline'], ['calendar', 'Calendar', 'calendar'], ['browse', 'Browse', 'grid']].map(function(t){
-      return { label: t[1], icon: t[2], cur: curTab === t[0] ? 'page' : 'false', badge: t[0] === 'inbox' && st.inbox.length > 0, n: st.inbox.length, go: function(){ self.setState({ screen: t[0], sheet: null, project: null }); } };
+    var tabs = [['plan', 'Plan', 'timeline', 'today'], ['habits', 'Habits', 'flame', 'habits'], ['goals', 'Goals', 'target', 'goals'], ['browse', 'More', 'grid', 'browse']].map(function(t){
+      var badge = t[0] === 'browse' && st.inbox.length > 0;
+      return { label: t[1], icon: t[2], aria: t[1] + (badge ? ', ' + st.inbox.length + ' in Inbox' : ''), cur: curTab === t[0] ? 'page' : 'false', badge: badge, n: st.inbox.length, go: function(){ self.setState({ screen: t[3], sheet: null, project: null }); } };
     });
+    var tabsA = tabs.slice(0, 2), tabsB = tabs.slice(2);
+    var fabDefs = { calendar: ['New event', function(){ cal.newEvent(); }], tasks: ['New task', function(){ self.openNew({ unscheduled: true, date: TODAY }); }], habits: ['New habit', function(){ self.setState({ sheet: { type: 'habit', d: { name: '', icon: 'leaf', hue: 'sage', freq: 'daily', target: 3 } } }); }], routines: ['New routine', function(){ self.setState({ sheet: { type: 'routine', d: { name: '', icon: 'moon', hue: 'iris', steps: [], draft: '', stepDur: 10 } } }); }] };
+    var fabDef = fabDefs[st.screen] || ['New task', function(){ self.openNew({}); }];
+    var fab = { aria: fabDef[0], go: fabDef[1] };
 
     var shType = st.sheet ? st.sheet.type : null;
     var sh = { open: !!shType, detail: shType === 'detail', edit: shType === 'edit', habit: shType === 'habit', routine: shType === 'routine', month: shType === 'month', h: shType === 'edit' ? '792px' : (shType === 'habit' || shType === 'routine' ? '700px' : 'auto'), aria: shType === 'edit' ? 'Edit' : (shType || '') };
@@ -1695,7 +1710,7 @@ class Component extends DCLogic {
       goBrowse: go('browse'),
       inbox: inbox, capture: capture, cal: cal, browse: browse, themeOpts: themeOpts, upcoming: upcoming, tasks: tasks,
       habitCards: habitCards, habitsSum: habitsSum, routineCards: routineCards, goalCards: goalCards, proj: proj, jr: jr, fc: fc,
-      showTabs: st.screen !== 'focus', tabs: tabs, sh: sh, dt: dt, ed: ed, hb: hb, rt: rt, mp: mp,
+      showTabs: st.screen !== 'focus', tabs: tabs, tabsA: tabsA, tabsB: tabsB, fab: fab, sh: sh, dt: dt, ed: ed, hb: hb, rt: rt, mp: mp,
       toast: { show: !!st.toast, msg: st.toast }
     };
   }

@@ -38,7 +38,7 @@ src/
   features/
     shell/                   # Sidebar, NavItem, rail behavior
     today/                   # DateHeader, WeekStrip, HabitChips, Timeline/*, DetailPanel, DailyProgress, UpNext, InboxCard
-    inbox/ calendar/ upcoming/ tasks/ habits/ routines/ goals/ projects/ focus/ journal/
+    inbox/ upcoming/ tasks/ habits/ routines/ goals/ projects/ focus/ journal/
   components/ui/             # Button, IconButton, Chip, Tag, Segmented, CheckRing, Capsule, TextField, Card, ListGroup, ProgressRing, Toast, Dialog, EmptyState, SectionLabel
   domain/
     time.ts

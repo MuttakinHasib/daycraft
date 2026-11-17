@@ -54,14 +54,16 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 - **Card:** `bg-surface border border-line rounded-card p-4`.
 - **ListGroup:** a card with no padding and hairline-separated **ListRow**s (min 52, px 16, gap 12; leading 32pt hue tile or 18pt subtle icon; trailing value in `text-ink-muted` tabular; optional chevron).
 
-### TabBar and FloatingAddButton
+### TabBar (with the center +)
 
-- Depends on decision D1.
-- **Prototype tab bar:**
-  - Pill, h 64, p 6, `bg-elevated`, border `line`, `shadow-float`.
-  - Four equal tabs, each 52 tall with a 21pt icon and a `type-micro` label.
-  - Active tab: `bg-sunken` pill + `text-accent-text`. Inbox has a badge (18pt accent pill, 11pt bold count).
-- **+ button:** 64 circle, `bg-accent`, 26pt plus (stroke 2.4), accent glow.
+- Implementation choice is decision D1; the layout below is the design reference.
+- **Bar:** one pill, 16 from each side and 24 above the bottom inset, h 64, p 6, `bg-elevated`, border `line`, `shadow-float`.
+- **Order:** Plan · Habits · **+** · Goals · More. Tabs are `flex-1`, 52 tall, 22pt icon over an 11pt semibold label, gap 3.
+  - Icons: Plan `timeline`, Habits `flame`, Goals `target`, More `grid`.
+  - Active: `bg-sunken` pill + `text-accent-text` (`accessibilityState={{ selected: true }}`). Inactive: `text-ink-muted`.
+  - More carries the Inbox badge: 18pt accent pill, 11pt bold count, 2pt `elevated` ring, offset to the right of the icon. Its label reads “More, 4 in Inbox”.
+- **+ (center):** a 72-wide slot holding a 52 circle, `bg-accent`, 26pt plus (stroke 2.4). Its action and label follow the screen (New task / New habit / New routine); see [navigation](../product/navigation-and-modules.md#navigation-model).
+- Hidden on Focus.
 
 ### Toast
 
@@ -71,7 +73,7 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 ### ProgressRing
 
 - Sizes:
-  - 40 (Today header: 3.5 stroke, 10.5 extrabold percentage);
+  - 44 (Plan header: 4 stroke on a `line-strong` track; number without “%” in 13 extrabold; check icon at 100%; no progress arc at 0);
   - 56 (goals: 4 stroke);
   - 72 (desktop daily progress);
   - 250 (focus: 10 stroke, hue color).

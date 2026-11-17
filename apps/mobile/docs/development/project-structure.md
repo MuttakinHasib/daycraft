@@ -42,7 +42,7 @@ src/
   features/
     today/                   # TodayScreen parts: DateHeader, WeekStrip, HabitRow, Timeline/*, hooks
     timeline/                # if the timeline is used by more than Today, it moves here
-    inbox/  calendar/  upcoming/  tasks/  habits/  routines/  goals/  projects/  focus/  journal/
+    inbox/  upcoming/  tasks/  habits/  routines/  goals/  projects/  focus/  journal/
     activity-editor/         # editor + detail sheets (shared by every entry point)
   components/ui/             # primitives only
   domain/

@@ -76,7 +76,7 @@ Rules:
 | 14–18% into surface | Habit circle/chip icon (not done) |
 | 16% into surface | Done habit chip background, event agenda card |
 | 28% into transparent | Active capsule outer ring (4px `box-shadow`) |
-| 30% into surface | Event block in Week view |
+| 30% into surface | Event card tint (agenda, Upcoming) |
 | 42% into surface | Active capsule base (remaining part) |
 | 60% `sunken` into transparent | Selected timeline row background (keeps the now line visible) |
 

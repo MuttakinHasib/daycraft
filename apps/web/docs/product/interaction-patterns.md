@@ -69,14 +69,14 @@ Toast behavior:
 
 | Entry point | Opens | Pre-filled |
 |---|---|---|
-| Floating **+** | Editor (task) | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
+| Center **+** (Plan, Goals, Projects, Inbox, Upcoming, Journal, More) | Editor (task) | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
 | Empty half-hour on timeline | Editor (task) | that start time |
 | “Add task” in a gap | Editor (task) | gap start, gap-sized duration (15–60) |
-| Calendar **+ Event** | Editor (event) | next free hour slot; 60 min; hue sky; icon video |
-| Tasks **+ Task** | Editor (task, Anytime) | today |
+| Center **+** on Habits / Routines | New habit / New routine sheet | — |
+| All tasks **+ Task** chip, or center **+** on All tasks | Editor (task, Anytime) | today |
 | Inbox **Plan** | Editor (task) | title, notes from the item; saving removes the item from Inbox |
-| Tasks **Place** | Editor (edit) | suggested start; past dates move to today |
-| Routine **Add to today** | — (direct) | next free slot that fits the full routine; then switches to Today and pops the new capsule |
+| All tasks **Place** | Editor (edit) | suggested start; past dates move to today |
+| Routine **Add to today** | — (direct) | next free slot that fits the full routine; then switches to Plan and pops the new capsule |
 
 “Next free slot” = round up to the next 15 minutes from the reference time, then skip past any activity it would collide with (snap to 5 minutes after it). The algorithm lives in `src/domain/timeline/`.
 
@@ -89,7 +89,7 @@ Toast behavior:
 
 ## Theme switching
 
-- Browse → Appearance → Light / Dark switches instantly, with no reload.
+- More → Appearance → Light / Dark switches instantly, with no reload.
 - Production adds **System** and persists the choice. See [theming](../design/theming.md).
 
 ## Destructive actions

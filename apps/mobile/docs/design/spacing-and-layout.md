@@ -28,7 +28,7 @@ No other values in feature code (no 6, 10, 14, 18, 22…). Two exceptions:
 | Region | Rule |
 |---|---|
 | Horizontal page padding | 20 (`px-5`) on every screen and sheet |
-| Top of a tab root (Today, Inbox, Calendar, Browse) | content starts 24 below the safe area |
+| Top of a tab root (Plan, Habits, Goals, More) | content starts 24 below the safe area |
 | Sub-screen back row | 16 top, 14 side (the back chevron's own inset makes the text align with the 20 grid), height 40; title follows 4 below |
 | Screen title → subtitle | 4 |
 | Subtitle → first content | 8 |
@@ -36,7 +36,7 @@ No other values in feature code (no 6, 10, 14, 18, 22…). Two exceptions:
 | Between cards | 12 |
 | Card padding | 16 (list-style cards with a leading ring: 12 vertical, 16 sides) |
 | Scroll content bottom | 120 on tab screens: tab bar 64 + bottom inset 24 + 32 breathing room. Use the safe-area inset plus this, not a hardcoded total. |
-| Floating tab bar | 16 from the left edge, 24 from the bottom (above the safe area), right edge leaves 16 + 64 + 16 for the + button |
+| Floating tab bar | 16 from each side, 24 from the bottom (above the safe area). The + sits inside it, centered |
 | + button | 64, 16 from the right, 24 from the bottom |
 | Toast | 40 tall, 104 from the bottom (16 above the tab bar), max width = screen − 40 |
 
@@ -59,13 +59,13 @@ One ladder. Components that do the same job share a height.
 
 | pt | Class | Components |
 |---:|---|---|
-| 64 | `h-16` | Floating tab bar, + button |
+| 64 | `h-16` | Floating tab bar |
 | 52 | `h-13` | Primary/secondary buttons (sheet footers), list rows (min) |
 | 48 | `h-12` | Inputs/fields, capsule (min, and width), subtask rows |
 | 44 | `h-11` | Medium buttons (in cards), steppers, habit check button, mood circles, editor icon cells, **minimum touch target** |
 | 40 | `size-10` | Icon buttons, habit card icon, project tile, back row |
 | 36 | `h-9` | Chips, week-strip date circle, Inbox add button |
-| 32 | `h-8` | Small chips (in cards and on the timeline), small icon buttons, segment buttons, color swatches, Browse tiles, agenda icon |
+| 32 | `h-8` | Small chips (in cards and on the timeline), small icon buttons, segment buttons, color swatches, More tiles, agenda icon |
 | 24 | `h-6` | Tags, check ring (with `hitSlop` 10 → 44 target), routine step numbers |
 
 ## Content density

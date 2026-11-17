@@ -758,9 +758,9 @@ apps/mobile/src/
       use-day-activities.ts     # live query -> domain Activity[] -> layoutDay
       use-activity-actions.ts   # complete, move, resize, delete: repository call + toast
       timeline/                 # rows, spine, now line, drag gesture (worklets)
-    inbox/ calendar/ tasks/ habits/ routines/ goals/ projects/ focus/ journal/ upcoming/
+    inbox/ tasks/ habits/ routines/ goals/ projects/ focus/ journal/ upcoming/
     activity-editor/            # draft state, domain validation, save
-    account/                    # M2: sign-in, sync status row in Browse, account deletion
+    account/                    # M2: sign-in, sync status row in More, account deletion
   components/ui/                # primitives only, unchanged
   data/
     db/
@@ -875,7 +875,7 @@ apps/web/src/
   app/
     (marketing)/page.tsx        # static landing page
     (app)/today/page.tsx        # client components from here down
-    (app)/calendar/ inbox/ tasks/ habits/ routines/ goals/ projects/ journal/ focus/
+    (app)/inbox/ tasks/ habits/ routines/ goals/ projects/ journal/ focus/
     sign-in/page.tsx
   features/                     # same module names as mobile
     today/timeline/             # pointer-event drag, as the prototype's pDown/pMove/pUp
@@ -899,7 +899,7 @@ apps/web/src/
 - **Loading on web:** a skeleton of the timeline panel, never a spinner over the whole page.
 - **Empty:** the copy already specified per screen ("A blank canvas", "Inbox zero"). Empty is `ready` with no rows, never an error.
 - **Fatal on mobile:** a migration failure shows a full-screen error with Retry. Nothing else is fatal.
-- **Sync errors** never block the mobile UI. They show as a status line in Browse and retry with backoff.
+- **Sync errors** never block the mobile UI. They show as a status line in More and retry with backoff.
 
 ## 7. Tech stack, with reasons
 
@@ -1006,7 +1006,7 @@ Exit criteria: Today shows the fixture day from SQLite, and complete, move and r
 ### M1: the whole product on the phone, no account
 
 - Editor and detail sheets, Inbox, Calendar, Tasks, Upcoming, Habits, Routines, Goals, Projects, Journal, Focus, Appearance with System. Recurrence. The rest of the schema.
-- Sentry, Maestro flows, a JSON export in Browse (the only backup until sync), the SQLCipher decision, EAS Build and a TestFlight channel.
+- Sentry, Maestro flows, a JSON export in More (the only backup until sync), the SQLCipher decision, EAS Build and a TestFlight channel.
 - Exit criteria: the 12 workflows in `product-overview.md` pass as Maestro flows. Outside testers on TestFlight. Two weeks of daily use with no data loss. An app update over a populated database migrates cleanly.
 
 ### M2: API, accounts and sync (free plan)

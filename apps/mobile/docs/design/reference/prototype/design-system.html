@@ -1,4 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><style>@font-face{font-family:'Plus Jakarta Sans';font-weight:400;src:url(vendor/plus-jakarta-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:500;src:url(vendor/plus-jakarta-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:600;src:url(vendor/plus-jakarta-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:700;src:url(vendor/plus-jakarta-sans-latin-700-normal.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-weight:800;src:url(vendor/plus-jakarta-sans-latin-800-normal.woff2) format('woff2')}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap">
 <style>
 body{margin:0}
 a{color:#AD5236}a:hover{color:#97462D}
@@ -298,16 +300,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 </div>
 
 <div style="display: flex; flex-direction: column; gap: 10px">
-<div class="dk-lab" style="font-size: 11px">Tab bar · quick add</div>
-<div style="display: flex; align-items: center; gap: 14px">
-<div style="flex: 1; height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; gap: 2px">
-<span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-inbox"></use></svg>Inbox</span>
-<span class="dk-tab" aria-current="page"><svg class="ic" width="21" height="21"><use href="#i-timeline"></use></svg>Today</span>
-<span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-calendar"></use></svg>Calendar</span>
-<span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-grid"></use></svg>Browse</span>
-</div>
-<span style="width: 62px; height: 62px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; flex: none"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></span>
-</div>
+<div class="dk-lab" style="font-size: 11px">Tab bar with center add</div>
+<div style="height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; align-items: center"><span class="dk-tab" aria-current="page"><svg class="ic" width="21" height="21"><use href="#i-timeline"></use></svg>Plan</span><span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-flame"></use></svg>Habits</span><span style="width: 72px; flex: none; display: grid; place-items: center"><span style="width: 52px; height: 52px; border-radius: 999px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center"><svg class="ic" width="26" height="26"><use href="#i-plus"></use></svg></span></span><span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-target"></use></svg>Goals</span><span class="dk-tab"><svg class="ic" width="21" height="21"><use href="#i-grid"></use></svg>More</span></div>
 </div>
 </div>
 </sc-for>
@@ -395,7 +389,7 @@ class Component extends DCLogic {
     var sizes = [
       ['Primary button', 'h-13 · 52', 52, 'Sheet footers, onboarding'], ['Button md · stepper · hit area', 'h-11 · 44', 44, 'Inline cards, focus controls'], ['Field · capsule (min)', 'h-12 · 48', 48, 'Inputs, list rows, timeline block'],
       ['Icon button', 'size-10 · 40', 40, 'Sheet close, header actions'], ['Chip', 'h-9 · 36', 36, 'Filters, toolbar actions'], ['Chip sm · icon button sm', 'h-8 · 32', 32, 'Actions inside cards and the timeline'],
-      ['Tag · check ring', 'h-6 · 24', 24, 'Metadata; ring hit area grows to 44'], ['Tab bar · quick add', 'h-16 · 64', 64, 'Floating navigation, 24 from the bottom']
+      ['Tag · check ring', 'h-6 · 24', 24, 'Metadata; ring hit area grows to 44'], ['Tab bar (center add 52)', 'h-16 · 64', 64, 'Floating navigation, 24 from the bottom']
     ].map(function(z){ return { name: z[0], cls: z[1], px: z[2], use: z[3] }; });
     var audit = [
       ['Spacing', 'Page padding unified to 20 (mobile) and 32 (desktop); sheets moved from 18 to 20; every screen header starts 24 from the top; scroll areas end 120 above the bottom so nothing hides under the tab bar.'],
@@ -404,7 +398,8 @@ class Component extends DCLogic {
       ['Type', 'New tokens: Title 24, Body small 14, Control 13, Micro 11, Clock 56 — each replaces several one-off values.'],
       ['Components', 'Buttons, chips, icon buttons and inputs snapped to one size ladder: 52 / 44 / 48 / 40 / 36 / 32 / 24. Ten ad-hoc heights (28, 30, 34, 38, 42, 46, 50, 54, 58, 62) removed.'],
       ['Components', 'Pills use radius 999 instead of hand-computed halves; 17 radius values reduced to 6 tokens + pill. Lists now match cards at 20.'],
-      ['Navigation', 'Tab bar and + button were 2px out of line (26 vs 28 from the bottom, 64 vs 62 tall). Both are now 64 tall, 24 from the bottom, 16 from the edges.'],
+      ['Navigation', 'Phone tabs are now Plan · Habits · + · Goals · More in one 64pt bar: the + sits in the true center (52pt) and adapts to the tab. Inbox, Upcoming, All tasks, Routines, Projects, Focus and Journal live in More. The Calendar tab and its week/month views are gone; the date title opens the month picker.'],
+      ['Components', 'Today progress ring is 44pt, shows the number only and a check mark at 100.'],
       ['Timeline', 'Gutter, hour lines, half-hour slots and the now line share one 52px start edge; capsule 48 wide everywhere (desktop was 52); check ring 24, centered on the first capsule row; now label matches gutter size.'],
       ['Timeline', 'Meta row spacing 7 → 8; rows with metadata 78 → 80; minimum gap between blocks 12 on every platform.'],
       ['Theme', 'Dark Elevated raised to #312E2B so the selected segment and tab bar separate from Sunken (#262422). All other colors unchanged.'],
