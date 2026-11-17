@@ -42,5 +42,3 @@ yarn-error.log*
 .claude/.cc-writes/
 .zcode/
 
-# Pre-monorepo backups (delete when no longer needed)
-_legacy/

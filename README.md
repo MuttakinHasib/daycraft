@@ -1,29 +1,43 @@
 # Daycraft
 
-Daycraft is a calm personal planner built around a vertical Today timeline. This repository is a Turborepo monorepo with bun workspaces.
+Daycraft is a calm personal planner built around a vertical **Today timeline**: your day as colored capsules on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline instead of competing with it.
 
-## Layout
+> Status: early development. Design tokens, fonts and the first UI primitives exist in the mobile app; screens are still starter templates. See each app's `docs/status-and-decisions.md`.
+
+## Apps
 
 | Path | Package | What it is |
 |---|---|---|
-| `apps/mobile` | `@daycraft/mobile` | Expo SDK 58 app (iPhone first, Android second) |
-| `apps/web` | `@daycraft/web` | Next.js 16 app for desktop and tablet |
-| `packages/typescript-config` | `@repo/typescript-config` | Shared tsconfig presets (from the create-turbo scaffold) |
+| [`apps/mobile`](apps/mobile) | `@daycraft/mobile` | Expo SDK 58 app (iPhone first, Android second) |
+| [`apps/web`](apps/web) | `@daycraft/web` | Next.js 16 app for desktop and tablet |
+| [`packages/typescript-config`](packages/typescript-config) | `@repo/typescript-config` | Shared tsconfig presets |
 
-Each app keeps its own `AGENTS.md` and `docs/`. Read those before changing an app.
+## Getting started
 
-## Commands
-
-Use bun. The root `package.json` declares bun in `devEngines`, so `npm` and `npx` refuse to run here.
+Requires Node 24+ and [bun](https://bun.sh) 1.2+.
 
 ```bash
-bun install                                  # install every workspace (one bun.lock at the root)
-bunx turbo run build check-types lint        # check everything, cached
-bunx turbo run dev --filter=@daycraft/web    # run one app
+git clone https://github.com/MuttakinHasib/daycraft.git
+cd daycraft
+bun install
 ```
 
-Add mobile dependencies with `bunx expo install <pkg>` inside `apps/mobile`, so Expo picks SDK-compatible versions.
+| Task | Command |
+|---|---|
+| Check everything (cached) | `bunx turbo run build check-types lint` |
+| Run the web app | `bunx turbo run dev --filter=@daycraft/web` |
+| Run the mobile app | `cd apps/mobile && bunx expo start` |
+| Add a mobile dependency | `cd apps/mobile && bunx expo install <pkg>` |
 
-## Tasks
+Use bun throughout: the root `package.json` declares bun in `devEngines`, so npm and npx refuse to run. Store builds and OTA updates for mobile run on EAS, outside Turborepo.
 
-`turbo.json` defines `build`, `check-types`, `lint` and `dev`. `dev` is persistent and never cached. Store builds run on EAS, outside Turborepo.
+## Docs
+
+- [GLOSSARY.md](GLOSSARY.md): the shared vocabulary for code, UI copy and issues.
+- [docs/architecture-plan.md](docs/architecture-plan.md): proposed architecture for mobile, API and web (not yet accepted).
+- `apps/*/docs/`: product, design system and development guides per app.
+- [AGENTS.md](AGENTS.md): rules for AI coding agents and contributors; each app has its own.
+
+## Stack
+
+Turborepo on bun workspaces · Expo Router, Uniwind + Tailwind CSS v4, Reanimated · Next.js App Router with Cache Components, Tailwind CSS v4 · TypeScript (strict) · React 19 with the React Compiler.
