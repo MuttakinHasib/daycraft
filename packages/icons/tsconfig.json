@@ -1,0 +1,11 @@
+{
+  "extends": "@daycraft/typescript-config/base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["es2022", "dom"]
+  },
+  "include": ["src"]
+}

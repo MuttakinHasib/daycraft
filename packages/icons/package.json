@@ -1,0 +1,32 @@
+{
+  "name": "@daycraft/icons",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./native": "./src/native.tsx",
+    "./web": "./src/web.tsx"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@daycraft/domain": "workspace:*"
+  },
+  "peerDependencies": {
+    "lucide-react": "^1.74.0",
+    "lucide-react-native": "^1.74.0",
+    "react": "*",
+    "react-native-svg": "*"
+  },
+  "peerDependenciesMeta": {
+    "lucide-react": { "optional": true },
+    "lucide-react-native": { "optional": true },
+    "react-native-svg": { "optional": true }
+  },
+  "devDependencies": {
+    "@daycraft/typescript-config": "workspace:*",
+    "@types/react": "~19.3.0",
+    "typescript": "~6.0.3"
+  }
+}
