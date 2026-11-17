@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaListener, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Uniwind } from 'uniwind';
 
@@ -6,7 +7,6 @@ import { AppTheme, useScreenStatusBarStyle } from '@/theme/app-theme';
 
 import '@/global.css';
 
-// Placeholder navigator until decision D1 (native tabs vs the custom Plan · Habits · + · Goals · More bar).
 function RootStack() {
   const statusBarStyle = useScreenStatusBarStyle();
   return <Stack screenOptions={{ headerShown: false, statusBarStyle }} />;
@@ -14,12 +14,14 @@ function RootStack() {
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
-        <AppTheme>
-          <RootStack />
-        </AppTheme>
-      </SafeAreaListener>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
+          <AppTheme>
+            <RootStack />
+          </AppTheme>
+        </SafeAreaListener>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

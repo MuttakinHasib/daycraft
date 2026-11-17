@@ -7,7 +7,7 @@
 ├── AGENTS.md                 # agent entry point (CLAUDE.md imports it)
 ├── package.json              # @daycraft/mobile; scripts dev, check-types, lint
 ├── app.json                  # Expo config: typed routes, React Compiler, icons, splash
-├── app.config.ts             # adds the expo-font plugin (Plus Jakarta Sans from @expo-google-fonts)
+├── app.config.ts             # adds the expo-font plugin (Onest from @expo-google-fonts)
 ├── metro.config.js           # withUniwindConfig(cssEntryFile: src/global.css, dtsFile: src/uniwind-types.d.ts)
 ├── eslint.config.js          # eslint-config-expo (flat)
 ├── tsconfig.json             # strict, @/* aliases
@@ -19,9 +19,11 @@
 │   ├── development/          # architecture, structure, conventions, testing
 │   └── status-and-decisions.md
 └── src/
-    ├── app/                  # Expo Router routes: _layout (placeholder Stack until D1), index (placeholder Plan), design-system
-    ├── components/ui/        # Daycraft primitives, Icon, hues.ts (hue → class maps)
+    ├── app/                  # Expo Router routes: _layout (root Stack), (tabs)/ with Plan (index), habits, goals and more/ (a Stack: index, design-system)
+    ├── components/ui/        # Daycraft primitives, Icon, TabBar, hues.ts (hue → class maps)
     ├── features/design-system/ # the design-system screen's sections
+    ├── features/more/        # the More screen
+    ├── features/navigation/  # TabScreen: the shared tab-root layout (title, description, bottom clearance for the pill)
     ├── lib/cn.ts             # cn() configured with Daycraft token names (see the cn rule)
     ├── theme/app-theme.tsx   # the one theme module: scheme, colors for native APIs, navigation theme
     ├── global.css            # Tailwind/Uniwind entry; imports the generated token CSS

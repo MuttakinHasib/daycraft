@@ -9,5 +9,5 @@ The phone app's tab bar is the v2 design's single floating pill: Plan · Habits 
 ## Consequences
 
 - The design wins over platform convention. Accessibility (roles, labels, selected state), safe-area insets, keyboard avoidance and hiding the bar on Focus are ours to build.
-- The bar looks and behaves the same on iOS and Android.
-- A Liquid Glass background can be added to the pill later (`expo-glass-effect`) without changing its structure.
+- The bar has the same layout and behavior on iOS and Android; only its background differs (below).
+- Where Liquid Glass is available (iOS 26+), the pill's background is an interactive `GlassView` from `expo-glass-effect` (it flexes under a press), following the app's theme rather than the OS appearance. Everywhere else it is the solid v2 pill (`elevated`, hairline border, `shadow-float`).

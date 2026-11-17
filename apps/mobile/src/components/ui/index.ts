@@ -7,4 +7,5 @@ export { Icon } from './icon';
 export { SectionLabel } from './section-label';
 export { Segmented } from './segmented';
 export { Sheet } from './sheet';
+export { TabBar, TabRoute } from './tab-bar';
 export { Tag } from './tag';

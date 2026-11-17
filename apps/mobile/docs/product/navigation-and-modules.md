@@ -17,7 +17,7 @@ Screen-by-screen reference for the phone app, taken from the prototype (canvas p
 - **Focus** is full-screen: the tab bar is hidden. Close (×) returns to Plan.
 - **Sheets** (detail, editor, new habit, new routine, month picker) slide up over the current screen with a scrim. Tapping the scrim closes them.
 - No screen has top tabs. Segmented controls appear only inside content (All tasks filters, Project List/Board, editor Task/Event).
-- Implementation (native tabs or a custom bar) is **decision D1** ([status](../status-and-decisions.md#open-decisions)). The centered + favors a custom bar.
+- Implementation: a custom floating pill tab bar, decided in [ADR-0003](../../../../docs/adr/0003-custom-floating-pill-tab-bar.md) (D1).
 
 ### Planned Expo Router layout
 
