@@ -1,0 +1,62 @@
+# Coding conventions
+
+## General
+
+- Straightforward code over clever code. Write the obvious version first. Abstract on the **third** real repetition, not the first.
+- Small, focused components, but no fragmentation. A 15-line piece used once stays inline. Extract when it has its own state, its own name in the design (Capsule, WeekStrip), or a second caller.
+- Business logic goes in `src/domain/` (pure) or a feature hook, never inline in JSX.
+- Do not duplicate logic across screens. Today, Calendar and Upcoming all read activities through the same hook and format time through `src/domain/time.ts`.
+- No dead code, commented-out code, or template leftovers in files you touch.
+- Comments explain **why** (constraints, platform quirks), not what. The existing `// Complete string literals only — Tailwind scans at build time` is the model.
+
+## TypeScript
+
+- `strict` is on. No `any`. Use `unknown` and narrow it.
+- No non-null `!` except where the type system cannot know (document why).
+- Explicit return types on exported domain functions.
+- Enums as `as const` objects + a same-named type (the `ActivityHue` pattern), not TS `enum`.
+- Discriminated unions for variants and results (`{ ok: true } | { ok: false; reason }`, `kind: 'task' | 'event' | 'routine'`).
+- Functions with **more than two parameters, or any two of the same type**, take one object parameter: `findNextFreeSlot({ activities, date, durationMinutes, from })`.
+- IDs are opaque strings. Do not encode meaning in them.
+
+## React / React Native
+
+- Function components only. Named exports.
+- Props interfaces: optional props have defaults in the destructuring (`variant = 'primary'`).
+- Required accessibility props are required in the type (`accessibilityLabel` on icon buttons).
+- **Conditional rendering:**
+  - Use early returns and `&&` for one condition.
+  - For several states, map them to a variable or a small lookup object before the JSX.
+  - Never nest ternaries in JSX; avoid ternary chains anywhere.
+- Avoid deeply nested JSX: extract a named subcomponent when nesting passes about 4 levels of layout views.
+- Keys: stable IDs, never array indexes for lists that can reorder.
+- The React Compiler memoizes, so do not add `useMemo`/`useCallback`/`memo` unless profiling shows a need or identity matters (gesture handlers, effects).
+- Effects only for synchronizing with things outside React (timers, subscriptions). Derive values during render instead of syncing them with effects.
+
+## Styling with Uniwind
+
+- Style with `className`. `StyleSheet.create` is for values classes cannot express. Inline `style` is only for **computed** values (timeline `top`/`height`, progress widths, gesture transforms).
+- Only token classes (see [design-system](../design/design-system.md)). No arbitrary values (`text-[13px]`, `rounded-[10px]`, `#fff`). If you need one, the token is missing: add it to `global.css` and the docs.
+- **Never build class names dynamically** (``bg-${hue}``). Use literal maps like `ActivityHueBackground`.
+- State styling through `data-*` attributes and `data-[key=value]:` variants (equality only), plus `active:`, `disabled:`, `focus:`.
+- Shared multi-property styles belong in `@layer components` in `global.css` (as `.chip`, `.btn-primary` do), so utilities can still override them. Keep selectors flat.
+- Third-party components without `className`: wrap them with `withUniwind`.
+- Remember RN layout defaults: flex column, no CSS inheritance (set the font family and color on every `Text`, or use the presets), limited units (no `em`, few percentages).
+- Platform differences: `ios:`, `android:`, `native:`, `web:` variants before platform files.
+
+## Imports
+
+- Use the `@/` alias for anything outside the current folder; use relative imports within a folder (as `components/ui` does).
+- Order (VS Code organizes on save): external packages, blank line, `@/` imports, blank line, relative imports, side-effect imports (`'@/global.css'`) last in the root layout.
+- Import primitives from `@/components/ui`.
+
+## Dependencies
+
+- Add with `npx expo install <pkg>`.
+- Every new dependency needs a reason in the issue or PR: what it replaces, why the standard library or Expo modules are not enough, and that it supports the New Architecture and SDK 58.
+- Prefer Expo modules. Native modules require a development build: note this in the PR.
+
+## Git and issues
+
+- Small commits with imperative, sentence-case messages, as in the existing history (“Add Daycraft UI primitives”).
+- Work from `.scratch/<feature>/` issues when they exist (`docs/agents/issue-tracker.md`). Update the issue's `Status:` line.
