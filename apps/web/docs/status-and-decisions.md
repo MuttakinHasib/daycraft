@@ -6,9 +6,9 @@ Last reviewed 2026-11-17, after the move into the monorepo: `bun run check-types
 
 ## Sources of truth (in priority order)
 
-1. **Design canvas, page "v2 · Current"**: decides what screens (desktop boards for Today, phone boards for every other module), behavior and token values *should* be. Exported as screenshots and a runnable prototype in [design/reference/](design/reference/README.md).
+1. **Design canvas, page "v2 · Current"**: decides what screens (desktop boards for Today, phone boards for every other module), behavior and token values *should* be. Exported as screenshots and a runnable prototype in [design/reference/](../../../docs/design/reference/README.md).
 2. **`@daycraft/design-tokens`** (planned, [ADR-0001](../../../docs/adr/0001-design-tokens-generated-from-typescript.md)): decides what the app renders, and changes only to match the canvas. Until it lands, `src/app/globals.css` (still the Next.js template) is what renders; the gaps against v1.1 are listed below.
-3. **[design/reference/daycraft-tailwind-v1.1.css](design/reference/daycraft-tailwind-v1.1.css)**: a frozen export of design system v1.1, kept for reference only.
+3. **[design/reference/daycraft-tailwind-v1.1.css](../../../docs/design/reference/daycraft-tailwind-v1.1.css)**: a frozen export of design system v1.1, kept for reference only.
 4. These docs explain 1–3. If a doc contradicts 1–3 and is not listed below, the doc is wrong. Fix it.
 
 The canvas pages “v2 · Refined” and “v1 · Original” are superseded. Do not copy values from them.
@@ -17,27 +17,23 @@ The canvas pages “v2 · Refined” and “v1 · Original” are superseded. Do
 
 | Area | State |
 |---|---|
-| Monorepo: this app is `apps/web` (`@daycraft/web`) in the Daycraft Turborepo, with bun workspaces and one root `bun.lock`. ESLint now ignores `docs/**` (vendored prototype bundles failed lint). | Done 2026-11-17. `turbo run build check-types lint` passes. |
+| Monorepo: this app is `apps/web` (`@daycraft/web`) in the Daycraft Turborepo, with bun workspaces and one root `bun.lock`.  | Done 2026-11-17. `turbo run build check-types lint` passes. |
 | Next.js 16.4 App Router, React 19.3, TypeScript strict, `@/*` → `src/*` | Done (template) |
 | Tailwind v4 via the `@tailwindcss/turbopack` loader in `next.config.ts` (no PostCSS config) | Done (template) |
 | `cacheComponents`, `partialPrefetching`, `reactCompiler`, `experimental.agentFeedback` | Enabled in `next.config.ts` |
-| Daycraft tokens in `globals.css` | **Not done.** The file is the template (`--background`/`--foreground`, `prefers-color-scheme`, Arial body) |
-| Plus Jakarta Sans | **Not done.** `layout.tsx` loads Geist / Geist Mono |
-| Metadata, favicon, brand | **Not done.** Title is “Create Next App”; favicon and `public/*.svg` are template |
-| `src/app/page.tsx` | Template (uses `zinc-*`, arbitrary hex values). Replace, do not extend. |
+| Daycraft tokens: `globals.css` imports the generated `@daycraft/design-tokens/tailwind.css` and keeps the v1.1 component classes | Done 2026-11-17 (ticket 05). New dependencies: `@daycraft/design-tokens`, `@daycraft/domain`, `cn`. |
+| Plus Jakarta Sans 400–800 via `next/font/google` | Done 2026-11-17 |
+| Theme: System / Light / Dark in a cookie, applied before first paint by an inline script (pages stay static) | Done 2026-11-17 (ticket 07) |
+| Icons: `@daycraft/icons/web` | Done 2026-11-17 (ticket 06). New dependencies: `lucide-react`, `@daycraft/icons`. |
+| Design-system page (`/design-system`) and a placeholder Plan page | Done 2026-11-17. The starter page and `public/*.svg` are deleted. |
+| Metadata, favicon, brand | Title is “Daycraft”; favicon is still the template's until the logo package lands |
 | Components, domain, data, screens | Not started |
 | Tests | Not set up |
 
-## First implementation steps (in order)
+## Next implementation steps
 
-1. Replace `globals.css` with the v1.1 reference tokens:
-   - keep the `@import "tailwindcss"`;
-   - keep `@custom-variant dark`, the `:root` / `.dark` variables, `@theme inline`, `@theme`, and the base and components layers;
-   - remove the template variables.
-2. Load **Plus Jakarta Sans** with `next/font/google` (weights 400–800, `variable: "--font-sans"` or wired into `--font-sans` via `@theme inline`). Drop Geist.
-3. Theme switching without a flash (see [theming](design/theming.md)).
-4. Root metadata and favicon from the Daybreak logo package.
-5. Domain layer and timeline layout function with tests, then the Today screen.
+1. Root favicon and metadata from the Daybreak logo package (`packages/brand`, once supplied).
+2. Domain layer and timeline layout function with tests, then the Plan screen.
 
 ## Design system decisions (2026-11-17)
 
@@ -58,7 +54,7 @@ Settled in a design-system review; the spec and tickets live in the root `.scrat
 | ID | Question | Options | Current lean |
 |---|---|---|---|
 | W1 | Data & mutations | Server Components + Server Actions against a backend, a client data library against an API, or local-first in the browser | Proposed, not accepted: static export + TanStack Query against the shared Hono API (root [architecture-plan](../../../docs/architecture-plan.md)). Must match mobile D2. Keep domain logic pure until it is accepted. |
-| W2 | Theme persistence | `localStorage` + inline pre-paint script, or a cookie read on the server | **Decided:** a cookie, so the server renders the right class without a flash. Modes: System / Light / Dark, System by default. |
+| W2 | Theme persistence | `localStorage` + inline pre-paint script, or a cookie read on the server | **Decided:** a cookie, applied by an inline script before first paint (no flash) instead of on the server, because reading cookies in the root layout would make every page dynamic under Cache Components. Modes: System / Light / Dark, System by default. |
 | W3 | Widths below 768 | The web app is designed for 768–1920. Below 768: reuse the phone layouts, or show a reduced layout plus a prompt to use the app | Undecided. Pages must still not break or overflow horizontally at 375. |
 | W4 | Icon set | Prototype icons are 24 grid, 1.9 stroke, round caps. | **Decided:** shared with mobile D4 ([ADR-0002](../../../docs/adr/0002-lucide-icons-with-custom-fallback.md)). |
 | W5 | Desktop screens other than Today | Only Today is designed for desktop | Proposed: reuse the sidebar + main + right-panel pattern; phone sheets become the right panel or centered dialogs. Design review required per screen. |

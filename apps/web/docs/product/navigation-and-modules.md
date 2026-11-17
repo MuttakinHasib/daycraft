@@ -1,6 +1,6 @@
 # Navigation and modules (web)
 
-Desktop and tablet reference, taken from the prototype boards “v2 · Desktop 1440”, “v2 · Tablet 768” and “v2 · Large desktop 1920 · light”. Screenshots: `docs/design/reference/screens/desktop/` and `screens/phone/` (index: [reference README](../design/reference/README.md)). Only **Today** has a desktop design. For the other modules, the phone screens (documented in `apps/mobile/docs/product/navigation-and-modules.md` and on the canvas boards “v2 · iPhone …”) define content and behavior, and decision W5 ([status](../status-and-decisions.md#open-decisions)) defines how they adapt.
+Desktop and tablet reference, taken from the prototype boards “v2 · Desktop 1440”, “v2 · Tablet 768” and “v2 · Large desktop 1920 · light”. Screenshots: `docs/design/reference/screens/desktop/` and `screens/phone/` (index: [reference README](../../../../docs/design/reference/README.md)). Only **Today** has a desktop design. For the other modules, the phone screens (documented in `apps/mobile/docs/product/navigation-and-modules.md` and on the canvas boards “v2 · iPhone …”) define content and behavior, and decision W5 ([status](../status-and-decisions.md#open-decisions)) defines how they adapt.
 
 Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md).
 

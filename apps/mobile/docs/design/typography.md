@@ -2,11 +2,12 @@
 
 ## Typeface
 
-**Plus Jakarta Sans** only. It is embedded through the `expo-font` config plugin in `app.json` (no runtime loading):
+**Plus Jakarta Sans** only, from `@expo-google-fonts/plus-jakarta-sans`, embedded by the `expo-font` config plugin in `app.config.ts` (no runtime loading; Expo Go cannot show it, use a development build). Family names come from `fontFamilies` in `@daycraft/design-tokens`:
 
 | Family name (native) | Class | Weight |
 |---|---|---|
-| `PlusJakartaSans-Regular` | `font-sans` | 400. Also stands in for 500 (decision, see [status](../status-and-decisions.md#token-gaps-globalcss-v10-vs-design-system-v11)) |
+| `PlusJakartaSans-Regular` | `font-sans` | 400 |
+| `PlusJakartaSans-Medium` | `font-sans-medium` | 500 |
 | `PlusJakartaSans-SemiBold` | `font-sans-semibold` | 600 |
 | `PlusJakartaSans-Bold` | `font-sans-bold` | 700 |
 | `PlusJakartaSans-ExtraBold` | `font-sans-extrabold` | 800 |
@@ -17,22 +18,22 @@ Use **tabular figures** for times, durations, counts and percentages: `fontVaria
 
 ## Scale (design system v1.1)
 
-Use a **`type-*` preset** wherever one exists. Presets bundle size, line height, letter-spacing and family, with px values so they land on RN `Text` directly. Presets marked “v1.1” are not yet in `global.css`. Add them in the same pattern before using that size (and remove the arbitrary values they replace).
+Use a **`type-*` preset** wherever one exists. Presets bundle size, line height, letter-spacing and family, with px values so they land on RN `Text` directly. They are generated from `typeScale` in `@daycraft/design-tokens`; the table below explains use, the package holds the numbers.
 
 | Preset | Size / line | Tracking | Family | Use |
 |---|---|---|---|---|
 | `type-display` | 30 / 33 | −0.75px | extrabold | Screen titles: Inbox, Habits, Tasks… |
 | `type-date` | 27 / 31 | −0.68px | extrabold | Today's date header only |
-| `type-title` *(v1.1)* | 24 / 28 | −0.48px | extrabold | Secondary page titles (project detail), focus “Session complete” |
+| `type-title` | 24 / 28 | −0.48px | extrabold | Secondary page titles (project detail), focus “Session complete” |
 | `type-heading` | 20 / 25 | −0.3px | extrabold | Sheet titles, editor/detail title, empty-state titles, Calendar header |
 | `type-activity` | 16 / 21.6 | −0.16px | bold | Activity titles, card titles, list primary text that needs emphasis |
 | `type-body` | 15 / 22.5 | 0 | regular | Rows, inputs, buttons (bold family), body copy |
-| `type-body-sm` *(v1.1)* | 14 / 20 | 0 | regular | Subtitles, descriptions, notes, gap hints |
-| `type-control` *(v1.1)* | 13 / 18 | 0 | semibold | Chips, segmented controls |
+| `type-body-sm` | 14 / 20 | 0 | regular | Subtitles, descriptions, notes, gap hints |
+| `type-control` | 13 / 18 | 0 | semibold | Chips, segmented controls |
 | `type-meta` | 12.5 / 17 | 0 | regular | Time ranges, counts, secondary lines |
 | `type-label` | 12 / 16 (code sets no line height yet) | +0.72px, UPPERCASE | bold | Section labels (`SectionLabel`) |
-| `type-micro` *(v1.1)* | 11 / 14 | 0 | semibold | Timeline gutter, tab labels, habit names, weekday initials |
-| `type-clock` *(v1.1)* | 56 / 60 | −1.7px | extrabold | Focus timer only |
+| `type-micro` | 11 / 14 | 0 | semibold | Timeline gutter, tab labels, habit names, weekday initials |
+| `type-clock` | 56 / 60 | −1.7px | extrabold | Focus timer only |
 
 Twelve sizes, nothing else. Mapping rules for anything not listed:
 

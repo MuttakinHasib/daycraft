@@ -2,7 +2,7 @@
 
 > Has a web counterpart in `apps/web/docs/product/`. Keep both in step except for platform notes.
 
-The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshot: [plan.png](../design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/phone-dark.html](../design/reference/prototype/phone-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
+The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshot: [plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/phone-dark.html](../../../../docs/design/reference/prototype/phone-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
 
 Phone values are given first, desktop values in brackets where they differ.
 

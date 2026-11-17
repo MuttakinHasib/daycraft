@@ -19,10 +19,10 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 - **What it is:** a vertical day made of colored **capsules** (activities) on a spine. Tasks, events, habits, routines, goals, projects, focus and journal feed the timeline. See [product overview](docs/product/product-overview.md).
 - **What it must feel like:** minimal, warm, readable, precise. Terracotta accent, warm neutrals, hairlines, almost no shadows. Color belongs to the user's activities, not to chrome.
 - **Where the design lives:**
-  - Tokens: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css) (target for `src/app/globals.css`).
+  - Tokens: values in `packages/design-tokens`, generated into the CSS that `src/app/globals.css` imports. Names and rules: the root [design system](../../docs/design/design-system.md); shared component spec: root [components](../../docs/design/components.md). Everything renders at `/design-system`.
   - Desktop prototype: “Daycraft” design canvas, page **v2 · Current**, boards “Desktop 1440”, “Tablet 768”, “Large desktop 1920”.
-  - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots (desktop 1440/768/1920, all phone screens in both themes) and a runnable offline prototype (`prototype/desktop-dark.html`). Look at the screenshot before building a screen.
-- **What exists in code today:** only the `create-next-app` starter. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
+  - **Exported for you:** [docs/design/reference/](../../docs/design/reference/README.md) has screenshots (desktop 1440/768/1920, all phone screens in both themes) and a runnable offline prototype (`prototype/desktop-dark.html`). Look at the screenshot before building a screen.
+- **What exists in code today:** Daycraft tokens, Plus Jakarta Sans, the theme switch, the component classes and the `/design-system` page; screens are placeholders. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 
 ## Non-negotiables
 
@@ -90,7 +90,7 @@ Configured once at the monorepo root; see the root [`AGENTS.md`](../../AGENTS.md
 ## Keeping these docs true
 
 - New reusable UI patterns must follow the design system and be added to [components](docs/design/components.md).
-- Token changes must update [design-system](docs/design/design-system.md) / [typography](docs/design/typography.md), and **`apps/mobile/src/global.css` too**. Token names and values are shared.
+- Token changes go in `packages/design-tokens` (both apps follow; never edit the generated CSS). Update the root [design system](../../docs/design/design-system.md) when a name or rule is new.
 - Product docs (`docs/product/`) have a mobile counterpart in `apps/mobile/docs/product/` with platform-specific differences. When the product changes, update both.
 - New architectural conventions go in [architecture](docs/development/architecture.md), with an ADR in the root `docs/adr/` for real decisions.
 - Never silently introduce a conflicting convention. Preserve existing behavior unless the task explicitly asks to change it.

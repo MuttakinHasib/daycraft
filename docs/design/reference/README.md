@@ -1,6 +1,6 @@
 # Design reference
 
-Exported from the Daycraft design canvas (page **v2 · Current**) so agents can see the design without canvas access. This is the visual source of truth for layout and behavior; token **values** live in [daycraft-tailwind-v1.1.css](daycraft-tailwind-v1.1.css) (see [status-and-decisions](../../status-and-decisions.md) for how they relate to the code).
+Exported from the Daycraft design canvas (page **v2 · Current**) so agents can see the design without canvas access. This is the visual source of truth for layout and behavior; token values now live in `@daycraft/design-tokens` (ADR-0001); [daycraft-tailwind-v1.1.css](daycraft-tailwind-v1.1.css) is the frozen v1.1 export kept for reference. Shared by every app in the monorepo.
 
 All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026, 10:40 AM**. Screens were rendered with the bundled runtime in `prototype/vendor/` and checked against the canvas.
 
@@ -8,8 +8,11 @@ All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026
 
 | Path | What |
 |---|---|
-| `screens/phone/dark/*.png`, `screens/phone/light/*.png` | Every phone screen and sheet, iPhone 390×844 @2x, both themes |
+| `screens/phone/dark/*.png`, `screens/phone/light/*.png` | Every phone screen and sheet, iPhone 390×844 @2x, both themes. Also the content and behavior reference for web modules without a desktop design (decision W5) |
 | `screens/phone/dark/habits-375.png` | Habits tab at 375×812 (narrowest supported width) |
+| `screens/desktop/today-1440-dark.png`, `today-1440-light.png` | Desktop Plan at 1440 (full page) |
+| `screens/desktop/today-768-dark.png` | Tablet 768: icon rail, details panel stacked under the timeline |
+| `screens/desktop/today-1920-light.png` | Large desktop 1920: content capped at 1360 |
 | `design-system-v1.1.png` | Design system board: tokens, type scale, component sizes, components in both themes, refinement log |
 | `brand/logo-concepts.png`, `brand/logo-system.png` | Logo exploration and the chosen Daybreak logo system |
 | `prototype/*.html` | **Runnable prototype.** Open in a browser (works offline). Click through screens; the logic in each file's `<script>` is the reference implementation of behavior such as the timeline layout and drag/resize |
@@ -59,3 +62,14 @@ The prototype is a reference, not production code:
 ## Updating
 
 When the design canvas changes, re-export the affected screens and prototype files here in the same change as the code or doc update, and keep file names stable so links keep working.
+
+## Desktop screens
+
+| File | Shows |
+|---|---|
+| `screens/desktop/today-1440-dark.png` | Sidebar (Plan, Habits, Goals, then the More group), header with week strip, habit chips, timeline with the selected (active) block, detail panel, daily progress, up next, inbox |
+| `screens/desktop/today-1440-light.png` | Same in light |
+| `screens/desktop/today-768-dark.png` | Rail mode (≤ 1100 container) |
+| `screens/desktop/today-1920-light.png` | 1920: centered 1360 content |
+
+Desktop prototypes: `prototype/desktop-dark.html` (resize the window to see rail mode at ≤ 1100) and `prototype/desktop-light.html`.

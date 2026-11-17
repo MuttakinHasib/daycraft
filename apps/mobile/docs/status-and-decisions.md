@@ -6,9 +6,9 @@ Last reviewed 2026-11-17, after the move into the monorepo: `bun run check-types
 
 ## Sources of truth (in priority order)
 
-1. **Design canvas, page "v2 · Current"**: decides what screens, behavior and token values *should* be. Exported as screenshots and a runnable prototype in [design/reference/](design/reference/README.md).
+1. **Design canvas, page "v2 · Current"**: decides what screens, behavior and token values *should* be. Exported as screenshots and a runnable prototype in [design/reference/](../../../docs/design/reference/README.md).
 2. **`@daycraft/design-tokens`** (planned, [ADR-0001](../../../docs/adr/0001-design-tokens-generated-from-typescript.md)): decides what the app renders, and changes only to match the canvas. Until it lands, `src/global.css` is what renders; the gaps against v1.1 are listed below.
-3. **[design/reference/daycraft-tailwind-v1.1.css](design/reference/daycraft-tailwind-v1.1.css)**: a frozen export of design system v1.1, kept for reference only.
+3. **[design/reference/daycraft-tailwind-v1.1.css](../../../docs/design/reference/daycraft-tailwind-v1.1.css)**: a frozen export of design system v1.1, kept for reference only.
 4. These docs explain 1–3. If a doc contradicts 1–3 and is not listed below, the doc is wrong. Fix it.
 
 The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not copy values from them.
@@ -19,39 +19,23 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 |---|---|
 | Monorepo: this app is `apps/mobile` (`@daycraft/mobile`) in the Daycraft Turborepo, with bun workspaces and one root `bun.lock`. Scaffolded with `create-turbo`; history imported with `git subtree`. New root dev dependencies: `turbo` (task runner and cache), `prettier` (from the scaffold). | Done 2026-11-17. `turbo run build check-types lint` passes and the iOS export matches the pre-move bundle. |
 | Uniwind + Tailwind v4 pipeline (`metro.config.js`, `src/global.css`) | Done |
-| Semantic light/dark tokens, activity hues, radii, type sizes | Done (v1.0 values, see gaps) |
-| Plus Jakarta Sans (Regular, SemiBold, Bold, ExtraBold) via `expo-font` plugin | Done |
+| Design tokens from `@daycraft/design-tokens` (design system v1.1): generated theme CSS imported by `global.css`, contrast checked in its build | Done 2026-11-17 (ticket 02). New workspace dependency: `@daycraft/design-tokens`. |
+| Plus Jakarta Sans 400–800 from `@expo-google-fonts/plus-jakarta-sans` via the `expo-font` plugin in `app.config.ts` | Done 2026-11-17 (ticket 03). The old `app.json` entry used a `"font"` key the plugin ignores, so fonts were never embedded before. New dependencies: `@expo-google-fonts/plus-jakarta-sans`, `@types/node` (dev, for `app.config.ts`). |
 | Theme at root (`bg-canvas`, `Uniwind.updateInsets`, React Navigation `ThemeProvider`) | Done |
-| UI primitives in `src/components/ui/`: `Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`, `ActivityHueBackground` | Done (first pass) |
+| UI primitives in `src/components/ui/` on v1.1: `Button` (variant, size, icon), `Chip` (selected, size, icon), `Tag`, `Segmented` (options/value/onChange), `CheckRing` (hue), `Capsule`, `Sheet`, `SectionLabel`, `Icon`, hue class maps | Done 2026-11-17 (ticket 04); no arbitrary values, no CSS component layer |
+| Icons: `@daycraft/icons` (Lucide + custom SVG) through `Icon` with `colorClassName` | Done 2026-11-17 (ticket 06). New dependencies: `react-native-svg`, `lucide-react-native`, `@daycraft/icons`. |
+| Design-system screen (`/design-system`, linked from Plan) | Done 2026-11-17 |
 | Expo starter template (screens, themed components, theme hooks, `constants/theme.ts`, reset script, template images) | **Deleted 2026-11-17.** `src/app` holds a placeholder Stack and a placeholder Plan screen until D1. |
-| Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17 (follows the OS; the System / Light / Dark preference is ticket 07) |
+| Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17, with the System / Light / Dark preference saved in `expo-sqlite/kv-store` (ticket 07). New dependency: `expo-sqlite`. |
 | `cn()` from the `cn` package, configured with Daycraft token names (`src/lib/cn.ts`) | Done 2026-11-17. New dependency: `cn`. |
 | Domain model, data layer, persistence | Not started |
 | Today timeline, all modules | Not started (prototype only) |
 | Tests | Not set up |
 | Brand assets (icon, splash, app name) | Not applied: still Expo defaults, `name: daycraft_app`, splash `#208AEF` |
 
-## Token gaps: `global.css` (v1.0) vs design system v1.1
+## Token gaps
 
-| Token / component | `global.css` now | v1.1 target | Notes |
-|---|---|---|---|
-| Dark `--color-elevated` | `#2c2a27` | `#312e2b` | v1.1 raised it so selected segments and the tab bar separate from `sunken` |
-| Type: `title` | missing | 24px / 800 / −0.02em | secondary page titles (project detail) |
-| Type: `body-sm` | missing | 14px / 1.45 | subtitles, descriptions, notes |
-| Type: `control` | missing | 13px / 600 | chips, segmented. Primitives currently use `text-[13px]`. Replace with the preset when added. |
-| Type: `micro` | missing | 11px / 600 | timeline gutter, tab labels |
-| Type: `clock` | missing | 56px / 800 / −0.03em | focus timer only |
-| Radius `check` / `tile` / `panel` | missing | 6 / 12 / 24px | checkbox squares; icon tiles; desktop panels |
-| `--radius-chip` | 18px, used by `.chip` | pills use `rounded-full` | v1.1 dropped hand-computed half radii |
-| `.chip` padding | 14px | 16px; plus `chip-sm`: h 32, px 12, gap 4 | |
-| `.tag` padding | 10px | 8px | |
-| `.segmented` radius / button radius | 13 / 10px | 12 / 9px | |
-| `CheckRing` size | 26px, `hitSlop` 9 | 24px, `hitSlop` 10 (44px target) | |
-| `CheckRing` colors | `border-ink-subtle`, checked → `border-success` | ring border = the activity's hue; checked → filled with the hue, white check | prototype behavior; needs a `hue` prop |
-| `Button` text | `text-base` (16px) | 15px bold (`type-body` size with bold family) | v1.1 also adds `md` size (h 44) |
-| Medium weight (500) | not embedded | prototype uses 500 for body/meta | **Decided (2026-11-17):** embed Medium from `@expo-google-fonts/plus-jakarta-sans` and add `font-sans-medium`. Replaces the earlier "map 500 to Regular". |
-
-When you implement a v1.1 token, also replace the arbitrary values it replaces (for example `text-[13px]`, `rounded-[10px]`) in the primitives.
+None. Every v1.1 token is generated from `@daycraft/design-tokens` (2026-11-17). Where the code and the design canvas disagree from now on, record the difference here and fix it in the token package.
 
 ## Design system decisions (2026-11-17)
 

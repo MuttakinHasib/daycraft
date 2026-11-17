@@ -4,25 +4,18 @@ Primitives live in `src/components/ui/` and are exported from `src/components/ui
 
 Conventions for primitives:
 
-- Named exports.
-- A typed props interface (`interface ButtonProps`).
-- Styling with Uniwind `className` and the classes in `src/global.css`'s `@layer components`.
-- State expressed with `data-*` attributes and `data-[x=y]:` variants (Uniwind supports equality selectors only).
-- Accessibility role and state on every pressable.
+- Named exports and a typed props interface (`interface ButtonProps`); variants and sizes are const objects plus union types (`ButtonVariant`, `ChipSize`).
+- Each primitive owns all of its classes (there is no CSS component layer); conditional classes go through `cn` in object notation.
+- Accessibility role, state and label on every pressable.
 
 ## Existing primitives
 
-| Primitive | API | Visual | Gaps vs v1.1 |
-|---|---|---|---|
-| `Button` | `variant?: 'primary' \| 'secondary'`, `onPress`, `disabled`, `children` | `.btn-primary` (accent, `text-on-accent`) / `.btn-secondary` (sunken, `text-ink`); h 52, full width, pill; `active:opacity-90`, `disabled:opacity-50` | text should be 15 bold (is `text-base` 16); add `size?: 'lg' \| 'md'` (md = h 44); optional leading icon |
-| `Capsule` | `hue`, `state?: 'idle' \| 'active' \| 'done'`, `height?`, `onPress`, `children` (icon) | w 48, min-h 48, `rounded-capsule`, hue background; done → `opacity-45`; active → 4pt outer ring of the hue at 28% | active **elapsed fill** (42% base + solid elapsed part) not implemented; drag/resize belongs to the timeline feature, not this primitive |
-| `CheckRing` | `checked`, `onPress`, `children` (check icon) | 26pt ring, 2pt border, `hitSlop` 9, role checkbox | v1.1: 24pt, `hitSlop` 10; needs `hue` so the border is the activity hue and checked fills with it (prototype). The current `border-success` is not the design. |
-| `Chip` | `pressed`, `onPress`, `children` | `.chip` h 36, sunken; pressed → `bg-ink` / `text-canvas`; role button + selected state | v1.1: pill radius, px 16; add `size?: 'md' \| 'sm'` (sm = h 32, px 12, gap 4); leading icon slot; `tone?: 'neutral' \| 'accent' \| 'accentSoft'` for the Plan/Event/+ variants |
-| `Tag` | `children` | `.tag` h 24, sunken, `text-xs` bold `ink-muted` | v1.1: px 8, semibold; leading icon slot; `tone` for `accent-soft` (“Now”, “Due”) and hue-tinted (event) |
-| `Segmented` / `SegmentedButton` | container; button `selected`, `onPress` | track sunken p-3 r-13; button h 32 r-10, selected → `bg-elevated` + `text-ink`; role tab | v1.1 radii 12/9; text should use `type-control` |
-| `Sheet` | `children` | absolute bottom, `rounded-t-sheet`, `bg-surface`, `shadow-float`, Reanimated sheet-up entry | no scrim/close/drag-to-dismiss; prefer Expo Router modal presentation for routed sheets and keep this for inline sheets |
-| `SectionLabel` | `children` | `.section-label` 12 bold uppercase +0.72 tracking, `ink-subtle` | none |
-| `ActivityHueBackground` | literal class map keyed by `ActivityHue` from `@daycraft/domain` | — | add maps for border/text when needed (literal strings only) |
+Specified once for both apps in the root [components](../../../../docs/design/components.md): `Button`, `Chip`, `Tag`, `Segmented`, `CheckRing`, `Capsule`, `SectionLabel`, `Sheet` and `Icon`, plus the hue class maps in `hues.ts`. Mobile-only gaps still open:
+
+- `Capsule`: the active **elapsed fill** (42% base + solid elapsed part) is not implemented; drag and resize belong to the timeline feature, not this primitive.
+- `Chip` and `Tag`: a `tone` (accent, accent-soft, hue-tinted) for the Plan, Event, Now and Due variants.
+- `CheckRing`: the pop animation on completion.
+- `Sheet`: no scrim, close or drag-to-dismiss yet; prefer Expo Router modal presentation for routed sheets and keep this for inline sheets.
 
 ## Components to build (specs from the prototype)
 

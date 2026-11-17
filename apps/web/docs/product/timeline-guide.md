@@ -1,6 +1,6 @@
 # Timeline guide
 
-The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshots: [today-1440-dark.png](../design/reference/screens/desktop/today-1440-dark.png), [phone plan.png](../design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/desktop-dark.html](../design/reference/prototype/desktop-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
+The Today timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshots: [today-1440-dark.png](../../../../docs/design/reference/screens/desktop/today-1440-dark.png), [phone plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/desktop-dark.html](../../../../docs/design/reference/prototype/desktop-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
 
 > Has a mobile counterpart in `apps/mobile/docs/product/`. The web app uses the **Desktop** column wherever the two differ; “pt” means CSS px here, and “tap” means click. Desktop values are verified against the boards “v2 · Desktop 1440 / Tablet 768 / Large desktop 1920”.
 

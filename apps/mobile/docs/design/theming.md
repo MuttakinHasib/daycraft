@@ -2,12 +2,11 @@
 
 ## How it works in this repo
 
-- `src/global.css` defines every semantic color **twice**, under `@layer theme { :root { @variant light { … } @variant dark { … } } }`. Uniwind compiles both. Both variants must define **the same set of variables**. Adding one to only one variant is a bug.
-- The active theme follows the OS (`app.json → userInterfaceStyle: "automatic"`). There is no `.dark` class on native. The app can override at runtime with `Uniwind.setTheme(...)`; check the Uniwind docs for the accepted values, including returning to system.
+- Every semantic color is defined twice, under `@layer theme { :root { @variant light { … } @variant dark { … } } }`, in the CSS that `@daycraft/design-tokens` generates (imported by `src/global.css`). The token build guarantees both variants define the same set.
+- The active theme follows the saved preference: System follows the OS (`app.json → userInterfaceStyle: "automatic"`), Light and Dark override it through `Uniwind.setTheme` (which also sets React Native's `Appearance`, so native alerts match). There is no `.dark` class on native.
 - Activity hues, fonts, type sizes and radii live in `@theme` and do not change per theme.
 - Shadows that change per theme use `light-dark()` inside `@utility` (`shadow-float`).
-- **One theme module** (`src/theme/app-theme.tsx`) owns everything that cannot take a className. Uniwind decides light or dark; the module reads it with `useUniwind()` and exposes `useColorScheme()` and `useThemeColors()` (token values, reactive to theme changes), and `AppTheme` gives React Navigation and the status bar the Daycraft colors. Never call React Native's `useColorScheme` or copy hex values into code.
-- A color read through `useThemeColors()` must also be used by some className, or Uniwind cannot resolve it; the module throws with the variable's name when that happens.
+- **One theme module** (`src/theme/app-theme.tsx`) owns everything that cannot take a className. Uniwind decides light or dark; the module reads it with `useUniwind()` and exposes `useColorScheme()` and `useThemeColors()` (token values, reactive to theme changes), and `AppTheme` gives React Navigation the Daycraft colors, and `useStatusBarStyle()` feeds the Stack's `statusBarStyle` screen option (iOS status bars are per screen here, so `expo-status-bar` alone has no effect). Never call React Native's `useColorScheme` or copy hex values into code.
 
 ## Rules
 
@@ -18,27 +17,21 @@
 5. Activity hues are the same in both themes and always carry white icons and text.
 6. Hairlines (`line`) separate surfaces; do not add shadows to separate things in dark mode.
 7. Images and illustrations must use token colors (or come in light and dark versions).
-8. The status bar follows the theme (set by `AppTheme`).
+8. The status bar follows the theme through the Stack's `statusBarStyle` option (`useStatusBarStyle()`).
 
 ## Adding or changing a token
 
-1. Add or change it in **both** `@variant light` and `@variant dark` (or in `@theme` if it is theme-independent).
+1. Change it in `@daycraft/design-tokens` (both themes, or the theme-independent tables) and run `bun run build` there; the contrast check must pass.
 2. Restart Metro (Uniwind regenerates `src/uniwind-types.d.ts`).
-3. If native code needs it as a value, add it to `useThemeColors()` in the theme module.
-4. Update [design-system](design-system.md). If it diverges from the v1.1 reference, record it in [status-and-decisions](../status-and-decisions.md).
+3. If native code needs it as a value, read it through `useThemeColors()`.
+4. Update the root [design system](../../../../docs/design/design-system.md) if the name or rule is new.
 
-## Theme preference (planned)
+## Theme preference
 
-- Appearance options: **System**, **Light**, **Dark**. The prototype only has Light/Dark.
-- Persist the choice. Apply it with `Uniwind.setTheme` before the first frame if possible, to avoid a flash.
-- Switching must not reset navigation or scroll position.
+- Options: **System** (default), **Light**, **Dark** (`ThemePreference` and `resolveColorScheme` in `@daycraft/domain`).
+- `useThemePreference()` from the theme module returns the preference and a setter. The setter saves it in `expo-sqlite/kv-store` (per device, never synced) and applies it with `Uniwind.setTheme`; the saved value is read synchronously and applied in a layout effect, so a saved Light or Dark never flashes the OS scheme first.
+- Switching does not reset navigation or scroll position. The design-system screen has the control until the Appearance screen exists.
 
-## Web / desktop (separate Next.js app)
+## Web
 
-The desktop design uses the same token names through Tailwind v4 on the web:
-
-- `:root` / `.dark` CSS variables mapped with `@theme inline`;
-- a `dark` class on `<html>`;
-- the `@custom-variant dark`.
-
-[design/reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is that file. Keep token **names and values identical** across both apps. Change both in the same pass.
+The web app uses the same token names, generated from the same package as `:root` / `.dark` CSS variables. Changing a value in `@daycraft/design-tokens` changes both apps; never edit either app's theme CSS by hand.

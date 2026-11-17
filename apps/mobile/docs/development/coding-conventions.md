@@ -7,7 +7,7 @@
 - Business logic goes in `src/domain/` (pure) or a feature hook, never inline in JSX.
 - Do not duplicate logic across screens. Today, Calendar and Upcoming all read activities through the same hook and format time through `src/domain/time.ts`.
 - No dead code, commented-out code, or template leftovers in files you touch.
-- Comments explain **why** (constraints, platform quirks), not what. The existing `// Complete string literals only — Tailwind scans at build time` is the model.
+- Comments explain **why** (constraints, platform quirks), not what. The existing `// Complete string literals only: Tailwind scans at build time` is the model.
 
 ## TypeScript
 
@@ -39,7 +39,7 @@
 - **Never build class names dynamically** (``bg-${hue}``). Use literal maps like `ActivityHueBackground`.
 - Combine and toggle classes with `cn` from `@/lib/cn` in object notation ([rule](../../../../docs/agents/rules/cn-object-notation.md)). When you add a font-size, radius, font-family or `type-*` token, add its name to `@/lib/cn` too.
 - State styling through `data-*` attributes and `data-[key=value]:` variants (equality only), plus `active:`, `disabled:`, `focus:`.
-- Shared multi-property styles belong in `@layer components` in `global.css` (as `.chip`, `.btn-primary` do), so utilities can still override them. Keep selectors flat.
+- Each primitive owns all of its classes; there is no CSS component layer in `global.css` (it only imports the generated tokens). Repeated multi-property styles become a primitive, not a CSS class.
 - Third-party components without `className`: wrap them with `withUniwind`.
 - Remember RN layout defaults: flex column, no CSS inheritance (set the font family and color on every `Text`, or use the presets), limited units (no `em`, few percentages).
 - Platform differences: `ios:`, `android:`, `native:`, `web:` variants before platform files.

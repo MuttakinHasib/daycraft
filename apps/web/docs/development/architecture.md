@@ -18,7 +18,6 @@ Not chosen yet (do not introduce without a decision in [status-and-decisions](..
 
 - data/backend and mutation strategy (W1);
 - theme persistence (W2);
-- icon library (W4);
 - date library;
 - client state library;
 - form library;

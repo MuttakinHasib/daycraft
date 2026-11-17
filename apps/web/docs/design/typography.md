@@ -7,9 +7,9 @@
 - weights 400, 500, 600, 700, 800;
 - `subsets: ["latin"]`;
 - `display: "swap"`;
-- exposed as a CSS variable and mapped to `--font-sans` in `@theme inline`.
+- exposed as `--font-plus-jakarta-sans`, which the generated token CSS maps to `--font-sans`.
 
-It replaces the template's Geist; remove Geist when you do this. Read `node_modules/next/dist/docs/01-app/01-getting-started/13-fonts.md` for the current API.
+Read `node_modules/next/dist/docs/01-app/01-getting-started/13-fonts.md` before changing the font setup.
 
 The web font provides real weights (the mobile app instead picks one font family per weight), so use Tailwind's `font-medium`/`font-semibold`/`font-bold`/`font-extrabold` together with the type tokens.
 
@@ -17,7 +17,7 @@ Use `tabular-nums` for times, durations, counts, percentages, the week strip and
 
 ## Scale
 
-Tokens in `@theme` (`--text-*`, with line-height, tracking and weight bundled where set). Use them as `text-display`, `text-date`, and so on.
+Generated from `typeScale` in `@daycraft/design-tokens`: `--text-*` variables (with line height, tracking and weight) and a `type-*` utility per preset. Prefer `type-display`, `type-body`, … so class names match the mobile app; `text-display` still works.
 
 | Utility | Size / line | Tracking | Weight | Use |
 |---|---|---|---|---|

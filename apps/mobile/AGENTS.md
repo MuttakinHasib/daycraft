@@ -9,15 +9,15 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 - **What it is:** a calm personal planner. Its center is the **Today timeline**, a vertical day made of colored **capsules** (activity blocks) on a spine. Tasks, events, habits, routines, goals, projects, focus and journal all feed the timeline rather than competing with it. See [product overview](docs/product/product-overview.md).
 - **What it must feel like:** minimal, warm, readable, precise. Terracotta accent, warm neutrals, hairline borders, almost no shadows. Color belongs to the user's activities, not to chrome.
 - **Where the design lives:**
-  - Tokens: `src/global.css`.
-  - Design-system reference: [docs/design/reference/daycraft-tailwind-v1.1.css](docs/design/reference/daycraft-tailwind-v1.1.css).
+  - Tokens: values in `packages/design-tokens`, generated into the theme CSS that `src/global.css` imports. Names and rules: the root [design system](../../docs/design/design-system.md); shared component spec: root [components](../../docs/design/components.md).
+  - See everything rendered on the in-app `/design-system` screen (linked from Plan).
   - Interactive prototype: the "Daycraft" design canvas, page **v2 · Current**. Every screen and interaction in the docs was taken from it.
-  - **Exported for you:** [docs/design/reference/](docs/design/reference/README.md) has screenshots of every phone screen and sheet (light and dark), plus a runnable offline prototype (`prototype/phone-dark.html`). Look at the screenshot of a screen before building it.
+  - **Exported for you:** [docs/design/reference/](../../docs/design/reference/README.md) has screenshots of every phone screen and sheet (light and dark), plus a runnable offline prototype (`prototype/phone-dark.html`). Look at the screenshot of a screen before building it.
 - **What exists in code today:** tokens, fonts, the Uniwind theme and the first UI primitives (`src/components/ui/`). Screens are placeholders (the Expo starter is deleted). The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 
 ## Non-negotiables
 
-1. **Tokens only.** Colors, type, radii, spacing and motion come from `src/global.css` and the docs below. No hex values, no `text-[13px]`-style arbitrary values, no new radii in feature code. If a token is missing, add it to `global.css` and document it. See [design system](docs/design/design-system.md).
+1. **Tokens only.** Colors, type, radii, spacing and motion come from `@daycraft/design-tokens` and the docs below. No hex values, no `text-[13px]`-style arbitrary values, no new radii in feature code. If a token is missing, add it to `global.css` and document it. See [design system](docs/design/design-system.md).
 2. **Both themes, always.** Use semantic classes (`bg-surface`, `text-ink-muted`, …). Never hardcode light-only colors. White is allowed only for icons and text on activity hues and colored sheet headers. See [theming](docs/design/theming.md).
 3. **Reuse before you build.** Check `src/components/ui/` and [components](docs/design/components.md) first. Never fork a primitive to tweak one style; extend its props.
 4. **Fonts are families, not weights.** On native use `font-sans`, `font-sans-semibold`, `font-sans-bold`, `font-sans-extrabold`, or the `type-*` presets. Never `font-bold` and never `fontWeight`. See [typography](docs/design/typography.md).
@@ -114,7 +114,7 @@ Configured once at the monorepo root; see the root [`AGENTS.md`](../../AGENTS.md
 
 - New reusable UI patterns must follow the design system. Add them to [components](docs/design/components.md).
 - Token names and values are shared with the web app (`apps/web/src/app/globals.css`); change both together. Product docs in `docs/product/` have a web counterpart in `apps/web/docs/product/` with platform-specific differences; update both when the product changes.
-- Any token change in `src/global.css` must update [design-system](docs/design/design-system.md) / [typography](docs/design/typography.md) and, if it diverges from the reference CSS, [status-and-decisions](docs/status-and-decisions.md).
+- Token changes go in `packages/design-tokens` (both apps follow; never edit the generated CSS). Update the root [design system](../../docs/design/design-system.md) when a name or rule is new.
 - New architectural conventions go in [architecture](docs/development/architecture.md) (and an ADR in the root `docs/adr/` when it is a real decision).
 - Never silently introduce a convention that conflicts with these docs. Raise it, then update the doc.
 - Preserve existing working behavior unless the task explicitly asks to change it.

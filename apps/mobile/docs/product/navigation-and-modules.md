@@ -1,6 +1,6 @@
 # Navigation and modules
 
-Screen-by-screen reference for the phone app, taken from the prototype (canvas page “v2 · Current”). Each screen has a screenshot at `docs/design/reference/screens/phone/{dark,light}/<name>.png` (index: [reference README](../design/reference/README.md)). Numbers are in points (pt = px on the 390-wide reference device). Shared measurements (page padding, card padding, component heights) live in [spacing-and-layout](../design/spacing-and-layout.md). This file only lists what is specific to each screen.
+Screen-by-screen reference for the phone app, taken from the prototype (canvas page “v2 · Current”). Each screen has a screenshot at `docs/design/reference/screens/phone/{dark,light}/<name>.png` (index: [reference README](../../../../docs/design/reference/README.md)). Numbers are in points (pt = px on the 390-wide reference device). Shared measurements (page padding, card padding, component heights) live in [spacing-and-layout](../design/spacing-and-layout.md). This file only lists what is specific to each screen.
 
 ## Navigation model
 

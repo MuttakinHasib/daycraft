@@ -9,18 +9,20 @@
 ├── next.config.ts         # cacheComponents, partialPrefetching, reactCompiler, agentFeedback, Tailwind turbopack loader
 ├── eslint.config.mjs      # next core-web-vitals + typescript
 ├── tsconfig.json          # strict, @/* → src/*
-├── public/                # template SVGs (next, vercel, file, globe, window): replace with Daycraft assets
 ├── docs/
 │   ├── product/           # product overview, navigation, timeline, interactions (mobile counterpart in apps/mobile)
-│   ├── design/            # tokens, type, spacing, components, theming, responsive, a11y
-│   │   └── reference/     # design system v1.1 CSS (the tokens to wire into globals.css)
+│   ├── design/            # web implementation notes (shared reference: root docs/design/)
 │   ├── development/       # architecture, structure, conventions, testing
 │   └── status-and-decisions.md
-└── src/app/
-    ├── layout.tsx         # template: Geist fonts, metadata “Create Next App”
-    ├── page.tsx           # template page
-    ├── globals.css        # template tokens
-    └── favicon.ico        # template
+└── src/
+    ├── app/
+    │   ├── layout.tsx     # Plus Jakarta Sans, theme script, metadata
+    │   ├── page.tsx       # placeholder Plan
+    │   ├── design-system/ # the design-system page
+    │   ├── globals.css    # imports the generated token CSS; base layer and component classes
+    │   └── favicon.ico    # template until the logo package lands
+    ├── features/          # design-system sections, theme (cookie, script, switch)
+    └── lib/cn.ts          # cn() configured with the token names
 ```
 
 `GLOSSARY.md`, `docs/agents/`, `docs/adr/` (created lazily) and `.scratch/` (the issue tracker, created lazily) live at the monorepo root, not in this app.
@@ -31,7 +33,7 @@
 src/
   app/
     layout.tsx               # html/body, fonts, theme class, Toast provider
-    globals.css              # Daycraft tokens (from docs/design/reference)
+    globals.css              # generated Daycraft tokens + component classes
     (app)/layout.tsx         # sidebar + main shell
     (app)/page.tsx           # Today
     (app)/<module>/page.tsx  # see navigation-and-modules.md

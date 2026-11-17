@@ -234,7 +234,7 @@ Decision: **stay on Free through private beta, move to Workers Paid before publi
 | Floating local time | `activity_date` is `'YYYY-MM-DD'`, `start_minute` is 0–1439 (`architecture.md`: "floating local time"). No time zone is stored on activities. |
 | Real timestamps | ISO-8601 UTC strings with milliseconds, on the device and on the server (both are SQLite). Fixed width, so string order is time order. |
 | Hue | `hue TEXT` restricted to the nine `ActivityHue` values. Hex values are never stored; tokens own them. |
-| Icon | `icon TEXT`, a name from the activity icon set. No `CHECK`, because the icon supplier is open decision D4. |
+| Icon | `icon TEXT`, an `IconName` from `@daycraft/domain` (ADR-0002). No `CHECK`, so new icons need no migration. |
 | Done | `done_at` timestamp, `NULL` when not done. The domain type keeps `done: boolean`. |
 | Derived values | Streaks, weekly counts, goal, project and daily progress are never stored (`product-overview.md`: "computed and never stored"). |
 | Sync columns | Every synced row has `created_at`, `updated_at`, `deleted_at`. Deleting sets `deleted_at`. Every read filters `deleted_at IS NULL`. |

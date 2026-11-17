@@ -1,6 +1,6 @@
 # Components
 
-No Daycraft components exist in this app yet. Build them in `src/components/ui/` as they are first needed, to these specs (taken from the prototype and from the `@layer components` in the [reference CSS](reference/daycraft-tailwind-v1.1.css)). Keep the API aligned with `apps/mobile`'s primitives (`Button`, `Capsule`, `CheckRing`, `Chip`, `Tag`, `Segmented`/`SegmentedButton`, `Sheet`, `SectionLabel`) so both apps speak the same component language.
+Button, Chip, Tag, Segmented, CheckRing, Capsule, SectionLabel, Field, Card and Sheet exist as component classes in `src/app/globals.css` and are specified once for both apps in the root [components](../../../../docs/design/components.md); they render on `/design-system`. When a screen needs one as a React component, build it in `src/components/ui/` on top of those classes, keeping the props of the mobile primitive (`variant`, `size`, `selected`, `hue`, …). The table below keeps the web-only details and the components not built yet.
 
 Conventions:
 
@@ -17,10 +17,10 @@ Conventions:
 | **IconButton** | sizes 40 / 32 (`sm`), pill, `bg-sunken text-ink`, 18 / 16 icon. Variants `ghost`, `onHue` (`bg-white/20 text-white`), `danger` (`text-danger`). **`aria-label` is required** in the type. |
 | **Chip** | h 36 (sm 32), pill, px 16 (sm 12), `text-control`, `bg-sunken text-ink-muted`. Toggle chips use `aria-pressed` → `bg-ink text-canvas`. Tones: `accent` (`bg-accent text-on-accent`), `accentSoft` (`bg-accent-soft text-accent-text`). Optional leading icon. |
 | **Tag** | h 24, pill, px 8, gap 4, 12 semibold, `bg-sunken text-ink-muted`. Tones: `accentSoft`, hue-tinted (events). Optional 12px icon. Not interactive. |
-| **Segmented** | track `bg-sunken rounded-xl p-[3px] flex gap-0.5`; buttons h 32, `rounded-[9px]` (track radius minus padding: the only allowed derived radius), `text-control text-ink-muted`; selected `bg-elevated text-ink shadow-sm`. Use `role="radiogroup"` + `role="radio"`/`aria-checked`, or `aria-pressed` toggle buttons, consistently. Arrow-key navigation inside the group. |
+| **Segmented** | track `bg-sunken rounded-tile p-0.75 flex gap-0.5`; buttons h 32, `rounded-segment` (track radius minus padding), `type-control text-ink-muted`; selected `bg-elevated text-ink shadow-sm`. Use `role="radiogroup"` + `role="radio"`/`aria-checked`, or `aria-pressed` toggle buttons, consistently. Arrow-key navigation inside the group. |
 | **CheckRing** | 24px circle, 2px border in the activity hue; checked → hue fill + white 14px check (3.2 stroke) with the pop animation. Hit area 44 (`::after` inset −10px, as in the reference CSS `.check-ring`). `role="checkbox"` + `aria-checked` (or a visually hidden native checkbox). |
 | **Capsule** | width 48, min height 48, `rounded-capsule`, hue background, white 22px icon, `touch-action: none`. States `data-state="idle" \| "active" \| "done"`: active → base 42% hue mix + elapsed solid fill + 4px 28% ring; done → `opacity-45`. Optional bottom resize grip (18px area, 16×3 bar `bg-white/75`). Renders as a `<button>`. |
-| **SectionLabel** | `text-label uppercase text-ink-subtle`. |
+| **SectionLabel** | `type-label uppercase text-ink-subtle`. |
 | **Card / Panel** | Card `bg-surface border border-line rounded-card p-4`; Panel `rounded-panel` + p-5. |
 | **ListGroup / ListRow** | Bordered container with `divide-y divide-line`; rows min 44, px 16, gap 12; leading icon or hue tile; trailing muted value. |
 | **TextField** | Variants `sunken` (h 48, `bg-sunken rounded-field px-4`), `pill` (h 40–48, `bg-surface` or `bg-sunken`, `rounded-full`, trailing 32–36 accent add button), `underline` (transparent with a bottom border, used for title inputs on hue headers with `placeholder:text-white/70`). Always paired with a `<label>` (visible or `sr-only`). Textarea: min h 88, p 12/16, `leading-normal`. |

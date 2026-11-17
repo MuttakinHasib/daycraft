@@ -6,7 +6,9 @@ Daycraft is a calm personal planner built around the **Today timeline**. This is
 |---|---|---|
 | `apps/mobile` | Expo SDK 58 app, iPhone first | [apps/mobile/AGENTS.md](apps/mobile/AGENTS.md) |
 | `apps/web` | Next.js 16 app, desktop and tablet | [apps/web/AGENTS.md](apps/web/AGENTS.md) |
-| `packages/domain` | Pure TypeScript domain vocabulary and rules (`ActivityHue`, `IconName`); no dependencies, consumed as TypeScript source | — |
+| `packages/domain` | Pure TypeScript domain vocabulary and rules (`ActivityHue`, `IconName`, `ThemePreference`); no dependencies, consumed as TypeScript source | — |
+| `packages/design-tokens` | Every design token value; generates both apps' theme CSS, checks contrast, configures `cn` (ADR-0001) | [docs/design/design-system.md](docs/design/design-system.md) |
+| `packages/icons` | `Icon` for native and web: Lucide plus custom SVG, keyed by `IconName` (ADR-0002) | — |
 | `packages/typescript-config` | Shared tsconfig presets | — |
 
 Before changing files in an app, read that app's `AGENTS.md`; its rules apply inside it.
@@ -32,6 +34,7 @@ A commit title is one line that completes "If merged, this commit will …": imp
 ## Shared docs (one copy, root)
 
 - [`GLOSSARY.md`](GLOSSARY.md): the vocabulary for every app. Use its exact terms in code, UI copy, issues and tests.
+- [`docs/design/`](docs/design/design-system.md): the design system for every app (token names and rules, the component spec, and the design reference exports). Token values live in `packages/design-tokens`; both apps render everything at `/design-system`.
 - [`docs/architecture-plan.md`](docs/architecture-plan.md): the cross-app architecture plan (mobile, API, web). Proposed, not yet accepted.
 - `docs/adr/`: architecture decisions for the whole monorepo, created lazily.
 - `docs/agents/`: how the engineering skills use this repo (below).

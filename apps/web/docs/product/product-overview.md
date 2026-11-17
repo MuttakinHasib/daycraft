@@ -37,7 +37,7 @@ It should feel like a **personal life-management workspace**, not a task manager
 | **Projects** | Progress, deadline, milestones, tasks in List or Board (To do / In progress / Done) | Sidebar → Projects |
 | **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task | From an activity's detail panel |
 | **Journal** | Mood (5 levels), rotating reflection prompt, free text, history | Sidebar → Journal |
-| **Settings / Appearance** | Light / Dark (System to be added) | Sidebar → Light/Dark switch |
+| **Settings / Appearance** | System / Light / Dark (System by default; saved per device) | Sidebar → Light/Dark switch |
 
 There is no separate Calendar module: the Plan timeline is the day view, the month picker covers month navigation, and Upcoming covers the days ahead.
 
