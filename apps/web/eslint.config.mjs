@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Vendored prototype bundles under docs/design/reference are not app code.
-    "docs/**",
   ]),
 ]);
 
