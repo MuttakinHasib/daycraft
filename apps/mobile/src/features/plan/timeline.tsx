@@ -1,30 +1,48 @@
 import { hueColors } from '@daycraft/design-tokens';
 import {
   formatClock,
+  formatGutterTime,
   formatHour,
+  formatShortDuration,
   SpineKind,
   type DayLayout,
+  type FreeTimeHint,
   type MinutesOfDay,
   type SpineSegment,
+  type Timing,
 } from '@daycraft/domain';
 import type { ComponentRef, Ref } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Chip, ChipTone } from '@/components/ui';
+import { Chip, ChipTone, Icon } from '@/components/ui';
 import { useThemeColors } from '@/theme/app-theme';
 
 import { ROW_TRANSITION, TimelineRow } from './timeline-row';
 
 const DASH = 5;
+const NOW_LINE_WIDTH = 1.5;
 
 interface TimelineProps {
   layout: DayLayout;
+  /** Minutes of day for the now line's gutter label. */
+  now: MinutesOfDay;
   scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
   onCreateAt: (start: MinutesOfDay) => void;
   onPlanDay: () => void;
+  onAddInGap: (timing: Timing) => void;
+}
+
+interface FreeTimeProps {
+  hint: FreeTimeHint;
+  onAdd: (timing: Timing) => void;
+}
+
+interface NowLineProps {
+  y: number;
+  now: MinutesOfDay;
 }
 
 interface SpineProps {
@@ -61,8 +79,61 @@ function Spine({ segment }: SpineProps) {
   );
 }
 
+/** Free time of an hour or more: its length, what comes next and an Add task chip (timeline guide §8). */
+function FreeTime({ hint, onAdd }: FreeTimeProps) {
+  const rest = hint.nowInside ? ` left, then ${hint.next.title}` : ` free before ${hint.next.title}`;
+  return (
+    <View pointerEvents="box-none" style={{ top: hint.top }} className="absolute right-5 left-28 items-start gap-2">
+      <View className="flex-row items-center gap-1.5">
+        <Icon name="clock" size={15} colorClassName="text-ink-muted" />
+        <Text numberOfLines={1} className="shrink type-body-sm font-sans-medium text-ink-muted">
+          <Text className="font-sans-semibold text-accent-text">{formatShortDuration(hint.minutes)}</Text>
+          {rest}
+        </Text>
+      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Add a task at ${formatClock(hint.addStart)}`}
+        hitSlop={6}
+        onPress={() => onAdd({ start: hint.addStart, durationMinutes: hint.addDuration })}
+        className="h-8 flex-row items-center gap-1.5 rounded-full bg-sunken pr-3 pl-1.5 active:opacity-85"
+      >
+        <View className="size-4.5 items-center justify-center rounded-full bg-accent">
+          <Icon name="plus" size={12} strokeWidth={2.8} colorClassName="text-on-accent" />
+        </View>
+        <Text className="type-control text-accent-text">Add task</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+/** Today's current time: a line behind the rows, a dot on the spine and the time in the gutter (timeline guide §7). */
+function NowLine({ y, now }: NowLineProps) {
+  return (
+    <View pointerEvents="none" style={{ top: y }} className="absolute inset-x-0 h-0">
+      <Text
+        style={{ fontVariant: ['tabular-nums'] }}
+        className="absolute -top-2 left-1 w-10 text-right type-micro font-sans-semibold text-accent-text"
+      >
+        {formatGutterTime(now)}
+      </Text>
+      <View style={{ height: NOW_LINE_WIDTH }} className="absolute top-0 right-5 left-13 bg-accent opacity-50" />
+      <View className="absolute -top-2 left-17 size-4 rounded-full border-3 border-surface bg-accent" />
+    </View>
+  );
+}
+
 /** The Plan timeline: renders `layoutDay`'s output and holds no layout logic of its own. */
-export function Timeline({ layout, scrollRef, onOpen, onToggle, onCreateAt, onPlanDay }: TimelineProps) {
+export function Timeline({
+  layout,
+  now,
+  scrollRef,
+  onOpen,
+  onToggle,
+  onCreateAt,
+  onPlanDay,
+  onAddInGap,
+}: TimelineProps) {
   const empty = layout.rows.length === 0;
   return (
     <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false}>
@@ -91,6 +162,10 @@ export function Timeline({ layout, scrollRef, onOpen, onToggle, onCreateAt, onPl
           ))}
         {layout.spine.map((segment, index) => (
           <Spine key={index} segment={segment} />
+        ))}
+        {layout.nowY !== null && <NowLine y={layout.nowY} now={now} />}
+        {layout.freeTime.map((hint) => (
+          <FreeTime key={hint.next.id} hint={hint} onAdd={onAddInGap} />
         ))}
         {layout.rows.map((row) => (
           <TimelineRow key={row.activity.id} row={row} onOpen={onOpen} onToggle={onToggle} />
