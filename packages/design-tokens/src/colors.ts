@@ -94,13 +94,21 @@ export const hueTints = {
   /** Habit circle not done: fill, and its dashed border. */
   habitCircle: 0.14,
   habitCircleBorder: 0.6,
-  /** Event agenda card: fill and border. */
+  /** Event agenda card: fill and border, and its "Event" tag behind `ink` text. */
   agendaFill: 0.16,
   agendaBorder: 0.4,
+  agendaTag: 0.26,
   /** Ring around the active capsule. */
   activeRing: 0.28,
-  /** Event card tint (agenda, Upcoming). */
+  /** Event card tint (agenda, Upcoming, week-grid event blocks with a solid hue border). */
   eventCard: 0.3,
+  /** Week-grid task block border (the block itself is `surface`). */
+  weekTaskBorder: 0.7,
+  /** Completed project milestone tag, behind `ink` text. */
+  milestoneDone: 0.24,
+  /** Desktop habit chip: the icon circle when not done, the chip fill when done. */
+  habitChipIcon: 0.18,
+  habitChipDone: 0.16,
   /** Mixed into `surface`: the part of an active capsule still ahead; the elapsed part is solid. */
   activeCapsuleBase: 0.42,
   /** Marker behind a highlighted headline word. */

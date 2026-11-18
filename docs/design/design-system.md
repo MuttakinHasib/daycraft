@@ -63,8 +63,12 @@ Shares live in `hueTints` and `sheetHeaderTint` (`@daycraft/design-tokens`); cod
 |---|---|
 | 14% | Habit circle, not done |
 | 16% fill / 40% border | Event agenda card |
+| 26% | The agenda card's “Event” tag (text `ink`) |
+| 16% fill (done) / 18% icon circle (not done) | Desktop habit chip |
 | 28% ring | Active capsule outline |
-| 30% | Event card tint (agenda, Upcoming) |
+| 30% | Event card tint (agenda, Upcoming); week-grid event blocks add a solid hue border |
+| 70% border | Week-grid task block (fill `surface`) |
+| 24% | Completed project milestone tag (text `ink`) |
 | 42% over `surface` | Active capsule base (the part still ahead); the elapsed part is the solid hue |
 | Light: 40% over `canvas`, `ink` text. Dark: the solid hue, `on-hue` text | Detail and editor sheet header band (`sheetHeaderTint`) |
 | 42% | Headline highlight marker |

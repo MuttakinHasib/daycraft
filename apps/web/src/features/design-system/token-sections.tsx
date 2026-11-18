@@ -147,6 +147,39 @@ export function HueTintSection() {
             }}
           />
         </TintRow>
+        <TintRow name="Agenda Event tag" share="26%">
+          <span
+            className="type-meta rounded-full px-2 text-ink"
+            style={{ backgroundColor: withOpacity(TINT_SAMPLE, hueTints.agendaTag) }}
+          >
+            Event
+          </span>
+        </TintRow>
+        <TintRow name="Desktop habit chip" share="16% done · 18% icon">
+          <span
+            className="grid h-7 w-10 place-items-center rounded-full"
+            style={{ backgroundColor: withOpacity(TINT_SAMPLE, hueTints.habitChipDone) }}
+          >
+            <span
+              className="size-5 rounded-full"
+              style={{ backgroundColor: withOpacity(TINT_SAMPLE, hueTints.habitChipIcon) }}
+            />
+          </span>
+        </TintRow>
+        <TintRow name="Week-grid task block" share="70% border">
+          <span
+            className="h-9 w-7 rounded-check border-2 bg-surface"
+            style={{ borderColor: withOpacity(TINT_SAMPLE, hueTints.weekTaskBorder) }}
+          />
+        </TintRow>
+        <TintRow name="Milestone done tag" share="24%">
+          <span
+            className="grid size-7 place-items-center rounded-full text-ink"
+            style={{ backgroundColor: withOpacity(TINT_SAMPLE, hueTints.milestoneDone) }}
+          >
+            <Icon name="check" size={14} />
+          </span>
+        </TintRow>
         <TintRow name="Active capsule ring" share="28%">
           <span
             className="grid size-10 place-items-center rounded-full"
