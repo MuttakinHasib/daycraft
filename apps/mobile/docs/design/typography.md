@@ -34,8 +34,9 @@ Use a **`type-*` preset** wherever one exists. Presets bundle size, line height,
 | `type-label` | 12 / 16 (code sets no line height yet) | +0.72px, UPPERCASE | semibold | Section labels (`SectionLabel`) |
 | `type-micro` | 11 / 14 | 0 | medium | Timeline gutter, tab labels, habit names, weekday initials |
 | `type-clock` | 56 / 60 | −1.7px | medium | Focus timer only |
+| `type-wordmark` | 40 / 44 | −1.2px | semibold | The "daycraft" wordmark under the mark (splash), as wide as the mark |
 
-Twelve sizes, nothing else. Mapping rules for anything not listed:
+Thirteen sizes, nothing else. Mapping rules for anything not listed:
 
 - 9.5–10.5: use micro.
 - 12 (tags, pills, week-strip weekdays): use meta with `font-sans-semibold`.

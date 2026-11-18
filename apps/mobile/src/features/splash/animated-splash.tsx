@@ -1,7 +1,7 @@
 import { hueColors } from '@daycraft/design-tokens';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState, type ReactNode } from 'react';
-import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet, Text, type ViewStyle } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -200,7 +200,7 @@ export function AnimatedSplash({ ready }: AnimatedSplashProps) {
           </Layer>
         ))}
         <Animated.View style={[{ position: 'absolute', top: MARK_SIZE + 4, left: 0, right: 0 }, wordStyle]}>
-          <Text className="type-title text-center text-ink">daycraft</Text>
+          <Text className="type-wordmark text-center text-ink">daycraft</Text>
         </Animated.View>
       </Animated.View>
     </Animated.View>

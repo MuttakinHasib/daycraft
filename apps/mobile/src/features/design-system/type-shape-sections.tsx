@@ -19,6 +19,7 @@ const SAMPLE: Record<TypePreset, string> = {
   label: 'SECTION LABEL',
   micro: '10:40',
   clock: '24:59',
+  wordmark: 'daycraft',
 };
 
 export function TypeSection() {

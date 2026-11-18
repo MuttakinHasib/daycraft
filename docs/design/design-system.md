@@ -93,6 +93,7 @@ Shares live in `hueTints` and `sheetHeaderTint` (`@daycraft/design-tokens`); cod
 | `type-label` | Uppercase section labels (add `uppercase`) |
 | `type-micro` | Timeline gutter, tab labels |
 | `type-clock` | Focus timer only |
+| `type-wordmark` | The "daycraft" wordmark under the mark (splash) |
 
 Weights in use: 400, 500, 600 (700 and 800 stay embedded for edge cases but no preset uses them). Times and durations use tabular figures.
 

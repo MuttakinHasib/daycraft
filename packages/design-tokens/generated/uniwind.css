@@ -81,6 +81,7 @@
   --text-label: 0.75rem;
   --text-micro: 0.6875rem;
   --text-clock: 3.5rem;
+  --text-wordmark: 2.5rem;
   
   /* Radii: pills use rounded-full */
   --radius-check: 0.375rem;
@@ -164,5 +165,11 @@
     font-size: 56px;
     letter-spacing: -1.68px;
     font-family: var(--font-sans-medium);
+  }
+  .type-wordmark {
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -1.2px;
+    font-family: var(--font-sans-semibold);
   }
 }
