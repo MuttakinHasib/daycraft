@@ -139,7 +139,8 @@ export interface SavedToastInput {
 
 /** "Task added · Today, 10:45 AM", "Event added · Tomorrow, 2:00 PM" or "Saved · Today, no set time". */
 export function savedToast({ activity, today, created }: SavedToastInput): string {
-  const verb = created ? (activity.kind === ActivityKind.EVENT ? 'Event added' : 'Task added') : 'Saved';
+  let verb = 'Saved';
+  if (created) verb = activity.kind === ActivityKind.EVENT ? 'Event added' : 'Task added';
   const when = activity.start === null ? 'no set time' : formatClock(activity.start);
   return `${verb} · ${formatRelativeDate(activity.date, today)}, ${when}`;
 }

@@ -4,6 +4,7 @@ export { CheckRing } from './check-ring';
 export { Chip, ChipSize, ChipTone } from './chip';
 export { ActivityHueBackground, ActivityHueBorder } from './hues';
 export { Icon } from './icon';
+export { IconButton, IconButtonSize } from './icon-button';
 export { popIn } from './pop';
 export { SectionLabel } from './section-label';
 export { Segmented, SegmentedTone } from './segmented';

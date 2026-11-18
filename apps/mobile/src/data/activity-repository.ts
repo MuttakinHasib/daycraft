@@ -26,7 +26,7 @@ import { activity, subtask, type ActivityRow, type SubtaskRow } from './schema';
 // The only way screens touch activity data. Inputs and outputs are domain types; rows never leave this file.
 
 // Both the Expo driver and the Node driver used in tests are synchronous Drizzle databases.
-export type AppDatabase = BaseSQLiteDatabase<'sync', any, any>;
+export type AppDatabase = BaseSQLiteDatabase<'sync', unknown, Record<string, unknown>>;
 
 /** What the repository needs from the platform: ids and the time. */
 export interface RepositoryDeps {
@@ -38,6 +38,18 @@ export interface RepositoryDeps {
 export type WeekDots = Record<ISODate, ActivityHue[]>;
 
 type Listener = () => void;
+
+/** A subtask list to write for one activity. */
+interface SubtaskWrite {
+  activityId: string;
+  inputs: SubtaskInput[];
+}
+
+/** Changes to write to one activity. */
+interface ActivityWrite {
+  id: string;
+  changes: ActivityChanges;
+}
 
 export interface ActivityRepository {
   readDay(date: ISODate): Activity[];
@@ -128,7 +140,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
   }
 
   // Replaces the activity's subtask list: kept ids are updated, missing ones soft-deleted, new ones inserted.
-  function writeSubtasks(tx: AppDatabase, activityId: string, inputs: SubtaskInput[]) {
+  function writeSubtasks(tx: AppDatabase, { activityId, inputs }: SubtaskWrite) {
     const now = stamp();
     const existing = tx
       .select()
@@ -193,7 +205,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     return result;
   }
 
-  function applyChanges(tx: AppDatabase, id: string, changes: ActivityChanges) {
+  function applyChanges(tx: AppDatabase, { id, changes }: ActivityWrite) {
     const row = tx
       .select({ doneAt: activity.doneAt })
       .from(activity)
@@ -201,11 +213,11 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
       .get();
     if (!row) throw new Error(`No activity ${id}`);
     tx.update(activity).set(activityValues(changes, row.doneAt)).where(eq(activity.id, id)).run();
-    if (changes.subtasks) writeSubtasks(tx, id, changes.subtasks);
+    if (changes.subtasks) writeSubtasks(tx, { activityId: id, inputs: changes.subtasks });
   }
 
   function update(id: string, changes: ActivityChanges): Activity {
-    write((tx) => applyChanges(tx, id, changes));
+    write((tx) => applyChanges(tx, { id, changes }));
     return mustRead(id);
   }
 
@@ -276,7 +288,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
             updatedAt: now,
           })
           .run();
-        writeSubtasks(tx, id, input.subtasks);
+        writeSubtasks(tx, { activityId: id, inputs: input.subtasks });
       });
       return mustRead(id);
     },
@@ -290,7 +302,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     toggleDone(id) {
       write((tx) => {
         const toggled = completionToggled(mustRead(id));
-        applyChanges(tx, id, { done: toggled.done, subtasks: toggled.subtasks });
+        applyChanges(tx, { id, changes: { done: toggled.done, subtasks: toggled.subtasks } });
       });
       return mustRead(id);
     },

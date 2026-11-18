@@ -6,7 +6,7 @@ import {
   RowState,
   type TimelineRow as Row,
 } from '@daycraft/domain';
-import { shadows } from '@daycraft/design-tokens';
+import { durations, radii, shadows } from '@daycraft/design-tokens';
 import { Pressable, Text, View } from 'react-native';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { LinearTransition } from 'react-native-reanimated';
@@ -17,7 +17,7 @@ import { cn } from '@/lib/cn';
 import { DragMode, type TimelineDrag } from './use-timeline-drag';
 
 // Rows glide to their new place over 220ms; Reanimated skips layout animations under Reduce Motion.
-export const ROW_TRANSITION = LinearTransition.duration(220);
+export const ROW_TRANSITION = LinearTransition.duration(durations.reflow);
 
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
 
@@ -98,7 +98,7 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
       <GestureDetector gesture={move}>
         <Animated.View
           entering={isNew ? popIn : undefined}
-          style={dragging ? { boxShadow: shadows.lift, borderRadius: 24 } : undefined}
+          style={dragging ? { boxShadow: shadows.lift, borderRadius: radii.capsule.px } : undefined}
           className="absolute top-0 left-13"
         >
           <Capsule

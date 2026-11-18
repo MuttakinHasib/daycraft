@@ -14,8 +14,8 @@ import {
 
 import { activityRepository } from './activity-store';
 
-// Development only: the design prototype's demo days, around today. Imported from a `__DEV__` branch,
-// so production bundles never include it.
+// Development only: the design prototype's demo days, around today. More imports it inside an `if (__DEV__)`
+// block, so production bundles never include it.
 
 interface DemoBase {
   date: ISODate;
@@ -221,18 +221,6 @@ function today(date: ISODate): ActivityInput[] {
     demo(
       { date, start: 1290, durationMinutes: 15, title: 'Journal and reflect', hue: 'iris', icon: 'pen', kind: 'task' },
       { repeat: 'daily' },
-    ),
-    demo(
-      {
-        date,
-        start: null,
-        durationMinutes: 30,
-        title: 'Review pull requests',
-        hue: 'sky',
-        icon: 'laptop',
-        kind: 'task',
-      },
-      { labels: ['Work'], priority: 'medium' },
     ),
   ];
 }

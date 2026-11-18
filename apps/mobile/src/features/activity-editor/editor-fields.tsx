@@ -8,6 +8,7 @@ import {
   Label,
   Priority,
   Repeat,
+  type Repeat as RepeatPreset,
   type ActivityHue as Hue,
   type IconName,
   type ISODate,
@@ -18,7 +19,7 @@ import {
 import { useState, type ReactNode } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-import { Chip, ChipSize, Icon, Segmented } from '@/components/ui';
+import { Chip, ChipSize, Icon, IconButton, IconButtonSize, Segmented } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
@@ -74,14 +75,6 @@ interface FieldProps {
   children: ReactNode;
 }
 
-interface IconButtonProps {
-  icon: IconName;
-  accessibilityLabel: string;
-  onPress: () => void;
-  small?: boolean;
-  surface?: boolean;
-}
-
 interface DateRowProps {
   date: ISODate;
   today: ISODate;
@@ -127,6 +120,10 @@ interface SubtasksFieldProps {
   onChange: (subtasks: SubtaskInput[]) => void;
 }
 
+interface RepeatFieldProps {
+  value: RepeatPreset;
+}
+
 interface TextFieldProps {
   value: string;
   onChange: (value: string) => void;
@@ -145,25 +142,6 @@ export function Field({ label, aside, children }: FieldProps) {
   );
 }
 
-export function IconButton({ icon, accessibilityLabel, onPress, small = false, surface = false }: IconButtonProps) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
-      onPress={onPress}
-      hitSlop={small ? 6 : 2}
-      className={cn('items-center justify-center rounded-full active:opacity-70', {
-        'size-8': small,
-        'size-11': !small,
-        'bg-sunken': !surface,
-        'bg-surface': surface,
-      })}
-    >
-      <Icon name={icon} size={small ? 16 : 18} colorClassName="text-ink" />
-    </Pressable>
-  );
-}
-
 /** The date with ‹ › to move the activity a day at a time. */
 export function DateRow({ date, today, onStep }: DateRowProps) {
   const relative = formatRelativeDate(date, today);
@@ -173,8 +151,8 @@ export function DateRow({ date, today, onStep }: DateRowProps) {
     <View className="min-h-13 flex-row items-center gap-3 rounded-card border border-line px-4">
       <Icon name="calendar" size={18} colorClassName="text-ink-subtle" />
       <Text className="flex-1 type-body font-sans-semibold text-ink">{label}</Text>
-      <IconButton small icon="chev-l" accessibilityLabel="Previous day" onPress={() => onStep(-1)} />
-      <IconButton small icon="chev-r" accessibilityLabel="Next day" onPress={() => onStep(1)} />
+      <IconButton icon="chev-l" accessibilityLabel="Previous day" onPress={() => onStep(-1)} />
+      <IconButton icon="chev-r" accessibilityLabel="Next day" onPress={() => onStep(1)} />
     </View>
   );
 }
@@ -203,7 +181,7 @@ export function TimeField({ start, durationMinutes, canUnschedule, onSchedule, o
         </Text>
       ) : (
         <View className="flex-row items-center justify-between rounded-card bg-sunken p-2">
-          <IconButton surface icon="minus" accessibilityLabel="15 minutes earlier" onPress={() => onStep(-15)} />
+          <IconButton size={IconButtonSize.LG} onSunken icon="minus" accessibilityLabel="15 minutes earlier" onPress={() => onStep(-15)} />
           <Text
             accessibilityLiveRegion="polite"
             style={{ fontVariant: ['tabular-nums'] }}
@@ -211,7 +189,7 @@ export function TimeField({ start, durationMinutes, canUnschedule, onSchedule, o
           >
             {formatRange(start, durationMinutes)}
           </Text>
-          <IconButton surface icon="plus" accessibilityLabel="15 minutes later" onPress={() => onStep(15)} />
+          <IconButton size={IconButtonSize.LG} onSunken icon="plus" accessibilityLabel="15 minutes later" onPress={() => onStep(15)} />
         </View>
       )}
     </Field>
@@ -409,13 +387,13 @@ export function LocationField({ value, onChange }: TextFieldProps) {
   );
 }
 
-/** Repeat is shown at Never and disabled until repeating activities land. */
-export function RepeatField() {
+/** Repeat shows the activity's preset, disabled until repeating activities can be edited. */
+export function RepeatField({ value }: RepeatFieldProps) {
   return (
     <Field label="Repeat">
       <Segmented
         options={REPEATS}
-        value={Repeat.NEVER}
+        value={value}
         onChange={() => undefined}
         accessibilityLabel="Repeat, not available yet"
         disabled

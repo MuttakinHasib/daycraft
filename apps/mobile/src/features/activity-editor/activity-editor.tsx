@@ -32,6 +32,8 @@ import {
   TimeField,
 } from './editor-fields';
 
+const ANYTIME_AVAILABLE = false;
+
 interface ActivityEditorProps {
   initial: ActivityInput;
   /** The activity being edited, or null when creating one. */
@@ -52,7 +54,8 @@ export function ActivityEditor({ initial, activityId, today }: ActivityEditorPro
   // The start to restore when switching from Anytime back to Timeline.
   const [lastStart, setLastStart] = useState(initial.start ?? DEFAULT_START);
   const editing = activityId !== null;
-  const isTask = draft.kind === ActivityKind.TASK;
+  // Routines edit like tasks: priority, labels and their steps as subtasks.
+  const isTask = draft.kind !== ActivityKind.EVENT;
   const change = (changes: Partial<ActivityInput>) => setDraft((current) => ({ ...current, ...changes }));
 
   const retime = (start: number, durationMinutes: number) => {
@@ -105,7 +108,8 @@ export function ActivityEditor({ initial, activityId, today }: ActivityEditorPro
           <TimeField
             start={draft.start}
             durationMinutes={draft.durationMinutes}
-            canUnschedule={isTask}
+            // Anytime returns with the Tasks list: until then an unscheduled task would have nowhere to appear.
+            canUnschedule={ANYTIME_AVAILABLE && draft.kind === ActivityKind.TASK}
             onSchedule={(scheduled) => change({ start: scheduled ? lastStart : null })}
             onStep={(minutes) => retime((draft.start ?? lastStart) + minutes, draft.durationMinutes)}
           />
@@ -123,7 +127,7 @@ export function ActivityEditor({ initial, activityId, today }: ActivityEditorPro
           {draft.kind === ActivityKind.EVENT && (
             <LocationField value={draft.location} onChange={(location) => change({ location })} />
           )}
-          <RepeatField />
+          <RepeatField value={draft.repeat} />
           <NotesField value={draft.notes} onChange={(notes) => change({ notes })} />
         </ScrollView>
       </View>

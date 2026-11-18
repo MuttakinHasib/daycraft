@@ -16,7 +16,7 @@
 | Lint | ESLint 9 flat config + `eslint-config-expo` | `bun run lint` (`expo lint`) |
 | Package manager | bun, in the root Turborepo (`apps/mobile` workspace) | `bunx expo install` for every dependency |
 | Monorepo | Turborepo 2.x on bun workspaces | Root `turbo.json`: `build`, `check-types`, `lint`, `dev` |
-| Tests | none yet | see [testing](testing.md) |
+| Tests | Vitest: domain functions, and the activity repository against SQLite in Node (`better-sqlite3`) | see [testing](testing.md) |
 
 Not chosen yet (do not introduce without a decision recorded in [status-and-decisions](../status-and-decisions.md#open-decisions)):
 
@@ -69,7 +69,7 @@ Activities use **floating local time**:
 A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype and keeps the timeline math integer-based.
 
 - **Never** parse `'YYYY-MM-DD'` with `new Date(string)`: it is treated as UTC and can shift a day. Build dates with `new Date(year, monthIndex, day)` or a date library's local parser.
-- Keep all date math in `packages/domain/src/time.ts` (add, diff in days, week start, relative labels like Today/Tomorrow/"Thu, Nov 19", `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
+- Keep all date math in `@daycraft/domain`: `calendar.ts` (add, diff in days, week start) and `timeline/format.ts` (relative labels like Today/Tomorrow/"Thu, Nov 19", `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
 - **Week starts on Sunday** (prototype week strip and month grid). If this becomes a setting, it must flow through one function.
 - The day's timeline range is 05:00–24:00. Activities after midnight are not supported yet (record it if a feature needs them).
 - Real timestamps (`createdAt`, focus `endsAt`) are ISO-8601 UTC strings.
@@ -77,7 +77,7 @@ A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype a
 
 ## Forms and validation
 
-- Sheets use controlled `TextInput`s and local draft state. Saving validates the draft:
+- Sheets keep the draft in local state. Their `TextInput`s take a `defaultValue` and report each change, rather than being controlled: a controlled input re-renders the whole sheet on every keystroke and drops characters under fast typing. Saving validates the draft:
   - title required;
   - habit name required;
   - routine name and ≥ 1 step required.

@@ -234,7 +234,7 @@ export function ActivityDetail({ id }: ActivityDetailProps) {
         {/* Start focus joins this footer when Focus lands; until then the main action edits. */}
         <View className="flex-1">
           <Button icon="edit" onPress={() => openEditor(activity.id)}>
-            {activity.kind === 'event' ? 'Edit event' : 'Edit task'}
+            {`Edit ${KIND_LABEL[activity.kind].toLowerCase()}`}
           </Button>
         </View>
       </View>

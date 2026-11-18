@@ -47,6 +47,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const show: ShowToast = (message) => {
     nextId.current += 1;
     setToast({ id: nextId.current, message });
+    // The one announcement: queued, so it waits for whatever the screen reader is saying (polite).
     AccessibilityInfo.announceForAccessibilityWithOptions(message, { queue: true });
   };
 
@@ -66,8 +67,6 @@ export function ToastProvider({ children }: ToastProviderProps) {
               key={toast.id}
               entering={enter}
               exiting={FadeOut.duration(durations.press)}
-              accessibilityLiveRegion="polite"
-              accessibilityRole="alert"
               className="h-10 max-w-full flex-row items-center gap-2 rounded-full bg-ink px-4 shadow-float"
             >
               <Icon name="check" size={15} strokeWidth={2.8} colorClassName="text-canvas" />

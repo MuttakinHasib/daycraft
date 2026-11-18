@@ -121,6 +121,12 @@ export interface LayoutDayInput {
   preview?: DragPreview | null;
 }
 
+function rowState(done: boolean, active: boolean): RowState {
+  if (done) return RowState.DONE;
+  if (active) return RowState.ACTIVE;
+  return RowState.UPCOMING;
+}
+
 /** Interpolates a minute to a y position between the anchors. */
 export function mapTimeToY(anchors: readonly Anchor[], minute: MinutesOfDay): number {
   for (let index = 0; index < anchors.length - 1; index++) {
@@ -157,7 +163,8 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
   for (const activity of scheduled(input)) {
     const duration = activity.durationMinutes;
     const capsuleHeight = duration > 0 ? Math.max(MIN_CAPSULE, duration * scale) : MIN_CAPSULE;
-    const active = isToday && !activity.done && duration > 0 && now >= activity.start && now < activity.start + duration;
+    const active =
+      isToday && !activity.done && duration > 0 && now >= activity.start && now < activity.start + duration;
     const hasMeta = activity.subtasks.length > 0 || activity.kind === 'event' || active;
     const rowHeight = Math.max(capsuleHeight, hasMeta ? META_ROW_HEIGHT : MIN_CAPSULE);
     let top = (activity.start - DAY_START) * scale + TOP_PADDING + offset;
@@ -170,7 +177,7 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
       top,
       capsuleHeight,
       rowHeight,
-      state: activity.done ? RowState.DONE : active ? RowState.ACTIVE : RowState.UPCOMING,
+      state: rowState(activity.done, active),
       elapsed: active ? (now - activity.start) / duration : 0,
       minutesLeft: active ? activity.start + duration - now : 0,
       hasMeta,

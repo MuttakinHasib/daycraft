@@ -6,12 +6,14 @@ import { todayISO } from '@daycraft/domain';
 import { Icon } from '@/components/ui';
 import { TabScreen } from '@/features/navigation/tab-screen';
 
-// Development only: the import sits in a `__DEV__` branch, so production bundles leave the demo data out.
+// Development only. The import sits inside an `if (__DEV__)` block, which Metro removes from production bundles,
+// so the demo data never ships.
 async function loadDemoDays() {
-  if (!__DEV__) return;
-  const { loadDemoDays: load } = await import('@/data/demo-days');
-  load(todayISO(new Date()));
-  Alert.alert('Demo days loaded', 'The design prototype\'s activities now fill the week before today through two weeks after.');
+  if (__DEV__) {
+    const demo = await import('@/data/demo-days');
+    demo.loadDemoDays(todayISO(new Date()));
+    Alert.alert('Demo days loaded', "The design prototype's activities now fill the week before today through two weeks after.");
+  }
 }
 
 // Placeholder until the More modules are built. For now it links to the design-system screen.

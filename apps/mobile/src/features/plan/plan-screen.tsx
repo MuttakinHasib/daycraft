@@ -9,11 +9,11 @@ import {
   type MinutesOfDay,
   type Timing,
 } from '@daycraft/domain';
-import { router, useFocusEffect } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { useCallback, useEffect, useRef, type ComponentRef } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { useToast } from '@/components/ui';
+import { TabRoute, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
 import { useNow } from '@/lib/use-now';
 
@@ -77,7 +77,25 @@ export function PlanScreen() {
   }, []);
 
   useEffect(scrollToLanding, [date, scrollToLanding]);
-  useFocusEffect(scrollToLanding);
+
+  // Land again when Plan's tab is chosen after another tab, but not when a sheet over Plan closes:
+  // a sheet also blurs Plan, yet Plan stays the selected tab.
+  const navigation = useNavigation();
+  const leftPlanTab = useRef(false);
+  useEffect(() => {
+    const stopBlur = navigation.addListener('blur', () => {
+      const state = navigation.getState();
+      leftPlanTab.current = state?.routes[state.index]?.name !== TabRoute.PLAN;
+    });
+    const stopFocus = navigation.addListener('focus', () => {
+      if (leftPlanTab.current) scrollToLanding();
+      leftPlanTab.current = false;
+    });
+    return () => {
+      stopBlur();
+      stopFocus();
+    };
+  }, [navigation, scrollToLanding]);
 
   return (
     <View className="flex-1 bg-canvas pt-safe">

@@ -44,7 +44,7 @@ src/
     activity-editor/         # editor + detail sheets (shared by every entry point)
   components/ui/             # primitives only
   domain/
-    time.ts                  # date/time utilities and formatting
+    calendar.ts              # ISO dates, day stepping, Sunday weeks
     timeline/                # layout, time map, gaps, slots, snapping, next free slot
     activity.ts  habit.ts  routine.ts  goal.ts  project.ts  journal.ts  inbox.ts
   data/                      # repositories + fixtures
