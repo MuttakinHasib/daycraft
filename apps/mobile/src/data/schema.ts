@@ -1,9 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-// Tables follow the glossary (ADR-0005). Every synced row has the three sync columns; a delete sets
-// `deleted_at` and every read filters it out. Timestamps are UTC ISO strings. Hue and icon hold domain
-// names, never colors or icon-library names.
+// Tables follow the glossary (ADR-0005). A delete sets `deleted_at` and every read filters it out;
+// timestamps are UTC ISO strings, and hue and icon hold domain names, never colors or library names.
 
 const syncColumns = {
   createdAt: text('created_at').notNull(),

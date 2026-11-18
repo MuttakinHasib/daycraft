@@ -9,7 +9,6 @@ export const SNAP_MINUTES = 5;
 /** The shortest duration a drag or the editor can give a timed activity. */
 export const MIN_DURATION = 5;
 
-/** A start and a duration on the timeline. */
 export interface Timing {
   start: MinutesOfDay;
   durationMinutes: number;
@@ -26,9 +25,8 @@ function clamp(value: number, { min, max }: Bounds): number {
 }
 
 /**
- * Keeps an activity on the timeline: nothing starts before 5:00 AM or ends after midnight. The start stays in
- * `[DAY_START, DAY_END − max(duration, 5)]` and the duration in `[5, DAY_END − start]`. A duration of 0 stays 0
- * (a point in time). Drag and the editor both use this rule.
+ * Keeps an activity between 5:00 AM and midnight, with a duration of at least 5 (0 stays 0, a point in time).
+ * Drag and the editor share this rule.
  */
 export function clampToDay(timing: Timing): Timing {
   const pointInTime = timing.durationMinutes === 0;

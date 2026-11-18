@@ -39,13 +39,11 @@ export type WeekDots = Record<ISODate, ActivityHue[]>;
 
 type Listener = () => void;
 
-/** A subtask list to write for one activity. */
 interface SubtaskWrite {
   activityId: string;
   inputs: SubtaskInput[];
 }
 
-/** Changes to write to one activity. */
 interface ActivityWrite {
   id: string;
   changes: ActivityChanges;

@@ -53,7 +53,6 @@ const SCHEDULING = [
 
 let nextDraftKey = 0;
 
-// Six icons per row.
 const ICON_CELL_WIDTH = `${100 / 6}%` as const;
 
 const HUE_NAMES: Record<Hue, string> = {

@@ -21,7 +21,6 @@ export interface DailyProgress {
   percent: number;
 }
 
-/** Daily progress for the activities on one date. */
 export function dailyProgress(activities: readonly Activity[]): DailyProgress {
   const scheduled = activities.filter((activity) => activity.start !== null);
   const total = scheduled.length;

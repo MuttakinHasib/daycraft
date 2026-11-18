@@ -6,7 +6,6 @@ import { View } from 'react-native';
 import { activityRepository } from '@/data/activity-store';
 import { ActivityEditor } from '@/features/activity-editor/activity-editor';
 
-/** The editor sheet for an existing activity, filled with its values. */
 export default function EditActivityRoute() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [setup] = useState(() => {

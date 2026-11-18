@@ -47,7 +47,6 @@ function landingY(layout: DayLayout): number {
   return first ? Math.max(0, first.top - FIRST_ROW_OFFSET) : 0;
 }
 
-/** Plan: the selected date's header and its timeline. */
 export function PlanScreen() {
   const clock = useNow();
   const today = todayISO(clock);
