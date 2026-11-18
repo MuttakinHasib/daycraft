@@ -69,11 +69,11 @@ Toast behavior:
 
 | Entry point | Opens | Pre-filled |
 |---|---|---|
-| Center **+** (Plan, Goals, Projects, Inbox, Upcoming, Journal, More) | Editor (task) | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
+| **+** (Plan, Goals, Projects, Inbox, Upcoming, Journal, More) | Editor (task) | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
 | Empty half-hour on timeline | Editor (task) | that start time |
 | "Add task" in a gap | Editor (task) | gap start, gap-sized duration (15–60) |
-| Center **+** on Habits / Routines | New habit / New routine sheet | None |
-| All tasks **+ Task** chip, or center **+** on All tasks | Editor (task, Anytime) | today |
+| **+** on Habits / Routines | New habit / New routine sheet | None |
+| All tasks **+ Task** chip, or **+** on All tasks | Editor (task, Anytime) | today |
 | Inbox **Plan** | Editor (task) | title, notes from the item; saving removes the item from Inbox |
 | All tasks **Place** | Editor (edit) | suggested start; past dates move to today |
 | Routine **Add to today** | None (adds directly) | next free slot that fits the full routine; then switches to Plan and pops the new capsule |

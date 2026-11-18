@@ -8,7 +8,7 @@ Screen-by-screen reference for the phone app, taken from the prototype (canvas p
   - **Plan** is the timeline for the selected day. There is no separate Calendar or Tasks tab and no Day/Week/Month switch: scheduled tasks and events are on the timeline, the date title opens the month picker, and the week strip changes the day.
   - **Habits** and **Goals** are tab roots with no top segmented control.
   - **More** holds everything else, in three groups (see [More](#more)). It shows the Inbox count as a badge and stays highlighted for every screen opened from it.
-- **+ (center):** context-aware. Its action and `accessibilityLabel` follow the current screen:
+- **+ (beside the tab pill, [ADR-0009](../../../../docs/adr/0009-tab-bar-plus-beside-the-pill.md)):** context-aware. Its action and `accessibilityLabel` follow the current screen:
   - on Plan, Goals, Projects, Inbox, Upcoming, Journal and More, **New task** (editor with the next free 15-minute slot after now on today, or 9:00 AM on other days);
   - on All tasks, **New task** with no time (Anytime);
   - on Habits, the **New habit** sheet;
