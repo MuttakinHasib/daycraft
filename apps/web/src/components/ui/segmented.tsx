@@ -20,7 +20,7 @@ interface SegmentedStyle extends CSSProperties {
   "--segment-index": number;
 }
 
-/** A segmented control: options in, the selected value out. The selection springs between options. */
+/** A segmented control. It takes the options and the selected value and reports a new value through `onChange`. The selection springs between options. */
 export function Segmented<TValue extends string>({ options, value, onChange, label }: SegmentedProps<TValue>) {
   const style: SegmentedStyle = {
     "--segment-count": options.length,

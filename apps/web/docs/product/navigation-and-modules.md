@@ -1,6 +1,6 @@
 # Navigation and modules (web)
 
-Desktop and tablet reference, taken from the prototype boards “v2 · Desktop 1440”, “v2 · Tablet 768” and “v2 · Large desktop 1920 · light”. Screenshots: `docs/design/reference/screens/desktop/` and `screens/phone/` (index: [reference README](../../../../docs/design/reference/README.md)). Only **Today** has a desktop design. For the other modules, the phone screens (documented in `apps/mobile/docs/product/navigation-and-modules.md` and on the canvas boards “v2 · iPhone …”) define content and behavior, and decision W5 ([status](../status-and-decisions.md#open-decisions)) defines how they adapt.
+Desktop and tablet reference, taken from the prototype boards "v2 · Desktop 1440", "v2 · Tablet 768" and "v2 · Large desktop 1920 · light". Screenshots: `docs/design/reference/screens/desktop/` and `screens/phone/` (index: [reference README](../../../../docs/design/reference/README.md)). Only **Today** has a desktop design. For the other modules, the phone screens (documented in `apps/mobile/docs/product/navigation-and-modules.md` and on the canvas boards "v2 · iPhone …") define content and behavior, and decision W5 ([status](../status-and-decisions.md#open-decisions)) defines how they adapt.
 
 Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md).
 
@@ -28,8 +28,8 @@ Shared measurements are in [spacing-and-layout](../design/spacing-and-layout.md)
 - Nav items: 40 tall, radius 12, 18pt icon, 14 semibold label, right-aligned count.
   - Active: `bg-accent-soft` + `text-accent-text`.
   - Hover: `bg-sunken` + `text-ink`.
-- Items mirror the phone tab bar, then its More screen: **Plan, Habits, Goals**, then a “MORE” group label (`label` preset) with **Inbox, Upcoming, All tasks, Routines, Projects, Journal**. There is no Calendar item. Focus starts from an activity's detail panel.
-- Bottom: Light/Dark segmented control, then the user row (32 avatar, name, “Personal workspace”).
+- Items mirror the phone tab bar, then its More screen: **Plan, Habits, Goals**, then a "MORE" group label (`label` preset) with **Inbox, Upcoming, All tasks, Routines, Projects, Journal**. There is no Calendar item. Focus starts from an activity's detail panel.
+- Bottom: Light/Dark segmented control, then the user row (32 avatar, name, "Personal workspace").
 
 **Rail mode** (container ≤ 1100, tablet): the sidebar becomes 80 wide.
 
@@ -73,17 +73,17 @@ src/app/
 **Header:**
 
 - Date title in `display` (30): month + day in `ink`, the year in `accent-text`.
-- Subline `body-sm` muted: “Tuesday · Today · drag to reschedule, pull the grip to resize, click an empty hour to plan”.
+- Subline `body-sm` muted: "Tuesday · Today · drag to reschedule, pull the grip to resize, click an empty hour to plan".
 - Right side:
   - **Today** chip (when another date is selected), then ‹ (40 icon button).
-  - The **week strip**: a pill container `bg-surface` with a hairline and padding 4, holding seven 52×56 day buttons (radius 20) — weekday `micro`, date `activity`-size extrabold, hue dots. The selected day is filled `accent` with `on-accent` text and dots.
+  - The **week strip**: a `bg-card` pill container with padding 4, holding seven 52×56 day buttons (radius 20). Each button shows the weekday in `micro`, the date at `activity` size in semibold, and hue dots. The selected day is filled `accent` with `on-accent` text and dots.
   - Then › (40 icon button).
 
 **Timeline panel:**
 
 - `bg-surface`, hairline, radius 24, flex 999 1 460.
 - **Habits row** (12/20 padding, bottom hairline):
-  - A `label` “HABITS”, then pill chips (36 tall, 6 left padding, dashed `line-strong` border).
+  - A `label` "HABITS", then pill chips (36 tall, 6 left padding, dashed `line-strong` border).
   - Each chip has a 26 hue circle with an icon (a check when done) and the name.
   - Done: tinted 16% hue background, no border.
 - **Timeline scroll area:** height 700. See [timeline-guide](timeline-guide.md) (desktop values).
@@ -92,7 +92,7 @@ src/app/
 
 - flex 1 1 340, max 420.
 - **Detail card** (when an activity is selected): replaces the phone detail sheet.
-  - Hue header band: kind tag (“Task · Today”), close ×, a 48×64 capsule icon, the time, and an **editable title input**.
+  - Hue header band: kind tag ("Task · Today"), close ×, a 48×64 capsule icon, the time, and an **editable title input**.
   - Body:
     - Duration segmented 15m–2h;
     - Color swatches (28);
@@ -100,7 +100,7 @@ src/app/
     - notes box;
     - inline **focus timer** (a 30pt clock with pause/resume and end, on `accent-soft`);
     - footer: delete icon button (44), **Complete/Undo** (secondary md), **Focus** (primary md).
-- **Daily progress:** 72 ring, “Daily progress”, “6 of 19 activities and habits done · 9h 5m planned”.
+- **Daily progress:** 72 ring, "Daily progress", "6 of 19 activities and habits done · 9h 5m planned".
 - **Up next:** up to 4 upcoming activities (32 hue circle, title, time range). Clicking one selects it.
 - **Inbox:** a 40 pill capture field with a 32 add button, then up to 4 items, each with a **Plan** chip. Plan removes the item from Inbox, creates the task at the next free slot and selects it.
 

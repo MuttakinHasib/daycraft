@@ -23,7 +23,7 @@
   }
 }
 
-/* Small set of reusable pieces. Everything else is plain utilities. */
+/* A small set of reusable component classes. Everything else uses plain utilities. */
 @layer components {
   /* Timeline capsule: set --capsule-hue: var(--color-sage) etc. on the element */
   .capsule {

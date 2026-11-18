@@ -11,7 +11,7 @@ Last reviewed 2026-11-17, after the move into the monorepo: `bun run check-types
 3. **[design/reference/daycraft-tailwind-v1.1.css](../../../docs/design/reference/daycraft-tailwind-v1.1.css)**: a frozen export of design system v1.1, kept for reference only.
 4. These docs explain 1–3. If a doc contradicts 1–3 and is not listed below, the doc is wrong. Fix it.
 
-The canvas pages “v2 · Refined” and “v1 · Original” are superseded. Do not copy values from them.
+The canvas pages "v2 · Refined" and "v1 · Original" are superseded. Do not copy values from them.
 
 ## Implementation status
 
@@ -26,7 +26,7 @@ The canvas pages “v2 · Refined” and “v1 · Original” are superseded. Do
 | Theme: System / Light / Dark in a cookie, applied before first paint by an inline script (pages stay static) | Done 2026-11-17 (ticket 07) |
 | Icons: `@daycraft/icons/web` | Done 2026-11-17 (ticket 06). New dependencies: `lucide-react`, `@daycraft/icons`. |
 | Design-system page (`/design-system`) and a placeholder Plan page | Done 2026-11-17. The starter page and `public/*.svg` are deleted. |
-| Metadata, favicon, brand | Title is “Daycraft”; favicon is still the template's until the logo package lands |
+| Metadata, favicon, brand | Title is "Daycraft"; favicon is still the template's until the logo package lands |
 | Components, domain, data, screens | Not started |
 | Tests | Not set up |
 

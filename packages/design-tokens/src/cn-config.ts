@@ -4,8 +4,8 @@ import { fontFamilies, TypePreset } from './typography';
 import { Radius } from './shape';
 
 /**
- * `createCn` config: without it `text-ink text-micro` drops `text-ink` (unknown `text-*` reads
- * as a color). Built from the token lists, so a new token is never missing.
+ * Config for `createCn`. Without it, `text-ink text-micro` drops `text-ink`, because an unknown
+ * `text-*` class reads as a color. The token lists build it, so a new token is never missing.
  */
 export const cnConfig: CreateCnInput<DefaultClassGroupIds | 'type-preset', DefaultThemeGroupIds> = {
   extend: {

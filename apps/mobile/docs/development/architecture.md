@@ -69,7 +69,7 @@ Activities use **floating local time**:
 A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype and keeps the timeline math integer-based.
 
 - **Never** parse `'YYYY-MM-DD'` with `new Date(string)`: it is treated as UTC and can shift a day. Build dates with `new Date(year, monthIndex, day)` or a date library's local parser.
-- Keep all date math in `packages/domain/src/time.ts` (add, diff in days, week start, relative labels like Today/Tomorrow/“Thu, Nov 19”, `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
+- Keep all date math in `packages/domain/src/time.ts` (add, diff in days, week start, relative labels like Today/Tomorrow/"Thu, Nov 19", `9:30–11:30 AM` ranges, `1 hr 30 min` durations).
 - **Week starts on Sunday** (prototype week strip and month grid). If this becomes a setting, it must flow through one function.
 - The day's timeline range is 05:00–24:00. Activities after midnight are not supported yet (record it if a feature needs them).
 - Real timestamps (`createdAt`, focus `endsAt`) are ISO-8601 UTC strings.

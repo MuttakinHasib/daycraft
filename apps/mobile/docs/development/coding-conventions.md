@@ -58,5 +58,5 @@
 
 ## Git and issues
 
-- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) (“Add Daycraft UI primitives”).
+- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) ("Add Daycraft UI primitives").
 - Work from the root `.scratch/<feature>/` issues when they exist (root `docs/agents/issue-tracker.md`). Update the issue's `Status:` line.

@@ -28,7 +28,7 @@ interface SheetProps {
 }
 
 export function Sheet({ children }: SheetProps) {
-  // Reduce Motion: the sheet appears in place instead of sliding up.
+  // With Reduce Motion on, the sheet appears in place instead of sliding up.
   const reduceMotion = useReducedMotion();
   return (
     <Animated.View

@@ -1,6 +1,6 @@
 # Navigation and modules
 
-Screen-by-screen reference for the phone app, taken from the prototype (canvas page “v2 · Current”). Each screen has a screenshot at `docs/design/reference/screens/phone/{dark,light}/<name>.png` (index: [reference README](../../../../docs/design/reference/README.md)). Numbers are in points (pt = px on the 390-wide reference device). Shared measurements (page padding, card padding, component heights) live in [spacing-and-layout](../design/spacing-and-layout.md). This file only lists what is specific to each screen.
+Screen-by-screen reference for the phone app, taken from the prototype (canvas page "v2 · Current"). Each screen has a screenshot at `docs/design/reference/screens/phone/{dark,light}/<name>.png` (index: [reference README](../../../../docs/design/reference/README.md)). Numbers are in points (pt = px on the 390-wide reference device). Shared measurements (page padding, card padding, component heights) live in [spacing-and-layout](../design/spacing-and-layout.md). This file only lists what is specific to each screen.
 
 ## Navigation model
 
@@ -9,10 +9,10 @@ Screen-by-screen reference for the phone app, taken from the prototype (canvas p
   - **Habits** and **Goals** are tab roots with no top segmented control.
   - **More** holds everything else, in three groups (see [More](#more)). It shows the Inbox count as a badge and stays highlighted for every screen opened from it.
 - **+ (center):** context-aware. Its action and `accessibilityLabel` follow the current screen:
-  - Plan, Goals, Projects, Inbox, Upcoming, Journal, More → **New task** (editor with the next free 15-minute slot after now on today, or 9:00 AM on other days);
-  - All tasks → **New task** with no time (Anytime);
-  - Habits → **New habit** sheet;
-  - Routines → **New routine** sheet.
+  - on Plan, Goals, Projects, Inbox, Upcoming, Journal and More, **New task** (editor with the next free 15-minute slot after now on today, or 9:00 AM on other days);
+  - on All tasks, **New task** with no time (Anytime);
+  - on Habits, the **New habit** sheet;
+  - on Routines, the **New routine** sheet.
 - **Sub-screens** of More show a **‹ More** back control (Project detail shows **‹ Projects**).
 - **Focus** is full-screen: the tab bar is hidden. Close (×) returns to Plan.
 - **Sheets** (detail, editor, new habit, new routine, month picker) slide up over the current screen with a scrim. Tapping the scrim closes them.
@@ -58,49 +58,49 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 ### Plan
 
 - **Header** (24 from top, 20 side padding):
-  - Date title in the `date` type preset: “November 17,” in ink, the year in `accent-text`, then a › chevron. Tapping the title opens the month picker.
+  - Date title in the `date` type preset: "November 17," in ink, the year in `accent-text`, then a › chevron. Tapping the title opens the month picker.
   - On the right: **Today** chip (only when another date is selected) and a 44pt daily progress ring (4pt stroke on a `line-strong` track). It shows the number without a % sign in 13pt extrabold, a check in `accent-text` at 100%, and only the track at 0.
-- **Subline:** `body-sm` muted: “Tuesday · Today · 6 of 19 done”.
+- **Subline:** `body-sm` muted: "Tuesday · Today · 6 of 19 done".
 - **Week strip:**
   - Seven columns Sun–Sat with 22pt ‹ › week arrows at both ends.
   - Each column has a weekday label (`label` size, subtle), a 36pt date circle and up to four 7pt hue dots, one per distinct non-routine activity color that day.
   - The selected date's circle is filled with `accent` (text `on-accent`); today's number is shown in `accent-text`.
 - **Timeline panel:**
   - `surface` background, top corners `radius-sheet` (30), top hairline and a 36×4 grabber.
-  - Inside, the **habit row** sits on top: horizontally scrolling 44pt circles 56pt apart, each with an 11pt label below; the last one is “+ Habit”.
+  - Inside, the **habit row** sits on top: horizontally scrolling 44pt circles 56pt apart, each with an 11pt label below; the last one is "+ Habit".
   - The **timeline** sits below. See [timeline-guide](timeline-guide.md).
 
 ### Inbox
 
 - Opened from More (‹ More back control).
-- Title `display` “Inbox”, subtitle “Capture now, organize later.”
+- Title `display` "Inbox", subtitle "Capture now, organize later."
 - **Capture field:**
   - 48pt pill on `surface` with a hairline border and a sparkle icon.
-  - Placeholder “Capture a task or idea…”.
+  - Placeholder "Capture a task or idea…".
   - Circular 36pt accent add button. Enter also submits.
 - **List:**
-  - `label` “4 UNSORTED”, then cards (16 left / 12 right padding).
+  - `label` "4 UNSORTED", then cards (16 left / 12 right padding).
   - Each card has a 24pt ring (clears the item), the title in `activity`-weight 15, a meta line (note · age), and a **Plan** small chip in `accent-soft`.
-- **Empty state:** illustration, “Inbox zero” in `heading`, one supporting sentence.
+- **Empty state:** illustration, "Inbox zero" in `heading`, one supporting sentence.
 
 ### More
 
-- Header: “More” in `display`, no logo.
+- Header: "More" in `display`, no logo.
 - **Groups:**
-  - **Capture and plan ahead:** Inbox (count), Upcoming, All tasks (“N unscheduled”).
+  - **Capture and plan ahead:** Inbox (count), Upcoming, All tasks ("N unscheduled").
   - **Build:** Routines (count), Projects (count).
   - **Focus and reflect:** Focus, Journal.
 - Each row: 32pt hue tile with a white icon, label, right-aligned count, chevron.
-- **Appearance:** segmented Light / Dark with a one-line explanation. The prototype has no “System” option; add one when theme persistence lands.
+- **Appearance:** segmented Light / Dark with a one-line explanation. The prototype has no "System" option; add one when theme persistence lands.
 
 ### Upcoming
 
 - Opened from More.
 - Next 14 days.
-- Each day with content gets a heading (“Tomorrow”, then “Thu, Nov 19”) and a list.
+- Each day with content gets a heading ("Tomorrow", then "Thu, Nov 19") and a list.
 - Each row: 4pt hue bar, title, time · location, and a kind tag.
-- Unscheduled tasks due that day appear with a “Due” tag in `accent-soft`.
-- Daily repeating routines and the generic “Deep work” block are filtered out to keep the list meaningful. Production: filter out repeating routine instances.
+- Unscheduled tasks due that day appear with a "Due" tag in `accent-soft`.
+- Daily repeating routines and the generic "Deep work" block are filtered out to keep the list meaningful. Production: filter out repeating routine instances.
 
 ### All tasks
 
@@ -108,27 +108,27 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 - Filter chips with counts: **Open · Today · Unscheduled · Done**.
 - **Cards:**
   - Ring on the left; title (struck through when done).
-  - A tag row: when (`clock` icon + “Today · 2:30 PM”, or `flag` + “Due Thu, Nov 19” for unscheduled), duration, priority (color: high `danger`, medium `amber`, low muted), subtask count, labels.
+  - A tag row: when (`clock` icon + "Today · 2:30 PM", or `flag` + "Due Thu, Nov 19" for unscheduled), duration, priority (color: high `danger`, medium `amber`, low muted), subtask count, labels.
   - A **Place** chip appears on unscheduled tasks. It opens the editor with a suggested start time.
 - **Empty state** per filter.
 
 ### Habits
 
 - Tab root, no top switch. The + opens **New habit**.
-- Summary line: “3 of 5 checked in today.” (adds “— a perfect day.” when all are done).
+- Summary line: "3 of 5 checked in today." (adds "A perfect day." when all are done).
 - **Card:**
-  - 40pt hue circle icon, name, “Every day” or “4× a week”, then a flame icon with “13-day streak” (or “Start a streak” at 0).
+  - 40pt hue circle icon, name, "Every day" or "4× a week", then a flame icon with "13-day streak" (or "Start a streak" at 0).
   - A 44pt check button on the right: outlined in the hue, filled when checked in.
   - Below: a 7-day bar row with weekday letters.
-- Weekly habits add “This week · 3 of 4”.
+- Weekly habits add "This week · 3 of 4".
 - Tapping the name expands a **5-week heatmap** (7 columns, 6pt-radius cells) and a completion %.
 
 ### Routines
 
 - Opened from More. Header has an accent **+ Routine** chip; the + opens the same sheet.
 - Expandable cards:
-  - 40×56 capsule-shaped hue icon, name, “4 steps · 30 min”, chevron.
-  - Expanded: the steps on a mini spine (dot · title · minutes) and an `md` primary button **Add to today** (or “Add to tomorrow” / the date).
+  - 40×56 capsule-shaped hue icon, name, "4 steps · 30 min", chevron.
+  - Expanded: the steps on a mini spine (dot · title · minutes) and an `md` primary button **Add to today** (or "Add to tomorrow" / the date).
 - **New routine sheet:** name, steps list (numbered hue dots, remove ×), step composer (name + 5/10/15/20/30m chips + Add), color, icon, **Save routine**.
 
 ### Goals
@@ -136,21 +136,21 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 - Tab root, no top switch. The + adds a task (there is no new-goal sheet yet).
 - **Card:**
   - 56pt progress ring with a percentage, title, description.
-  - “Target Sun, Dec 20, 2026 · 33 days left”.
+  - "Target Sun, Dec 20, 2026 · 33 days left".
   - Milestone checklist (20pt squares, `radius-check`); checked milestones are struck through.
   - Related tags.
-- Checking a milestone shows the toast “Milestone reached · …”.
+- Checking a milestone shows the toast "Milestone reached · …".
 
 ### Projects
 
 - Opened from More.
 - **List:**
-  - Cards with a 40pt hue tile, name, “8 tasks · 5 left · due Sun, Dec 20” and a progress bar with %.
+  - Cards with a 40pt hue tile, name, "8 tasks · 5 left · due Sun, Dec 20" and a progress bar with %.
 - **Detail:**
   - Back to Projects; header with tile + `title` (24) + due line; description; progress bar.
   - Milestone tags in a horizontal scroll.
   - Segmented **List / Board**.
-  - **List** groups To do / In progress / Done with rings, plus an “Add a task to this project…” field.
+  - **List** groups To do / In progress / Done with rings, plus an "Add a task to this project…" field.
   - **Board** has three 250pt columns on `sunken` with `surface` cards and a move chip (Start → / Done → / Reopen →).
 
 ### Journal
@@ -158,7 +158,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 - Opened from More.
 - Date line.
 - **Card:**
-  - “How are you feeling?” then five mood faces (44pt circles). The selected face is filled with its mood hue.
+  - "How are you feeling?" then five mood faces (44pt circles). The selected face is filled with its mood hue.
   - Prompt banner in `accent-soft` with a shuffle button.
   - Multiline text field; **Save entry** / **Update entry**.
 - **Earlier:** history cards (mood circle, date, one-line excerpt). Tapping a card expands the full text.
@@ -166,16 +166,16 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 ### Focus
 
 - Full-screen.
-- **Header:** close × (40pt), a “FOCUS” label, and a card for the activity (hue capsule, time, title).
+- **Header:** close × (40pt), a "FOCUS" label, and a card for the activity (hue capsule, time, title).
 - **Setup:**
-  - 250pt ring showing the time in the `clock` preset (56) with “Ready when you are”.
+  - 250pt ring showing the time in the `clock` preset (56) with "Ready when you are".
   - Length chips 15m / 25m / 45m / 60m / 90m.
   - **Start focus** button.
 - **Running:**
-  - The ring fills with the hue each second; the state reads “Focusing” or “Paused”.
+  - The ring fills with the hue each second; the state reads "Focusing" or "Paused".
   - Controls: −5 · play/pause (76pt accent circle) · +5. Below: **End session**.
 - **Done:**
-  - 96pt hue circle with a check, “Session complete” (`title`), and “You focused for X min Y s on …”.
+  - 96pt hue circle with a check, "Session complete" (`title`), and "You focused for X min Y s on …".
   - Buttons: **Mark task as done** (only if not done yet) and **Another session**.
 
 ### Sheets

@@ -19,14 +19,14 @@ Target: **WCAG 2.2 AA**.
 - Toggles: `aria-pressed` (chips, habit chips, swatches) or `role="checkbox"` + `aria-checked` (check rings, subtasks, milestones).
 - Current nav item: `aria-current="page"`. Selected date in the week strip: `aria-current="date"`.
 - Segmented controls: a radiogroup or toggle buttons, applied consistently. Arrow keys move within the group.
-- Icon-only buttons require `aria-label` (“Previous week”, “Close details”, “New task”, “Delete”).
+- Icon-only buttons require `aria-label` ("Previous week", "Close details", "New task", "Delete").
 - Expanding sections: `aria-expanded` + `aria-controls`.
 - Toasts and timer state changes: `role="status"` (polite). Never use `role="alert"` for success messages.
 - The focus timer exposes `role="timer"` with an accessible name. Announce start, pause and complete, not every second.
 
 ## Keyboard
 
-- Everything works by keyboard in a logical order: sidebar → header (date, week strip) → habits → timeline (in time order) → aside.
+- Everything works by keyboard in a logical order: the sidebar, the header (date, week strip), habits, the timeline in time order, then the aside.
 - Rendering order equals visual order. The timeline uses absolute positioning, so render rows in sorted time order.
 - **Enter** submits single-line fields (capture, subtasks, steps, project tasks). **Escape** closes dialogs and clears the selection in the detail panel.
 - Dialogs trap focus and return it to the opener. After creating an activity from a slot, focus moves to the detail panel's title input.
@@ -49,9 +49,9 @@ The global `:focus-visible` outline (2px `accent`, 2px offset) must stay visible
 - Text 4.5:1, large text and UI parts 3:1. Token pairs are pre-checked ([design-system](design-system.md#semantic-colors)). Check any new pair.
 - Never rely on color alone:
   - done = strikethrough + filled ring;
-  - event = “Event” tag;
+  - event = "Event" tag;
   - priority = flag icon + word;
-  - active = “Now · 50m left” text.
+  - active = "Now · 50m left" text.
 
 ## Motion
 

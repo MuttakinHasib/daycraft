@@ -28,8 +28,8 @@ No other values in feature code (no 6, 10, 14, 18, 22…). Two exceptions:
 | Horizontal page padding | 20 (`px-5`) on every screen and sheet |
 | Top of a tab root (Plan, Habits, Goals, More) | content starts 24 below the safe area |
 | Sub-screen back row | 16 top, 14 side (the back chevron's own inset makes the text align with the 20 grid), height 40; title follows 4 below |
-| Screen title → subtitle | 4 |
-| Subtitle → first content | 8 |
+| Screen title to subtitle | 4 |
+| Subtitle to first content | 8 |
 | Section label | 24 above its group, 8 below |
 | Between cards | 12 |
 | Card padding | 16 (list-style cards with a leading ring: 12 vertical, 16 sides) |
@@ -64,7 +64,7 @@ One ladder. Components that do the same job share a height.
 | 40 | `size-10` | Icon buttons, habit card icon, project tile, back row |
 | 36 | `h-9` | Chips, week-strip date circle, Inbox add button |
 | 32 | `h-8` | Small chips (in cards and on the timeline), small icon buttons, segment buttons, color swatches, More tiles, agenda icon |
-| 24 | `h-6` | Tags, check ring (with `hitSlop` 10 → 44 target), routine step numbers |
+| 24 | `h-6` | Tags, check ring (`hitSlop` 10 makes a 44 target), routine step numbers |
 
 ## Content density
 

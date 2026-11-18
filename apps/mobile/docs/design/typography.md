@@ -24,7 +24,7 @@ Use a **`type-*` preset** wherever one exists. Presets bundle size, line height,
 |---|---|---|---|---|
 | `type-display` | 30 / 33 | −0.9px | semibold | Screen titles: Inbox, Habits, Tasks… |
 | `type-date` | 27 / 31 | −0.81px | semibold | Today's date header only |
-| `type-title` | 24 / 28 | −0.6px | semibold | Secondary page titles (project detail), focus “Session complete” |
+| `type-title` | 24 / 28 | −0.6px | semibold | Secondary page titles (project detail), focus "Session complete" |
 | `type-heading` | 20 / 25 | −0.3px | semibold | Sheet titles, editor/detail title, empty-state titles, Calendar header |
 | `type-activity` | 16 / 21.6 | −0.16px | semibold | Activity titles, card titles, list primary text that needs emphasis |
 | `type-body` | 15 / 22.5 | 0 | regular | Rows, inputs, buttons (semibold family), body copy |
@@ -37,11 +37,11 @@ Use a **`type-*` preset** wherever one exists. Presets bundle size, line height,
 
 Twelve sizes, nothing else. Mapping rules for anything not listed:
 
-- 9.5–10.5 → micro;
-- 13.5 → body-sm;
-- 14.5 → body;
-- 17–18 → activity or heading;
-- 22–26 → heading or title.
+- 9.5–10.5: use micro.
+- 13.5: use body-sm.
+- 14.5: use body.
+- 17–18: use activity or heading.
+- 22–26: use heading or title.
 
 ## Weight
 

@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 import { Icon } from '@/components/ui';
 import { TabScreen } from '@/features/navigation/tab-screen';
 
-// Placeholder until the More modules land: only the design-system reference is reachable.
+// Placeholder until the More modules are built. For now it only links to the design-system screen.
 export function MoreScreen() {
   return (
     <TabScreen title="More" description="Inbox, routines, projects and journal will appear here.">

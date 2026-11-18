@@ -43,7 +43,7 @@ export function AppearanceSection() {
 
 export function ButtonSection() {
   return (
-    <Section title="Buttons" description="Display only: these specimens are not wired to actions.">
+    <Section title="Buttons" description="Display only. These specimens do nothing when pressed.">
       {/* Specimens take no touches and read as one group, so none is a button that does nothing. */}
       <View
         pointerEvents="none"

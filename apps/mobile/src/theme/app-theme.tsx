@@ -79,7 +79,7 @@ export function useThemePreference(): ThemePreferenceState {
 export function AppTheme({ children }: AppThemeProps) {
   const [preference, setStoredPreference] = useState(readStoredPreference);
 
-  // Before paint, so a saved Light or Dark never flashes the OS scheme first.
+  // Runs before paint, so a saved Light or Dark never shows the OS scheme first.
   useLayoutEffect(() => {
     Uniwind.setTheme(preference);
   }, [preference]);

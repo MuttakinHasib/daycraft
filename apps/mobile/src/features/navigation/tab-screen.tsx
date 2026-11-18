@@ -7,7 +7,7 @@ interface TabScreenProps {
   children?: ReactNode;
 }
 
-/** A tab root: the display title, one line under it, and room at the bottom so content scrolls clear of the pill. */
+/** A tab root: the display title, one line under it, and bottom padding so the last content can scroll above the tab bar. */
 export function TabScreen({ title, description, children }: TabScreenProps) {
   return (
     <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-6 px-5 pt-safe-offset-6 pb-30">

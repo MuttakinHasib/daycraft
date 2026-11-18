@@ -6,10 +6,10 @@ Daycraft is a calm personal planner built around the **Plan timeline**. This is 
 |---|---|---|
 | `apps/mobile` | Expo SDK 58 app, iPhone first | [apps/mobile/AGENTS.md](apps/mobile/AGENTS.md) |
 | `apps/web` | Next.js 16 app, desktop and tablet | [apps/web/AGENTS.md](apps/web/AGENTS.md) |
-| `packages/domain` | Pure TypeScript domain vocabulary and rules (`ActivityHue`, `IconName`, `ThemePreference`); no dependencies, consumed as TypeScript source | — |
+| `packages/domain` | Pure TypeScript domain vocabulary and rules (`ActivityHue`, `IconName`, `ThemePreference`); no dependencies, consumed as TypeScript source | None |
 | `packages/design-tokens` | Every design token value; generates both apps' theme CSS, checks contrast, configures `cn` (ADR-0001) | [docs/design/design-system.md](docs/design/design-system.md) |
-| `packages/icons` | `Icon` for native and web: Lucide plus custom SVG, keyed by `IconName` (ADR-0002) | — |
-| `packages/typescript-config` | Shared tsconfig presets | — |
+| `packages/icons` | `Icon` for native and web: Lucide plus custom SVG, keyed by `IconName` (ADR-0002) | None |
+| `packages/typescript-config` | Shared tsconfig presets | None |
 
 Before changing files in an app, read that app's `AGENTS.md`; its rules apply inside it.
 

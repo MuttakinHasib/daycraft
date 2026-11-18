@@ -23,7 +23,7 @@ interface SegmentedProps<TValue extends string> {
 const TRACK_PADDING = 3;
 const SEGMENT_GAP = 2;
 
-/** A segmented control: options in, the selected value out. The selection springs between options. */
+/** A segmented control. It takes the options and the selected value and reports a new value through `onChange`. The selection springs between options. */
 export function Segmented<TValue extends string>({
   options,
   value,
@@ -40,7 +40,7 @@ export function Segmented<TValue extends string>({
   );
   const targetOffset = selectedIndex * (segmentWidth + SEGMENT_GAP);
 
-  // Reduce Motion: the selection moves without the spring.
+  // With Reduce Motion on, the selection moves without the spring.
   useEffect(() => {
     if (segmentWidth > 0) offset.set(reduceMotion ? targetOffset : withSpring(targetOffset, springs.snap));
   }, [offset, segmentWidth, targetOffset, reduceMotion]);

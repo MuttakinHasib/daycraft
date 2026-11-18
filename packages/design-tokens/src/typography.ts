@@ -64,7 +64,7 @@ export const typeScale: Record<TypePreset, TypeStyle> = {
   clock: { size: 56, letterSpacing: -0.03, weight: 500, use: 'Focus timer only' },
 };
 
-/** A one-line spec of a preset, e.g. `30px · 800 · lh 1.1 · -0.025em`. */
+/** A one-line spec of a preset, e.g. `30px · 600 · lh 1.1 · -0.03em`. */
 export function describeTypeStyle(preset: TypePreset): string {
   const style = typeScale[preset];
   const parts = [`${style.size}px`, `${style.weight}`];

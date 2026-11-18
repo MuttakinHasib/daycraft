@@ -59,7 +59,7 @@ export function RadiusSection() {
 
 export function ElevationSection() {
   return (
-    <Section title="Elevation" description="Flat by default. Shadows only on things that float.">
+    <Section title="Elevation" description="Surfaces are flat. Only floating elements get a shadow.">
       <View className="flex-row gap-4">
         <View className="h-20 flex-1 items-center justify-center rounded-card bg-surface shadow-float">
           <Text className="type-control text-ink">shadow-float</Text>

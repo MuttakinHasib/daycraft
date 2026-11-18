@@ -33,7 +33,7 @@ It should feel like a **personal life-management workspace**, not a task manager
 | **Inbox** | Quick capture; each item can be planned onto the timeline or cleared | More → Inbox |
 | **Upcoming** | Chronological next 14 days of scheduled items, plus due-but-unscheduled tasks | More → Upcoming |
 | **All tasks** | Every task with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | More → All tasks |
-| **Routines** | Reusable step sequences; “Add to today” drops one onto the timeline as a single block with steps as subtasks | More → Routines |
+| **Routines** | Reusable step sequences; "Add to today" drops one onto the timeline as a single block with steps as subtasks | More → Routines |
 | **Projects** | Progress, deadline, milestones, tasks in List or Board (To do / In progress / Done) | More → Projects |
 | **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task | From an activity's detail sheet, or More → Focus |
 | **Journal** | Mood (5 levels), rotating reflection prompt, free text, history | More → Journal |
@@ -47,18 +47,18 @@ Navigation and screen specs: [navigation-and-modules.md](navigation-and-modules.
 
 These are the flows every release must keep working. They are the end-to-end test candidates in [testing](../development/testing.md).
 
-1. **See today:** open the app → Plan scrolled so the current time is near the top third → current block shows progress and time left.
-2. **Move between dates:** tap a day in the week strip, use the ‹ › week arrows, tap the date title to open the month picker, tap the **Today** chip to return.
-3. **Create a task:** tap the center **+** (or an empty half-hour on the timeline, or “Add task” in a free-time gap) → editor sheet → title, time, duration, color, icon, priority, labels, subtasks, repeat, notes → **Add to timeline**.
-4. **Edit a task:** tap a block → detail sheet → edit (pencil) → **Save changes**.
-5. **Complete:** tap the check ring on a block, in the detail sheet, or in All tasks.
-6. **Reschedule:** drag a block vertically (5-minute snapping). **Resize:** drag its bottom grip.
-7. **Create an event:** tap **+** (or an empty slot), then switch the editor's Task/Event toggle to Event.
-8. **Habits:** tap a habit circle on Plan, or the check button in Habits. Add a habit from the “+ Habit” circle on Plan or the + on Habits.
-9. **Routines:** create one (name, steps with durations, color, icon). **Add to today** places it at the next free slot.
-10. **Focus:** from an activity's detail → Start focus → choose a length → run → end → “Mark task as done”.
-11. **Capture and plan:** type in Inbox → item appears → **Plan** opens the editor pre-filled; saving removes it from Inbox.
-12. **Theme:** More → Appearance → Light / Dark.
+1. **See today.** Open the app. Plan scrolls so the current time sits about a third of the way down, and the current block shows its progress and time left.
+2. **Move between dates.** Tap a day in the week strip, use the ‹ › week arrows, tap the date title to open the month picker, tap the **Today** chip to return.
+3. **Create a task.** Tap the center **+** (or an empty half-hour on the timeline, or "Add task" in a free-time gap) to open the editor sheet. Set the title, time, duration, color, icon, priority, labels, subtasks, repeat and notes, then tap **Add to timeline**.
+4. **Edit a task.** Tap a block to open its detail sheet, tap the pencil, change what you need, then tap **Save changes**.
+5. **Complete.** Tap the check ring on a block, in the detail sheet, or in All tasks.
+6. **Reschedule.** Drag a block vertically (5-minute snapping). **Resize:** drag its bottom grip.
+7. **Create an event.** Tap **+** (or an empty slot), then switch the editor's Task/Event toggle to Event.
+8. **Habits.** Tap a habit circle on Plan, or the check button in Habits. Add a habit from the "+ Habit" circle on Plan or the + on Habits.
+9. **Routines.** Create one (name, steps with durations, color, icon). **Add to today** places it at the next free slot.
+10. **Focus.** In an activity's detail sheet, tap Start focus, choose a length, run the session and end it, then tap "Mark task as done".
+11. **Capture and plan.** Type in Inbox and the item appears. **Plan** opens the editor pre-filled, and saving removes the item from Inbox.
+12. **Theme.** More → Appearance → Light / Dark.
 
 Every one of these gives visible feedback (toast, state change, or animation). See [interaction-patterns](interaction-patterns.md).
 
@@ -82,7 +82,7 @@ interface Activity {
   id: string;
   date: ISODate;
   start: MinutesOfDay | null;   // null = unscheduled (tasks only)
-  durationMinutes: number;      // [dur] 0 = point in time (e.g. “Rise and shine”)
+  durationMinutes: number;      // [dur] 0 = point in time (e.g. "Rise and shine")
   title: string;
   hue: ActivityHue;             // from @daycraft/domain
   icon: IconName;

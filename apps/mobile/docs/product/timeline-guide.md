@@ -2,7 +2,7 @@
 
 > Has a web counterpart in `apps/web/docs/product/`. Keep both in step except for platform notes.
 
-The Plan timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page “v2 · Current”, boards “v2 · iPhone 390/375”). Screenshot: [plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/phone-dark.html](../../../../docs/design/reference/prototype/phone-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
+The Plan timeline is Daycraft's core surface. Everything in this file describes the **implemented prototype behavior** (canvas page "v2 · Current", boards "v2 · iPhone 390/375"). Screenshot: [plan.png](../../../../docs/design/reference/screens/phone/dark/plan.png). The reference implementation of every rule below is the `layout()` / `pDown` / `pMove` / `pUp` code in [prototype/phone-dark.html](../../../../docs/design/reference/prototype/phone-dark.html). Items marked **Proposed** are not in the prototype. Do not build them without approval.
 
 Phone values are given first, desktop values in brackets where they differ.
 
@@ -32,7 +32,7 @@ The timeline sits inside the Today panel (`surface`, `radius-sheet` top corners)
 
 ## 2. Time scale and range
 
-- Day range: **5:00 AM → midnight** (`D0 = 300`, `D1 = 1440` minutes).
+- Day range: **5:00 AM to midnight** (`D0 = 300`, `D1 = 1440` minutes).
 - Scale: **1.1 pt per minute** on phone (66 pt/hour), **1.25** on desktop.
 - Times are local wall-clock minutes of day (see [architecture](../development/architecture.md#dates-and-time)).
 
@@ -77,23 +77,23 @@ Draw one 2px segment between each pair of consecutive capsules, from the bottom 
 | State | Rule | Capsule | Text | Ring |
 |---|---|---|---|---|
 | **Upcoming** | not done, not active | solid hue, `on-hue` (white) icon (22pt) | title `activity` in `ink`; time line `meta` in `ink-muted` | 2px hue border, empty |
-| **Active** | date is today, not done, `start ≤ now < start + duration`, duration > 0 | base = 42% hue mixed into `surface`; the elapsed part (from the top, % of duration) is solid hue; 4pt outer ring of hue at 28% | adds an `accent-soft` tag: dot + “Now · 50m left” | upcoming style |
+| **Active** | date is today, not done, `start ≤ now < start + duration`, duration > 0 | base = 42% hue mixed into `surface`; the elapsed part (from the top, % of duration) is solid hue; 4pt outer ring of hue at 28% | adds an `accent-soft` tag: dot + "Now · 50m left" | upcoming style |
 | **Done** | `done` | 45% opacity | title struck through, `ink-subtle` | filled with the hue, `on-hue` 14pt check (3.2 stroke), pop animation |
-| **Dragging** | being moved or resized | `shadow-lift`, no position transition, raised above other rows | a time pill (`ink` background, `canvas` text) floats 30pt above the text column showing the new range | — |
-| **New** (just created/added) | for ~0.9s after creation | pop animation (scale 0.6 → 1.12 → 1) | — | — |
+| **Dragging** | being moved or resized | `shadow-lift`, no position transition, raised above other rows | a time pill (`ink` background, `canvas` text) floats 30pt above the text column showing the new range | None |
+| **New** (just created/added) | for ~0.9s after creation | pop animation (scale 0.6, then 1.12, then 1) | None | None |
 
 **Meta row** (8pt below the title), only when it has content:
 
 - the active tag;
 - a subtasks tag `☑ 2/4 ›`;
-- for events, a location tag (`pin` icon + location, or “Event”).
+- for events, a location tag (`pin` icon + location, or "Event").
 
 The desktop also shows labels as tags. Repeat (↻) and high-priority (⚑, `danger`) icons sit inline after the time text.
 
 The time text format is `9:30–11:30 AM (2 hr)`:
 
 - The AM/PM suffix is shared when both times are on the same side of noon.
-- Durations read “45 min”, “1 hr 30 min”.
+- Durations read "45 min", "1 hr 30 min".
 - Zero-duration activities show just the time.
 
 ## 7. Now line (current-time indicator)
@@ -102,24 +102,24 @@ The time text format is `9:30–11:30 AM (2 hr)`:
 - Position: `mapTimeToY(now)`.
 - A 1.5pt `accent` line at 50% opacity spans from x 52 to the right padding. A 10pt `accent` dot with a 3pt `surface` halo sits on the spine.
 - The gutter label shows the time (`10:40`) in `micro` / extrabold / `accent-text`.
-- It sits **behind** capsules and text (z-index below rows). When “now” is inside the active capsule, the capsule's fill shows progress instead.
+- It sits **behind** capsules and text (z-index below rows). When "now" is inside the active capsule, the capsule's fill shows progress instead.
 - The prototype freezes now at 10:40 AM. **Production:** update every minute (align the timer to the next minute boundary), and recompute active state and elapsed fill.
 
 ## 8. Free time (gaps)
 
 Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of vertical space (60pt desktop), and the gap is not in the past on today, show a hint in the text column:
 
-- Clock icon + **“1h 30m”** (`accent-text`, bold) + “ free before Write Q4 roadmap draft”.
-- If now is inside the gap: “**50m** left — then Design sync”, placed 16pt below the now line.
+- Clock icon + **"1h 30m"** (`accent-text`, bold) + " free before Write Q4 roadmap draft".
+- If now is inside the gap: "**50m** left, then Design sync", placed 16pt below the now line.
 - A small **Add task** chip (with an accent + circle). It opens the editor at the gap start (or the next 15-minute mark after now). The duration is the gap rounded down to 15 min, clamped to 15–60.
 
 ## 9. Creating from empty time
 
 - The whole timeline is covered by **30-minute slot targets**, from x 52 to the right padding, behind the rows. A slot is rendered only if it is at least 14pt tall in the time map.
 - Tapping a slot opens the editor with that start time and a 30-minute duration.
-- On pointer hover (desktop/web), the slot tints with 6% accent and shows “+ 9:30 AM”.
-- Desktop creates a “New task” immediately and selects it in the right panel for renaming.
-- Each slot has the accessibility label “Add something at 9:30 AM”.
+- On pointer hover (desktop/web), the slot tints with 6% accent and shows "+ 9:30 AM".
+- Desktop creates a "New task" immediately and selects it in the right panel for renaming.
+- Each slot has the accessibility label "Add something at 9:30 AM".
 
 ## 10. Drag to move, drag to resize
 
@@ -129,7 +129,7 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 - **Snap:** `deltaMinutes = round(dy / S / 5) × 5`. All times move in 5-minute steps.
 - **Clamp:** move keeps `start` within `[D0, D1 − max(duration, 5)]`. Resize keeps `duration` within `[5, D1 − start]`. The editor applies the same limits (one rule in `@daycraft/domain`): nothing starts before 5:00 AM or ends after midnight.
 - **During drag:** layout is recomputed with the preview values, so other rows reflow (they animate; the dragged row does not). The floating time pill shows the new range.
-- **On release:** commit, then show a toast — “Moved to 11:15 AM–12:15 PM” or “Now 1 hr 15 min · ends 12:45 PM”.
+- **On release:** commit, then show a toast: "Moved to 11:15 AM–12:15 PM" or "Now 1 hr 15 min · ends 12:45 PM".
 - **Cancel** (gesture interrupted): revert to the original values.
 - **Native implementation:** use `react-native-gesture-handler` `Gesture.Pan()` with `activeOffsetY([-6, 6])` so vertical scrolling still works. Gesture state lives on the UI thread with Reanimated shared values; commit through `scheduleOnRN`/`runOnJS` (check the current Reanimated/Worklets API) only on release. Haptics: **Proposed** light impact on each 15-minute boundary.
 
@@ -145,23 +145,23 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 - **Week strip:** tap a day; ‹ › moves ±7 days and keeps the weekday.
 - **Month picker sheet:** month and year title with ‹ ›, a 7-column month grid (52pt cells) with hue dots. Tapping a day selects it and closes the sheet.
 - The **Today** chip appears when another date is selected.
-- Habits: checking in on a future date is blocked with the toast “Habits can be checked in on or before today”.
+- Habits: checking in on a future date is blocked with the toast "Habits can be checked in on or before today".
 
 ## 13. Empty day
 
 When a date has no scheduled activities, the text column shows (no timeline chrome other than slots):
 
-- “A blank canvas” (`heading`);
-- “Nothing planned for this day yet. Tap any hour to drop something in, or start from a routine.” (`body-sm`, muted);
+- "A blank canvas" (`heading`);
+- "Nothing planned for this day yet. Tap any hour to drop something in, or start from a routine." (`body-sm`, muted);
 - an accent chip **+ Plan this day** that opens the editor.
 
 ## 14. Accessibility
 
-- Capsule label: “Deep work · Onboarding flow, 9:30–11:30 AM. Drag to move, drag the bottom grip to resize.”
-- Text column label: “Open {title}”.
-- Check ring: role checkbox, label “Complete: {title}” / “Mark not done: {title}”.
+- Capsule label: "Deep work · Onboarding flow, 9:30–11:30 AM. Drag to move, drag the bottom grip to resize."
+- Text column label: "Open {title}".
+- Check ring: role checkbox, label "Complete: {title}" / "Mark not done: {title}".
 - **Drag alternative (required):** the editor's time stepper (−15 / +15 min) and duration segments do everything drag does. Keyboard and VoiceOver users must be able to reschedule without dragging.
-- **Proposed:** VoiceOver `accessibilityActions` on the capsule (“Move 15 minutes later/earlier”, “Extend 15 minutes”) calling the same commit function.
+- **Proposed:** VoiceOver `accessibilityActions` on the capsule ("Move 15 minutes later/earlier", "Extend 15 minutes") calling the same commit function.
 - Respect Reduce Motion: no reflow animation, no pop (see [accessibility](../design/accessibility.md)).
 
 ## 15. Desktop differences

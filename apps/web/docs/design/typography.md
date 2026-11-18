@@ -23,24 +23,24 @@ Generated from `typeScale` in `@daycraft/design-tokens`: `--text-*` variables (w
 |---|---|---|---|---|
 | `text-display` | 30 / 1.1 | −0.03em | 600 | Page titles; the desktop Today date header |
 | `text-date` | 27 / 1.15 | −0.03em | 600 | Phone Today header (not used on desktop) |
-| `text-title` | 24 / 1.15 | −0.025em | 600 | Secondary titles (project detail), “Session complete” |
+| `text-title` | 24 / 1.15 | −0.025em | 600 | Secondary titles (project detail), "Session complete" |
 | `text-heading` | 20 / 1.25 | −0.015em | 600 | Panel/dialog titles, the detail title input, empty states, Calendar header |
-| `text-activity` | 16 / 1.35 | −0.01em | 600 | Activity titles, card titles, panel section titles (“Up next”, “Daily progress”) |
+| `text-activity` | 16 / 1.35 | −0.01em | 600 | Activity titles, card titles, panel section titles ("Up next", "Daily progress") |
 | `text-body` | 15 / 1.5 | 0 | 400–500 | Body copy, inputs, buttons (semibold) |
 | `text-body-sm` | 14 / 1.45 | 0 | 500 | Subtitles, descriptions, notes, nav labels (600) |
-| `text-control` | 13 / — | 0 | 500 | Chips, segmented controls |
+| `text-control` | 13 / default | 0 | 500 | Chips, segmented controls |
 | `text-meta` | 12.5 / 1.35 | 0 | 500 | Time ranges, counts, secondary lines |
-| `text-label` | 12 | +0.06em, uppercase | 600 | Section labels (“HABITS”, “GROW”) |
+| `text-label` | 12 | +0.06em, uppercase | 600 | Section labels ("HABITS", "GROW") |
 | `text-micro` | 11 | 0 | 500 | Timeline gutter, weekday labels, tiny captions |
 | `text-clock` | 56 | −0.03em | 500 | Focus timer (the desktop inline timer uses 30 / 600) |
 
 Do not use Tailwind's default `text-sm`/`text-lg`/… sizes for UI copy. Map stray values to the nearest token:
 
-- 13.5 → body-sm;
-- 14.5 → body;
-- 17–19 → activity or heading;
-- 22–26 → heading or title;
-- 32 → display.
+- 13.5: use body-sm.
+- 14.5: use body.
+- 17–19: use activity or heading.
+- 22–26: use heading or title.
+- 32: use display.
 
 ## Weight
 

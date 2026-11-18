@@ -43,7 +43,7 @@ Toast behavior:
 - **Opening:** the sheet slides up (`sheet-up`: 48pt, 340ms, `ease-snap`) and the scrim fades in.
 - **Closing:** tap the scrim or × (top-left), or swipe down (native sheet).
 - **Sheet types:**
-  - **Detail sheet:** colored header band in the activity hue. Shows kind, date/time rows, subtasks (tickable in place) and notes. Actions: delete (icon button), **Start focus** (tasks and routines), or **Edit event** (events). Pencil (top-right) → editor.
+  - **Detail sheet:** colored header band in the activity hue. Shows kind, date/time rows, subtasks (tickable in place) and notes. Actions: delete (icon button), **Start focus** (tasks and routines), or **Edit event** (events). The pencil (top-right) opens the editor.
   - **Editor sheet** (create and edit share one component):
     - Header band in the selected hue: Task/Event segmented control, icon, and the title input (white text, underline).
     - **Body:**
@@ -54,7 +54,7 @@ Toast behavior:
       - tasks only: Priority (None/Low/Medium/High), Labels (multi-select chips), Subtasks (list + add);
       - events only: Location;
       - Repeat (Never/Daily/Weekdays/Weekly); Notes.
-    - Footer: delete (edit mode only) and the primary button — **Add to timeline** (scheduled task), **Add task** (Anytime), **Add event**, or **Save changes**.
+    - Footer: delete (edit mode only) and the primary button, which reads **Add to timeline** (scheduled task), **Add task** (Anytime), **Add event**, or **Save changes**.
   - **New habit / New routine / Month picker:** plain header (title in `heading` + close).
 - Switching the editor from Anytime to Timeline restores the last start time. An event can never be unscheduled.
 
@@ -71,18 +71,18 @@ Toast behavior:
 |---|---|---|
 | Center **+** (Plan, Goals, Projects, Inbox, Upcoming, Journal, More) | Editor (task) | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
 | Empty half-hour on timeline | Editor (task) | that start time |
-| “Add task” in a gap | Editor (task) | gap start, gap-sized duration (15–60) |
-| Center **+** on Habits / Routines | New habit / New routine sheet | — |
+| "Add task" in a gap | Editor (task) | gap start, gap-sized duration (15–60) |
+| Center **+** on Habits / Routines | New habit / New routine sheet | None |
 | All tasks **+ Task** chip, or center **+** on All tasks | Editor (task, Anytime) | today |
 | Inbox **Plan** | Editor (task) | title, notes from the item; saving removes the item from Inbox |
 | All tasks **Place** | Editor (edit) | suggested start; past dates move to today |
-| Routine **Add to today** | — (direct) | next free slot that fits the full routine; then switches to Plan and pops the new capsule |
+| Routine **Add to today** | None (adds directly) | next free slot that fits the full routine; then switches to Plan and pops the new capsule |
 
-“Next free slot” = round up to the next 15 minutes from the reference time, then skip past any activity it would collide with (snap to 5 minutes after it). The algorithm lives in `packages/domain/src/timeline/`.
+"Next free slot" = round up to the next 15 minutes from the reference time, then skip past any activity it would collide with (snap to 5 minutes after it). The algorithm lives in `packages/domain/src/timeline/`.
 
 ## Focus
 
-- **States:** setup → run → done. The timer keeps running while paused only in the sense of preserving the remaining time.
+- **States:** setup, then run, then done. The timer keeps running while paused only in the sense of preserving the remaining time.
   - −5 / +5 adjust the remaining time and the total (minimum 30s remaining).
   - **End session** goes to done with the elapsed time.
 - Production must survive tab switches and sleep (browsers throttle timers in background tabs): store `endsAt` (a timestamp), not a ticking counter. **Proposed:** a local notification at `endsAt`.
@@ -99,7 +99,7 @@ Toast behavior:
 
 ## Copy style
 
-- Sentence case everywhere (“Add to timeline”, not “Add To Timeline”). Uppercase only via the `label` preset.
-- Direct and warm, never cute: “Inbox zero”, “A blank canvas”, “Ready when you are”.
+- Sentence case everywhere ("Add to timeline", not "Add To Timeline"). Uppercase only via the `label` preset.
+- Direct and warm, never cute: "Inbox zero", "A blank canvas", "Ready when you are".
 - Times: `9:30 AM`, ranges `9:30–11:30 AM` (en dash). Durations: `45 min`, `1 hr 30 min`; compact `1h 30m` in tags and gaps.
 - Dates: `Today`, `Tomorrow`, `Yesterday`, otherwise `Thu, Nov 19`.

@@ -86,7 +86,7 @@ From the repo root, `bunx turbo run check-types lint` checks every workspace wit
 
 Run lint and typecheck before declaring any task done. Restart Metro after changing `metro.config.js` or adding theme variants in `global.css`.
 
-## Navigation & Routing
+## Navigation and routing
 
 - Use **Expo Router** for all navigation. Routes live in `src/app/`. Every file there is a screen, and `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`. Typed routes are on (`experiments.typedRoutes`).

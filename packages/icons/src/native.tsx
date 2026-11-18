@@ -61,7 +61,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 import { customGlyphs, ICON_STROKE_WIDTH, isCustomIcon, type CustomIconName } from './custom-glyphs';
 
-// Daycraft icon name → Lucide glyph (ADR-0002). Keep in step with web.tsx; the Record type
+// Maps each Daycraft icon name to its Lucide glyph (ADR-0002). Keep in step with web.tsx; the Record type
 // fails `check-types` when a name has no glyph.
 const lucideIcons: Record<Exclude<IconName, CustomIconName>, LucideIcon> = {
   check: Check,

@@ -31,7 +31,7 @@ export function SemanticColorSection() {
   const scheme = useColorScheme();
   const colors = useThemeColors();
   return (
-    <Section title="Semantic colors" description={`Values for the ${scheme} theme. They flip with the theme.`}>
+    <Section title="Semantic colors" description={`Values for the ${scheme} theme. They change with the theme.`}>
       <View className="overflow-hidden rounded-card bg-card">
         {Object.values(SemanticColor).map((name, index) => (
           <View
@@ -188,7 +188,7 @@ export function HueTintSection() {
 export function ContrastSection() {
   const results = checkContrast();
   return (
-    <Section title="Contrast" description="Checked in the token build; a failing pair fails the build.">
+    <Section title="Contrast" description="The token build checks these pairs and fails if one drops below its target.">
       <View className="overflow-hidden rounded-card bg-card">
         {results.map((result, index) => (
           <View

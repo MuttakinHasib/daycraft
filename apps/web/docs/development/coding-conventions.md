@@ -53,6 +53,6 @@
 
 ## Git and issues
 
-- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) (“Add Daycraft tokens to globals.css”).
+- Small commits, one-line titles per the [commit conventions](../../../../docs/agents/rules/commit-conventions.md) ("Add Daycraft tokens to globals.css").
 - Commit `AGENTS.md` when `next dev` updates its managed blocks (see the block at the top of that file).
 - Work from the root `.scratch/<feature-slug>/` issues (root `docs/agents/issue-tracker.md`) and update their `Status:`.

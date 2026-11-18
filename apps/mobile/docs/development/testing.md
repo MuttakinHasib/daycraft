@@ -12,7 +12,7 @@
 
 - If a check fails because of your change, fix it.
 - If it fails for an unrelated pre-existing reason, say so explicitly. Do not hide it.
-- **Never say tests passed if you did not run them**, and never say “should pass”.
+- **Never say tests passed if you did not run them**, and never say "should pass".
 
 ## Tests (not set up yet)
 
@@ -30,7 +30,7 @@ Rules once tests exist:
 
 - New domain logic ships with unit tests.
 - Bug fixes start with a failing test.
-- Tests use a fixed clock (inject “now”; the fixtures use Tue, Nov 17, 2026, 10:40 AM).
+- Tests use a fixed clock (inject "now"; the fixtures use Tue, Nov 17, 2026, 10:40 AM).
 - Test names use the [vocabulary](../product/product-overview.md#vocabulary).
 
 ## Manual verification (every UI change)

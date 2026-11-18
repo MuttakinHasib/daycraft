@@ -233,7 +233,7 @@ export function HueTintSection() {
 
 export function ContrastSection() {
   return (
-    <Section title="Contrast" description="Checked in the token build; a failing pair fails the build.">
+    <Section title="Contrast" description="The token build checks these pairs and fails if one drops below its target.">
       <ul className="card grid gap-x-8 gap-y-2 md:grid-cols-2">
         {checkContrast().map((result) => (
           <li key={result.pair} className="flex justify-between gap-3 type-body-sm">
@@ -278,7 +278,7 @@ export function ShapeSection() {
   return (
     <Section
       title="Radii and elevation"
-      description="Pills always use rounded-full. Shadows only on things that float."
+      description="Pills always use rounded-full. Only floating elements get a shadow."
     >
       <div className="grid grid-cols-3 gap-4 md:grid-cols-9">
         {Object.values(Radius).map((name) => (

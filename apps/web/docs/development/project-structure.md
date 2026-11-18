@@ -52,9 +52,9 @@ src/
 
 Move code up a level only when a second feature needs it:
 
-- visual → `components/ui`;
-- logic → `domain`;
-- cross-cutting hooks → `hooks`.
+- visual code to `components/ui`;
+- logic to `domain`;
+- cross-cutting hooks to `hooks`.
 
 ## Naming
 

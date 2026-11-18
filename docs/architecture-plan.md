@@ -125,7 +125,7 @@ What each client is responsible for:
 | Writes | Local first, pushed later | Push, then update the cache | Last-write-wins upsert |
 | Ids | Creates them (UUID v7 / v5) | Creates them, same code | Never creates app ids |
 | Domain rules | `packages/domain` | `packages/domain` | Validation only, from `packages/sync` |
-| Works offline | Yes | No | — |
+| Works offline | Yes | No | None |
 
 ## 3. Monorepo
 
@@ -195,11 +195,11 @@ Read from each vendor's page on 2026-11-17.
 |---|---|---|---|
 | Cloudflare Workers | 100,000 requests a day, 10 ms CPU per request | Requests fail with error 1027 until 00:00 UTC | Workers Paid, $5 a month minimum: 10 million requests a month, CPU up to 30 s by default |
 | Cloudflare D1 | 5 million rows read and 100,000 rows written a day, 5 GB total, 10 databases, **500 MB per database** | Queries return errors until 00:00 UTC. A full database blocks inserts | Included in Workers Paid: 25 billion reads and 50 million writes a month, 10 GB per database |
-| D1 backups (Time Travel) | 7 days | — | 30 days on Paid |
+| D1 backups (Time Travel) | 7 days | None | 30 days on Paid |
 | Resend | 3,000 emails a month, 100 a day | **verify** what happens at the cap | Paid plan |
-| EAS Build | 15 iOS and 15 Android builds a month, low-priority queue (the page warns of 90+ minute waits at peak) | — | Local builds with `bunx expo run:*` are free |
+| EAS Build | 15 iOS and 15 Android builds a month, low-priority queue (the page warns of 90+ minute waits at peak) | None | Local builds with `bunx expo run:*` are free |
 | EAS Update | 1,000 monthly active users | No overage on Free | Paid plan |
-| Sentry | 5,000 errors, 1 user, 30-day lookback | — | Paid plan |
+| Sentry | 5,000 errors, 1 user, 30-day lookback | None | Paid plan |
 
 Costs no free tier removes: the Apple Developer Program, a Google Play developer account, and the domain. These are standard fees and were not re-checked today.
 
@@ -213,7 +213,7 @@ My estimate, not a measurement. Assumed per daily active user: about 20 sync req
 | 100,000 D1 rows written a day | about 2,000 daily users | **Verify** whether index updates count as rows written |
 | 500 MB per database | a few hundred users with a year of data each | The real ceiling on Free |
 | 100 emails a day | 100 email sign-ins a day | Apple and Google sign-ins do not send email |
-| 10 ms CPU per request | — | The one limit a single request can hit: a large push spends CPU on parsing and validation. Pushes are capped at 50 rows. |
+| 10 ms CPU per request | None | The one limit a single request can hit: a large push spends CPU on parsing and validation. Pushes are capped at 50 rows. |
 
 Decision: **stay on Free through private beta, move to Workers Paid before public launch.** The free plan fails hard. A phone barely notices, because it is offline-first and retries the next day. A web user sees errors. $5 a month removes the CPU limit and the daily caps, and raises the database ceiling to 10 GB.
 
@@ -914,32 +914,32 @@ apps/web/src/
 | API hosting | Cloudflare Workers | Free allowance fits beta. No server to run. Same account as the database and the web app. | Your VPS: you run backups, patching and uptime, and it is not free. Vercel functions: a second vendor for the API and a separate database. Supabase or Firebase alone: the client talks to the database's own API, and server-side work has no home. | A job needs more than Workers allow, or a compliance need. |
 | Server database | Cloudflare D1 | Same dialect as the device. Bound to the Worker: no connection pool, no cold start. Batches are transactions. Free: 5 GB total but only 500 MB per database, which is the real beta ceiling; Workers Paid raises it to 10 GB. | Neon PostgreSQL free: more room per database (1 GB), but compute scales to zero after 5 minutes with a cold start of a few hundred milliseconds, plus a second vendor and a second SQL dialect. Supabase PostgreSQL: same dialect cost. One SQLite Durable Object per user: best scaling, but more code before there are users. | The database nears 5 GB (§9). |
 | Auth | Better Auth (MIT) in the API | Free, self-hosted, users in our database. Documents Hono, D1, email codes, Apple native id tokens, an Expo client and a bearer plugin. | Clerk, Auth0, Supabase Auth: a vendor holding the user table. Writing it ourselves. | It fails the M2 gate. |
-| Sign-in methods | Apple + email code; Google with Android | Apple is native and required once any third-party sign-in exists. Email code needs no password storage. | Passwords: reset flows and breach liability. | — |
+| Sign-in methods | Apple + email code; Google with Android | Apple is native and required once any third-party sign-in exists. Email code needs no password storage. | Passwords: reset flows and breach liability. | None |
 | Email | Resend | 3,000 a month free, simple API. | Sending from our own server: deliverability is a job of its own. | More than 100 email sign-ins a day. |
 | Web framework | Next.js 16, static export | Already the web repo's framework. Static output is free to host. | Server-rendered Next.js on Vercel or OpenNext: a runtime with no benefit for a signed-in app. Expo web from the mobile code: D3 already says web is a separate Next.js app with its own desktop layout. | A feature needs request-time server rendering. |
-| Web data | TanStack Query | Caching, refetch on focus, optimistic updates with rollback: exactly what an online-first client needs. | Hand-written fetch state: re-implements it. SWR: weaker mutation support. | — |
+| Web data | TanStack Query | Caching, refetch on focus, optimistic updates with rollback: exactly what an online-first client needs. | Hand-written fetch state: re-implements it. SWR: weaker mutation support. | None |
 | Mobile state | None (SQLite live queries + two contexts) | `architecture.md`: do not adopt a state library for the selected date alone. | Zustand, TanStack Query on mobile: a second copy of local data. | Cross-screen client state grows. |
 | Dates | None. `packages/domain/time.ts` | Floating local time is integers and date strings. Formats are custom. | date-fns, Day.js, Luxon | Time zones or calendar import arrive. |
 | Forms | None | `architecture.md`: "No form library until a form needs more than this." | React Hook Form, TanStack Form | A form needs async field validation. |
-| Validation | Domain functions for drafts. Zod for API input and sync rows, shared through `packages/sync` | One trust boundary, one schema for client and server. | Zod everywhere: a second way to validate drafts. | — |
+| Validation | Domain functions for drafts. Zod for API input and sync rows, shared through `packages/sync` | One trust boundary, one schema for client and server. | Zod everywhere: a second way to validate drafts. | None |
 | IDs | UUID v7 and v5 in `packages/domain/id.ts` | Under 100 lines, no package, works on every runtime. | ULID: no gain over v7. `uuid` package: needs a random-values polyfill on React Native. | Never, once shipped. |
 | Lists (mobile) | `FlatList` | Built in. | FlashList v2: a dependency before a measured problem. | A list over 50 rows drops frames. |
 | Timeline rendering | One `ScrollView`, absolute rows | Decided in `architecture.md`. | Any virtualized list: rows depend on each other. | A real day exceeds about 150 rows and drops frames. |
-| Tests | Vitest (packages, API, web), `jest-expo` (mobile components), Maestro (mobile flows) | Vitest runs plain TypeScript fast; `jest-expo` is Expo's documented preset for React Native. | Jest everywhere: slower for plain TypeScript. Detox: heavier than Maestro. | — |
+| Tests | Vitest (packages, API, web), `jest-expo` (mobile components), Maestro (mobile flows) | Vitest runs plain TypeScript fast; `jest-expo` is Expo's documented preset for React Native. | Jest everywhere: slower for plain TypeScript. Detox: heavier than Maestro. | None |
 | Mobile delivery | EAS Build, Submit, Update | Expo's own pipeline. Free tier: 15 builds per platform a month, 1,000 update users. | Local builds only: no store submission pipeline. | Builds queue too long, or more than 1,000 update users. |
 | Crash reporting | Sentry | Free tier covers beta. Supports Expo and browsers. | Crashlytics: Firebase setup for one feature. | **Verify** at M1 whether Expo's own observability covers crashes. |
 | Notifications | After v1. `expo-notifications`, local only | The only notification in the docs (Focus end) is marked Proposed. | Server push: nothing needs it. | Reminders are approved. |
 | Monetization | After v1. RevenueCat if a pricing decision exists | The docs say nothing about pricing. | StoreKit and Play Billing directly. | A pricing decision exists. |
-| Encryption at rest (device) | Decide once before M1 ships | SQLCipher is one config flag but must be on before data exists. Journal text is the reason to say yes. | — | Before M1. |
+| Encryption at rest (device) | Decide once before M1 ships | SQLCipher is one config flag but must be on before data exists. Journal text is the reason to say yes. | None | Before M1. |
 
 Dependencies by milestone. Mobile ones with `bunx expo install`, each recorded in `docs/status-and-decisions.md`:
 
 | Milestone | Mobile | Packages | API | Web | Dev |
 |---|---|---|---|---|---|
-| M0 | `expo-sqlite`, `drizzle-orm`, `expo-crypto` | — | — | — | `turbo` (root), `drizzle-kit`, `babel-plugin-inline-import`, `vitest`, `jest-expo` |
-| M1 | `@sentry/react-native` | — | — | — | Maestro (CLI) |
-| M2 | `better-auth`, `@better-auth/expo`, `expo-secure-store`, `expo-apple-authentication` | `zod`, `drizzle-orm` in `packages/sync` | `hono`, `better-auth`, `drizzle-orm` | — | `wrangler` |
-| M3 | Google sign-in library | — | — | `@tanstack/react-query`, `better-auth`, `@sentry/nextjs` | — |
+| M0 | `expo-sqlite`, `drizzle-orm`, `expo-crypto` | None | None | None | `turbo` (root), `drizzle-kit`, `babel-plugin-inline-import`, `vitest`, `jest-expo` |
+| M1 | `@sentry/react-native` | None | None | None | Maestro (CLI) |
+| M2 | `better-auth`, `@better-auth/expo`, `expo-secure-store`, `expo-apple-authentication` | `zod`, `drizzle-orm` in `packages/sync` | `hono`, `better-auth`, `drizzle-orm` | None | `wrangler` |
+| M3 | Google sign-in library | None | None | `@tanstack/react-query`, `better-auth`, `@sentry/nextjs` | None |
 
 ## 8. Performance plan
 
@@ -981,7 +981,7 @@ The data is strictly per user: no query joins two users' rows. Growth is more of
 
 | Step | Trigger | What changes | Cost |
 |---|---|---|---|
-| 1. Free plan | Private beta | — | $0 |
+| 1. Free plan | Private beta | None | $0 |
 | 2. Workers Paid | Before public launch, or the first day a free limit is hit | Nothing in code. CPU limit and daily caps go away; one database can hold 10 GB. | $5 a month plus usage |
 | 3. Poll for changes on web | Users ask for live updates across devices | `GET /sync/head` while a tab is visible | Requests |
 | 4. Outgrow one database | The database reaches 5 GB, half of the 10 GB per-database limit | **Default:** move the server database to PostgreSQL (your VPS or a managed host), reached from the Worker through Hyperdrive. The API stays on Workers. Server schema is rewritten for PostgreSQL; sync logic keeps its shape (the counter becomes a row lock in one statement). **Alternative:** split users across several D1 databases by user id, which Cloudflare's docs describe as D1's intended scaling model. | A database bill or your VPS time |

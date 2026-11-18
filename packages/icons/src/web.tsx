@@ -60,7 +60,7 @@ import {
 
 import { customGlyphs, ICON_STROKE_WIDTH, isCustomIcon, type CustomIconName } from './custom-glyphs';
 
-// Daycraft icon name → Lucide glyph (ADR-0002). Keep in step with native.tsx; the Record type
+// Maps each Daycraft icon name to its Lucide glyph (ADR-0002). Keep in step with native.tsx; the Record type
 // fails `check-types` when a name has no glyph.
 const lucideIcons: Record<Exclude<IconName, CustomIconName>, LucideIcon> = {
   check: Check,

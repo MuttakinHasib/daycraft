@@ -16,8 +16,8 @@
 - Layouts are fluid in width and fixed in rhythm. Use flex and padding tokens; never fixed screen widths. The only fixed widths are component sizes (capsule 48, buttons, chips) and the kanban column (250).
 - Design at 375 first, then confirm 390 and 430. At 375, every header row, chip row and editor row must fit without wrapping, or scroll horizontally on purpose. Calendar's title uses `type-heading` for exactly this reason.
 - Overflow:
-  - Peers (filters, habits, milestones, kanban) → horizontal scroll with no visible scrollbar.
-  - Text → truncate on the timeline, wrap elsewhere.
+  - Peers (filters, habits, milestones, kanban) scroll horizontally with no visible scrollbar.
+  - Text truncates on the timeline and wraps elsewhere.
   - Never allow horizontal page overflow.
 - Respect the safe area at top and bottom. The floating tab bar and + sit 24 from the screen's bottom edge, over the home indicator (as in the design); the toast sits above the bar.
 - Dynamic Type: the layout must survive the largest standard size. Rows grow vertically; nothing clips. The timeline's row heights grow with text, so use measured text heights in the layout function if Dynamic Type increases them. **Proposed;** the prototype uses fixed 48/80.

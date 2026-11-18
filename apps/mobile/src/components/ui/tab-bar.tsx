@@ -21,7 +21,7 @@ import { Icon } from './icon';
 
 const ThemedGlassView = withUniwind(GlassView);
 
-// Checked once: Liquid Glass needs iOS 26; elsewhere the pill is frosted. The + is always solid.
+// Read once at load. Liquid Glass needs iOS 26; elsewhere the pill is frosted. The + is always solid.
 const LIQUID_GLASS = isLiquidGlassAvailable();
 
 // iOS blur materials under the frosted fallback; the values come from the `glass` token.
@@ -115,7 +115,7 @@ function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
 }
 
 // The bar's one colored element: a solid accent circle beside the pill. Until ticket 07 builds the
-// editor, a tap says plainly that creating is coming soon, so the control is never dead.
+// editor, a tap says that creating is coming soon, so the button always responds.
 function CreateButton({ action }: CreateButtonProps) {
   const colors = useThemeColors();
   // TODO(plan-timeline ticket 07): open the editor sheet for `action` instead of this notice.
@@ -171,7 +171,7 @@ function Pill({ children }: PillProps) {
   );
 }
 
-/** The quiet pill behind the focused tab; it glides to the next tab with the snap spring. */
+/** The translucent pill behind the focused tab. It springs to the next tab with `springs.snap`. */
 function Selection({ x, width }: SelectionProps) {
   const scheme = useColorScheme();
   const style = useAnimatedStyle(() => ({
@@ -187,7 +187,7 @@ function Selection({ x, width }: SelectionProps) {
   );
 }
 
-/** The `canvas` fade behind the bar, so content dissolves before it reaches the glass. */
+/** The `canvas` fade behind the bar, so content fades out before it reaches the bar. */
 function Fade() {
   const colors = useThemeColors();
   const solid = `${glass.fadeSolidStop * 100}%`;
@@ -228,7 +228,8 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
     if (route.key !== focusedKey && !event.defaultPrevented) navigateToTab(route.key);
   };
 
-  // The one place the selection moves: placed on first measurement (or with Reduce Motion), sprung after.
+  // Only this effect moves the selection. It jumps on the first measurement or with Reduce Motion on,
+  // and springs after that.
   useEffect(() => {
     const slot = slots[focusedIndex];
     if (!slot) return;

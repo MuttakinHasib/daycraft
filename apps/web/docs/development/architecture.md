@@ -73,7 +73,7 @@ Activities use **floating local time**: `date: 'YYYY-MM-DD'` + `start` in minute
 
 - Never `new Date('YYYY-MM-DD')`: it parses as UTC. Construct local dates from parts.
 - Weeks start on **Sunday**. Day range 05:00–24:00.
-- **Server vs client time:** the server does not know the user's timezone or “now”. Anything that depends on now (today's date, the now line, active state, “left” labels) must be computed on the client, or from a timezone stored for the user. Render now-dependent UI in client components to avoid hydration mismatches. A `useNow()` hook ticks on minute boundaries and is injectable for tests.
+- **Server vs client time:** the server does not know the user's timezone or "now". Anything that depends on now (today's date, the now line, active state, "left" labels) must be computed on the client, or from a timezone stored for the user. Render now-dependent UI in client components to avoid hydration mismatches. A `useNow()` hook ticks on minute boundaries and is injectable for tests.
 - Formatting (`9:30–11:30 AM`, `1 hr 30 min`, `Thu, Nov 19`) lives in `packages/domain/src/time.ts` so both apps produce the same strings. Use `Intl` with an explicit locale when localization arrives.
 
 ## Forms and validation

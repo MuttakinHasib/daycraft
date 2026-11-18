@@ -5,7 +5,7 @@ import { SemanticColor } from './colors';
 /**
  * Frosted glass for things that float over content (the phone tab bar and its + button). On iOS 26
  * the system's Liquid Glass replaces the pill; these values are the fallback and the web treatment.
- * The veil is mostly opaque so bright timeline colors can't smear through the bar.
+ * The veil is mostly opaque, so bright timeline colors don't show through the bar.
  */
 export const glass = {
   /** The semantic color laid over the blur, and how much of it. */
@@ -18,7 +18,7 @@ export const glass = {
   saturate: 1.6,
   /** expo-blur's intensity (0–100) that matches the CSS blur on iOS. */
   nativeBlurIntensity: 80,
-  /** 1px rim around the glass: a hairline in light so the bar separates from white screens. */
+  /** 1px rim around the glass: a hairline in light, so the bar stays visible on white screens. */
   edge: { light: 'rgba(28, 28, 28, 0.07)', dark: 'rgba(255, 255, 255, 0.09)' },
   /** 1px highlight along the top inner edge. */
   highlight: {

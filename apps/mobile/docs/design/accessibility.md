@@ -1,6 +1,6 @@
 # Accessibility
 
-Daycraft is used every day, for long periods, by people who plan carefully. Accessibility is part of “done”.
+Daycraft is used every day, for long periods, by people who plan carefully. Accessibility is part of "done".
 
 ## Semantics (React Native)
 
@@ -11,10 +11,10 @@ Daycraft is used every day, for long periods, by people who plan carefully. Acce
   - `link`;
   - `adjustable` (steppers, if implemented as one control).
 - Toggles set `accessibilityState` (`checked` / `selected` / `disabled` / `expanded`). The existing primitives already do this. Keep it when extending them.
-- Icon-only controls require an `accessibilityLabel` (“Close”, “Previous week”, “Add a habit”, “New task”). Make the prop required in their TypeScript types.
+- Icon-only controls require an `accessibilityLabel` ("Close", "Previous week", "Add a habit", "New task"). Make the prop required in their TypeScript types.
 - Labels describe the result, not the shape:
-  - Check rings: “Complete: Write Q4 roadmap draft” / “Mark not done: …”.
-  - Habit circles: “Read, done” / “Read, not done yet”.
+  - Check rings: "Complete: Write Q4 roadmap draft" / "Mark not done: …".
+  - Habit circles: "Read, done" / "Read, not done yet".
   - Capsules: see [timeline-guide](../product/timeline-guide.md#14-accessibility).
 - Decorative icons and illustrations: `accessible={false}` / `importantForAccessibility="no"`.
 - Group related text so VoiceOver reads a card as one element when that is clearer (`accessible` on the container + a combined label). Do not do this for cards that contain separate buttons.
@@ -33,7 +33,7 @@ Daycraft is used every day, for long periods, by people who plan carefully. Acce
   - Done = strikethrough + filled ring.
   - Event vs task = tag text + tint.
   - Priority = flag icon + word.
-  - Active = “Now · 50m left” text.
+  - Active = "Now · 50m left" text.
 
 ## Drag-and-drop alternatives (required)
 
@@ -56,9 +56,9 @@ Everything you can do by dragging can also be done without dragging:
 ## Screen readers
 
 - Toasts announce politely.
-- Timer: the focus ring container has a timer label (“24 minutes 12 seconds remaining”). Announce state changes (started, paused, complete), not every second.
+- Timer: the focus ring container has a timer label ("24 minutes 12 seconds remaining"). Announce state changes (started, paused, complete), not every second.
 - After saving a sheet, focus returns to the element that opened it, or to the new or edited item when feasible.
-- The timeline should be readable in reading order: date header → habits → activities in time order. Make sure absolute positioning does not scramble the order; render rows in sorted order.
+- The timeline should be readable in reading order: the date header, then habits, then activities in time order. Make sure absolute positioning does not scramble the order; render rows in sorted order.
 
 ## Text
 

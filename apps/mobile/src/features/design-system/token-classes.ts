@@ -1,6 +1,7 @@
 import type { Radius, SemanticColor, TypePreset } from '@daycraft/design-tokens';
 
-// Complete string literals only: Tailwind scans at build time, so no dynamic classes.
+// Write each class as a complete string. Tailwind finds classes by scanning the source at build
+// time, so it misses class names built at runtime.
 
 export const SemanticColorBackground: Record<SemanticColor, string> = {
   canvas: 'bg-canvas',

@@ -1,4 +1,4 @@
-# Issue tracker: Local Markdown
+# Issue tracker: local Markdown
 
 Issues and specs for the whole monorepo live as markdown files in `.scratch/` at the **monorepo root** (next to `turbo.json`). Create it there even when you are working inside `apps/mobile` or `apps/web`.
 
