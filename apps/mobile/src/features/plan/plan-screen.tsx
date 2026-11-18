@@ -3,6 +3,7 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useRef, useState, type ComponentRef } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 
+import { useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
 import { useNow } from '@/lib/use-now';
 
@@ -32,6 +33,11 @@ export function PlanScreen() {
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now });
+  const toast = useToast();
+  const toggleDone = (id: string) => {
+    const activity = activityRepository.toggleDone(id);
+    toast(activity.done ? `Done · ${activity.title}` : 'Marked as not done');
+  };
   const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null);
 
   // Read by the scroll effects below without making every layout change scroll the timeline.
@@ -58,7 +64,7 @@ export function PlanScreen() {
           now={now}
           scrollRef={scrollRef}
           onOpen={() => undefined}
-          onToggle={(id) => activityRepository.toggleDone(id)}
+          onToggle={toggleDone}
           onCreateAt={comingSoon}
           onPlanDay={comingSoon}
           onAddInGap={comingSoon}

@@ -1,10 +1,12 @@
 import { ActivityHue } from '@daycraft/domain';
 import { Pressable } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { cn } from '@/lib/cn';
 
 import { ActivityHueBackground, ActivityHueBorder } from './hues';
 import { Icon } from './icon';
+import { popIn } from './pop';
 
 interface CheckRingProps {
   checked?: boolean;
@@ -30,7 +32,11 @@ export function CheckRing({ checked = false, hue = ActivityHue.SAGE, onPress, ac
         { [ActivityHueBackground[hue]]: checked },
       )}
     >
-      {checked && <Icon name="check" size={14} strokeWidth={3.2} colorClassName="text-on-hue" />}
+      {checked && (
+        <Animated.View entering={popIn}>
+          <Icon name="check" size={14} strokeWidth={3.2} colorClassName="text-on-hue" />
+        </Animated.View>
+      )}
     </Pressable>
   );
 }
