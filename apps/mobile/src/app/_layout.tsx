@@ -1,11 +1,13 @@
 import { radii } from '@daycraft/design-tokens';
 import { Stack, type NativeStackNavigationOptions } from 'expo-router';
+import { useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaListener, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Uniwind } from 'uniwind';
 
 import { ToastProvider } from '@/components/ui';
 import { MigrationsGate } from '@/data/migrations-gate';
+import { AnimatedSplash } from '@/features/splash/animated-splash';
 import { AppTheme, useScreenStatusBarStyle } from '@/theme/app-theme';
 
 import '@/global.css';
@@ -31,16 +33,18 @@ function RootStack() {
 }
 
 export default function RootLayout() {
+  const [dataReady, setDataReady] = useState(false);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
           <AppTheme>
-            <MigrationsGate>
+            <MigrationsGate onSettled={() => setDataReady(true)}>
               <ToastProvider>
                 <RootStack />
               </ToastProvider>
             </MigrationsGate>
+            <AnimatedSplash ready={dataReady} />
           </AppTheme>
         </SafeAreaListener>
       </SafeAreaProvider>
