@@ -45,6 +45,7 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 |---|---|
 | Product, modules, vocabulary | [product-overview](docs/product/product-overview.md) · [navigation-and-modules](docs/product/navigation-and-modules.md) |
 | Plan timeline (most important) | [timeline-guide](docs/product/timeline-guide.md) |
+| First run: splash and onboarding | [onboarding](docs/product/onboarding.md) |
 | Sheets, toasts, editing, completion, focus | [interaction-patterns](docs/product/interaction-patterns.md) |
 | Tokens: color, radius, shadow, motion, focus | [design-system](docs/design/design-system.md) |
 | Type scale and fonts | [typography](docs/design/typography.md) |

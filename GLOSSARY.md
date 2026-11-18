@@ -39,6 +39,18 @@ _Avoid_: empty slot (UI), hole
 The current-time indicator on the timeline.
 _Avoid_: red line, cursor
 
+**Day edges**:
+The two daily times that bound the timeline: Wake up and Bedtime. One pair per person, the same every day.
+_Avoid_: day limits, working hours
+
+**Wake up**:
+The day edge where the timeline starts.
+_Avoid_: day start, morning
+
+**Bedtime**:
+The day edge where the timeline ends, no later than midnight.
+_Avoid_: day end, sleep time
+
 **Unscheduled**:
 A task with a date but no start time; shown as "Anytime" in the editor.
 _Avoid_: backlog
@@ -117,6 +129,16 @@ A dated reflection with a mood and free text.
 
 **Mood**:
 A journal entry's rating from 1 (Rough) to 5 (Great); each level has a hue.
+
+### First run
+
+**Splash**:
+The launch animation in which the logo builds itself, shown on every launch.
+_Avoid_: launch screen (that is the plain native background under it)
+
+**Onboarding**:
+The screens shown once per device before the first Plan: the intro, then setup steps that save the day edges, daily habits and one task. Never named in UI copy.
+_Avoid_: tutorial, walkthrough, welcome
 
 ### Color
 
