@@ -34,9 +34,9 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 
 - 48pt.
 - Variants:
-  - `sunken`: `bg-sunken`, `rounded-field`, px 16 — editor location, step names;
-  - `pill`: `bg-surface`, border `line`, `rounded-full`, with a trailing 36pt accent add button — capture fields;
-  - `underline`: transparent, 1.5pt bottom border — title inputs in sheets.
+  - `sunken`: `bg-sunken`, `rounded-field`, px 16, for the editor's location field and step names;
+  - `pill`: `bg-surface`, border `line`, `rounded-full`, with a trailing 36pt accent add button, for capture fields;
+  - `underline`: transparent, 1.5pt bottom border, for title inputs in sheets.
 - Placeholder color `ink-subtle` (`placeholderTextColorClassName`).
 - Multiline variant: min height 88, 16 padding, `type-body`, line height 1.5.
 
@@ -54,7 +54,7 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 - **Tabs:** Plan · Habits · Goals · More, `flex-1`, 50 tall, 22pt icon over an 11pt semibold label, gap 3.
   - Icons: Plan `timeline`, Habits `flame`, Goals `target`, More `grid`.
   - Active: a quiet pill (`glass.selection`) that glides between tabs with `springs.snap`, and `text-ink` (`accessibilityState={{ selected: true }}`). Inactive: `text-ink-subtle`.
-  - More carries the Inbox badge: 16pt `clay` pill, 10pt count in `on-hue`, 2pt `surface` ring, at the icon's top right. Its label reads “More, 4 in Inbox”.
+  - More carries the Inbox badge: 16pt `clay` pill, 10pt count in `on-hue`, 2pt `surface` ring, at the icon's top right. Its label reads "More, 4 in Inbox".
 - **+:** a 56 circle, `bg-accent`, white 26pt plus (stroke 2.4), inset top highlight and a soft accent glow (`glass.plus`). It is the bar's only colored element. Its action and label follow the screen (New task / New habit / New routine); see [navigation](../product/navigation-and-modules.md#navigation-model).
 - Hidden on Focus.
 
@@ -66,7 +66,7 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 ### ProgressRing
 
 - Sizes:
-  - 44 (Plan header: 4 stroke on a `line-strong` track; number without “%” in 13 extrabold; check icon at 100%; no progress arc at 0);
+  - 44 (Plan header: 4 stroke on a `line-strong` track; number without "%" in 13 semibold; check icon at 100%; no progress arc at 0);
   - 56 (goals: 4 stroke);
   - 72 (desktop daily progress);
   - 250 (focus: 10 stroke, hue color).
@@ -79,7 +79,7 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 - Title in `type-heading`, one `type-body-sm` muted sentence.
 - Optional chip action.
 - Centered, 60 from the top of the content area.
-- Examples: “Inbox zero”, “A blank canvas”, “Nothing here”.
+- Examples: "Inbox zero", "A blank canvas", "Nothing here".
 
 ### Avatar / IconTile / HueDot
 
@@ -102,11 +102,11 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 - **Loading:** the prototype has no network. In production, show skeletons that mirror the real layout:
   - `bg-sunken` blocks with the real radii (capsule-shaped rows on the timeline).
   - No spinners in the middle of empty screens.
-- **Errors:** inline, near what failed, with a Retry chip. Never a blocking alert for recoverable errors. Validation errors use the toast copy (“Give it a name first”) and keep the sheet open.
+- **Errors:** inline, near what failed, with a Retry chip. Never a blocking alert for recoverable errors. Validation errors use the toast copy ("Give it a name first") and keep the sheet open.
 
 ## Dialogs, dropdowns and menus
 
 - The prototype uses **sheets** and **segmented controls** instead of dropdowns and dialogs. Keep it that way.
 - For a choice among ≤ 6 options, use a segmented control or chips. For more, open a sheet with a list.
-- System alerts only for irreversible, multi-item destruction (for example “Delete project and its 8 tasks”).
+- System alerts only for irreversible, multi-item destruction (for example "Delete project and its 8 tasks"). One temporary exception: until the toast (ticket 06) and the editor (ticket 07) exist, the + shows a "Coming soon" alert.
 - Context menus (long-press) are **Proposed**, not in the prototype.

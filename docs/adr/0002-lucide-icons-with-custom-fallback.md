@@ -2,7 +2,7 @@
 
 `@daycraft/icons` renders each icon from Lucide (`lucide-react-native` on mobile, `lucide-react` on web) at the design's 1.9 stroke when Lucide has an icon with the same meaning, and from the prototype's own SVG otherwise: the five mood faces `m1`–`m5`, `run` and `timeline`. Stored data (activities, habits, routines, moods) keeps Daycraft icon names such as `run` or `cap`, never library names, so swapping a glyph or the library never touches synced data.
 
-## Considered Options
+## Considered options
 
 - **All custom SVG from the prototype:** an exact match, but every new icon would have to be drawn by hand.
 - **Lucide only:** no runner, no product-specific timeline glyph, and no consistent five-step mood scale.

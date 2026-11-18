@@ -2,10 +2,10 @@
 
 Every row the user creates gets a UUID v7 id. Rows that could be created twice for the same key get a UUID v5 id derived from that key: a habit check-in (habit, date), a journal entry (date) and a repeat occurrence (series, date). The id code lives in `@daycraft/domain`. Each platform passes in its own random bytes (`expo-crypto` on mobile, `crypto.getRandomValues` on web). Feature code treats ids as opaque.
 
-## Considered Options
+## Considered options
 
-- **Auto-increment integers:** they collide as soon as two devices create rows offline.
-- **Random UUID v4:** no time order, and a check-in created on two devices offline would sync as two rows.
+- **Auto-increment integers.** They collide as soon as two devices create rows offline.
+- **Random UUID v4.** No time order, and a check-in created on two devices offline would sync as two rows.
 
 ## Consequences
 

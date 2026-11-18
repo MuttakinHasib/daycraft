@@ -2,7 +2,7 @@
 
 This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root rules in [../../AGENTS.md](../../AGENTS.md)), an Expo/React Native app (iPhone first, Android second) for planning your day on a visual timeline. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
-> Read this file first, then the guide for the area you are touching (table below). If a guide disagrees with the code, check [docs/status-and-decisions.md](docs/status-and-decisions.md) — it records every known discrepancy and which side is the source of truth.
+> Read this file first, then the guide for the area you are touching (table below). If a guide disagrees with the code, check [docs/status-and-decisions.md](docs/status-and-decisions.md). It records every known discrepancy and which side is the source of truth.
 
 ## Daycraft in one minute
 
@@ -59,22 +59,22 @@ This is **Daycraft for iPhone and Android** (`apps/mobile` in the monorepo; root
 | Checks and tests | [testing](docs/development/testing.md) |
 | Known gaps, discrepancies, open decisions | [status-and-decisions](docs/status-and-decisions.md) |
 
-## Expo has changed — do not trust your training data
+## Expo has changed, so do not trust your training data
 
 Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
 
 1. Read the major version of the `expo` package in `package.json` (currently **58**).
 2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+3. For anything else, fetch https://docs.expo.dev/llms.txt, an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
 
-The same applies to **Uniwind** (`uniwind` 1.13) — check https://docs.uniwind.dev before using an API you have not seen in this repo.
+The same applies to **Uniwind** (`uniwind` 1.13). Check https://docs.uniwind.dev before using an API you have not seen in this repo.
 
 ## Commands
 
 This app is the `@daycraft/mobile` workspace in the Daycraft Turborepo (`apps/mobile`). The monorepo uses **bun** (one `bun.lock` at the root). `npx` refuses to run here because the root `package.json` declares bun in `devEngines`, so use `bunx`. Run these inside `apps/mobile`:
 
 ```bash
-bunx expo install <package>  # ALWAYS use instead of bun/npm add — resolves SDK-compatible versions
+bunx expo install <package>  # Use instead of bun/npm add. It resolves SDK-compatible versions
 bunx expo start              # start the dev server (or `bun run dev`)
 bun run lint                 # expo lint
 bun run check-types          # tsc --noEmit
@@ -88,22 +88,22 @@ Run lint and typecheck before declaring any task done. Restart Metro after chang
 
 ## Navigation & Routing
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
+- Use **Expo Router** for all navigation. Routes live in `src/app/`. Every file there is a screen, and `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`. Typed routes are on (`experiments.typedRoutes`).
 - Docs: https://docs.expo.dev/router/introduction.md
 - Planned Daycraft routes: [navigation-and-modules](docs/product/navigation-and-modules.md).
 
 ## Building with EAS
 
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli@latest <command>`; substitute that for bare `eas` in docs examples.
+Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`), with no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli@latest <command>`; substitute that for bare `eas` in docs examples.
 Docs: https://docs.expo.dev/eas/index.md
 
 ## Rules
 
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
+- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand. Configure native behavior in `app.json` and config plugins instead.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `bunx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
-- `src/uniwind-types.d.ts` is generated by Uniwind — do not edit it.
+- `src/uniwind-types.d.ts` is generated by Uniwind. Do not edit it.
 - The React Compiler is enabled (`experiments.reactCompiler`). Do not add `useMemo`/`useCallback`/`memo` by reflex; add them only for a measured problem or a referential-identity requirement.
 
 ## Agent skills and shared docs

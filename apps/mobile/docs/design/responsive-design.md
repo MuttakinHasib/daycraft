@@ -9,7 +9,7 @@
 | iPhone large | 430 × 932 | Must work: layouts are fluid, nothing scales up |
 | iPad | 768 × 1024 and up | Not designed yet. App is `orientation: portrait`. Proposed: reuse the desktop pattern (rail + timeline + detail panel). |
 | Android phones | 360–412 wide | Second platform; same layouts |
-| Web / desktop | 768 / 1440 / 1920 | Separate Next.js app (decision D3). The prototype boards “v2 · Desktop 1440”, “Tablet 768” and “Large desktop 1920” are its reference. |
+| Web / desktop | 768 / 1440 / 1920 | Separate Next.js app (decision D3). The prototype boards "v2 · Desktop 1440", "Tablet 768" and "Large desktop 1920" are its reference. |
 
 ## Mobile-first rules
 

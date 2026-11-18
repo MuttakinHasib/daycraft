@@ -20,7 +20,7 @@ This is **Daycraft for the web**: the desktop and tablet app (Next.js 16 App Rou
 - **What it must feel like:** clean, light, readable, precise (design system v2 "Clean", [ADR-0008](../../docs/adr/0008-visual-direction-clean.md)). White canvas, light-gray cards without borders, a blue accent, Onest at regular to semibold, almost no shadows. Color belongs to the user's activities, not to chrome; icons and text on a hue are white (`on-hue`).
 - **Where the design lives:**
   - Tokens: values in `packages/design-tokens`, generated into the CSS that `src/app/globals.css` imports. Names and rules: the root [design system](../../docs/design/design-system.md); shared component spec: root [components](../../docs/design/components.md). Everything renders at `/design-system`.
-  - Desktop prototype: “Daycraft” design canvas, page **v2 · Current**, boards “Desktop 1440”, “Tablet 768”, “Large desktop 1920”.
+  - Desktop prototype: "Daycraft" design canvas, page **v2 · Current**, boards "Desktop 1440", "Tablet 768", "Large desktop 1920".
   - **Exported for you:** [docs/design/reference/](../../docs/design/reference/README.md) has screenshots (desktop 1440/768/1920, all phone screens in both themes) and a runnable offline prototype (`prototype/desktop-dark.html`). Look at the screenshot before building a screen.
 - **What exists in code today:** Daycraft tokens (design system v2, Clean), Onest, the theme switch, the component classes and the `/design-system` page; screens are placeholders. The live list is [status-and-decisions](docs/status-and-decisions.md#implementation-status).
 

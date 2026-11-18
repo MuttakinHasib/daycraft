@@ -1,6 +1,6 @@
 # Design system
 
-Design system v2 (“Clean”) for every Daycraft app: a white canvas, light-gray cards, saturated activity colors with white icons on them, a blue accent and Onest at regular to semibold weights. It replaced v1.1 (cream, terracotta, Plus Jakarta Sans extra-bold) on 2026-11-17; see [ADR-0008](../adr/0008-visual-direction-clean.md). This file names the tokens and the rules for using them. **Values live only in [`@daycraft/design-tokens`](../../packages/design-tokens/src)** (ADR-0001), which generates each app's theme CSS and checks contrast in its build. To see every token rendered, open the design-system page: `/design-system` in either app.
+Design system v2 ("Clean") for every Daycraft app: a white canvas, light-gray cards, saturated activity colors with white icons on them, a blue accent and Onest at regular to semibold weights. It replaced v1.1 (cream, terracotta, Plus Jakarta Sans extra-bold) on 2026-11-17; see [ADR-0008](../adr/0008-visual-direction-clean.md). This file names the tokens and the rules for using them. **Values live only in [`@daycraft/design-tokens`](../../packages/design-tokens/src)** (ADR-0001), which generates each app's theme CSS and checks contrast in its build. To see every token rendered, open the design-system page: `/design-system` in either app.
 
 Sources of truth, in order: the design canvas page "v3 · Clean (new direction)" decides what values should be (layout and behavior still come from "v2 · Current"); the token package decides what the apps render and changes only to match the canvas; [reference/daycraft-tailwind-v1.1.css](reference/daycraft-tailwind-v1.1.css) is a frozen export of the old v1.1 look (history only).
 
@@ -22,15 +22,15 @@ They change with the theme. Use them as `bg-*`, `text-*` and `border-*`.
 | `card` | Cards, list groups, habit and goal cards, info blocks. A light-gray fill, no border |
 | `sunken` | Chips, segmented track, fields on surface, tags, kanban columns, nav hover |
 | `elevated` | Floating tab bar (dark veil), menus |
-| `raised` | The selected thumb on a `sunken` track (segmented controls). White in light, #424242 in dark so it stands clearly above the #292929 track; `ink` on it passes 4.5:1 |
+| `raised` | The selected thumb on a `sunken` track (segmented controls). White in light. In dark it is #424242, so the thumb is distinct from the #292929 track; `ink` on it passes 4.5:1 |
 | `line` | Hairlines, hour lines, row separators (cards have no border) |
 | `line-strong` | Dashed spine, unchecked checkbox borders, grabber |
 | `ink` | Primary text, selected chip background |
-| `ink-muted` | Secondary text, meta, inactive tabs |
-| `ink-subtle` | Tertiary text, hour labels, section labels, placeholders |
-| `accent` | Primary buttons, the active tab pill, selected date, now line, progress |
+| `ink-muted` | Secondary text, meta |
+| `ink-subtle` | Tertiary text, hour labels, section labels, placeholders, inactive tabs |
+| `accent` | Primary buttons, the + button, selected date, now line, progress |
 | `accent-hover` | Hover or pressed accent surfaces (web) |
-| `accent-soft` | “Now” tag, Plan and Place chips, prompt banner, Today chip, active nav item |
+| `accent-soft` | "Now" tag, Plan and Place chips, prompt banner, Today chip, active nav item |
 | `accent-text` | Accent used as text: the year in the date, back links, gap durations |
 | `on-accent` | Text and icons on `accent`: white in both themes (the dark-theme accent is deep enough to keep 4.5:1). Still use the token, never hardcode white |
 | `on-hue` | Icons and text on an activity hue: white in both themes (every hue is deep enough for 3:1) |
@@ -63,7 +63,7 @@ Shares live in `hueTints` and `sheetHeaderTint` (`@daycraft/design-tokens`); cod
 |---|---|
 | 14% | Habit circle, not done |
 | 16% fill / 40% border | Event agenda card |
-| 26% | The agenda card's “Event” tag (text `ink`) |
+| 26% | The agenda card's "Event" tag (text `ink`) |
 | 16% fill (done) / 18% icon circle (not done) | Desktop habit chip |
 | 28% ring | Active capsule outline |
 | 30% | Event card tint (agenda, Upcoming); week-grid event blocks add a solid hue border |
@@ -104,13 +104,13 @@ Weights in use: 400, 500, 600 (700 and 800 stay embedded for edge cases but no p
 
 ## Elevation
 
-Flat by default: surfaces separate by fill (white `surface`, gray `card`), not borders. Shadows only on things that float.
+Surfaces are flat and separate by fill (white `surface`, gray `card`), not by borders. Only things that float get a shadow.
 
 - `shadow-float`: sheets, dialogs, toast, floating menus.
-- **Glass** (`glass` token): the phone tab bar floats as frosted glass, mostly opaque so bright blocks can't smear through: `surface` at 88% (light) or `elevated` at 82% (dark) over a blur (CSS `blur(20px) saturate(160%)`), a 1px hairline rim (ink 7% light, white 9% dark), a brighter 1px top highlight and a two-layer soft shadow. A `canvas` fade (128 tall, solid for its lower 30%) sits behind the bar so content dissolves before reaching it. On iOS 26 the system's Liquid Glass replaces the pill. Nothing else uses glass.
+- **Glass** (`glass` token) is for the phone tab bar only. Its veil is `surface` at 88% (light) or `elevated` at 82% (dark) over a blur (CSS `blur(20px) saturate(160%)`), opaque enough that bright blocks don't show through. It has a 1px hairline rim (ink 7% light, white 9% dark), a brighter 1px top highlight and a two-layer soft shadow. A `canvas` fade sits behind the bar, 128 tall and solid for its lower 30%, so content fades out before it reaches the bar. On iOS 26 the system's Liquid Glass replaces the pill.
 - `shadow-lift`: a capsule while it is dragged.
 - `shadow-thumb`: the selected thumb on a `sunken` track (segmented controls). A soft drop in light; in dark a 6% white top highlight and a deeper drop. Mobile applies `shadows.thumb[scheme]` as a style.
-- The tab bar has one colored element: the + is a 56 `accent` circle with a white icon, an inset top highlight and a soft accent glow (`glass.plus`), floating beside the pill. The active tab is quiet: a translucent ink pill (`glass.selection`, ink 7% light, white 11% dark) with an `ink` icon and label; inactive tabs are `ink-subtle`. See [ADR-0009](../adr/0009-tab-bar-plus-beside-the-pill.md).
+- The tab bar has one colored element: the + is a 56 `accent` circle with a white icon, an inset top highlight and a soft accent glow (`glass.plus`), floating beside the pill. The active tab is a translucent ink pill (`glass.selection`, ink 7% light, white 11% dark) with an `ink` icon and label. Inactive tabs are `ink-subtle`. See [ADR-0009](../adr/0009-tab-bar-plus-beside-the-pill.md).
 
 ## Motion
 
@@ -144,9 +144,9 @@ From `@daycraft/icons` (ADR-0002): Lucide at stroke 1.9, plus the prototype's ow
 
 ## Brand
 
-- **Logo:** Sunrise Pen (canvas board “12 · Final mark — Sunrise Pen”): a half sun with five short rays, a horizon line, and a fountain pen whose nib draws the horizon. Two tones: the sun and rays are the soft layer, the pen and horizon are solid. The wordmark is lowercase “daycraft”.
+- **Logo:** Sunrise Pen (the logo board "12 · Final mark" on the canvas): a half sun with five short rays, a horizon line, and a fountain pen whose nib draws the horizon. Two tones: the sun and rays are the soft layer, the pen and horizon are solid. The wordmark is lowercase "daycraft".
 - **Colors in the app:** sun and rays `clay` at 55%, pen and horizon `ink`. Below 40px use the small-size drawing (thicker rays and horizon, solid nib).
 - **App icon:** the appearances on the logo board (light, dark, tinted, cream).
-- **Splash:** the pen slides in and draws the horizon, the sun rises behind it, the rays pop out left to right, then the wordmark fades up; 2.6s, then a fade into onboarding (spec on the canvas page “Splash & onboarding”).
+- **Splash:** the pen slides in and draws the horizon, the sun rises behind it, the rays pop out left to right, then the wordmark fades up; 2.6s, then a fade into onboarding (spec on the canvas page "Splash & onboarding").
 - **Web sidebar:** mark 38×32 + wordmark 24 tall. **Favicon:** the small-size drawing.
 - Assets: export from the logo board into `packages/brand` (not in the repo yet).

@@ -4,17 +4,17 @@ The phone tab bar is a glass pill holding four tabs (Plan · Habits · Goals · 
 
 ## Context
 
-With the + inside the pill, the bar carried three unrelated treatments: glass, a solid ink disc filling the pill's height, and a solid accent pill for the active tab. Next to each other the disc and the active pill competed, the + split the tabs into two pairs, and bright timeline blocks smeared through the 58% veil. On white screens the light bar barely separated from content.
+With the + inside the pill, the bar mixed three unrelated treatments: glass, a solid ink disc filling the pill's height, and a solid accent pill for the active tab. Next to each other the disc and the active pill competed, the + split the tabs into two pairs, and bright timeline blocks showed through the 58% veil. On white screens the light bar barely separated from content.
 
-## Considered Options
+## Considered options
 
-Five variants were compared on the design canvas (v3 page, "Tab bar A–E"):
+We compared five variants on the design canvas (v3 page, "Tab bar A–E"):
 
-- **A (previous):** + inside, solid accent active tab.
-- **B:** + inside, pale accent active tab, warmer glass.
-- **C (chosen):** four-tab pill with a separate accent + circle; quiet active tab; mostly opaque glass and a `canvas` fade.
-- **D:** + inside as a smaller accent circle; quiet active tab.
-- **E:** like C with icon-only tabs; cleanest, but unlabeled tabs are harder to learn.
+- **A (previous).** + inside, solid accent active tab.
+- **B.** + inside, pale accent active tab, warmer glass.
+- **C (chosen).** Four-tab pill with a separate accent + circle; quiet active tab; mostly opaque glass and a `canvas` fade.
+- **D.** + inside as a smaller accent circle; quiet active tab.
+- **E.** Like C with icon-only tabs; cleanest, but unlabeled tabs are harder to learn.
 
 ## Decision
 
