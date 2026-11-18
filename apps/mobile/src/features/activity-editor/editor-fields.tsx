@@ -181,7 +181,13 @@ export function TimeField({ start, durationMinutes, canUnschedule, onSchedule, o
         </Text>
       ) : (
         <View className="flex-row items-center justify-between rounded-card bg-sunken p-2">
-          <IconButton size={IconButtonSize.LG} onSunken icon="minus" accessibilityLabel="15 minutes earlier" onPress={() => onStep(-15)} />
+          <IconButton
+            size={IconButtonSize.LG}
+            onSunken
+            icon="minus"
+            accessibilityLabel="15 minutes earlier"
+            onPress={() => onStep(-15)}
+          />
           <Text
             accessibilityLiveRegion="polite"
             style={{ fontVariant: ['tabular-nums'] }}
@@ -189,7 +195,13 @@ export function TimeField({ start, durationMinutes, canUnschedule, onSchedule, o
           >
             {formatRange(start, durationMinutes)}
           </Text>
-          <IconButton size={IconButtonSize.LG} onSunken icon="plus" accessibilityLabel="15 minutes later" onPress={() => onStep(15)} />
+          <IconButton
+            size={IconButtonSize.LG}
+            onSunken
+            icon="plus"
+            accessibilityLabel="15 minutes later"
+            onPress={() => onStep(15)}
+          />
         </View>
       )}
     </Field>
@@ -313,10 +325,7 @@ export function SubtasksField({ value, onChange }: SubtasksFieldProps) {
     <Field label="Subtasks">
       <View className="overflow-hidden rounded-card border border-line">
         {value.map((subtask, index) => (
-          <View
-            key={subtask.id ?? index}
-            className="min-h-12 flex-row items-center gap-3 border-b border-line px-4"
-          >
+          <View key={subtask.id ?? index} className="min-h-12 flex-row items-center gap-3 border-b border-line px-4">
             <View
               className={cn('size-4.5 items-center justify-center rounded-check border-2', {
                 'border-line-strong': !subtask.done,

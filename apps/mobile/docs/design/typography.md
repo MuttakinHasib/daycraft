@@ -38,6 +38,7 @@ Use a **`type-*` preset** wherever one exists. Presets bundle size, line height,
 Twelve sizes, nothing else. Mapping rules for anything not listed:
 
 - 9.5–10.5: use micro.
+- 12 (tags, pills, week-strip weekdays): use meta with `font-sans-semibold`.
 - 13.5: use body-sm.
 - 14.5: use body.
 - 17–18: use activity or heading.

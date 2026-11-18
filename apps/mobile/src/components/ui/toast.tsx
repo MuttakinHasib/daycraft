@@ -70,7 +70,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
               className="h-10 max-w-full flex-row items-center gap-2 rounded-full bg-ink px-4 shadow-float"
             >
               <Icon name="check" size={15} strokeWidth={2.8} colorClassName="text-canvas" />
-              <Text numberOfLines={1} className="shrink text-sm font-sans-semibold text-canvas">
+              <Text numberOfLines={1} className="shrink type-body-sm font-sans-semibold text-canvas">
                 {toast.message}
               </Text>
             </Animated.View>

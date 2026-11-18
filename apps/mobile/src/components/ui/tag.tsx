@@ -38,7 +38,7 @@ export function Tag({ icon, trailingIcon, tone = TagTone.NEUTRAL, children }: Ta
       <Text
         numberOfLines={1}
         style={{ fontVariant: ['tabular-nums'] }}
-        className={cn('shrink text-xs font-sans-semibold', color)}
+        className={cn('shrink type-meta font-sans-semibold', color)}
       >
         {children}
       </Text>

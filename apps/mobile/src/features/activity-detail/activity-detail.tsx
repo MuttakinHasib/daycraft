@@ -1,4 +1,4 @@
-import { hueColors, sheetHeaderTint, withOpacity } from '@daycraft/design-tokens';
+import { hueColors } from '@daycraft/design-tokens';
 import {
   formatDuration,
   formatRange,
@@ -14,11 +14,15 @@ import Animated from 'react-native-reanimated';
 
 import { Button, Icon, popIn, useToast } from '@/components/ui';
 import { activityRepository, useActivity } from '@/data/activity-store';
+import {
+  BAND_TEXT,
+  BandButton,
+  BandTile,
+  BandTileShape,
+  HueBand,
+  SheetFooter,
+} from '@/features/activity-sheet/sheet-chrome';
 import { cn } from '@/lib/cn';
-import { useColorScheme, useThemeColors } from '@/theme/app-theme';
-
-// Light: the hue at 40% over the canvas with ink text. Dark: the solid hue with on-hue text.
-const HEADER_TEXT = 'text-ink dark:text-on-hue';
 
 const KIND_LABEL: Record<Activity['kind'], string> = { task: 'Task', event: 'Event', routine: 'Routine' };
 
@@ -71,73 +75,44 @@ function openEditor(id: string) {
 
 /** The header band: close, kind, edit, the icon tile, time, title and the check ring. */
 function DetailHeader({ activity, onToggle }: HeaderProps) {
-  const scheme = useColorScheme();
-  const colors = useThemeColors();
-  const hue = hueColors[activity.hue];
-  const scrim = withOpacity(colors.ink, 0.08);
   return (
-    <View collapsable={false} className="bg-canvas">
-      <View style={{ backgroundColor: withOpacity(hue, sheetHeaderTint[scheme]) }} className="px-5 pt-4 pb-6">
-        <View className="flex-row items-center justify-between">
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Close"
-            onPress={() => router.back()}
-            style={{ backgroundColor: scrim }}
-            className="size-10 items-center justify-center rounded-full active:opacity-70"
-          >
-            <Icon name="x" size={18} colorClassName={HEADER_TEXT} />
-          </Pressable>
-          <View
-            style={{ backgroundColor: withOpacity(colors.ink, 0.12) }}
-            className="h-6 justify-center rounded-full px-2.5"
-          >
-            <Text className={cn('text-xs font-sans-semibold', HEADER_TEXT)}>{KIND_LABEL[activity.kind]}</Text>
-          </View>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Edit"
-            onPress={() => openEditor(activity.id)}
-            style={{ backgroundColor: scrim }}
-            className="size-10 items-center justify-center rounded-full active:opacity-70"
-          >
-            <Icon name="edit" size={17} colorClassName={HEADER_TEXT} />
-          </Pressable>
+    <HueBand hue={activity.hue}>
+      <View className="flex-row items-center justify-between">
+        <BandButton icon="x" accessibilityLabel="Close" onPress={() => router.back()} />
+        <View className="h-6 justify-center rounded-full bg-ink/12 px-2.5">
+          <Text className={cn('type-meta font-sans-semibold', BAND_TEXT)}>{KIND_LABEL[activity.kind]}</Text>
         </View>
-        <View className="mt-4.5 flex-row items-center gap-3.5">
-          <View
-            style={{ backgroundColor: scrim, borderColor: withOpacity(colors['on-hue'], 0.55) }}
-            className="h-18 w-14 items-center justify-center rounded-capsule border-2"
-          >
-            <Icon name={activity.icon} size={25} colorClassName={HEADER_TEXT} />
-          </View>
-          <View className="min-w-0 flex-1">
-            <Text
-              style={{ fontVariant: ['tabular-nums'] }}
-              className={cn('type-meta font-sans-semibold opacity-90', HEADER_TEXT)}
-            >
-              {activity.start === null ? 'No set time' : formatRange(activity.start, activity.durationMinutes)}
-            </Text>
-            <Text className={cn('type-heading', HEADER_TEXT, { 'line-through': activity.done })}>{activity.title}</Text>
-          </View>
-          <Pressable
-            accessibilityRole="checkbox"
-            accessibilityState={{ checked: activity.done }}
-            accessibilityLabel={`${activity.done ? 'Mark not done' : 'Complete'}: ${activity.title}`}
-            hitSlop={6}
-            onPress={onToggle}
-            style={{ borderColor: colors['on-hue'] }}
-            className={cn('size-8 items-center justify-center rounded-full border-2', { 'bg-on-hue': activity.done })}
-          >
-            {activity.done && (
-              <Animated.View entering={popIn}>
-                <Icon name="check" size={17} strokeWidth={3.2} colorClassName="text-ink" />
-              </Animated.View>
-            )}
-          </Pressable>
-        </View>
+        <BandButton icon="edit" accessibilityLabel="Edit" onPress={() => openEditor(activity.id)} />
       </View>
-    </View>
+      <View className="mt-4.5 flex-row items-center gap-3.5">
+        <BandTile icon={activity.icon} shape={BandTileShape.CAPSULE} />
+        <View className="min-w-0 flex-1">
+          <Text
+            style={{ fontVariant: ['tabular-nums'] }}
+            className={cn('type-meta font-sans-semibold opacity-90', BAND_TEXT)}
+          >
+            {activity.start === null ? 'No set time' : formatRange(activity.start, activity.durationMinutes)}
+          </Text>
+          <Text className={cn('type-heading', BAND_TEXT, { 'line-through': activity.done })}>{activity.title}</Text>
+        </View>
+        <Pressable
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: activity.done }}
+          accessibilityLabel={`${activity.done ? 'Mark not done' : 'Complete'}: ${activity.title}`}
+          hitSlop={6}
+          onPress={onToggle}
+          className={cn('size-8 items-center justify-center rounded-full border-2 border-on-hue', {
+            'bg-on-hue': activity.done,
+          })}
+        >
+          {activity.done && (
+            <Animated.View entering={popIn}>
+              <Icon name="check" size={17} strokeWidth={3.2} colorClassName="text-ink" />
+            </Animated.View>
+          )}
+        </Pressable>
+      </View>
+    </HueBand>
   );
 }
 
@@ -222,22 +197,12 @@ export function ActivityDetail({ id }: ActivityDetailProps) {
           )}
         </ScrollView>
       </View>
-      <View collapsable={false} className="flex-row gap-2.5 border-t border-line px-5 pt-3 pb-safe-offset-3">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Delete"
-          onPress={remove}
-          className="size-13 items-center justify-center rounded-full bg-sunken active:opacity-70"
-        >
-          <Icon name="trash" size={19} colorClassName="text-danger" />
-        </Pressable>
-        {/* Start focus joins this footer when Focus lands; until then the main action edits. */}
-        <View className="flex-1">
-          <Button icon="edit" onPress={() => openEditor(activity.id)}>
-            {`Edit ${KIND_LABEL[activity.kind].toLowerCase()}`}
-          </Button>
-        </View>
-      </View>
+      <SheetFooter onDelete={remove}>
+        {/* Start focus takes this place when Focus lands; until then the main action edits. */}
+        <Button icon="edit" onPress={() => openEditor(activity.id)}>
+          {`Edit ${KIND_LABEL[activity.kind].toLowerCase()}`}
+        </Button>
+      </SheetFooter>
     </View>
   );
 }

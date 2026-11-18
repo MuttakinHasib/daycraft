@@ -90,7 +90,7 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
       )}
       {dragging && (
         <View className="absolute -top-7.5 left-28 h-6 justify-center rounded-full bg-ink px-2.5">
-          <Text style={TABULAR} className="text-xs font-sans-semibold text-canvas">
+          <Text style={TABULAR} className="type-meta font-sans-semibold text-canvas">
             {formatRange(start, activity.durationMinutes)}
           </Text>
         </View>

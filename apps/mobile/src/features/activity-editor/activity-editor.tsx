@@ -11,10 +11,11 @@ import {
 } from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
-import { Button, Icon, useToast } from '@/components/ui';
+import { Button, useToast } from '@/components/ui';
 import { activityRepository } from '@/data/activity-store';
+import { SheetFooter } from '@/features/activity-sheet/sheet-chrome';
 import { markJustCreated } from '@/features/plan/plan-state';
 
 import { EditorHeader } from './editor-header';
@@ -131,21 +132,9 @@ export function ActivityEditor({ initial, activityId, today }: ActivityEditorPro
           <NotesField value={draft.notes} onChange={(notes) => change({ notes })} />
         </ScrollView>
       </View>
-      <View collapsable={false} className="flex-row gap-2.5 border-t border-line px-5 pt-3 pb-safe-offset-3">
-        {editing && (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Delete"
-            onPress={remove}
-            className="size-13 items-center justify-center rounded-full bg-sunken active:opacity-70"
-          >
-            <Icon name="trash" size={19} colorClassName="text-danger" />
-          </Pressable>
-        )}
-        <View className="flex-1">
-          <Button onPress={save}>{primaryLabel(draft, editing)}</Button>
-        </View>
-      </View>
+      <SheetFooter onDelete={editing ? remove : undefined}>
+        <Button onPress={save}>{primaryLabel(draft, editing)}</Button>
+      </SheetFooter>
     </View>
   );
 }

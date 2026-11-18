@@ -75,7 +75,7 @@ function ProgressRing({ progress }: ProgressRingProps) {
       {percent >= 100 ? (
         <Icon name="check" size={18} strokeWidth={3} colorClassName="text-accent-text" />
       ) : (
-        <Text style={TABULAR} className="text-sm font-sans-semibold tracking-tight text-ink">
+        <Text style={TABULAR} className="type-control font-sans-semibold text-ink">
           {percent}
         </Text>
       )}
@@ -109,11 +109,11 @@ function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
             onPress={() => onSelectDate(day)}
             className="flex-1 items-center gap-1.25 py-0.5 active:opacity-70"
           >
-            <Text className="text-xs font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
+            <Text className="type-meta font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
             <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': selected })}>
               <Text
                 style={TABULAR}
-                className={cn('text-base font-sans-semibold', {
+                className={cn('type-activity', {
                   'text-on-accent': selected,
                   'text-accent-text': !selected && isToday,
                   'text-ink': !selected && !isToday,
