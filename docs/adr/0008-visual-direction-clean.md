@@ -13,7 +13,7 @@ v1.1 used a cream canvas, a terracotta brand color, muted earthy activity hues w
 - Activity hues: saturated and the same in both themes, each deep enough for white icons and text (`on-hue`) at 3:1 or better. Timeline capsules use the solid hue. (Revised 2026-11-18: the first v2 hues were pastel with dark `on-hue` icons and a 62% white tint on capsules; we deepened them so icons on hues could be white.)
 - Type: Onest (OFL, Google Fonts) at 400–600; no UI text is bolder than semibold.
 - Hues are never text. Headline highlights are a 42% hue marker behind the words.
-- Logo: Sunrise Pen in `clay` (sun) and `ink` (pen).
+- Logo: blocks and pen with a rising sun (revised 2026-11-19; it replaced Sunrise Pen). See the Brand section of the [design system](../design/design-system.md#brand).
 
 ## Considered options
 
