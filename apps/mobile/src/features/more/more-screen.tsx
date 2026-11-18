@@ -1,10 +1,20 @@
 import { Link } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View } from 'react-native';
+
+import { todayISO } from '@daycraft/domain';
 
 import { Icon } from '@/components/ui';
 import { TabScreen } from '@/features/navigation/tab-screen';
 
-// Placeholder until the More modules are built. For now it only links to the design-system screen.
+// Development only: the import sits in a `__DEV__` branch, so production bundles leave the demo data out.
+async function loadDemoDays() {
+  if (!__DEV__) return;
+  const { loadDemoDays: load } = await import('@/data/demo-days');
+  load(todayISO(new Date()));
+  Alert.alert('Demo days loaded', 'The design prototype\'s activities now fill the week before today through two weeks after.');
+}
+
+// Placeholder until the More modules are built. For now it links to the design-system screen.
 export function MoreScreen() {
   return (
     <TabScreen title="More" description="Inbox, routines, projects and journal will appear here.">
@@ -16,6 +26,16 @@ export function MoreScreen() {
             <Icon name="chev-r" size={18} colorClassName="text-ink-subtle" />
           </Pressable>
         </Link>
+        {__DEV__ && (
+          <Pressable
+            accessibilityRole="button"
+            onPress={loadDemoDays}
+            className="min-h-13 flex-row items-center gap-3 border-t border-line px-4 active:bg-sunken"
+          >
+            <Icon name="spark" size={18} colorClassName="text-ink-subtle" />
+            <Text className="type-body flex-1 text-ink">Load demo days</Text>
+          </Pressable>
+        )}
       </View>
     </TabScreen>
   );

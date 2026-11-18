@@ -3,6 +3,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaListener, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Uniwind } from 'uniwind';
 
+import { MigrationsGate } from '@/data/migrations-gate';
 import { AppTheme, useScreenStatusBarStyle } from '@/theme/app-theme';
 
 import '@/global.css';
@@ -18,7 +19,9 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <SafeAreaListener onChange={({ insets }) => Uniwind.updateInsets(insets)}>
           <AppTheme>
-            <RootStack />
+            <MigrationsGate>
+              <RootStack />
+            </MigrationsGate>
           </AppTheme>
         </SafeAreaListener>
       </SafeAreaProvider>

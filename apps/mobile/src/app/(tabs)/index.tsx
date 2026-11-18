@@ -1,5 +1,3 @@
-import { TabScreen } from '@/features/navigation/tab-screen';
+import { PlanScreen } from '@/features/plan/plan-screen';
 
-export default function PlanRoute() {
-  return <TabScreen title="Plan" description="The timeline for the selected day will appear here." />;
-}
+export default PlanScreen;

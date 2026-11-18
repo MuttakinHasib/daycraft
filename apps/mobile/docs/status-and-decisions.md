@@ -29,9 +29,9 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 | Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17, with the System / Light / Dark preference saved in `expo-sqlite/kv-store` (ticket 07). New dependency: `expo-sqlite`. |
 | `cn()` from the `cn` package, configured with Daycraft token names (`src/lib/cn.ts`) | Done 2026-11-17. New dependency: `cn`. |
 | Floating glass tab bar (Plan · Habits · Goals · More) with the + beside it (ADR-0009), placeholder Habits, Goals and More; design-system screen under More | Done 2026-11-18 (plan-timeline ticket 01). Liquid Glass on iOS 26+, frosted elsewhere. Until ticket 07 builds the editor, the + shows a "coming soon" notice instead of doing nothing. More's Inbox badge waits for the Inbox. |
-| Domain model, data layer, persistence | Not started |
+| Domain model, data layer, persistence: domain types and UUID v7/v5 ids in `@daycraft/domain`; `activity`, `subtask` and `sync_outbox` tables in local SQLite through Drizzle, migrated at startup behind the splash; the activity repository in `src/data/` with live reads; a development-only **Load demo days** row in More | Done 2026-11-18 (plan-timeline ticket 02). Drizzle 0.45 works with SDK 58, the React Compiler and Uniwind's Metro wrapper, so the raw `expo-sqlite` fallback was not needed. New dependencies: `drizzle-orm`, `expo-crypto` (native, needs a new development build); dev: `drizzle-kit`, `babel-plugin-inline-import`, `vitest`, `better-sqlite3`. `bunx drizzle-kit generate` (in `apps/mobile`) writes new migrations. |
 | Plan timeline, all modules | Not started (prototype only) |
-| Tests | Not set up |
+| Tests | Vitest: domain functions in `@daycraft/domain`, and the activity repository against a real SQLite database in Node (`better-sqlite3`). No component or end-to-end tests yet. |
 | Brand assets (icon, splash, app name) | Not applied: still Expo defaults, `name: daycraft_app`, splash `#208AEF` |
 
 ## Token gaps
