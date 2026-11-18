@@ -14,9 +14,9 @@ import {
   type ActivityHue,
   type ActivityInput,
   type ISODate,
-  type MinutesOfDay,
   type Subtask,
   type SubtaskInput,
+  type Timing,
 } from '@daycraft/domain';
 import { and, asc, eq, inArray, isNotNull, isNull, ne } from 'drizzle-orm';
 import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
@@ -51,12 +51,6 @@ export interface ActivityRepository {
   toggleDone(id: string): Activity;
   toggleSubtask(id: string): void;
   remove(id: string): void;
-}
-
-/** A new start and duration, as a drag commits them. */
-export interface Timing {
-  start: MinutesOfDay;
-  durationMinutes: number;
 }
 
 const MAX_DOTS = 4;

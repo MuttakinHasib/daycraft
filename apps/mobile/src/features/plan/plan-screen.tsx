@@ -1,30 +1,55 @@
-import { ScrollView, Text, View } from 'react-native';
+import {
+  dateTitle,
+  layoutDay,
+  minutesOfDay,
+  PHONE_SCALE,
+  todayISO,
+  type MinutesOfDay,
+} from '@daycraft/domain';
+import { useState } from 'react';
+import { Alert, Text, View } from 'react-native';
 
-import { todayISO } from '@daycraft/domain';
-
-import { useDayActivities } from '@/data/activity-store';
+import { activityRepository, useDayActivities } from '@/data/activity-store';
 import { useNow } from '@/lib/use-now';
 
-function clock(minutes: number): string {
-  const hours = Math.floor(minutes / 60);
-  return `${hours % 12 || 12}:${String(minutes % 60).padStart(2, '0')} ${hours < 12 ? 'AM' : 'PM'}`;
+import { Timeline } from './timeline';
+
+// TODO(plan-timeline ticket 07): open the editor instead of this notice.
+function comingSoon() {
+  Alert.alert('New task', 'Coming soon.');
 }
 
-/** Plan: the selected day's activities. */
+/** Plan: the selected date's header and its timeline. */
 export function PlanScreen() {
-  const date = todayISO(useNow());
+  const clock = useNow();
+  const today = todayISO(clock);
+  const [date] = useState(today);
   const activities = useDayActivities(date);
+  const isToday = date === today;
+  const now = minutesOfDay(clock);
+  const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday, now });
+  const title = dateTitle(date);
+
   return (
-    <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-3 px-5 pt-safe-offset-6 pb-30">
-      <Text accessibilityRole="header" className="type-display text-ink">
-        Plan
-      </Text>
-      {activities.map((activity) => (
-        <View key={activity.id} className="rounded-card bg-card px-4 py-3">
-          <Text className="type-meta text-ink-muted">{activity.start === null ? 'Anytime' : clock(activity.start)}</Text>
-          <Text className="type-activity text-ink">{activity.title}</Text>
+    <View className="flex-1 bg-canvas pt-safe">
+      <View className="px-5 pt-6 pb-2">
+        <Text accessibilityRole="header" className="type-date text-ink">
+          {`${title.monthDay}, `}
+          <Text className="text-accent-text">{title.year}</Text>
+        </Text>
+      </View>
+      <View className="mt-2 flex-1 overflow-hidden rounded-t-sheet border-t border-line bg-surface">
+        <View className="h-4.5 items-center justify-center">
+          <View className="h-1 w-9 rounded-full bg-line-strong" />
         </View>
-      ))}
-    </ScrollView>
+        <Timeline
+          layout={layout}
+          onOpen={() => undefined}
+          onToggle={(id) => activityRepository.toggleDone(id)}
+          onCreateAt={(_start: MinutesOfDay) => comingSoon()}
+          onPlanDay={comingSoon}
+        />
+      </View>
+    </View>
   );
 }

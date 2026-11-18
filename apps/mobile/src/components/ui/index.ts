@@ -1,11 +1,11 @@
 export { Button, ButtonSize, ButtonVariant } from './button';
 export { Capsule, CapsuleState } from './capsule';
 export { CheckRing } from './check-ring';
-export { Chip, ChipSize } from './chip';
+export { Chip, ChipSize, ChipTone } from './chip';
 export { ActivityHueBackground, ActivityHueBorder } from './hues';
 export { Icon } from './icon';
 export { SectionLabel } from './section-label';
 export { Segmented } from './segmented';
 export { Sheet } from './sheet';
 export { TabBar, TabRoute } from './tab-bar';
-export { Tag } from './tag';
+export { Tag, TagTone } from './tag';

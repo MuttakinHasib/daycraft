@@ -31,4 +31,44 @@ export {
 export { completionToggled, dailyProgress, type DailyProgress } from './completion';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
 export { DAYCRAFT_NAMESPACE, uuidV5, uuidV7 } from './ids';
+export {
+  clampToDay,
+  DAY_END,
+  DAY_START,
+  MIN_DURATION,
+  movedTiming,
+  resizedTiming,
+  SNAP_MINUTES,
+  snapMinutes,
+  type Timing,
+} from './timeline/day-limits';
+export {
+  dateTitle,
+  formatClock,
+  formatDuration,
+  formatGutterTime,
+  formatHour,
+  formatRange,
+  formatRelativeDate,
+  formatShortDate,
+  formatShortDuration,
+  formatTimeText,
+  type DateTitle,
+} from './timeline/format';
+export {
+  layoutDay,
+  mapTimeToY,
+  PHONE_SCALE,
+  RowState,
+  SpineKind,
+  type Anchor,
+  type DayLayout,
+  type DragPreview,
+  type FreeTimeHint,
+  type HourLabel,
+  type LayoutDayInput,
+  type SlotTarget,
+  type SpineSegment,
+  type TimelineRow,
+} from './timeline/layout';
 export { ColorScheme, isThemePreference, resolveColorScheme, ThemePreference } from './theme';
