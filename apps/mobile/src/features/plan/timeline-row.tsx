@@ -9,7 +9,7 @@ import {
 import { Pressable, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
-import { Capsule, CapsuleState, CheckRing, Icon, Tag, TagTone } from '@/components/ui';
+import { Capsule, CapsuleState, CheckRing, Icon, popIn, Tag, TagTone } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
 // Rows glide to their new place over 220ms; Reanimated skips layout animations under Reduce Motion.
@@ -25,12 +25,14 @@ const CAPSULE_STATE: Record<RowState, CapsuleState> = {
 
 interface TimelineRowProps {
   row: Row;
+  /** Just created: the capsule pops in. */
+  isNew: boolean;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
 }
 
 /** One activity on the timeline: start label, capsule, text column and check ring (timeline guide §1, §6). */
-export function TimelineRow({ row, onOpen, onToggle }: TimelineRowProps) {
+export function TimelineRow({ row, isNew, onOpen, onToggle }: TimelineRowProps) {
   const { activity, state } = row;
   const start = activity.start ?? 0;
   const done = state === RowState.DONE;
@@ -48,11 +50,14 @@ export function TimelineRow({ row, onOpen, onToggle }: TimelineRowProps) {
       className="absolute inset-x-0"
     >
       {row.showStartLabel && (
-        <Text style={TABULAR} className="absolute top-0.75 left-1 w-10 text-right type-micro font-sans-semibold text-ink-muted">
+        <Text
+          style={TABULAR}
+          className="absolute top-0.75 left-1 w-10 text-right type-micro font-sans-semibold text-ink-muted"
+        >
           {formatGutterTime(start)}
         </Text>
       )}
-      <View className="absolute top-0 left-13">
+      <Animated.View entering={isNew ? popIn : undefined} className="absolute top-0 left-13">
         <Capsule
           hue={activity.hue}
           state={CAPSULE_STATE[state]}
@@ -64,7 +69,7 @@ export function TimelineRow({ row, onOpen, onToggle }: TimelineRowProps) {
         >
           <Icon name={activity.icon} size={22} colorClassName="text-on-hue" />
         </Capsule>
-      </View>
+      </Animated.View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Open ${activity.title}`}

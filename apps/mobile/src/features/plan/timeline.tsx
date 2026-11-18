@@ -28,6 +28,8 @@ interface TimelineProps {
   /** Minutes of day for the now line's gutter label. */
   now: MinutesOfDay;
   scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
+  /** The activity created a moment ago: its capsule pops in. */
+  justCreatedId: string | null;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
   onCreateAt: (start: MinutesOfDay) => void;
@@ -128,6 +130,7 @@ export function Timeline({
   layout,
   now,
   scrollRef,
+  justCreatedId,
   onOpen,
   onToggle,
   onCreateAt,
@@ -168,7 +171,13 @@ export function Timeline({
           <FreeTime key={hint.next.id} hint={hint} onAdd={onAddInGap} />
         ))}
         {layout.rows.map((row) => (
-          <TimelineRow key={row.activity.id} row={row} onOpen={onOpen} onToggle={onToggle} />
+          <TimelineRow
+            key={row.activity.id}
+            row={row}
+            isNew={row.activity.id === justCreatedId}
+            onOpen={onOpen}
+            onToggle={onToggle}
+          />
         ))}
         {empty && (
           <View className="absolute top-10 right-6 left-28 items-start gap-2.5">

@@ -62,46 +62,109 @@ function everyDay(date: ISODate, offset: number): ActivityInput[] {
   const weekday = weekdayOf(date);
   const past = offset < 0;
   const list: ActivityInput[] = [
-    demo({ date, start: 360, durationMinutes: 0, title: 'Rise and shine', hue: 'clay', icon: 'alarm', kind: 'routine' }, { repeat: 'daily' }),
+    demo(
+      { date, start: 360, durationMinutes: 0, title: 'Rise and shine', hue: 'clay', icon: 'alarm', kind: 'routine' },
+      { repeat: 'daily' },
+    ),
     demo(
       { date, start: 370, durationMinutes: 35, title: 'Morning routine', hue: 'amber', icon: 'sun', kind: 'routine' },
       {
         repeat: 'daily',
-        subtasks: steps(['Make the bed', 'Stretch for 5 minutes', 'Cold shower', 'Coffee and plan the day'], offset <= 0),
+        subtasks: steps(
+          ['Make the bed', 'Stretch for 5 minutes', 'Cold shower', 'Coffee and plan the day'],
+          offset <= 0,
+        ),
       },
     ),
   ];
   if (offset !== 0) {
     if (weekday >= 1 && weekday <= 5) {
-      list.push(demo({ date, start: 570, durationMinutes: 120, title: 'Deep work', hue: 'clay', icon: 'laptop', kind: 'task' }, { labels: ['Work'] }));
+      list.push(
+        demo(
+          { date, start: 570, durationMinutes: 120, title: 'Deep work', hue: 'clay', icon: 'laptop', kind: 'task' },
+          { labels: ['Work'] },
+        ),
+      );
     }
     if (weekday === 1 || weekday === 3 || weekday === 5) {
-      list.push(demo({ date, start: 1050, durationMinutes: 60, title: 'Gym · Full body', hue: 'sage', icon: 'dumbbell', kind: 'routine' }));
+      list.push(
+        demo({
+          date,
+          start: 1050,
+          durationMinutes: 60,
+          title: 'Gym · Full body',
+          hue: 'sage',
+          icon: 'dumbbell',
+          kind: 'routine',
+        }),
+      );
     }
     if (weekday === 2 || weekday === 4) {
-      list.push(demo({ date, start: 1110, durationMinutes: 40, title: 'Evening run', hue: 'sage', icon: 'run', kind: 'task' }, { labels: ['Health'] }));
+      list.push(
+        demo(
+          { date, start: 1110, durationMinutes: 40, title: 'Evening run', hue: 'sage', icon: 'run', kind: 'task' },
+          { labels: ['Health'] },
+        ),
+      );
     }
     if (weekday === 6) {
-      list.push(demo({ date, start: 660, durationMinutes: 90, title: 'Family brunch', hue: 'rose', icon: 'utensils', kind: 'event' }, { location: 'Home' }));
+      list.push(
+        demo(
+          {
+            date,
+            start: 660,
+            durationMinutes: 90,
+            title: 'Family brunch',
+            hue: 'rose',
+            icon: 'utensils',
+            kind: 'event',
+          },
+          { location: 'Home' },
+        ),
+      );
     }
     if (weekday === 0) {
-      list.push(demo({ date, start: 600, durationMinutes: 60, title: 'Weekly review', hue: 'iris', icon: 'doc', kind: 'task' }, { repeat: 'weekly' }));
+      list.push(
+        demo(
+          { date, start: 600, durationMinutes: 60, title: 'Weekly review', hue: 'iris', icon: 'doc', kind: 'task' },
+          { repeat: 'weekly' },
+        ),
+      );
     }
   }
-  list.push(demo({ date, start: 1350, durationMinutes: 0, title: 'Wind down', hue: 'slate', icon: 'moon', kind: 'routine' }, { repeat: 'daily' }));
+  list.push(
+    demo(
+      { date, start: 1350, durationMinutes: 0, title: 'Wind down', hue: 'slate', icon: 'moon', kind: 'routine' },
+      { repeat: 'daily' },
+    ),
+  );
   return past ? list.map((activity) => ({ ...activity, done: true })) : list;
 }
 
 function today(date: ISODate): ActivityInput[] {
   return [
-    demo({ date, start: 415, durationMinutes: 35, title: 'Run · 5K', hue: 'sage', icon: 'run', kind: 'task' }, { done: true, labels: ['Health'] }),
-    demo({ date, start: 460, durationMinutes: 25, title: 'Breakfast', hue: 'amber', icon: 'coffee', kind: 'task' }, { done: true }),
+    demo(
+      { date, start: 415, durationMinutes: 35, title: 'Run · 5K', hue: 'sage', icon: 'run', kind: 'task' },
+      { done: true, labels: ['Health'] },
+    ),
+    demo(
+      { date, start: 460, durationMinutes: 25, title: 'Breakfast', hue: 'amber', icon: 'coffee', kind: 'task' },
+      { done: true },
+    ),
     demo(
       { date, start: 495, durationMinutes: 30, title: 'Read 20 pages', hue: 'iris', icon: 'book', kind: 'task' },
       { done: true, notes: 'The Creative Act, chapter 4.' },
     ),
     demo(
-      { date, start: 570, durationMinutes: 120, title: 'Deep work · Onboarding flow', hue: 'clay', icon: 'laptop', kind: 'task' },
+      {
+        date,
+        start: 570,
+        durationMinutes: 120,
+        title: 'Deep work · Onboarding flow',
+        hue: 'clay',
+        icon: 'laptop',
+        kind: 'task',
+      },
       {
         priority: 'high',
         labels: ['Work'],
@@ -123,7 +186,15 @@ function today(date: ISODate): ActivityInput[] {
       { location: 'Fika Café' },
     ),
     demo(
-      { date, start: 870, durationMinutes: 90, title: 'Write Q4 roadmap draft', hue: 'pine', icon: 'doc', kind: 'task' },
+      {
+        date,
+        start: 870,
+        durationMinutes: 90,
+        title: 'Write Q4 roadmap draft',
+        hue: 'pine',
+        icon: 'doc',
+        kind: 'task',
+      },
       {
         priority: 'medium',
         labels: ['Work'],
@@ -135,13 +206,32 @@ function today(date: ISODate): ActivityInput[] {
       { priority: 'low', labels: ['Errand'] },
     ),
     demo(
-      { date, start: 1050, durationMinutes: 60, title: 'Gym · Upper body', hue: 'sage', icon: 'dumbbell', kind: 'routine' },
+      {
+        date,
+        start: 1050,
+        durationMinutes: 60,
+        title: 'Gym · Upper body',
+        hue: 'sage',
+        icon: 'dumbbell',
+        kind: 'routine',
+      },
       { subtasks: steps(['Warm-up · 10 min', 'Bench press', 'Rows', 'Stretch'], false) },
     ),
     demo({ date, start: 1170, durationMinutes: 45, title: 'Dinner', hue: 'amber', icon: 'utensils', kind: 'task' }),
-    demo({ date, start: 1290, durationMinutes: 15, title: 'Journal and reflect', hue: 'iris', icon: 'pen', kind: 'task' }, { repeat: 'daily' }),
     demo(
-      { date, start: null, durationMinutes: 30, title: 'Review pull requests', hue: 'sky', icon: 'laptop', kind: 'task' },
+      { date, start: 1290, durationMinutes: 15, title: 'Journal and reflect', hue: 'iris', icon: 'pen', kind: 'task' },
+      { repeat: 'daily' },
+    ),
+    demo(
+      {
+        date,
+        start: null,
+        durationMinutes: 30,
+        title: 'Review pull requests',
+        hue: 'sky',
+        icon: 'laptop',
+        kind: 'task',
+      },
       { labels: ['Work'], priority: 'medium' },
     ),
   ];
@@ -151,26 +241,69 @@ function nearby(date: ISODate): ActivityInput[] {
   const on = (offset: number) => addDays(date, offset);
   return [
     demo(
-      { date: on(1), start: 840, durationMinutes: 45, title: 'Dentist appointment', hue: 'rose', icon: 'heart', kind: 'event' },
+      {
+        date: on(1),
+        start: 840,
+        durationMinutes: 45,
+        title: 'Dentist appointment',
+        hue: 'rose',
+        icon: 'heart',
+        kind: 'event',
+      },
       { location: 'Smile Dental, Banani' },
     ),
     demo(
-      { date: on(2), start: 900, durationMinutes: 60, title: 'Product review', hue: 'sky', icon: 'video', kind: 'event' },
+      {
+        date: on(2),
+        start: 900,
+        durationMinutes: 60,
+        title: 'Product review',
+        hue: 'sky',
+        icon: 'video',
+        kind: 'event',
+      },
       { location: 'Room 4B', labels: ['Work'] },
     ),
     demo(
-      { date: on(3), start: 1170, durationMinutes: 90, title: 'Dinner with parents', hue: 'rose', icon: 'utensils', kind: 'event' },
+      {
+        date: on(3),
+        start: 1170,
+        durationMinutes: 90,
+        title: 'Dinner with parents',
+        hue: 'rose',
+        icon: 'utensils',
+        kind: 'event',
+      },
       { location: 'Mom and Dad' },
     ),
     demo(
-      { date: on(6), start: 720, durationMinutes: 90, title: 'Quarterly planning', hue: 'sky', icon: 'briefcase', kind: 'event' },
+      {
+        date: on(6),
+        start: 720,
+        durationMinutes: 90,
+        title: 'Quarterly planning',
+        hue: 'sky',
+        icon: 'briefcase',
+        kind: 'event',
+      },
       { location: 'Main office', labels: ['Work'] },
     ),
     demo(
-      { date: on(8), start: 1140, durationMinutes: 120, title: 'Concert night', hue: 'iris', icon: 'music', kind: 'event' },
+      {
+        date: on(8),
+        start: 1140,
+        durationMinutes: 120,
+        title: 'Concert night',
+        hue: 'iris',
+        icon: 'music',
+        kind: 'event',
+      },
       { location: 'City Hall' },
     ),
-    demo({ date: on(-1), start: 780, durationMinutes: 45, title: 'Lunch walk', hue: 'sage', icon: 'leaf', kind: 'task' }, { done: true }),
+    demo(
+      { date: on(-1), start: 780, durationMinutes: 45, title: 'Lunch walk', hue: 'sage', icon: 'leaf', kind: 'task' },
+      { done: true },
+    ),
   ];
 }
 
@@ -180,7 +313,8 @@ export function loadDemoDays(date: ISODate): void {
     for (const existing of activityRepository.readDay(addDays(date, offset))) activityRepository.remove(existing.id);
   }
   const inputs: ActivityInput[] = [];
-  for (let offset = -DAYS_BEFORE; offset <= DAYS_AFTER; offset++) inputs.push(...everyDay(addDays(date, offset), offset));
+  for (let offset = -DAYS_BEFORE; offset <= DAYS_AFTER; offset++)
+    inputs.push(...everyDay(addDays(date, offset), offset));
   inputs.push(...today(date), ...nearby(date));
   for (const input of inputs) activityRepository.create(input);
 }

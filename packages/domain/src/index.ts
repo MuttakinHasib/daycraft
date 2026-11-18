@@ -43,6 +43,21 @@ export {
   type Timing,
 } from './timeline/day-limits';
 export {
+  DEFAULT_DURATION,
+  DEFAULT_START,
+  editorDefaults,
+  EntryPoint,
+  nextFreeSlot,
+  savedToast,
+  validateActivity,
+  VALIDATION_MESSAGES,
+  ValidationReason,
+  type EditorDefaultsInput,
+  type NextFreeSlotInput,
+  type SavedToastInput,
+  type ValidationResult,
+} from './timeline/editor';
+export {
   dateTitle,
   formatClock,
   formatDuration,

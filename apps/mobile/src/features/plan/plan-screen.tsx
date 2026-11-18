@@ -1,22 +1,43 @@
-import { dailyProgress, layoutDay, minutesOfDay, PHONE_SCALE, todayISO, type DayLayout } from '@daycraft/domain';
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useRef, useState, type ComponentRef } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import {
+  dailyProgress,
+  EntryPoint,
+  layoutDay,
+  minutesOfDay,
+  PHONE_SCALE,
+  todayISO,
+  type DayLayout,
+  type MinutesOfDay,
+  type Timing,
+} from '@daycraft/domain';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useRef, type ComponentRef } from 'react';
+import { ScrollView, View } from 'react-native';
 
 import { useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
 import { useNow } from '@/lib/use-now';
 
 import { PlanHeader } from './plan-header';
+import { selectDate, useJustCreatedId, useSelectedDate } from './plan-state';
 import { Timeline } from './timeline';
 
 // Where Plan lands (timeline guide §11): the now line 170pt from the top on today, else the first activity 10pt from it.
 const NOW_OFFSET = 170;
 const FIRST_ROW_OFFSET = 10;
 
-// TODO(plan-timeline ticket 07): open the editor instead of this notice.
-function comingSoon() {
-  Alert.alert('New task', 'Coming soon.');
+function openEditorAt(start: MinutesOfDay) {
+  router.push({ pathname: '/activity/new', params: { entry: EntryPoint.SLOT, start } });
+}
+
+function openEditorInGap(timing: Timing) {
+  router.push({
+    pathname: '/activity/new',
+    params: { entry: EntryPoint.FREE_TIME, start: timing.start, duration: timing.durationMinutes },
+  });
+}
+
+function planDay() {
+  router.push({ pathname: '/activity/new', params: { entry: EntryPoint.PLAN_DAY } });
 }
 
 function landingY(layout: DayLayout): number {
@@ -29,7 +50,8 @@ function landingY(layout: DayLayout): number {
 export function PlanScreen() {
   const clock = useNow();
   const today = todayISO(clock);
-  const [date, setDate] = useState(today);
+  const date = useSelectedDate(today);
+  const justCreatedId = useJustCreatedId();
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now });
@@ -54,7 +76,7 @@ export function PlanScreen() {
 
   return (
     <View className="flex-1 bg-canvas pt-safe">
-      <PlanHeader date={date} today={today} progress={dailyProgress(activities)} onSelectDate={setDate} />
+      <PlanHeader date={date} today={today} progress={dailyProgress(activities)} onSelectDate={selectDate} />
       <View className="mt-2 flex-1 overflow-hidden rounded-t-sheet border-t border-line bg-surface">
         <View className="h-4.5 items-center justify-center">
           <View className="h-1 w-9 rounded-full bg-line-strong" />
@@ -65,9 +87,10 @@ export function PlanScreen() {
           scrollRef={scrollRef}
           onOpen={() => undefined}
           onToggle={toggleDone}
-          onCreateAt={comingSoon}
-          onPlanDay={comingSoon}
-          onAddInGap={comingSoon}
+          justCreatedId={justCreatedId}
+          onCreateAt={openEditorAt}
+          onPlanDay={planDay}
+          onAddInGap={openEditorInGap}
         />
       </View>
     </View>

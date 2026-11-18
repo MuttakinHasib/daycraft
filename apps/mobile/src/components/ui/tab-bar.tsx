@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
+import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -44,6 +44,12 @@ interface TabButtonProps {
 
 interface CreateButtonProps {
   action: CreateAction;
+  onPress: () => void;
+}
+
+interface TabBarProps extends BottomTabBarProps {
+  /** What the + does for the focused tab's action. */
+  onCreate: (action: CreateAction) => void;
 }
 
 interface PillProps {
@@ -62,13 +68,13 @@ interface Slot {
 }
 
 /** What the + creates; its label follows the focused tab. */
-const CreateAction = {
+export const CreateAction = {
   NEW_TASK: 'New task',
   NEW_HABIT: 'New habit',
 } as const;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
-type CreateAction = (typeof CreateAction)[keyof typeof CreateAction];
+export type CreateAction = (typeof CreateAction)[keyof typeof CreateAction];
 
 /** The tab routes in `app/(tabs)`, by file name. */
 export const TabRoute = {
@@ -114,18 +120,14 @@ function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
   );
 }
 
-// The bar's one colored element: a solid accent circle beside the pill. Until ticket 07 builds the
-// editor, a tap says that creating is coming soon, so the button always responds.
-function CreateButton({ action }: CreateButtonProps) {
+// The bar's one colored element: a solid accent circle beside the pill.
+function CreateButton({ action, onPress }: CreateButtonProps) {
   const colors = useThemeColors();
-  // TODO(plan-timeline ticket 07): open the editor sheet for `action` instead of this notice.
-  const onPress = () => Alert.alert(action, 'Coming soon.');
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={action}
-      accessibilityHint="Coming soon"
       style={{
         boxShadow: `inset 0 1px 0 ${glass.plus.highlight}, ${glass.plus.glow} ${withOpacity(colors.accent, glass.plus.glowOpacity)}`,
       }}
@@ -204,7 +206,7 @@ function Fade() {
 }
 
 /** The floating pill Plan · Habits · Goals · More with the + beside it (ADR-0003, ADR-0009). */
-export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
+export function TabBar({ state, emitter, navigateToTab, onCreate }: TabBarProps) {
   const routes = state.routes.filter((route) => isTabRoute(route.name));
   const focusedKey = state.routes[state.index]?.key;
   const focusedIndex = routes.findIndex((route) => route.key === focusedKey);
@@ -272,7 +274,7 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
             {tabs}
           </View>
         </Pill>
-        <CreateButton action={action} />
+        <CreateButton action={action} onPress={() => onCreate(action)} />
       </View>
     </>
   );

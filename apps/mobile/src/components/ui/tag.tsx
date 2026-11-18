@@ -35,7 +35,11 @@ export function Tag({ icon, trailingIcon, tone = TagTone.NEUTRAL, children }: Ta
     >
       {now && <View className="size-1.5 rounded-full bg-accent" />}
       {icon && <Icon name={icon} size={12} colorClassName={color} />}
-      <Text numberOfLines={1} style={{ fontVariant: ['tabular-nums'] }} className={cn('shrink text-xs font-sans-semibold', color)}>
+      <Text
+        numberOfLines={1}
+        style={{ fontVariant: ['tabular-nums'] }}
+        className={cn('shrink text-xs font-sans-semibold', color)}
+      >
         {children}
       </Text>
       {trailingIcon && <Icon name={trailingIcon} size={11} colorClassName={color} />}

@@ -51,7 +51,12 @@ function ProgressRing({ progress }: ProgressRingProps) {
       accessibilityLabel={`${percent} percent, ${done} of ${total} done`}
       className="size-11 items-center justify-center"
     >
-      <Svg width={RING_SIZE} height={RING_SIZE} viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`} style={{ position: 'absolute' }}>
+      <Svg
+        width={RING_SIZE}
+        height={RING_SIZE}
+        viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
+        style={{ position: 'absolute' }}
+      >
         <Circle cx={22} cy={22} r={RING_RADIUS} fill="none" stroke={colors['line-strong']} strokeWidth={RING_STROKE} />
         {percent > 0 && (
           <Circle
@@ -120,7 +125,10 @@ function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
             <View className="h-2.5 flex-row items-center">
               {(dots[day] ?? []).map((hue) => (
                 // A canvas halo around each dot keeps overlapping dots apart.
-                <View key={hue} className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0">
+                <View
+                  key={hue}
+                  className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
+                >
                   <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
                 </View>
               ))}
