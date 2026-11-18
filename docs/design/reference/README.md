@@ -15,7 +15,8 @@ All screens use the prototype's fixed sample data and clock: **Tue, Nov 17, 2026
 | `screens/desktop/today-1920-light.png` | Large desktop 1920: content capped at 1360 |
 | `design-system-v2.png` | Design system v2 (Clean): neutrals, accent, activity hues and their capsule tints, Onest type scale, components, what changed from v1.1 |
 | `design-system-v1.1.png` | The old v1.1 board (history only) |
-| `brand/sunrise-pen.png` | The current logo: Sunrise Pen, app icon appearances, sizes, lockups |
+| `brand/blocks-and-pen.png` | The current logo: blocks and pen with a rising sun (S2), icon in light and dark, sizes, lockups |
+| `brand/sunrise-pen.png` | The previous logo, kept for history |
 | `brand/logo-concepts.png`, `brand/logo-system.png` | Earlier logo exploration and the retired Daybreak system (history only) |
 | `prototype/*.html` | **Runnable prototype.** Open in a browser (works offline). Click through screens; the logic in each file's `<script>` is the reference implementation of behavior such as the timeline layout and drag/resize |
 | `daycraft-tailwind-v1.1.css` | Old v1.1 tokens (history only; current values are in `@daycraft/design-tokens`) |

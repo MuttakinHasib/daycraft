@@ -32,7 +32,7 @@ The canvas pages "v2 · Refined" and "v1 · Original" are superseded. Do not cop
 
 ## Next implementation steps
 
-1. Root favicon and metadata from the Sunrise Pen logo package (`packages/brand`, once supplied).
+1. Root favicon, Apple icon and web manifest are in place (blocks-and-pen mark, `src/app/icon.svg`, `apple-icon.png`, `favicon.ico`, `manifest.ts`). Still to do: the sidebar logo.
 2. Domain layer and timeline layout function with tests, then the Plan screen.
 
 ## Design system decisions (2026-11-17)

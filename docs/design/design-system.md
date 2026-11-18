@@ -144,9 +144,28 @@ From `@daycraft/icons` (ADR-0002): Lucide at stroke 1.9, plus the prototype's ow
 
 ## Brand
 
-- **Logo:** Sunrise Pen (the logo board "12 · Final mark" on the canvas): a half sun with five short rays, a horizon line, and a fountain pen whose nib draws the horizon. Two tones: the sun and rays are the soft layer, the pen and horizon are solid. The wordmark is lowercase "daycraft".
-- **Colors in the app:** sun and rays `clay` at 55%, pen and horizon `ink`. Below 40px use the small-size drawing (thicker rays and horizon, solid nib).
-- **App icon:** the appearances on the logo board (light, dark, tinted, cream).
-- **Splash:** the pen slides in and draws the horizon, the sun rises behind it, the rays pop out left to right, then the wordmark fades up; 2.6s, then a fade into onboarding (spec on the canvas page "Splash & onboarding").
-- **Web sidebar:** mark 38×32 + wordmark 24 tall. **Favicon:** the small-size drawing.
-- Assets: export from the logo board into `packages/brand` (not in the repo yet).
+- **Logo:** Blocks and pen, sun with rays (canvas board "17 · Blocks, sun and pen", version S2). On the left, a planned day as three blocks: a sun with three short rays, a task chip and a rounded block. On the right, the timeline capsule as a fountain pen with a nib, its slit and breather hole cut out. The wordmark is lowercase "daycraft" in Onest 600, `ink` (`#F4F4F2` on dark).
+- **Colours:** flat, no gradients. Sun `#FFC233`, chip `sage` `#39A25B`, block `#4A7FF8`, pen `clay` `#FF541A`. The icon sits on white. One-colour versions (iOS tinted, Android themed, print) draw every part in one colour and keep the nib cut-outs.
+- **Small sizes:** at 32px and below, use the small drawing: no rays, a larger sun, a solid nib.
+- **Splash:** the native launch screen is only the background, `#FFFFFF` (`#111111` in dark); `splash-icon.png` is a transparent placeholder. On top of it, `AnimatedSplash` (`apps/mobile/src/features/splash`) builds the mark once the database is ready, over 2.6 s: the blue block drops in with a bounce, then the green chip (0–520 ms); the pen slides up (310–880 ms); the sun rises (570–990 ms); the rays pop out from their inner ends, 70 ms apart (960–1360 ms); the wordmark fades up (1250–1610 ms); then everything fades and scales to 104% into the app (2240–2600 ms). Reduce Motion: the full lockup holds 400 ms, then fades. Storyboard and live loop: canvas board "18 · Splash animation".
+
+### App icons
+
+Source of truth: the generator in the canvas work (1024 SVG per asset), exported as PNG.
+
+| File | Size | Rules |
+|---|---|---|
+| `apps/mobile/assets/images/icon.png` | 1024×1024 | Top-level `icon`. Full bleed, no transparency, no rounded corners (the OS masks it) |
+| `ios-light.png` / `ios-dark.png` / `ios-tinted.png` | 1024×1024 | `ios.icon.{light,dark,tinted}`. Light is the mark on opaque white; dark is the mark on transparent (iOS draws the dark backdrop) (iOS draws the dark backdrop); tinted is the mark in white on transparent |
+| `android-icon-foreground.png` | 1024×1024 (108dp) | Transparent; the mark stays inside the 66dp safe circle (46% of the height) |
+| `android-icon-background.png` | 1024×1024 | Flat white, same size as the foreground; `backgroundColor` `#FFFFFF` matches it |
+| `android-icon-monochrome.png` | 1024×1024 | The mark in white on transparent, same placement as the foreground (themed icons) |
+| `splash-icon.png`, `splash-icon-dark.png` | 1024×1024 | Fully transparent: the native launch screen shows only the background (`#FFFFFF`, dark `#111111`) and `AnimatedSplash` draws the mark |
+| `favicon.png` | 48×48 | Expo web favicon |
+| `apps/web/src/app/icon.svg` | vector | Next.js favicon for modern browsers |
+| `apps/web/src/app/favicon.ico` | 16, 32, 48 | Fallback; the 16 and 32px layers use the small drawing |
+| `apps/web/src/app/apple-icon.png` | 180×180 | Full bleed, opaque (iOS rounds it) |
+| `apps/web/public/icons/icon-192.png`, `icon-512.png` | 192, 512 | PWA icons in `app/manifest.ts` |
+| `apps/web/public/icons/icon-maskable-512.png` | 512 | `purpose: maskable`; the mark stays inside the 80% safe circle |
+
+Icon changes only show in a new native build (prebuild); Expo Go and an old dev build keep the previous icon and splash.
