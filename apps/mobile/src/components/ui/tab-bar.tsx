@@ -3,7 +3,7 @@ import type { IconName } from '@daycraft/domain';
 import { BlurView } from 'expo-blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import type { BottomTabBarProps } from 'expo-router/tabs';
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -208,7 +208,9 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   const focusedIndex = routes.findIndex((route) => route.key === focusedKey);
   const action = createActionFor(state.routes[state.index]?.name);
 
-  const slots = useSharedValue<Slot[]>([]);
+  // Slot positions are only read on the JS side, so they live in React state, not a shared value.
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const placed = useRef(false);
   const selectionX = useSharedValue(0);
   const selectionWidth = useSharedValue(0);
   const reduceMotion = useReducedMotion();
@@ -224,25 +226,25 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
     if (route.key !== focusedKey && !event.defaultPrevented) navigateToTab(route.key);
   };
 
+  // The one place the selection moves: placed on first measurement (or with Reduce Motion), sprung after.
   useEffect(() => {
-    const slot = slots.get()[focusedIndex];
+    const slot = slots[focusedIndex];
     if (!slot) return;
-    selectionX.set(reduceMotion ? slot.x : withSpring(slot.x, springs.snap));
-    selectionWidth.set(reduceMotion ? slot.width : withSpring(slot.width, springs.snap));
+    const jump = reduceMotion || !placed.current;
+    placed.current = true;
+    selectionX.set(jump ? slot.x : withSpring(slot.x, springs.snap));
+    selectionWidth.set(jump ? slot.width : withSpring(slot.width, springs.snap));
   }, [focusedIndex, slots, selectionX, selectionWidth, reduceMotion]);
 
   const onSlotLayout = (index: number, event: LayoutChangeEvent) => {
     const { x, width } = event.nativeEvent.layout;
-    slots.modify((current) => {
-      'worklet';
-      current[index] = { x, width };
-      return current;
+    setSlots((current) => {
+      const previous = current[index];
+      if (previous && previous.x === x && previous.width === width) return current;
+      const next = [...current];
+      next[index] = { x, width };
+      return next;
     });
-    // The first measurement places the selection without animating it in.
-    if (index === focusedIndex) {
-      selectionX.set(x);
-      selectionWidth.set(width);
-    }
   };
 
   const tabs = routes.map((route, index) =>
