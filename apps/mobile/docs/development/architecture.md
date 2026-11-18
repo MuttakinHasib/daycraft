@@ -77,7 +77,7 @@ A 9:30 meeting stays at 9:30 when the user travels. This matches the prototype a
 
 ## Forms and validation
 
-- Sheets keep the draft in local state. Their `TextInput`s take a `defaultValue` and report each change, rather than being controlled: a controlled input re-renders the whole sheet on every keystroke and drops characters under fast typing. Saving validates the draft:
+- Sheets keep the draft in local state. Their `TextInput`s take a `defaultValue` and report each change instead of being controlled. A controlled input re-renders the whole sheet on every keystroke and drops characters when typing is fast. Saving validates the draft:
   - title required;
   - habit name required;
   - routine name and ≥ 1 step required.
