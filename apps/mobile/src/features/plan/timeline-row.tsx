@@ -6,16 +6,24 @@ import {
   RowState,
   type TimelineRow as Row,
 } from '@daycraft/domain';
+import { shadows } from '@daycraft/design-tokens';
 import { Pressable, Text, View } from 'react-native';
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { Capsule, CapsuleState, CheckRing, Icon, popIn, Tag, TagTone } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
+import { DragMode, type TimelineDrag } from './use-timeline-drag';
+
 // Rows glide to their new place over 220ms; Reanimated skips layout animations under Reduce Motion.
 export const ROW_TRANSITION = LinearTransition.duration(220);
 
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
+
+// Movement under this many points is a tap, so scrolling and tapping still work (timeline guide §10).
+const DRAG_THRESHOLD: [number, number] = [-6, 6];
+const GRIP_HEIGHT = 18;
 
 const CAPSULE_STATE: Record<RowState, CapsuleState> = {
   upcoming: CapsuleState.IDLE,
@@ -27,12 +35,15 @@ interface TimelineRowProps {
   row: Row;
   /** Just created: the capsule pops in. */
   isNew: boolean;
+  /** True while this row is being dragged: it lifts and stops animating. */
+  dragging: boolean;
+  drag: TimelineDrag;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
 }
 
 /** One activity on the timeline: start label, capsule, text column and check ring (timeline guide §1, §6). */
-export function TimelineRow({ row, isNew, onOpen, onToggle }: TimelineRowProps) {
+export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: TimelineRowProps) {
   const { activity, state } = row;
   const start = activity.start ?? 0;
   const done = state === RowState.DONE;
@@ -42,11 +53,31 @@ export function TimelineRow({ row, isNew, onOpen, onToggle }: TimelineRowProps) 
     resizable ? ', drag the bottom grip to resize' : ''
   }.`;
 
+  const resize = usePanGesture({
+    activeOffsetY: DRAG_THRESHOLD,
+    enabled: resizable,
+    runOnJS: true,
+    onActivate: () => drag.begin(activity, DragMode.RESIZE),
+    onUpdate: (event) => drag.update(event.translationY),
+    onDeactivate: (event) => drag.end(event.canceled),
+  });
+  const move = usePanGesture({
+    activeOffsetY: DRAG_THRESHOLD,
+    runOnJS: true,
+    requireToFail: resize,
+    onActivate: () => drag.begin(activity, DragMode.MOVE),
+    onUpdate: (event) => drag.update(event.translationY),
+    onDeactivate: (event) => drag.end(event.canceled),
+  });
+  const open = () => {
+    if (!drag.isPressSuppressed()) onOpen(activity.id);
+  };
+
   return (
     <Animated.View
-      layout={ROW_TRANSITION}
+      layout={dragging ? undefined : ROW_TRANSITION}
       pointerEvents="box-none"
-      style={{ top: row.top, height: row.rowHeight }}
+      style={{ top: row.top, height: row.rowHeight, zIndex: dragging ? 20 : 5 }}
       className="absolute inset-x-0"
     >
       {row.showStartLabel && (
@@ -57,23 +88,47 @@ export function TimelineRow({ row, isNew, onOpen, onToggle }: TimelineRowProps) 
           {formatGutterTime(start)}
         </Text>
       )}
-      <Animated.View entering={isNew ? popIn : undefined} className="absolute top-0 left-13">
-        <Capsule
+      {dragging && (
+        <View className="absolute -top-7.5 left-28 h-6 justify-center rounded-full bg-ink px-2.5">
+          <Text style={TABULAR} className="text-xs font-sans-semibold text-canvas">
+            {formatRange(start, activity.durationMinutes)}
+          </Text>
+        </View>
+      )}
+      <GestureDetector gesture={move}>
+        <Animated.View
+          entering={isNew ? popIn : undefined}
+          style={dragging ? { boxShadow: shadows.lift, borderRadius: 24 } : undefined}
+          className="absolute top-0 left-13"
+        >
+          <Capsule
           hue={activity.hue}
           state={CAPSULE_STATE[state]}
           height={row.capsuleHeight}
           elapsed={row.elapsed}
-          grip={resizable}
-          onPress={() => onOpen(activity.id)}
-          accessibilityLabel={capsuleLabel}
-        >
-          <Icon name={activity.icon} size={22} colorClassName="text-on-hue" />
-        </Capsule>
-      </Animated.View>
+            grip={resizable}
+            onPress={open}
+            accessibilityLabel={capsuleLabel}
+          >
+            <Icon name={activity.icon} size={22} colorClassName="text-on-hue" />
+          </Capsule>
+        </Animated.View>
+      </GestureDetector>
+      {resizable && (
+        // The grip's own touch area, over the capsule's bottom 18pt.
+        <GestureDetector gesture={resize}>
+          <View
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+            style={{ top: row.capsuleHeight - GRIP_HEIGHT, height: GRIP_HEIGHT }}
+            className="absolute left-13 w-12"
+          />
+        </GestureDetector>
+      )}
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`Open ${activity.title}`}
-        onPress={() => onOpen(activity.id)}
+        onPress={open}
         className="absolute top-0 right-14 left-28 items-start gap-px pt-0.5"
       >
         <View className="flex-row items-center gap-1.25">

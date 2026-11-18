@@ -20,6 +20,7 @@ import { useNow } from '@/lib/use-now';
 import { PlanHeader } from './plan-header';
 import { selectDate, useJustCreatedId, useSelectedDate } from './plan-state';
 import { Timeline } from './timeline';
+import { useTimelineDrag } from './use-timeline-drag';
 
 // Where Plan lands (timeline guide §11): the now line 170pt from the top on today, else the first activity 10pt from it.
 const NOW_OFFSET = 170;
@@ -54,8 +55,12 @@ export function PlanScreen() {
   const justCreatedId = useJustCreatedId();
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
-  const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now });
   const toast = useToast();
+  const drag = useTimelineDrag(({ id, timing, message }) => {
+    activityRepository.reschedule(id, timing);
+    toast(message);
+  });
+  const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now, preview: drag.preview });
   const toggleDone = (id: string) => {
     const activity = activityRepository.toggleDone(id);
     toast(activity.done ? `Done · ${activity.title}` : 'Marked as not done');
@@ -88,6 +93,7 @@ export function PlanScreen() {
           onOpen={(id) => router.push({ pathname: '/activity/[id]', params: { id } })}
           onToggle={toggleDone}
           justCreatedId={justCreatedId}
+          drag={drag}
           onCreateAt={openEditorAt}
           onPlanDay={planDay}
           onAddInGap={openEditorInGap}

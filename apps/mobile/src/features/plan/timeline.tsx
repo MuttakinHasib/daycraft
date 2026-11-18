@@ -19,6 +19,7 @@ import { Chip, ChipTone, Icon } from '@/components/ui';
 import { useThemeColors } from '@/theme/app-theme';
 
 import { ROW_TRANSITION, TimelineRow } from './timeline-row';
+import type { TimelineDrag } from './use-timeline-drag';
 
 const DASH = 5;
 const NOW_LINE_WIDTH = 1.5;
@@ -30,6 +31,7 @@ interface TimelineProps {
   scrollRef?: Ref<ComponentRef<typeof ScrollView>>;
   /** The activity created a moment ago: its capsule pops in. */
   justCreatedId: string | null;
+  drag: TimelineDrag;
   onOpen: (id: string) => void;
   onToggle: (id: string) => void;
   onCreateAt: (start: MinutesOfDay) => void;
@@ -131,6 +133,7 @@ export function Timeline({
   now,
   scrollRef,
   justCreatedId,
+  drag,
   onOpen,
   onToggle,
   onCreateAt,
@@ -139,7 +142,12 @@ export function Timeline({
 }: TimelineProps) {
   const empty = layout.rows.length === 0;
   return (
-    <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false}>
+    <ScrollView
+      ref={scrollRef}
+      scrollEnabled={drag.preview === null}
+      className="flex-1"
+      showsVerticalScrollIndicator={false}
+    >
       <View style={{ height: layout.contentHeight }}>
         {layout.slots.map((slot) => (
           <Pressable
@@ -175,6 +183,8 @@ export function Timeline({
             key={row.activity.id}
             row={row}
             isNew={row.activity.id === justCreatedId}
+            dragging={drag.preview?.id === row.activity.id}
+            drag={drag}
             onOpen={onOpen}
             onToggle={onToggle}
           />
