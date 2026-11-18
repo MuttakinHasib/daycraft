@@ -26,8 +26,8 @@ const fonts = Object.entries(FONT_FILES).map(([fontFamily, { file, weight }]) =>
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: config.name ?? 'daycraft_app',
-  slug: config.slug ?? 'daycraft_app',
+  name: config.name ?? 'Daycraft',
+  slug: config.slug ?? 'daycraft',
   plugins: [
     ...(config.plugins ?? []),
     [

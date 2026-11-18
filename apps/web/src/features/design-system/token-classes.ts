@@ -41,6 +41,7 @@ export const TypePresetClass: Record<TypePreset, string> = {
   label: "type-label",
   micro: "type-micro",
   clock: "type-clock",
+  wordmark: "type-wordmark",
 };
 
 export const RadiusClass: Record<Radius, string> = {

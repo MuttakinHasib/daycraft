@@ -33,6 +33,7 @@ export const TypePreset = {
   LABEL: 'label',
   MICRO: 'micro',
   CLOCK: 'clock',
+  WORDMARK: 'wordmark',
 } as const;
 
 export type TypePreset = (typeof TypePreset)[keyof typeof TypePreset];
@@ -62,6 +63,7 @@ export const typeScale: Record<TypePreset, TypeStyle> = {
   label: { size: 12, letterSpacing: 0.06, weight: 600, use: 'Uppercase section labels' },
   micro: { size: 11, weight: 500, use: 'Timeline gutter, tab labels' },
   clock: { size: 56, letterSpacing: -0.03, weight: 500, use: 'Focus timer only' },
+  wordmark: { size: 40, lineHeight: 1.1, letterSpacing: -0.03, weight: 600, use: 'The "daycraft" wordmark under the mark (splash)' },
 };
 
 /** A one-line spec of a preset, e.g. `30px · 600 · lh 1.1 · -0.03em`. */

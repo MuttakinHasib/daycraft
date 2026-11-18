@@ -53,6 +53,7 @@ const SAMPLE: Record<TypePreset, string> = {
   label: "Section label",
   micro: "10:40",
   clock: "24:59",
+  wordmark: "daycraft",
 };
 
 // Inline style: this swatch shows a fixed theme's value, which no class can express.
