@@ -1,5 +1,4 @@
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, type ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
@@ -8,18 +7,17 @@ import { database } from './database';
 
 interface MigrationsGateProps {
   children: ReactNode;
+  /** Called once the database is migrated or has failed; the launch animation waits for it. */
+  onSettled?: () => void;
 }
 
-// Keeps the splash screen up until the database is migrated.
-void SplashScreen.preventAutoHideAsync();
-
 /** Renders the app once the database schema is current. */
-export function MigrationsGate({ children }: MigrationsGateProps) {
+export function MigrationsGate({ children, onSettled }: MigrationsGateProps) {
   const { success, error } = useMigrations(database, migrations);
 
   useEffect(() => {
-    if (success || error) SplashScreen.hide();
-  }, [success, error]);
+    if (success || error) onSettled?.();
+  }, [success, error, onSettled]);
 
   if (error) {
     return (
