@@ -23,6 +23,8 @@ function RootStack() {
     <Stack screenOptions={{ headerShown: false, statusBarStyle }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="activity/new" options={ACTIVITY_SHEET} />
+      <Stack.Screen name="activity/[id]/index" options={ACTIVITY_SHEET} />
+      <Stack.Screen name="activity/[id]/edit" options={ACTIVITY_SHEET} />
     </Stack>
   );
 }

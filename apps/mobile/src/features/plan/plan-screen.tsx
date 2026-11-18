@@ -85,7 +85,7 @@ export function PlanScreen() {
           layout={layout}
           now={now}
           scrollRef={scrollRef}
-          onOpen={() => undefined}
+          onOpen={(id) => router.push({ pathname: '/activity/[id]', params: { id } })}
           onToggle={toggleDone}
           justCreatedId={justCreatedId}
           onCreateAt={openEditorAt}

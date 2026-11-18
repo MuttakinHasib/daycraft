@@ -52,6 +52,9 @@ const SCHEDULING = [
 
 let nextDraftKey = 0;
 
+// Six icons per row.
+const ICON_CELL_WIDTH = `${100 / 6}%` as const;
+
 const HUE_NAMES: Record<Hue, string> = {
   clay: 'Clay',
   amber: 'Amber',
@@ -261,7 +264,7 @@ export function IconField({ value, onChange }: IconFieldProps) {
         {ACTIVITY_ICONS.map((icon) => {
           const selected = icon === value;
           return (
-            <View key={icon} className="w-1/6 items-center">
+            <View key={icon} style={{ width: ICON_CELL_WIDTH }} className="items-center">
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={icon}
@@ -369,15 +372,18 @@ export function SubtasksField({ value, onChange }: SubtasksFieldProps) {
             value={draft}
             onChangeText={setDraft}
             onSubmitEditing={add}
-            submitBehavior="submit"
+            // Keep the keyboard up while adding several; an empty submit closes it.
+            submitBehavior={draft.trim() ? 'submit' : 'blurAndSubmit'}
             returnKeyType="done"
             placeholder="Add a subtask"
             placeholderTextColor={colors['ink-subtle']}
             className="h-12 flex-1 type-body text-ink"
           />
-          <Chip size={ChipSize.SM} onPress={add}>
-            Add
-          </Chip>
+          <View>
+            <Chip size={ChipSize.SM} onPress={add}>
+              Add
+            </Chip>
+          </View>
         </View>
       </View>
     </Field>
