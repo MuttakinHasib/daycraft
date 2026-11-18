@@ -1,7 +1,7 @@
 import { shadows, springs } from '@daycraft/design-tokens';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View, type LayoutChangeEvent } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { cn } from '@/lib/cn';
 import { useColorScheme } from '@/theme/app-theme';
@@ -33,15 +33,17 @@ export function Segmented<TValue extends string>({
   const [segmentWidth, setSegmentWidth] = useState(0);
   const offset = useSharedValue(0);
   const scheme = useColorScheme();
+  const reduceMotion = useReducedMotion();
   const selectedIndex = Math.max(
     0,
     options.findIndex((option) => option.value === value),
   );
   const targetOffset = selectedIndex * (segmentWidth + SEGMENT_GAP);
 
+  // Reduce Motion: the selection moves without the spring.
   useEffect(() => {
-    if (segmentWidth > 0) offset.set(withSpring(targetOffset, springs.snap));
-  }, [offset, segmentWidth, targetOffset]);
+    if (segmentWidth > 0) offset.set(reduceMotion ? targetOffset : withSpring(targetOffset, springs.snap));
+  }, [offset, segmentWidth, targetOffset, reduceMotion]);
 
   const onTrackLayout = (event: LayoutChangeEvent) => {
     const inner = event.nativeEvent.layout.width - TRACK_PADDING * 2 - SEGMENT_GAP * (options.length - 1);

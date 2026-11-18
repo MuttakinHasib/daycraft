@@ -28,7 +28,7 @@ The canvas pages "v2 · Refined" and "v1 · Original" are **superseded**. Do not
 | Expo starter template (screens, themed components, theme hooks, `constants/theme.ts`, reset script, template images) | **Deleted 2026-11-17.** Plan, Habits and Goals are placeholder tab screens until their tickets land. |
 | Theme module (`src/theme/app-theme.tsx`): one source for light/dark, token colors for native APIs, navigation theme and status bar | Done 2026-11-17, with the System / Light / Dark preference saved in `expo-sqlite/kv-store` (ticket 07). New dependency: `expo-sqlite`. |
 | `cn()` from the `cn` package, configured with Daycraft token names (`src/lib/cn.ts`) | Done 2026-11-17. New dependency: `cn`. |
-| Floating pill tab bar (Plan · Habits · + · Goals · More), placeholder Habits, Goals and More; design-system screen under More | Done 2026-11-18 (plan-timeline ticket 01). Liquid Glass background on iOS 26+ through `expo-glass-effect` (already a template dependency, now used). The + is inert until ticket 07 opens the editor. More's Inbox badge waits for the Inbox. |
+| Floating glass tab bar (Plan · Habits · Goals · More) with the + beside it (ADR-0009), placeholder Habits, Goals and More; design-system screen under More | Done 2026-11-18 (plan-timeline ticket 01). Liquid Glass on iOS 26+, frosted elsewhere. Until ticket 07 builds the editor, the + shows a "coming soon" notice instead of doing nothing. More's Inbox badge waits for the Inbox. |
 | Domain model, data layer, persistence | Not started |
 | Plan timeline, all modules | Not started (prototype only) |
 | Tests | Not set up |

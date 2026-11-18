@@ -32,7 +32,8 @@ export function ChipDemo() {
           {label}
         </button>
       ))}
-      <button type="button" className="chip chip-sm">
+      {/* Display-only specimen (see the section description): inert, so it takes no focus or clicks. */}
+      <button type="button" className="chip chip-sm" inert>
         <Icon name="plus" size={16} />
         Plan
       </button>

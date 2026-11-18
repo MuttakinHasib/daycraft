@@ -44,7 +44,13 @@ export function AppearanceSection() {
 export function ButtonSection() {
   return (
     <Section title="Buttons" description="Display only: these specimens are not wired to actions.">
-      <View className="gap-3">
+      {/* Specimens take no touches and read as one group, so none is a button that does nothing. */}
+      <View
+        pointerEvents="none"
+        accessible
+        accessibilityLabel="Button specimens, display only: Add to timeline, Cancel, Save, and a disabled button"
+        className="gap-3"
+      >
         <Button icon="plus">Add to timeline</Button>
         <Button variant={ButtonVariant.SECONDARY}>Cancel</Button>
         <View className="flex-row gap-3">
@@ -73,9 +79,11 @@ export function ChipSection() {
             {label}
           </Chip>
         ))}
-        <Chip size={ChipSize.SM} icon="plus">
-          Plan
-        </Chip>
+        <View pointerEvents="none" accessible accessibilityLabel="Plan chip specimen, display only">
+          <Chip size={ChipSize.SM} icon="plus">
+            Plan
+          </Chip>
+        </View>
       </View>
       <View className="flex-row flex-wrap gap-2">
         <Tag icon="pin">Studio</Tag>
@@ -123,7 +131,12 @@ export function CheckRingSection() {
 export function CapsuleSection() {
   return (
     <Section title="Capsules" description="Upcoming, active (now) and done. Display only.">
-      <View className="flex-row items-start gap-6">
+      <View
+        pointerEvents="none"
+        accessible
+        accessibilityLabel="Capsule specimens, display only: upcoming, active and done"
+        className="flex-row items-start gap-6"
+      >
         <View className="items-center gap-2">
           <Capsule hue={ActivityHue.CLAY} height={72} accessibilityLabel="Upcoming capsule">
             <Icon name="laptop" size={22} colorClassName="text-on-hue" />

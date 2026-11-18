@@ -27,7 +27,8 @@ export function AppearanceSection() {
 export function ButtonSection() {
   return (
     <Section title="Buttons" description="Display only: these specimens are not wired to actions.">
-      <div className="grid max-w-md gap-3">
+      {/* `inert`: specimens look like buttons but take no focus or clicks, so none is a dead control. */}
+      <div className="grid max-w-md gap-3" inert>
         <button type="button" className="btn-primary">
           <Icon name="plus" size={18} />
           Add to timeline

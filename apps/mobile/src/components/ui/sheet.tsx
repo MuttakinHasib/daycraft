@@ -1,6 +1,11 @@
 import { durations, easing } from '@daycraft/design-tokens';
 import type { ReactNode } from 'react';
-import Animated, { Easing, withTiming, type EntryExitAnimationFunction } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  useReducedMotion,
+  withTiming,
+  type EntryExitAnimationFunction,
+} from 'react-native-reanimated';
 
 const snap = Easing.bezier(...easing.snap);
 
@@ -23,9 +28,11 @@ interface SheetProps {
 }
 
 export function Sheet({ children }: SheetProps) {
+  // Reduce Motion: the sheet appears in place instead of sliding up.
+  const reduceMotion = useReducedMotion();
   return (
     <Animated.View
-      entering={sheetUp}
+      entering={reduceMotion ? undefined : sheetUp}
       className="absolute inset-x-0 bottom-0 flex-col overflow-hidden rounded-t-sheet bg-surface shadow-float"
     >
       {children}

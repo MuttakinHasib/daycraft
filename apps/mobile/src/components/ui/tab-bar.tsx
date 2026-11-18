@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import type { BottomTabBarProps } from 'expo-router/tabs';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -114,20 +114,22 @@ function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
   );
 }
 
-// The bar's one colored element: a solid accent circle beside the pill. Inert until ticket 07
-// opens the editor; it keeps the design's full color meanwhile.
+// The bar's one colored element: a solid accent circle beside the pill. Until ticket 07 builds the
+// editor, a tap says plainly that creating is coming soon, so the control is never dead.
 function CreateButton({ action }: CreateButtonProps) {
   const colors = useThemeColors();
+  // TODO(plan-timeline ticket 07): open the editor sheet for `action` instead of this notice.
+  const onPress = () => Alert.alert(action, 'Coming soon.');
   return (
     <Pressable
-      disabled
+      onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={action}
-      accessibilityState={{ disabled: true }}
+      accessibilityHint="Coming soon"
       style={{
         boxShadow: `inset 0 1px 0 ${glass.plus.highlight}, ${glass.plus.glow} ${withOpacity(colors.accent, glass.plus.glowOpacity)}`,
       }}
-      className="size-14 items-center justify-center rounded-full bg-accent"
+      className="size-14 items-center justify-center rounded-full bg-accent active:opacity-85"
     >
       <Icon name="plus" size={26} strokeWidth={2.4} colorClassName="text-on-accent" />
     </Pressable>
