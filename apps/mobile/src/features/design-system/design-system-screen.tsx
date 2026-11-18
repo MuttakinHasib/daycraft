@@ -1,6 +1,6 @@
 import { ScrollView, Text, View } from 'react-native';
 
-import { ContrastSection, HueSection, SemanticColorSection } from './color-sections';
+import { ContrastSection, HueSection, HueTintSection, SemanticColorSection } from './color-sections';
 import {
   AppearanceSection,
   ButtonSection,
@@ -22,6 +22,7 @@ export function DesignSystemScreen() {
       <AppearanceSection />
       <SemanticColorSection />
       <HueSection />
+      <HueTintSection />
       <ContrastSection />
       <TypeSection />
       <RadiusSection />

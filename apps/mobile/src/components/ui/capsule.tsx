@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
-import { hueColors, withOpacity } from '@daycraft/design-tokens';
+import { hueColors, hueTints, withOpacity } from '@daycraft/design-tokens';
 import { ActivityHue } from '@daycraft/domain';
 
 import { cn } from '@/lib/cn';
@@ -46,7 +46,7 @@ export function Capsule({
         // A filled pill behind the capsule, not a border, so the ring stays concentric at any height.
         <View
           className="absolute -inset-1 rounded-full"
-          style={{ backgroundColor: withOpacity(hueColors[hue], 0.28) }}
+          style={{ backgroundColor: withOpacity(hueColors[hue], hueTints.activeRing) }}
         />
       )}
       <View

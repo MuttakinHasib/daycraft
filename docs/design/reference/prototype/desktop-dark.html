@@ -4,9 +4,9 @@
 <style>
 body{margin:0}
 a{color:#AD5236}a:hover{color:#97462D}
-.dk-light{--canvas:#FFFFFF;--surface:#FFFFFF;--card:#F4F3F0;--sunken:#EEEDE9;--elevated:#FFFFFF;--line:#E9E7E2;--line-strong:#D9D6CF;--ink:#1C1C1C;--ink-muted:#5C5C5C;--ink-subtle:#737373;--accent:#3366F0;--accent-hover:#2A57D6;--accent-soft:#E6EDFF;--accent-text:#2F5FE0;--on-accent:#FFFFFF;--on-hue:#1A1A1A;--scrim:rgba(20,20,20,.36);--shadow:0 10px 30px rgba(20,20,20,.08);--danger:#E5484D;--success:#3C7D61;}
-.dk-dark{--canvas:#111111;--surface:#171717;--card:#1F1F1F;--sunken:#292929;--elevated:#2A2A2A;--line:#2A2A2A;--line-strong:#3B3B3B;--ink:#F4F4F2;--ink-muted:#B4B4B4;--ink-subtle:#8F8F8F;--accent:#6E97FF;--accent-hover:#86A8FF;--accent-soft:#1D2A4D;--accent-text:#8EAEFF;--on-accent:#0B1530;--on-hue:#161616;--scrim:rgba(0,0,0,.6);--shadow:0 12px 34px rgba(0,0,0,.5);--danger:#FF6B6E;--success:#5FB08A;}
-.dk{--h-clay:#FF7648;--h-amber:#FFB23E;--h-sun:#FFD54F;--h-sage:#6CCB8B;--h-pine:#2FB3A0;--h-sky:#4A7FF8;--h-iris:#9A7CF5;--h-rose:#FF8FB1;--h-slate:#A3ACBD;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
+.dk-light{--canvas:#FFFFFF;--surface:#FFFFFF;--card:#F4F3F0;--sunken:#EEEDE9;--elevated:#FFFFFF;--line:#E9E7E2;--line-strong:#D9D6CF;--ink:#1C1C1C;--ink-muted:#5C5C5C;--ink-subtle:#6B6B6B;--accent:#3366F0;--accent-hover:#2A57D6;--accent-soft:#E6EDFF;--accent-text:#2F5FE0;--on-accent:#FFFFFF;--on-hue:#FFFFFF;--scrim:rgba(20,20,20,.36);--shadow:0 10px 30px rgba(20,20,20,.08);--danger:#D93D42;--success:#1E8A5C;}
+.dk-dark{--canvas:#111111;--surface:#171717;--card:#1F1F1F;--sunken:#292929;--elevated:#2A2A2A;--line:#2A2A2A;--line-strong:#3B3B3B;--ink:#F4F4F2;--ink-muted:#B4B4B4;--ink-subtle:#8F8F8F;--accent:#3A6AF2;--accent-hover:#3060E0;--accent-soft:#1D2A4D;--accent-text:#8EAEFF;--on-accent:#FFFFFF;--on-hue:#FFFFFF;--scrim:rgba(0,0,0,.6);--shadow:0 12px 34px rgba(0,0,0,.5);--danger:#FF6B6E;--success:#4CC38A;}
+.dk{--h-clay:#FF541A;--h-amber:#CD7B00;--h-sun:#B28800;--h-sage:#39A25B;--h-pine:#2A9F8E;--h-sky:#4A7FF8;--h-iris:#987AF5;--h-rose:#FF4A81;--h-slate:#8490A7;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased;transition:background-color .3s ease,color .3s ease}
 .dk :where(*){box-sizing:border-box}
 .dk :where(button){font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:inherit}
 .dk :where(input,textarea){font:inherit;color:var(--ink);background:transparent;border:0;outline:none;margin:0}
@@ -84,6 +84,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-aside{max-width:none!important}
 }
 
+.dk-light{--hdr-mix:40%;--hdr-ink:#1C1C1C} .dk-dark{--hdr-mix:100%;--hdr-ink:#FFFFFF}
 .dk{font-family:'Onest',ui-sans-serif,system-ui,sans-serif}
 .dk-h1{font-weight:600!important;letter-spacing:-.03em!important}
 .dk-tab5[aria-current="page"],.dk-tab[aria-current="page"]{background:var(--accent)!important;color:var(--on-accent)!important}
@@ -259,7 +260,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <button class="{{r.capCls}}" aria-label="{{r.capAria}}" onPointerDown="{{r.down}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" onClick="{{r.open}}" style="pointer-events: auto; position: absolute; left: 68px; top: 0; width: 48px; height: {{r.capH}}px; border-radius: 24px; background: {{r.capBg}}; opacity: {{r.capOp}}; box-shadow: {{r.capShadow}}; color: var(--on-hue); display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: grab; transition: opacity .25s ease, box-shadow .2s ease">
 <sc-if value="{{r.active}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 0; right: 0; top: 0; height: {{r.elapsed}}%; background: {{r.hueC}}"></span></sc-if>
 <svg class="ic" width="22" height="22" style="position: relative"><use href="#i-{{r.icon}}"></use></svg>
-<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.35)"></span></span></sc-if>
+<sc-if value="{{r.resizable}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" onPointerDown="{{r.rdown}}" onPointerMove="{{r.move}}" onPointerUp="{{r.up}}" onPointerCancel="{{r.cancel}}" style="position: absolute; left: 0; right: 0; bottom: 0; height: 18px; display: grid; place-items: center; cursor: ns-resize; touch-action: none"><span style="width: 16px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.75)"></span></span></sc-if>
 </button>
 <button onClick="{{r.open}}" aria-label="{{r.openAria}}" style="pointer-events: auto; position: absolute; left: 128px; right: 60px; top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding-top: 2px">
 <span class="tnum" style="font-size: 12.5px; font-weight: 500; color: var(--ink-muted); display: flex; align-items: center; gap: 5px; white-space: nowrap">{{r.time}}<sc-if value="{{r.repeat}}" hint-placeholder-val="{{ false }}"><svg class="ic" width="12" height="12"><use href="#i-repeat"></use></svg></sc-if></span>
@@ -285,7 +286,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <aside aria-label="Details" class="dk-aside" style="flex: 1 1 340px; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
 <sc-if value="{{dt.has}}" hint-placeholder-val="{{ false }}">
 <div class="dk-fade" style="background: var(--surface); border: 1px solid var(--line); border-radius: 24px; overflow: hidden">
-<div style="background: color-mix(in srgb, {{dt.hueC}} 40%, var(--canvas)); color: var(--ink); padding: 16px 20px 24px; transition: background-color .25s ease">
+<div style="background: color-mix(in srgb, {{dt.hueC}} var(--hdr-mix), var(--canvas)); color: var(--hdr-ink); padding: 16px 20px 24px; transition: background-color .25s ease">
 <div style="display: flex; justify-content: space-between; align-items: center">
 <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(0,0,0,.16); font-size: 12px; font-weight: 600">{{dt.kind}}</span>
 <button class="dk-ib sm" aria-label="Close details" onClick="{{dt.close}}" style="background: rgba(0,0,0,.08); color: var(--on-hue)"><svg class="ic" width="16" height="16"><use href="#i-x"></use></svg></button>
@@ -625,7 +626,7 @@ class Component extends DCLogic {
       return { title: it.title, icon: it.icon, top: r.top, capH: r.capH, rowH: r.rowH, z: dragging ? 20 : 5, trans: dragging ? 'none' : 'top .22s ease',
         gut: h12(it.start), showGut: !(isToday && Math.abs(nowY - (r.top + 10)) < 16), time: fR(it.start, it.dur) + (it.dur ? ' (' + fDur(it.dur) + ')' : ''),
         selH: r.rowH + 12, selBg: isSel ? 'color-mix(in srgb, var(--sunken) 60%, transparent)' : 'transparent',
-        capBg: r.active ? mix(it.hue, 34, '#FFFFFF') : mix(it.hue, 62, '#FFFFFF'), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
+        capBg: r.active ? mix(it.hue, 42) : hv(it.hue), hueC: hv(it.hue), capOp: it.done ? '0.45' : '1',
         capShadow: dragging ? '0 12px 28px rgba(0,0,0,.28)' : (r.active ? '0 0 0 4px ' + mix(it.hue, 28, 'transparent') : 'none'),
         capCls: 'dk-press' + (st.flash === it.id ? ' dk-flash' : ''), active: r.active, elapsed: r.active ? Math.round((NOW - it.start) / it.dur * 100) : 0, left: 'Now · ' + fShort(it.start + it.dur - NOW) + ' left',
         resizable: it.dur >= 15, dragging: dragging, dragLabel: dragging ? fR(st.drag.start, st.drag.dur) : '', done: it.done, ringBg: it.done ? hv(it.hue) : 'transparent',

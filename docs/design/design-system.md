@@ -56,16 +56,19 @@ Nine hues, the same in both themes: `clay`, `amber`, `sun`, `sage`, `pine`, `sky
 
 ### Hue tints
 
+Shares live in `hueTints` and `sheetHeaderTint` (`@daycraft/design-tokens`); code reads them from there, never as literals.
+
 | Tint | Where |
 |---|---|
 | 14% | Habit circle, not done |
 | 16% fill / 40% border | Event agenda card |
 | 28% ring | Active capsule outline |
 | 30% | Event card tint (agenda, Upcoming) |
-| 34% over white | Active capsule base (the remaining part); the elapsed part is the solid hue |
-| 40% over canvas | Detail and editor sheet header band (text stays `ink`) |
+| 42% over `surface` | Active capsule base (the part still ahead); the elapsed part is the solid hue |
+| Light: 40% over `canvas`, `ink` text. Dark: the solid hue, `on-hue` text | Detail and editor sheet header band (`sheetHeaderTint`) |
 | 42% | Headline highlight marker |
 | 60% border, dashed | Habit circle, not done |
+| `on-hue` at 75% | The 16×3 bar in a capsule's resize grip (`CAPSULE_GRIP_OPACITY`) |
 
 ## Type
 
@@ -98,7 +101,8 @@ Weights in use: 400, 500, 600 (700 and 800 stay embedded for edge cases but no p
 
 Flat by default: surfaces separate by fill (white `surface`, gray `card`), not borders. Shadows only on things that float.
 
-- `shadow-float`: tab bar, sheets, dialogs, toast, floating menus.
+- `shadow-float`: sheets, dialogs, toast, floating menus.
+- **Glass** (`glass` token): the phone tab bar floats as frosted glass, `elevated` at 58% over a blur (CSS `blur(22px) saturate(180%)`), a 1px light rim, a brighter 1px top highlight and its own soft shadow. On iOS 26 the system's Liquid Glass replaces it. Nothing else uses glass.
 - `shadow-lift`: a capsule while it is dragged.
 - The center + button is `ink` with `canvas` icon, no glow. The active tab is a solid `accent` pill with `on-accent` label.
 

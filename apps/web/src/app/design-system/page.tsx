@@ -13,6 +13,7 @@ import {
 import {
   ContrastSection,
   HueSection,
+  HueTintSection,
   IconSection,
   SemanticColorSection,
   ShapeSection,
@@ -36,6 +37,7 @@ export default function DesignSystemPage() {
       <AppearanceSection />
       <SemanticColorSection />
       <HueSection />
+      <HueTintSection />
       <ContrastSection />
       <TypeSection />
       <ShapeSection />

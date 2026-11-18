@@ -31,11 +31,6 @@ export const springs = {
    * visualDuration 0.35s, bounce 0.1 (damping ratio 0.9): no visible overshoot.
    */
   snap: { stiffness: 224, damping: 27, mass: 1 },
-  /**
-   * Glass that wobbles as it settles, such as the tab bar's lens after a drag. Motion's formula for
-   * visualDuration 0.4s, bounce 0.35 (damping ratio 0.65): a visible, soft overshoot.
-   */
-  jelly: { stiffness: 247, damping: 20, mass: 1 },
 } as const satisfies Record<string, SpringConfig>;
 
 export interface CssSpring {

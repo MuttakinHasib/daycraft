@@ -86,6 +86,36 @@ export const hueColors: Record<ActivityHue, string> = {
   slate: '#8490a7',
 };
 
+/** Shares of an activity hue in its tints (the design system's "Hue tints" table). */
+export const hueTints = {
+  /** Habit circle not done: fill, and its dashed border. */
+  habitCircle: 0.14,
+  habitCircleBorder: 0.6,
+  /** Event agenda card: fill and border. */
+  agendaFill: 0.16,
+  agendaBorder: 0.4,
+  /** Ring around the active capsule. */
+  activeRing: 0.28,
+  /** Event card tint (agenda, Upcoming). */
+  eventCard: 0.3,
+  /** Mixed into `surface`: the part of an active capsule still ahead; the elapsed part is solid. */
+  activeCapsuleBase: 0.42,
+  /** Marker behind a highlighted headline word. */
+  highlight: 0.42,
+} as const;
+
+/**
+ * Detail and editor sheet header band: the hue mixed into `canvas`. Light keeps `ink` text on a
+ * 40% tint; dark is the solid hue with `on-hue` text.
+ */
+export const sheetHeaderTint: Record<ColorScheme, number> = {
+  light: 0.4,
+  dark: 1,
+};
+
+/** Opacity of the `on-hue` bar in a capsule's resize grip. */
+export const CAPSULE_GRIP_OPACITY = 0.75;
+
 export const shadowColors: Record<ColorScheme, string> = {
   light: 'rgba(20, 20, 20, 0.08)',
   dark: 'rgba(0, 0, 0, 0.5)',

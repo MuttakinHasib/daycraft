@@ -1,10 +1,10 @@
-import { springs } from '@daycraft/design-tokens';
+import { glass, springs, withOpacity } from '@daycraft/design-tokens';
 import type { IconName } from '@daycraft/domain';
+import { BlurView } from 'expo-blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import type { BottomTabBarProps } from 'expo-router/tabs';
-import { useEffect, useState, type ReactNode } from 'react';
-import { Pressable, Text, View, type LayoutChangeEvent } from 'react-native';
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
+import { useEffect, type ReactNode } from 'react';
+import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useReducedMotion,
@@ -12,7 +12,6 @@ import Animated, {
   withSpring,
   type SharedValue,
 } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
 import { withUniwind } from 'uniwind';
 
 import { cn } from '@/lib/cn';
@@ -22,8 +21,14 @@ import { Icon } from './icon';
 
 const ThemedGlassView = withUniwind(GlassView);
 
-// Checked once: Liquid Glass needs iOS 26; elsewhere the pill and lens are solid.
+// Checked once: Liquid Glass needs iOS 26; elsewhere the pill is frosted.
 const LIQUID_GLASS = isLiquidGlassAvailable();
+
+// iOS blur materials under the frosted fallback; the values come from the `glass` token.
+const BLUR_TINT = {
+  light: 'systemUltraThinMaterialLight',
+  dark: 'systemUltraThinMaterialDark',
+} as const;
 
 interface TabItem {
   label: string;
@@ -45,12 +50,9 @@ interface PillProps {
   children: ReactNode;
 }
 
-interface LensProps {
+interface SelectionProps {
   x: SharedValue<number>;
   width: SharedValue<number>;
-  press: SharedValue<number>;
-  stretch: SharedValue<number>;
-  pressing: boolean;
 }
 
 /** A tab's position in the tab row, from its layout. */
@@ -89,31 +91,12 @@ const TAB_ITEMS: Record<TabRoute, TabItem> = {
 
 const TABS_BEFORE_CREATE = 2;
 
-// How much the lens swells under a finger, and how far fast drags stretch it.
-const LENS_GROW = 0.12;
-const LENS_MAX_STRETCH = 0.35;
-const LENS_STRETCH_VELOCITY = 2500;
-
 function isTabRoute(name: string): name is TabRoute {
   return name in TAB_ITEMS;
 }
 
 function createActionFor(routeName: string | undefined): CreateAction {
   return routeName === TabRoute.HABITS ? CreateAction.NEW_HABIT : CreateAction.NEW_TASK;
-}
-
-function nearestSlot(slots: Slot[], center: number): number {
-  'worklet';
-  let best = 0;
-  let bestDistance = Number.POSITIVE_INFINITY;
-  slots.forEach((slot, index) => {
-    const distance = Math.abs(slot.x + slot.width / 2 - center);
-    if (distance < bestDistance) {
-      best = index;
-      bestDistance = distance;
-    }
-  });
-  return best;
 }
 
 function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
@@ -150,9 +133,13 @@ function CreateButton({ action }: CreateButtonProps) {
 
 const PILL_CLASS = 'absolute inset-0 rounded-full p-1.5';
 
-/** Liquid Glass where the OS has it, the v2 solid elevated pill everywhere else. */
+/**
+ * Liquid Glass where the OS has it; everywhere else a frosted pill. Android blurs only through a
+ * `BlurTargetView`, so there the veil sits over a translucent view instead of a live blur.
+ */
 function Pill({ children }: PillProps) {
   const scheme = useColorScheme();
+  const colors = useThemeColors();
   if (LIQUID_GLASS) {
     return (
       <ThemedGlassView accessibilityRole="tablist" colorScheme={scheme} className={PILL_CLASS}>
@@ -161,46 +148,36 @@ function Pill({ children }: PillProps) {
     );
   }
   return (
-    <View accessibilityRole="tablist" className={cn(PILL_CLASS, 'border border-line bg-elevated shadow-float')}>
+    <View accessibilityRole="tablist" style={{ boxShadow: glass.shadow[scheme] }} className={PILL_CLASS}>
+      <View
+        pointerEvents="none"
+        style={{ borderColor: glass.edge[scheme], borderTopColor: glass.highlight[scheme] }}
+        className="absolute inset-0 overflow-hidden rounded-full border"
+      >
+        <BlurView intensity={glass.nativeBlurIntensity} tint={BLUR_TINT[scheme]} style={StyleSheet.absoluteFill} />
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: withOpacity(colors.elevated, glass.veil) }]} />
+      </View>
       {children}
     </View>
   );
 }
 
-/**
- * The accent pill behind the focused tab. Under a finger it swells, turns to accent-tinted glass
- * and stretches with drag speed; released, it wobbles onto the nearest tab.
- */
-function Lens({ x, width, press, stretch, pressing }: LensProps) {
-  const scheme = useColorScheme();
-  const colors = useThemeColors();
-  const lensStyle = useAnimatedStyle(() => {
-    const grow = 1 + LENS_GROW * press.get();
-    const pull = stretch.get();
-    return {
-      width: width.get(),
-      transform: [{ translateX: x.get() }, { scaleX: grow * pull }, { scaleY: grow / Math.sqrt(pull) }],
-    };
-  });
-  // On glass the solid fill gives way to the tinted lens; without glass it only lightens.
-  const fillStyle = useAnimatedStyle(() => ({ opacity: 1 - press.get() * (LIQUID_GLASS ? 1 : 0.3) }));
-
+/** The solid accent pill behind the focused tab; it glides to the next tab with the snap spring. */
+function Selection({ x, width }: SelectionProps) {
+  const style = useAnimatedStyle(() => ({
+    width: width.get(),
+    transform: [{ translateX: x.get() }],
+  }));
   return (
-    <Animated.View pointerEvents="none" style={lensStyle} className="absolute top-0 bottom-0 left-0">
-      <Animated.View style={fillStyle} className="absolute inset-0 rounded-full bg-accent" />
-      {LIQUID_GLASS && (
-        <ThemedGlassView
-          glassEffectStyle={{ style: pressing ? 'clear' : 'none', animate: true }}
-          tintColor={colors.accent}
-          colorScheme={scheme}
-          className="absolute inset-0 rounded-full"
-        />
-      )}
-    </Animated.View>
+    <Animated.View
+      pointerEvents="none"
+      style={style}
+      className="absolute top-0 bottom-0 left-0 rounded-full bg-accent"
+    />
   );
 }
 
-/** The v2 floating pill: Plan · Habits · + · Goals · More (ADR-0003), with a draggable glass lens. */
+/** The v2 floating pill: Plan · Habits · + · Goals · More (ADR-0003). */
 export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   const routes = state.routes.filter((route) => isTabRoute(route.name));
   const focusedKey = state.routes[state.index]?.key;
@@ -208,27 +185,27 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   const action = createActionFor(state.routes[state.index]?.name);
 
   const slots = useSharedValue<Slot[]>([]);
-  const lensX = useSharedValue(0);
-  const lensWidth = useSharedValue(0);
-  const press = useSharedValue(0);
-  const stretch = useSharedValue(1);
-  const [pressing, setPressing] = useState(false);
+  const selectionX = useSharedValue(0);
+  const selectionWidth = useSharedValue(0);
   const reduceMotion = useReducedMotion();
 
   const selectTab = (index: number) => {
     const route = routes[index];
     if (!route) return;
-    const event = emitter.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+    const event = emitter.emit({
+      type: 'tabPress',
+      target: route.key,
+      canPreventDefault: true,
+    });
     if (route.key !== focusedKey && !event.defaultPrevented) navigateToTab(route.key);
   };
 
-  // Navigation that doesn't come from a drag (VoiceOver, deep links) still moves the lens.
   useEffect(() => {
     const slot = slots.get()[focusedIndex];
     if (!slot) return;
-    lensX.set(withSpring(slot.x, springs.snap));
-    lensWidth.set(withSpring(slot.width, springs.snap));
-  }, [focusedIndex, slots, lensX, lensWidth]);
+    selectionX.set(reduceMotion ? slot.x : withSpring(slot.x, springs.snap));
+    selectionWidth.set(reduceMotion ? slot.width : withSpring(slot.width, springs.snap));
+  }, [focusedIndex, slots, selectionX, selectionWidth, reduceMotion]);
 
   const onSlotLayout = (index: number, event: LayoutChangeEvent) => {
     const { x, width } = event.nativeEvent.layout;
@@ -237,51 +214,12 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
       current[index] = { x, width };
       return current;
     });
-    // The first measurement places the lens without animating it in.
+    // The first measurement places the selection without animating it in.
     if (index === focusedIndex) {
-      lensX.set(x);
-      lensWidth.set(width);
+      selectionX.set(x);
+      selectionWidth.set(width);
     }
   };
-
-  const followFinger = (fingerX: number) => {
-    'worklet';
-    const all = slots.get();
-    const first = all[0];
-    const last = all[all.length - 1];
-    if (!first || !last) return;
-    const lensW = lensWidth.get();
-    lensX.set(Math.min(Math.max(fingerX - lensW / 2, first.x), last.x + last.width - lensW));
-  };
-
-  const pan = usePanGesture({
-    minDistance: 0,
-    onBegin: (event) => {
-      'worklet';
-      if (!reduceMotion) press.set(withSpring(1, springs.snap));
-      scheduleOnRN(setPressing, true);
-      followFinger(event.x);
-    },
-    onUpdate: (event) => {
-      'worklet';
-      followFinger(event.x);
-      if (!reduceMotion) {
-        const pull = Math.min(Math.abs(event.velocityX) / LENS_STRETCH_VELOCITY, LENS_MAX_STRETCH);
-        stretch.set(withSpring(1 + pull, springs.snap));
-      }
-    },
-    onFinalize: (event) => {
-      'worklet';
-      const all = slots.get();
-      const target = event.canceled ? focusedIndex : nearestSlot(all, lensX.get() + lensWidth.get() / 2);
-      const slot = all[target];
-      if (slot) lensX.set(withSpring(slot.x, reduceMotion ? springs.snap : springs.jelly));
-      press.set(withSpring(0, springs.jelly));
-      stretch.set(withSpring(1, springs.jelly));
-      scheduleOnRN(setPressing, false);
-      if (!event.canceled) scheduleOnRN(selectTab, target);
-    },
-  });
 
   const tabs = routes.map((route, index) =>
     isTabRoute(route.name) ? (
@@ -298,16 +236,14 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   return (
     <View pointerEvents="box-none" className="absolute inset-x-4 bottom-safe-offset-6 h-16">
       <Pill>
-        <GestureDetector gesture={pan}>
-          <View className="flex-1 flex-row items-center">
-            <Lens x={lensX} width={lensWidth} press={press} stretch={stretch} pressing={pressing} />
-            {tabs.slice(0, TABS_BEFORE_CREATE)}
-            <View className="w-18" />
-            {tabs.slice(TABS_BEFORE_CREATE)}
-          </View>
-        </GestureDetector>
+        <View className="flex-1 flex-row items-center">
+          <Selection x={selectionX} width={selectionWidth} />
+          {tabs.slice(0, TABS_BEFORE_CREATE)}
+          <View className="w-18" />
+          {tabs.slice(TABS_BEFORE_CREATE)}
+        </View>
       </Pill>
-      {/* Above the pill and outside the drag area, so the + keeps its own touches. */}
+      {/* The + sits over the pill's center gap, so it can stand taller than the tabs. */}
       <View pointerEvents="box-none" className="absolute inset-0 items-center justify-center">
         <CreateButton action={action} />
       </View>

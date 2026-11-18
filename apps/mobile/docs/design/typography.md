@@ -62,7 +62,7 @@ Do not bold body text for emphasis; use `ink` versus `ink-muted` contrast instea
 | Accent text (back links, year, gap durations, now label) | `text-accent-text` |
 | On accent | `text-on-accent` |
 | On hue | `text-on-hue` (white in both themes) |
-| Tinted sheet header (hue at 40% over canvas) | `text-ink` |
+| Sheet header band | Light: `text-ink` on the 40% tint. Dark: `text-on-hue` on the solid hue |
 | Done | `text-ink-subtle` + `line-through` |
 
 ## Wrapping and truncation

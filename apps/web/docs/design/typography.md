@@ -61,7 +61,7 @@ Emphasis comes from color contrast (`ink` vs `ink-muted`), not extra bold.
 | Accent text | `text-accent-text` |
 | On accent | `text-on-accent` |
 | On hue | `text-on-hue` (white) |
-| Tinted sheet header | `text-ink` |
+| Sheet header band | Light: `text-ink` on the 40% tint. Dark: `text-on-hue` on the solid hue |
 | Done | `text-ink-subtle line-through` |
 
 ## Wrapping
