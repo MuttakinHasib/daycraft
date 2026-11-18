@@ -35,6 +35,7 @@ The timeline sits inside the Today panel (`surface`, `radius-sheet` top corners)
 - Day range: **5:00 AM to midnight** (`D0 = 300`, `D1 = 1440` minutes).
 - Scale: **1.1 pt per minute** on phone (66 pt/hour), **1.25** on desktop.
 - Times are local wall-clock minutes of day (see [architecture](../development/architecture.md#dates-and-time)).
+- **Day edges (approved 2026-11-19, not built):** the timeline shows a **Wake up** anchor and a **Bedtime** anchor, set in [onboarding](onboarding.md) (default 7:00 AM and 11:00 PM). Both stay inside 5:00 AM to midnight, at least 6 hours apart, in 15-minute steps. Whether activities may still sit before Wake up or after Bedtime is decided in the onboarding spec.
 
 ## 3. Layout algorithm (push-down + anchored time map)
 

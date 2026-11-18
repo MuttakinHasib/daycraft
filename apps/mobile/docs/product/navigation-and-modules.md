@@ -2,6 +2,10 @@
 
 Screen-by-screen reference for the phone app, taken from the prototype (canvas page "v2 · Current"). Each screen has a screenshot at `docs/design/reference/screens/phone/{dark,light}/<name>.png` (index: [reference README](../../../../docs/design/reference/README.md)). Numbers are in points (pt = px on the 390-wide reference device). Shared measurements (page padding, card padding, component heights) live in [spacing-and-layout](../design/spacing-and-layout.md). This file only lists what is specific to each screen.
 
+## First launch
+
+The animated splash, then [onboarding](onboarding.md) on the first run (Plan on every later launch). Onboarding ends on Plan.
+
 ## Navigation model
 
 - **Tab bar: Plan · Habits · + · Goals · More.** Plan is the default. Two tabs sit on each side of a centered **+**, all inside one floating pill.
@@ -25,7 +29,8 @@ Proposed; create the files as the screens are built. Keep route files thin: they
 
 ```text
 src/app/
-  _layout.tsx                 # providers, theme, fonts, root stack
+  _layout.tsx                 # providers, theme, fonts, root stack, animated splash
+  onboarding.tsx              # first run: intro + four setup steps (see onboarding.md)
   (tabs)/
     _layout.tsx               # Plan · Habits · + · Goals · More
     index.tsx                 # Plan (timeline)
@@ -91,6 +96,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
   - **Build:** Routines (count), Projects (count).
   - **Focus and reflect:** Focus, Journal.
 - Each row: 32pt hue tile with a white icon, label, right-aligned count, chevron.
+- **Replay onboarding:** a plain row below the groups (see [onboarding](onboarding.md)).
 - **Appearance:** segmented Light / Dark with a one-line explanation. The prototype has no "System" option; add one when theme persistence lands.
 
 ### Upcoming
