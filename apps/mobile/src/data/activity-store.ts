@@ -1,7 +1,7 @@
 import { getRandomBytes } from 'expo-crypto';
 import { useEffect, useEffectEvent, useState } from 'react';
 
-import { uuidV7, type Activity, type ISODate } from '@daycraft/domain';
+import { uuidV7, type Activity, type DayEdges, type ISODate } from '@daycraft/domain';
 
 import { createActivityRepository, type WeekDots } from './activity-repository';
 import { database } from './database';
@@ -43,4 +43,9 @@ export function useWeekDots(dates: ISODate[]): WeekDots {
 /** One activity, or null once it is deleted. */
 export function useActivity(id: string): Activity | null {
   return useLive(() => activityRepository.readActivity(id), id);
+}
+
+/** The saved day edges, or null until the person sets them. */
+export function useDayEdges(): DayEdges | null {
+  return useLive(() => activityRepository.readDayEdges(), 'day-edges');
 }

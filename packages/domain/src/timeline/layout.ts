@@ -1,6 +1,7 @@
 import type { Activity } from '../activity';
 import type { ActivityHue } from '../activity-hue';
 import type { MinutesOfDay } from '../calendar';
+import type { DayEdges } from './day-edges';
 import { DAY_END, DAY_START, type Timing } from './day-limits';
 
 // The Plan timeline's layout (timeline guide §3–§9): proportional to time, with rows pushed down so they never
@@ -24,6 +25,9 @@ const LAST_HOUR = 23;
 const START_LABEL_OFFSET = 10;
 const START_LABEL_NOW_CLEARANCE = 16;
 const HOUR_NOW_CLEARANCE = 18;
+const HOUR_EDGE_CLEARANCE = 18;
+/** The room a day edge anchor takes on the timeline; rows never cover it. */
+const DAY_EDGE_HEIGHT = 28;
 
 export const RowState = {
   UPCOMING: 'upcoming',
@@ -96,6 +100,12 @@ export interface Anchor {
   y: number;
 }
 
+/** Where the Wake up and Bedtime anchors sit. */
+export interface DayEdgeMarks {
+  wakeUp: Anchor;
+  bedtime: Anchor;
+}
+
 export interface DayLayout {
   rows: TimelineRow[];
   anchors: Anchor[];
@@ -106,6 +116,8 @@ export interface DayLayout {
   slots: SlotTarget[];
   /** The now line's y on today, else null. */
   nowY: number | null;
+  /** Null until the person has saved day edges. */
+  dayEdges: DayEdgeMarks | null;
 }
 
 /** A drag in progress: this activity is laid out with the preview timing. */
@@ -119,6 +131,7 @@ export interface LayoutDayInput {
   isToday: boolean;
   now: MinutesOfDay;
   preview?: DragPreview | null;
+  dayEdges?: DayEdges | null;
 }
 
 function rowState(done: boolean, active: boolean): RowState {
@@ -141,6 +154,19 @@ export function mapTimeToY(anchors: readonly Anchor[], minute: MinutesOfDay): nu
   return anchors[anchors.length - 1]?.y ?? TOP_PADDING;
 }
 
+const FREE_TIME_HEIGHT = 64;
+
+/** Moves a free-time hint below any day edge anchor it would cover. */
+function clearOfEdges(top: number, edgeYs: readonly number[]): number {
+  let clear = top;
+  for (const y of edgeYs) {
+    if (y + DAY_EDGE_HEIGHT / 2 > clear && y - DAY_EDGE_HEIGHT / 2 < clear + FREE_TIME_HEIGHT) {
+      clear = y + DAY_EDGE_HEIGHT / 2 + ROW_GAP / 2;
+    }
+  }
+  return clear;
+}
+
 function scheduled(input: LayoutDayInput): (Activity & { start: MinutesOfDay })[] {
   const { preview } = input;
   return input.activities
@@ -153,14 +179,37 @@ function scheduled(input: LayoutDayInput): (Activity & { start: MinutesOfDay })[
     .sort((a, b) => a.start - b.start || a.durationMinutes - b.durationMinutes);
 }
 
+/** The day edges' minutes, Wake up first. */
+function dayEdgeMinutes(edges: DayEdges | null | undefined): number[] {
+  return edges ? [edges.wakeUp, edges.bedtime] : [];
+}
+
 /** Lays out one date of the timeline. The screen renders this output and holds no layout logic of its own. */
 export function layoutDay(input: LayoutDayInput): DayLayout {
   const { scale, isToday, now } = input;
   const rows: TimelineRow[] = [];
   let offset = 0;
   let previousBottom = -Infinity;
+  const edgeMinutes = dayEdgeMinutes(input.dayEdges);
+  const edgeYs: number[] = [];
+
+  // Places each day edge that comes before `minute` (or every one left, with no minute), taking room like a row.
+  const placeEdgesBefore = (minute: number) => {
+    while (edgeYs.length < edgeMinutes.length) {
+      const edge = edgeMinutes[edgeYs.length] ?? DAY_END;
+      if (edge > minute) return;
+      let top = (edge - DAY_START) * scale + TOP_PADDING + offset - DAY_EDGE_HEIGHT / 2;
+      if (top < previousBottom + ROW_GAP) {
+        offset += previousBottom + ROW_GAP - top;
+        top = previousBottom + ROW_GAP;
+      }
+      edgeYs.push(top + DAY_EDGE_HEIGHT / 2);
+      previousBottom = top + DAY_EDGE_HEIGHT;
+    }
+  };
 
   for (const activity of scheduled(input)) {
+    placeEdgesBefore(activity.start);
     const duration = activity.durationMinutes;
     const capsuleHeight = duration > 0 ? Math.max(MIN_CAPSULE, duration * scale) : MIN_CAPSULE;
     const active =
@@ -185,28 +234,37 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
     });
     previousBottom = top + rowHeight;
   }
+  placeEdgesBefore(Infinity);
 
   const anchors: Anchor[] = [{ minute: DAY_START, y: TOP_PADDING }];
   const push = (minute: number, y: number) => {
     const last = anchors[anchors.length - 1] ?? { minute: DAY_START, y: TOP_PADDING };
     anchors.push({ minute: Math.max(minute, last.minute), y: Math.max(y, last.y) });
   };
+  const points: Anchor[] = edgeMinutes.map((minute, index) => ({ minute, y: edgeYs[index] ?? 0 }));
   for (const row of rows) {
     const start = row.activity.start ?? DAY_START;
     const { durationMinutes } = row.activity;
     if (durationMinutes > 0) {
-      push(start, row.top);
-      push(start + durationMinutes, row.top + row.capsuleHeight);
+      points.push({ minute: start, y: row.top }, { minute: start + durationMinutes, y: row.top + row.capsuleHeight });
     } else {
-      push(start, row.top + row.capsuleHeight / 2);
+      points.push({ minute: start, y: row.top + row.capsuleHeight / 2 });
     }
   }
+  points.sort((a, b) => a.y - b.y);
+  for (const point of points) push(point.minute, point.y);
   const last = anchors[anchors.length - 1] ?? { minute: DAY_START, y: TOP_PADDING };
   const endY = last.y + Math.max(0, DAY_END - last.minute) * scale;
   anchors.push({ minute: DAY_END, y: endY });
 
   const map = (minute: number) => mapTimeToY(anchors, minute);
   const nowY = isToday ? map(now) : null;
+  const dayEdges = input.dayEdges
+    ? {
+        wakeUp: { minute: input.dayEdges.wakeUp, y: edgeYs[0] ?? map(input.dayEdges.wakeUp) },
+        bedtime: { minute: input.dayEdges.bedtime, y: edgeYs[1] ?? map(input.dayEdges.bedtime) },
+      }
+    : null;
 
   if (nowY !== null) {
     for (const row of rows) {
@@ -241,8 +299,9 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
     if (gapMinutes >= FREE_TIME_MINUTES && gapHeight >= FREE_TIME_MIN_HEIGHT && (!isToday || bStart > now)) {
       const nowInside = isToday && now >= aEnd && now < bStart;
       const addStart = nowInside ? Math.ceil(now / 15) * 15 : Math.ceil(aEnd / 5) * 5;
+      const plainTop = nowInside && nowY !== null ? Math.min(nowY + 16, b.top - 70) : rowBottom + gapHeight / 2 - 32;
       freeTime.push({
-        top: nowInside && nowY !== null ? Math.min(nowY + 16, b.top - 70) : rowBottom + gapHeight / 2 - 32,
+        top: clearOfEdges(plainTop, edgeYs),
         minutes: bStart - (nowInside ? now : aEnd),
         next: b.activity,
         nowInside,
@@ -264,7 +323,10 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
     const y = map(hour * 60);
     const nearRow = rows.some((row) => y >= row.top - ROW_GAP && y <= row.top + row.rowHeight + 6);
     const nearNow = nowY !== null && Math.abs(y - nowY) < HOUR_NOW_CLEARANCE;
-    if (!nearRow && !nearNow) hours.push({ hour, y });
+    const nearEdge =
+      dayEdges !== null &&
+      (Math.abs(y - dayEdges.wakeUp.y) < HOUR_EDGE_CLEARANCE || Math.abs(y - dayEdges.bedtime.y) < HOUR_EDGE_CLEARANCE);
+    if (!nearRow && !nearNow && !nearEdge) hours.push({ hour, y });
   }
 
   return {
@@ -276,5 +338,6 @@ export function layoutDay(input: LayoutDayInput): DayLayout {
     freeTime,
     slots,
     nowY,
+    dayEdges,
   };
 }
