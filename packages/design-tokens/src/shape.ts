@@ -26,6 +26,11 @@ export const radii: Record<Radius, { px: number; use: string }> = {
 /** Elevation, used sparingly: tab bar, sheets, toast (float) and a dragged capsule (lift). */
 export const shadows = {
   lift: '0 12px 28px rgba(0, 0, 0, 0.28)',
+  /** The selected thumb on a sunken track (segmented controls); dark adds a top highlight. */
+  thumb: {
+    light: '0 1px 2px rgba(0, 0, 0, 0.14)',
+    dark: 'inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 1px 2px rgba(0, 0, 0, 0.45)',
+  },
 } as const;
 
 export function floatShadow(color: string): string {

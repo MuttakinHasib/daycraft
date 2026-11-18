@@ -54,7 +54,7 @@ These are the flows every release must keep working. They are the end-to-end tes
 5. **Complete:** tap the check ring on a block, in the detail sheet, or in All tasks.
 6. **Reschedule:** drag a block vertically (5-minute snapping). **Resize:** drag its bottom grip.
 7. **Create an event:** tap **+** (or an empty slot), then switch the editor's Task/Event toggle to Event.
-8. **Habits:** tap a habit circle on Plan, or the check button in Habits. Add a habit from the “+ Habit” circle on Plan or the center + on Habits.
+8. **Habits:** tap a habit circle on Plan, or the check button in Habits. Add a habit from the “+ Habit” circle on Plan or the + on Habits.
 9. **Routines:** create one (name, steps with durations, color, icon). **Add to today** places it at the next free slot.
 10. **Focus:** from an activity's detail → Start focus → choose a length → run → end → “Mark task as done”.
 11. **Capture and plan:** type in Inbox → item appears → **Plan** opens the editor pre-filled; saving removes it from Inbox.

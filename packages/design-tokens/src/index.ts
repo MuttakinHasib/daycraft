@@ -4,5 +4,5 @@ export { cnConfig } from './cn-config';
 export { generateTailwindCss, generateUniwindCss } from './generate';
 export { glass } from './glass';
 export { durations, easing, springs } from './motion';
-export { Radius, radii } from './shape';
+export { Radius, radii, shadows } from './shape';
 export { describeTypeStyle, fontFamilies, TypePreset, typeScale } from './typography';

@@ -21,7 +21,7 @@ import { Icon } from './icon';
 
 const ThemedGlassView = withUniwind(GlassView);
 
-// Checked once: Liquid Glass needs iOS 26; elsewhere the pill is frosted.
+// Checked once: Liquid Glass needs iOS 26; elsewhere the pill is frosted. The + is always solid.
 const LIQUID_GLASS = isLiquidGlassAvailable();
 
 // iOS blur materials under the frosted fallback; the values come from the `glass` token.
@@ -61,7 +61,7 @@ interface Slot {
   width: number;
 }
 
-/** What the center + creates; its label follows the focused tab. */
+/** What the + creates; its label follows the focused tab. */
 const CreateAction = {
   NEW_TASK: 'New task',
   NEW_HABIT: 'New habit',
@@ -81,15 +81,13 @@ export const TabRoute = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
 export type TabRoute = (typeof TabRoute)[keyof typeof TabRoute];
 
-// The one source of tab labels and icons. The + sits after the second tab.
+// The one source of tab labels and icons, in order. The + floats to the right of the pill.
 const TAB_ITEMS: Record<TabRoute, TabItem> = {
   [TabRoute.PLAN]: { label: 'Plan', icon: 'timeline' },
   [TabRoute.HABITS]: { label: 'Habits', icon: 'flame' },
   [TabRoute.GOALS]: { label: 'Goals', icon: 'target' },
   [TabRoute.MORE]: { label: 'More', icon: 'grid' },
 };
-
-const TABS_BEFORE_CREATE = 2;
 
 function isTabRoute(name: string): name is TabRoute {
   return name in TAB_ITEMS;
@@ -100,7 +98,7 @@ function createActionFor(routeName: string | undefined): CreateAction {
 }
 
 function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
-  const color = cn({ 'text-on-accent': focused, 'text-ink-muted': !focused });
+  const color = cn({ 'text-ink': focused, 'text-ink-subtle': !focused });
   return (
     <Pressable
       accessibilityRole="tab"
@@ -108,7 +106,7 @@ function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
       accessibilityState={{ selected: focused }}
       onPress={onPress}
       onLayout={onLayout}
-      className="h-13 flex-1 items-center justify-center gap-0.75 rounded-full"
+      className="h-12.5 flex-1 items-center justify-center gap-0.75 rounded-full"
     >
       <Icon name={item.icon} size={22} colorClassName={color} />
       <Text className={cn('type-micro', color)}>{item.label}</Text>
@@ -116,22 +114,27 @@ function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {
   );
 }
 
-// Inert until ticket 07 opens the editor; it keeps the design's full color meanwhile.
+// The bar's one colored element: a solid accent circle beside the pill. Inert until ticket 07
+// opens the editor; it keeps the design's full color meanwhile.
 function CreateButton({ action }: CreateButtonProps) {
+  const colors = useThemeColors();
   return (
     <Pressable
       disabled
       accessibilityRole="button"
       accessibilityLabel={action}
       accessibilityState={{ disabled: true }}
-      className="size-13 items-center justify-center rounded-full bg-ink"
+      style={{
+        boxShadow: `inset 0 1px 0 ${glass.plus.highlight}, ${glass.plus.glow} ${withOpacity(colors.accent, glass.plus.glowOpacity)}`,
+      }}
+      className="size-14 items-center justify-center rounded-full bg-accent"
     >
-      <Icon name="plus" size={26} strokeWidth={2.4} colorClassName="text-canvas" />
+      <Icon name="plus" size={26} strokeWidth={2.4} colorClassName="text-on-accent" />
     </Pressable>
   );
 }
 
-const PILL_CLASS = 'absolute inset-0 rounded-full p-1.5';
+const PILL_CLASS = 'h-15 flex-1 rounded-full p-1.25';
 
 /**
  * Liquid Glass where the OS has it; everywhere else a frosted pill. Android blurs only through a
@@ -140,6 +143,7 @@ const PILL_CLASS = 'absolute inset-0 rounded-full p-1.5';
 function Pill({ children }: PillProps) {
   const scheme = useColorScheme();
   const colors = useThemeColors();
+  const veil = glass.veil[scheme];
   if (LIQUID_GLASS) {
     return (
       <ThemedGlassView accessibilityRole="tablist" colorScheme={scheme} className={PILL_CLASS}>
@@ -151,19 +155,23 @@ function Pill({ children }: PillProps) {
     <View accessibilityRole="tablist" style={{ boxShadow: glass.shadow[scheme] }} className={PILL_CLASS}>
       <View
         pointerEvents="none"
-        style={{ borderColor: glass.edge[scheme], borderTopColor: glass.highlight[scheme] }}
+        style={{
+          borderColor: glass.edge[scheme],
+          borderTopColor: glass.highlight[scheme],
+        }}
         className="absolute inset-0 overflow-hidden rounded-full border"
       >
         <BlurView intensity={glass.nativeBlurIntensity} tint={BLUR_TINT[scheme]} style={StyleSheet.absoluteFill} />
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: withOpacity(colors.elevated, glass.veil) }]} />
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: withOpacity(colors[veil.color], veil.opacity) }]} />
       </View>
       {children}
     </View>
   );
 }
 
-/** The solid accent pill behind the focused tab; it glides to the next tab with the snap spring. */
+/** The quiet pill behind the focused tab; it glides to the next tab with the snap spring. */
 function Selection({ x, width }: SelectionProps) {
+  const scheme = useColorScheme();
   const style = useAnimatedStyle(() => ({
     width: width.get(),
     transform: [{ translateX: x.get() }],
@@ -171,13 +179,29 @@ function Selection({ x, width }: SelectionProps) {
   return (
     <Animated.View
       pointerEvents="none"
-      style={style}
-      className="absolute top-0 bottom-0 left-0 rounded-full bg-accent"
+      style={[style, { backgroundColor: glass.selection[scheme] }]}
+      className="absolute top-0 bottom-0 left-0 rounded-full"
     />
   );
 }
 
-/** The v2 floating pill: Plan · Habits · + · Goals · More (ADR-0003). */
+/** The `canvas` fade behind the bar, so content dissolves before it reaches the glass. */
+function Fade() {
+  const colors = useThemeColors();
+  const solid = `${glass.fadeSolidStop * 100}%`;
+  return (
+    <View
+      pointerEvents="none"
+      style={{
+        height: glass.fadeHeight,
+        backgroundImage: `linear-gradient(to top, ${colors.canvas} ${solid}, ${withOpacity(colors.canvas, 0)})`,
+      }}
+      className="absolute inset-x-0 bottom-0"
+    />
+  );
+}
+
+/** The floating pill Plan · Habits · Goals · More with the + beside it (ADR-0003, ADR-0009). */
 export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   const routes = state.routes.filter((route) => isTabRoute(route.name));
   const focusedKey = state.routes[state.index]?.key;
@@ -234,19 +258,17 @@ export function TabBar({ state, emitter, navigateToTab }: BottomTabBarProps) {
   );
 
   return (
-    <View pointerEvents="box-none" className="absolute inset-x-4 bottom-safe-offset-6 h-16">
-      <Pill>
-        <View className="flex-1 flex-row items-center">
-          <Selection x={selectionX} width={selectionWidth} />
-          {tabs.slice(0, TABS_BEFORE_CREATE)}
-          <View className="w-18" />
-          {tabs.slice(TABS_BEFORE_CREATE)}
-        </View>
-      </Pill>
-      {/* The + sits over the pill's center gap, so it can stand taller than the tabs. */}
-      <View pointerEvents="box-none" className="absolute inset-0 items-center justify-center">
+    <>
+      <Fade />
+      <View pointerEvents="box-none" className="absolute inset-x-4 bottom-6 flex-row items-center gap-4">
+        <Pill>
+          <View className="flex-1 flex-row items-center">
+            <Selection x={selectionX} width={selectionWidth} />
+            {tabs}
+          </View>
+        </Pill>
         <CreateButton action={action} />
       </View>
-    </View>
+    </>
   );
 }

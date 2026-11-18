@@ -9,7 +9,7 @@ v1.1 used a cream canvas, a terracotta brand color, muted earthy activity hues w
 ## Decision
 
 - Neutrals: white `canvas` and `surface`, a light-gray `card` fill instead of bordered cards, dark `ink`.
-- Accent: blue (`#3366F0` light, `#3A6AF2` dark), always with white `on-accent` text; blue text on dark uses the lighter `accent-text`. The center + button is `ink`; the active tab is a solid accent pill.
+- Accent: blue (`#3366F0` light, `#3A6AF2` dark), always with white `on-accent` text; blue text on dark uses the lighter `accent-text`. The + button is a solid accent circle beside the tab pill and the active tab is a quiet gray pill (revised 2026-11-18, [ADR-0009](0009-tab-bar-plus-beside-the-pill.md)).
 - Activity hues: saturated and the same in both themes, each deep enough for white icons and text (`on-hue`) at 3:1 or better. Timeline capsules use the solid hue. (Revised 2026-11-18: the first v2 hues were pastel with dark `on-hue` icons and a 62% white tint on capsules; they were deepened so icons on hues could be white.)
 - Type: Onest (OFL, Google Fonts) at 400–600; no UI text is bolder than semibold.
 - Hues are never text. Headline highlights are a 42% hue marker behind the words.

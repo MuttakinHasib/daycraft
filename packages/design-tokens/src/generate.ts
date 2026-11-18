@@ -95,6 +95,7 @@ export function generateTailwindCss(): string {
   const schemeVariables = (scheme: ColorScheme): string[] => [
     ...Object.entries(semanticColors[scheme]).map(([name, value]) => `--${name}: ${value};`),
     `--shadow-float-color: ${shadowColors[scheme]};`,
+    `--thumb-shadow: ${shadows.thumb[scheme]};`,
     `color-scheme: ${scheme};`,
   ];
 
@@ -119,6 +120,7 @@ export function generateTailwindCss(): string {
     '',
     '--shadow-float: 0 1px 2px var(--shadow-float-color), 0 12px 32px var(--shadow-float-color);',
     `--shadow-lift: ${shadows.lift};`,
+    '--shadow-thumb: var(--thumb-shadow);',
     '',
     `--ease-snap: ${cubicBezier};`,
     `--ease-spring-snap: ${springSnap.easing};`,

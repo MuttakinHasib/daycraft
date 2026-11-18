@@ -74,12 +74,16 @@ a{color:#AD5236}a:hover{color:#97462D}
 .dk-li:first-child{border-top:0}
 .dk-step{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:var(--sunken);color:var(--ink)}
 
-.dk-light{--hdr-mix:40%;--hdr-ink:#1C1C1C} .dk-dark{--hdr-mix:100%;--hdr-ink:#FFFFFF}
+.dk-light{--hdr-mix:40%;--hdr-ink:#1C1C1C}
+.dk-dark{--hdr-mix:100%;--hdr-ink:#FFFFFF}
 .dk-glass{background:color-mix(in srgb,var(--elevated) 58%,transparent)!important;-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);border:1px solid var(--glass-edge)!important;box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 rgba(0,0,0,.04),0 10px 30px rgba(0,0,0,var(--glass-sh))!important} .dk-light{--glass-edge:rgba(255,255,255,.7);--glass-hi:rgba(255,255,255,.85);--glass-sh:.10} .dk-dark{--glass-edge:rgba(255,255,255,.10);--glass-hi:rgba(255,255,255,.14);--glass-sh:.45} .dk-glass .dk-tab5[aria-current="page"]{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 2px 8px color-mix(in srgb,var(--accent) 35%,transparent)}
+.vt.dk-glass{background:color-mix(in srgb,var(--tb-veil) var(--tb-mix),transparent)!important;-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--tb-edge)!important;box-shadow:inset 0 1px 0 var(--tb-hi),0 1px 2px rgba(0,0,0,var(--tb-sh2)),0 8px 24px rgba(0,0,0,var(--tb-sh))!important} .dk-light{--tb-veil:var(--surface);--tb-mix:88%;--tb-edge:rgba(28,28,28,.07);--tb-hi:rgba(255,255,255,.9);--tb-sh:.10;--tb-sh2:.05;--tb-on:rgba(28,28,28,.07)} .dk-dark{--tb-veil:var(--elevated);--tb-mix:82%;--tb-edge:rgba(255,255,255,.09);--tb-hi:rgba(255,255,255,.10);--tb-sh:.5;--tb-sh2:.3;--tb-on:rgba(255,255,255,.11)} .vt .dk-tab5[aria-current="page"]{background:var(--tb-on)!important;color:var(--ink)!important;box-shadow:none!important} .vt .dk-tab5{color:var(--ink-subtle)} .vt .dk-tab5-badge{top:4px!important;left:calc(50% + 4px)!important;min-width:16px!important;height:16px!important;padding:0 4px!important;font-size:10px!important;box-shadow:0 0 0 2px var(--surface)!important} .dk-tabfade{position:absolute;left:0;right:0;bottom:0;height:128px;background:linear-gradient(to top,var(--canvas) 30%,color-mix(in srgb,var(--canvas) 0%,transparent));pointer-events:none;z-index:29} .dk-fab-x{position:absolute;right:16px;width:56px;height:56px;border-radius:999px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;z-index:30;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 6px 18px color-mix(in srgb,var(--accent) 38%,transparent)}
+.vC.dk-glass{right:88px!important;height:60px!important;padding:5px!important} .vC .dk-tab5{height:50px} .dk-fab-x{bottom:26px}
+.dk-light{--raised:#FFFFFF} .dk-dark{--raised:#424242} .dk-seg button[aria-pressed="true"]{background:var(--raised)} .dk-dark .dk-seg button[aria-pressed="true"]{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.45)} .dk-dark .dk-seg.oh{background:rgba(0,0,0,.18)!important} .dk-dark .dk-seg.oh button{color:rgba(255,255,255,.88)!important} .dk-dark .dk-seg.oh button[aria-pressed="true"]{background:#FFFFFF!important;color:#1C1C1C!important;box-shadow:0 1px 2px rgba(0,0,0,.2)!important}
 .dk{font-family:'Onest',ui-sans-serif,system-ui,sans-serif}
 .dk-h1{font-weight:600!important;letter-spacing:-.03em!important}
 .dk-tab5[aria-current="page"],.dk-tab[aria-current="page"]{background:var(--accent)!important;color:var(--on-accent)!important}
-.dk-tab5-badge{background:var(--h-clay)!important;color:#1A1A1A!important}
+.dk-tab5-badge{background:var(--h-clay)!important;color:#FFFFFF!important}
 .dk-card,.dk-list{border-color:transparent!important;background:var(--card)!important}
 .dk-chip[aria-pressed="true"]{background:var(--ink);color:var(--canvas)}
 .dk .oh::placeholder{color:rgba(0,0,0,.45)!important}
@@ -745,7 +749,8 @@ a{color:#AD5236}a:hover{color:#97462D}
 </sc-if>
 
 <sc-if value="{{showTabs}}" hint-placeholder-val="{{ true }}">
-<nav aria-label="Main" class="dk-glass" style="position: absolute; left: 16px; right: 16px; bottom: 24px; height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; align-items: center; z-index: 30">
+<div class="dk-tabfade" aria-hidden="true"></div>
+<nav aria-label="Main" class="dk-glass vt vC" style="position: absolute; left: 16px; right: 16px; bottom: 24px; height: 64px; padding: 6px; border-radius: 999px; background: var(--elevated); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; align-items: center; z-index: 30">
 <sc-for list="{{tabsA}}" as="t" hint-placeholder-count="2">
 <button class="dk-tab5" aria-current="{{t.cur}}" aria-label="{{t.aria}}" onClick="{{t.go}}">
 <svg class="ic" width="22" height="22"><use href="#i-{{t.icon}}"></use></svg>
@@ -753,7 +758,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 <sc-if value="{{t.badge}}" hint-placeholder-val="{{ false }}"><span class="tnum dk-tab5-badge">{{t.n}}</span></sc-if>
 </button>
 </sc-for>
-<span style="flex: none; width: 72px; display: grid; place-items: center"><button class="dk-press" aria-label="{{fab.aria}}" onClick="{{fab.go}}" style="width: 52px; height: 52px; border-radius: 999px; background: var(--ink); color: var(--canvas); display: grid; place-items: center"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button></span>
+
 <sc-for list="{{tabsB}}" as="t" hint-placeholder-count="2">
 <button class="dk-tab5" aria-current="{{t.cur}}" aria-label="{{t.aria}}" onClick="{{t.go}}">
 <svg class="ic" width="22" height="22"><use href="#i-{{t.icon}}"></use></svg>
@@ -762,6 +767,7 @@ a{color:#AD5236}a:hover{color:#97462D}
 </button>
 </sc-for>
 </nav>
+<button class="dk-press dk-fab-x" aria-label="{{fab.aria}}" onClick="{{fab.go}}"><svg class="ic" width="26" height="26" style="stroke-width: 2.4"><use href="#i-plus"></use></svg></button>
 </sc-if>
 
 <sc-if value="{{sh.open}}" hint-placeholder-val="{{ false }}">

@@ -21,7 +21,8 @@ They change with the theme. Use them as `bg-*`, `text-*` and `border-*`.
 | `surface` | Sheets, panels, the Plan timeline panel |
 | `card` | Cards, list groups, habit and goal cards, info blocks. A light-gray fill, no border |
 | `sunken` | Chips, segmented track, fields on surface, tags, kanban columns, nav hover |
-| `elevated` | Floating tab bar, selected segment, menus |
+| `elevated` | Floating tab bar (dark veil), menus |
+| `raised` | The selected thumb on a `sunken` track (segmented controls). White in light, #424242 in dark so it stands clearly above the #292929 track; `ink` on it passes 4.5:1 |
 | `line` | Hairlines, hour lines, row separators (cards have no border) |
 | `line-strong` | Dashed spine, unchecked checkbox borders, grabber |
 | `ink` | Primary text, selected chip background |
@@ -102,9 +103,10 @@ Weights in use: 400, 500, 600 (700 and 800 stay embedded for edge cases but no p
 Flat by default: surfaces separate by fill (white `surface`, gray `card`), not borders. Shadows only on things that float.
 
 - `shadow-float`: sheets, dialogs, toast, floating menus.
-- **Glass** (`glass` token): the phone tab bar floats as frosted glass, `elevated` at 58% over a blur (CSS `blur(22px) saturate(180%)`), a 1px light rim, a brighter 1px top highlight and its own soft shadow. On iOS 26 the system's Liquid Glass replaces it. Nothing else uses glass.
+- **Glass** (`glass` token): the phone tab bar floats as frosted glass, mostly opaque so bright blocks can't smear through: `surface` at 88% (light) or `elevated` at 82% (dark) over a blur (CSS `blur(20px) saturate(160%)`), a 1px hairline rim (ink 7% light, white 9% dark), a brighter 1px top highlight and a two-layer soft shadow. A `canvas` fade (128 tall, solid for its lower 30%) sits behind the bar so content dissolves before reaching it. On iOS 26 the system's Liquid Glass replaces the pill. Nothing else uses glass.
 - `shadow-lift`: a capsule while it is dragged.
-- The center + button is `ink` with `canvas` icon, no glow. The active tab is a solid `accent` pill with `on-accent` label.
+- `shadow-thumb`: the selected thumb on a `sunken` track (segmented controls). A soft drop in light; in dark a 6% white top highlight and a deeper drop. Mobile applies `shadows.thumb[scheme]` as a style.
+- The tab bar has one colored element: the + is a 56 `accent` circle with a white icon, an inset top highlight and a soft accent glow (`glass.plus`), floating beside the pill. The active tab is quiet: a translucent ink pill (`glass.selection`, ink 7% light, white 11% dark) with an `ink` icon and label; inactive tabs are `ink-subtle`. See [ADR-0009](../adr/0009-tab-bar-plus-beside-the-pill.md).
 
 ## Motion
 

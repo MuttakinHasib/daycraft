@@ -49,6 +49,7 @@ function pairsFor(tokens: ContrastTokens): ContrastPair[] {
       { pair: `${scheme}: ink-subtle on canvas`, foreground: colors['ink-subtle'], background: colors.canvas, minimum: TEXT_MINIMUM },
       { pair: `${scheme}: ink-subtle on surface`, foreground: colors['ink-subtle'], background: colors.surface, minimum: TEXT_MINIMUM },
       { pair: `${scheme}: ink-subtle on card`, foreground: colors['ink-subtle'], background: colors.card, minimum: TEXT_MINIMUM },
+      { pair: `${scheme}: ink on raised`, foreground: colors.ink, background: colors.raised, minimum: TEXT_MINIMUM },
       { pair: `${scheme}: on-accent on accent`, foreground: colors['on-accent'], background: colors.accent, minimum: TEXT_MINIMUM },
     );
   }

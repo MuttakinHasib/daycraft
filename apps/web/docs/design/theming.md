@@ -20,7 +20,7 @@ Decision W2. The preference (`system` by default, `light`, `dark`; `ThemePrefere
 
 1. Every component must be checked in **both** themes before it is done.
 2. Use semantic utilities only:
-   - backgrounds: `bg-canvas`, `bg-surface`, `bg-card`, `bg-sunken`, `bg-elevated`;
+   - backgrounds: `bg-canvas`, `bg-surface`, `bg-card`, `bg-sunken`, `bg-elevated`, `bg-raised`;
    - text: `text-ink`, `text-ink-muted`, `text-ink-subtle`, `text-accent-text`, `text-on-accent`, `text-on-hue`;
    - borders: `border-line`, `border-line-strong`.
    Never use `bg-white`, `text-black`, `zinc-*`/`gray-*`, hex values, or `dark:` to patch a light-only color.

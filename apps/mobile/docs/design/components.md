@@ -45,15 +45,17 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 - **Card:** `bg-card rounded-card p-4`, no border.
 - **ListGroup:** a `bg-card` card with no padding and `line` hairlines between its **ListRow**s (min 52, px 16, gap 12; leading 32pt hue tile or 18pt subtle icon; trailing value in `text-ink-muted` tabular; optional chevron).
 
-### TabBar (with the center +)
+### TabBar (pill + separate +)
 
-- Built as a custom Expo Router `tabBar` ([ADR-0003](../../../../docs/adr/0003-custom-floating-pill-tab-bar.md)). On iOS 26+ the pill's background is interactive Liquid Glass (`expo-glass-effect` with `isInteractive`, `colorScheme` from the app theme); elsewhere it is the solid pill below.
-- **Bar:** one pill, 16 from each side and 24 above the bottom inset, h 64, p 6, `bg-elevated`, border `line`, `shadow-float`.
-- **Order:** Plan · Habits · **+** · Goals · More. Tabs are `flex-1`, 52 tall, 22pt icon over an 11pt semibold label, gap 3.
+- Built as a custom Expo Router `tabBar` ([ADR-0003](../../../../docs/adr/0003-custom-floating-pill-tab-bar.md), [ADR-0009](../../../../docs/adr/0009-tab-bar-plus-beside-the-pill.md)). On iOS 26+ the pill's background is Liquid Glass (`expo-glass-effect`, `colorScheme` from the app theme); elsewhere it is the frosted pill below.
+- **Row:** 16 from each side and 24 above the bottom inset: the pill (`flex-1`), a 16 gap, then the + circle.
+- **Pill:** h 60, p 5, frosted per the `glass` token: `expo-blur` (`systemUltraThinMaterial`) under `surface` 88% (light) or `elevated` 82% (dark), 1px hairline rim, brighter top highlight, two-layer shadow.
+- **Fade:** a `canvas` gradient behind the bar, 128 plus the bottom inset, solid for its lower 30%, so content dissolves before it reaches the glass.
+- **Tabs:** Plan · Habits · Goals · More, `flex-1`, 50 tall, 22pt icon over an 11pt semibold label, gap 3.
   - Icons: Plan `timeline`, Habits `flame`, Goals `target`, More `grid`.
-  - Active: `bg-sunken` pill + `text-accent-text` (`accessibilityState={{ selected: true }}`). Inactive: `text-ink-muted`.
-  - More carries the Inbox badge: 18pt accent pill, 11pt bold count, 2pt `elevated` ring, offset to the right of the icon. Its label reads “More, 4 in Inbox”.
-- **+ (center):** a 72-wide slot holding a 52 circle, `bg-accent`, 26pt plus (stroke 2.4). Its action and label follow the screen (New task / New habit / New routine); see [navigation](../product/navigation-and-modules.md#navigation-model).
+  - Active: a quiet pill (`glass.selection`) that glides between tabs with `springs.snap`, and `text-ink` (`accessibilityState={{ selected: true }}`). Inactive: `text-ink-subtle`.
+  - More carries the Inbox badge: 16pt `clay` pill, 10pt count in `on-hue`, 2pt `surface` ring, at the icon's top right. Its label reads “More, 4 in Inbox”.
+- **+:** a 56 circle, `bg-accent`, white 26pt plus (stroke 2.4), inset top highlight and a soft accent glow (`glass.plus`). It is the bar's only colored element. Its action and label follow the screen (New task / New habit / New routine); see [navigation](../product/navigation-and-modules.md#navigation-model).
 - Hidden on Focus.
 
 ### Toast

@@ -8,6 +8,7 @@
       --color-card: #f4f3f0;
       --color-sunken: #eeede9;
       --color-elevated: #ffffff;
+      --color-raised: #ffffff;
       --color-line: #e9e7e2;
       --color-line-strong: #d9d6cf;
       --color-ink: #1c1c1c;
@@ -29,6 +30,7 @@
       --color-card: #1f1f1f;
       --color-sunken: #292929;
       --color-elevated: #2a2a2a;
+      --color-raised: #424242;
       --color-line: #2a2a2a;
       --color-line-strong: #3b3b3b;
       --color-ink: #f4f4f2;

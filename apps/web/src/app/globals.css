@@ -91,7 +91,7 @@
   }
   /* One pill that springs to the selected option; set --segment-count and --segment-index on .segmented. */
   .segmented-indicator {
-    @apply absolute inset-y-0.75 left-0.75 rounded-segment bg-elevated shadow-sm motion-reduce:transition-none;
+    @apply absolute inset-y-0.75 left-0.75 rounded-segment bg-raised shadow-thumb motion-reduce:transition-none;
     width: calc((100% - 6px - (var(--segment-count) - 1) * 2px) / var(--segment-count));
     transform: translateX(calc(var(--segment-index) * (100% + 2px)));
     transition: transform var(--spring-snap-duration) var(--ease-spring-snap);

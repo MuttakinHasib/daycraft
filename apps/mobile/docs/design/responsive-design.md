@@ -19,7 +19,7 @@
   - Peers (filters, habits, milestones, kanban) → horizontal scroll with no visible scrollbar.
   - Text → truncate on the timeline, wrap elsewhere.
   - Never allow horizontal page overflow.
-- Respect the safe area at top and bottom. Floating UI (tab bar, +, toast) sits above the bottom inset.
+- Respect the safe area at top and bottom. The floating tab bar and + sit 24 from the screen's bottom edge, over the home indicator (as in the design); the toast sits above the bar.
 - Dynamic Type: the layout must survive the largest standard size. Rows grow vertically; nothing clips. The timeline's row heights grow with text, so use measured text heights in the layout function if Dynamic Type increases them. **Proposed;** the prototype uses fixed 48/80.
 
 ## Timeline across sizes

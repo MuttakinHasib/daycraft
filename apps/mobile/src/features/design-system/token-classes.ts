@@ -8,6 +8,7 @@ export const SemanticColorBackground: Record<SemanticColor, string> = {
   card: 'bg-card',
   sunken: 'bg-sunken',
   elevated: 'bg-elevated',
+  raised: 'bg-raised',
   line: 'bg-line',
   'line-strong': 'bg-line-strong',
   ink: 'bg-ink',

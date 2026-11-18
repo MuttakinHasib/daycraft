@@ -1,9 +1,10 @@
-import { springs } from '@daycraft/design-tokens';
+import { shadows, springs } from '@daycraft/design-tokens';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 import { cn } from '@/lib/cn';
+import { useColorScheme } from '@/theme/app-theme';
 
 interface SegmentedOption<TValue extends string> {
   value: TValue;
@@ -23,9 +24,15 @@ const TRACK_PADDING = 3;
 const SEGMENT_GAP = 2;
 
 /** A segmented control: options in, the selected value out. The selection springs between options. */
-export function Segmented<TValue extends string>({ options, value, onChange, accessibilityLabel }: SegmentedProps<TValue>) {
+export function Segmented<TValue extends string>({
+  options,
+  value,
+  onChange,
+  accessibilityLabel,
+}: SegmentedProps<TValue>) {
   const [segmentWidth, setSegmentWidth] = useState(0);
   const offset = useSharedValue(0);
+  const scheme = useColorScheme();
   const selectedIndex = Math.max(
     0,
     options.findIndex((option) => option.value === value),
@@ -58,8 +65,8 @@ export function Segmented<TValue extends string>({ options, value, onChange, acc
     >
       {segmentWidth > 0 && (
         <Animated.View
-          style={indicatorStyle}
-          className="absolute top-0.75 bottom-0.75 left-0.75 rounded-segment bg-elevated shadow-sm"
+          style={[indicatorStyle, { boxShadow: shadows.thumb[scheme] }]}
+          className="absolute top-0.75 bottom-0.75 left-0.75 rounded-segment bg-raised"
         />
       )}
       {options.map((option) => {

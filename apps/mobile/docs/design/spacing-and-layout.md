@@ -33,8 +33,8 @@ No other values in feature code (no 6, 10, 14, 18, 22…). Two exceptions:
 | Section label | 24 above its group, 8 below |
 | Between cards | 12 |
 | Card padding | 16 (list-style cards with a leading ring: 12 vertical, 16 sides) |
-| Scroll content bottom | 120 on tab screens: tab bar 64 + bottom inset 24 + 32 breathing room. Use the safe-area inset plus this, not a hardcoded total. |
-| Floating tab bar | 16 from each side, 24 from the bottom (above the safe area). The + sits inside it, centered |
+| Scroll content bottom | 120 on tab screens (`pb-30`): the bar's 24 offset + 60 pill + 36 breathing room, measured from the screen's bottom edge like the bar itself. |
+| Floating tab bar | 16 from each side, 24 from the screen's bottom edge (the home indicator sits under the bar, as with iOS 26's floating bars; not 24 above the safe area). The pill holds the four tabs; the 56 + circle sits 16 to its right |
 | + button | 64, 16 from the right, 24 from the bottom |
 | Toast | 40 tall, 104 from the bottom (16 above the tab bar), max width = screen − 40 |
 

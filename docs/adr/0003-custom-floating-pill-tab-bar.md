@@ -1,4 +1,6 @@
-# The mobile tab bar is a custom floating pill with the + inside it
+# The mobile tab bar is a custom floating pill
+
+> Revised by [ADR-0009](0009-tab-bar-plus-beside-the-pill.md): the + now floats beside the pill instead of inside it. The rest of this decision stands.
 
 The phone app's tab bar is the v2 design's single floating pill: Plan · Habits · **+** · Goals · More, with Plan as the default. It is built with Expo Router `Tabs` and a custom `tabBar`, not `expo-router/native-tabs`. The **+** is a button inside the pill, never a route: it reads the focused route and opens the matching sheet (New task, New task at Anytime on All tasks, New habit, New routine).
 

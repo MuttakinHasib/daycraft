@@ -104,7 +104,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### All tasks
 
-- Opened from More. Header has an accent **+ Task** chip; the center + also adds an unscheduled task here.
+- Opened from More. Header has an accent **+ Task** chip; the + also adds an unscheduled task here.
 - Filter chips with counts: **Open · Today · Unscheduled · Done**.
 - **Cards:**
   - Ring on the left; title (struck through when done).
@@ -114,7 +114,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Habits
 
-- Tab root, no top switch. The center + opens **New habit**.
+- Tab root, no top switch. The + opens **New habit**.
 - Summary line: “3 of 5 checked in today.” (adds “— a perfect day.” when all are done).
 - **Card:**
   - 40pt hue circle icon, name, “Every day” or “4× a week”, then a flame icon with “13-day streak” (or “Start a streak” at 0).
@@ -125,7 +125,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Routines
 
-- Opened from More. Header has an accent **+ Routine** chip; the center + opens the same sheet.
+- Opened from More. Header has an accent **+ Routine** chip; the + opens the same sheet.
 - Expandable cards:
   - 40×56 capsule-shaped hue icon, name, “4 steps · 30 min”, chevron.
   - Expanded: the steps on a mini spine (dot · title · minutes) and an `md` primary button **Add to today** (or “Add to tomorrow” / the date).
@@ -133,7 +133,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Goals
 
-- Tab root, no top switch. The center + adds a task (there is no new-goal sheet yet).
+- Tab root, no top switch. The + adds a task (there is no new-goal sheet yet).
 - **Card:**
   - 56pt progress ring with a percentage, title, description.
   - “Target Sun, Dec 20, 2026 · 33 days left”.
