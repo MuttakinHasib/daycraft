@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, type ComponentRef } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { TabRoute, useToast } from '@/components/ui';
-import { activityRepository, useDayActivities } from '@/data/activity-store';
+import { activityRepository, useDayActivities, useDayEdges } from '@/data/activity-store';
 import { useNow } from '@/lib/use-now';
 
 import { PlanHeader } from './plan-header';
@@ -53,13 +53,21 @@ export function PlanScreen() {
   const date = useSelectedDate(today);
   const justCreatedId = useJustCreatedId();
   const activities = useDayActivities(date);
+  const dayEdges = useDayEdges();
   const now = minutesOfDay(clock);
   const toast = useToast();
   const drag = useTimelineDrag(({ id, timing, message }) => {
     activityRepository.reschedule(id, timing);
     toast(message);
   });
-  const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now, preview: drag.preview });
+  const layout = layoutDay({
+    activities,
+    scale: PHONE_SCALE,
+    isToday: date === today,
+    now,
+    preview: drag.preview,
+    dayEdges,
+  });
   const toggleDone = (id: string) => {
     const activity = activityRepository.toggleDone(id);
     toast(activity.done ? `Done · ${activity.title}` : 'Marked as not done');

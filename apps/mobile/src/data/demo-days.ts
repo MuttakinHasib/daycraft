@@ -1,5 +1,6 @@
 import {
   addDays,
+  DEFAULT_DAY_EDGES,
   weekdayOf,
   type ActivityHue,
   type ActivityInput,
@@ -305,4 +306,5 @@ export function loadDemoDays(date: ISODate): void {
     inputs.push(...everyDay(addDays(date, offset), offset));
   inputs.push(...today(date), ...nearby(date));
   for (const input of inputs) activityRepository.create(input);
+  activityRepository.setDayEdges(DEFAULT_DAY_EDGES);
 }

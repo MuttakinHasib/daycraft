@@ -35,7 +35,9 @@ The timeline sits inside the Today panel (`surface`, `radius-sheet` top corners)
 - Day range: **5:00 AM to midnight** (`D0 = 300`, `D1 = 1440` minutes).
 - Scale: **1.1 pt per minute** on phone (66 pt/hour), **1.25** on desktop.
 - Times are local wall-clock minutes of day (see [architecture](../development/architecture.md#dates-and-time)).
-- **Day edges (approved 2026-11-19, not built):** the timeline shows a **Wake up** anchor and a **Bedtime** anchor, set in [onboarding](onboarding.md) (default 7:00 AM and 11:00 PM). Both stay inside 5:00 AM to midnight, at least 6 hours apart, in 15-minute steps. They are markers: the timeline still runs 5:00 AM to midnight, and activities may sit before Wake up or after Bedtime.
+- **Day edges:** once the person has saved day edges (in [onboarding](onboarding.md); defaults 7:00 AM and 11:00 PM), the timeline shows a **Wake up** anchor and a **Bedtime** anchor. Both stay inside 5:00 AM to midnight, at least 6 hours apart, in 15-minute steps. They are markers: the timeline still runs 5:00 AM to midnight, and activities may sit before Wake up or after Bedtime.
+  - **Look:** the time in the gutter (`type-micro` semibold, `ink-muted`), a hairline (`line-strong`) across the row area, a 24pt circle on the spine (`surface` with a `line-strong` border) holding a 13pt sun or moon in `ink-muted`, and the name beside it (`type-control`, `ink-muted`). No hue: the day edges belong to the day, not to an activity. VoiceOver reads "Wake up, 7:00 AM".
+  - **Layout:** each anchor takes 28pt in the push-down (§3) like a point-in-time row, so a capsule never covers it. One that falls inside an activity's time sits right below that row, and later rows move down. Hour labels within 18pt of an anchor are hidden, and a free-time hint moves below an anchor in its gap.
 
 ## 3. Layout algorithm (push-down + anchored time map)
 

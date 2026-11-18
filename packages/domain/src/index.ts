@@ -43,6 +43,16 @@ export {
   type Timing,
 } from './timeline/day-limits';
 export {
+  DAY_EDGE_STEP,
+  DayEdge,
+  DEFAULT_DAY_EDGES,
+  isDayEdges,
+  MIN_DAY_MINUTES,
+  withDayEdge,
+  type DayEdgeChange,
+  type DayEdges,
+} from './timeline/day-edges';
+export {
   DEFAULT_DURATION,
   DEFAULT_START,
   editorDefaults,
@@ -77,6 +87,7 @@ export {
   RowState,
   SpineKind,
   type Anchor,
+  type DayEdgeMarks,
   type DayLayout,
   type DragPreview,
   type FreeTimeHint,

@@ -58,6 +58,13 @@ export const subtask = sqliteTable(
   (table) => [index('subtask_activity_idx').on(table.activityId)],
 );
 
+// Per-person settings as key-value pairs; each value is JSON. The keys are listed in the repository.
+export const setting = sqliteTable('setting', {
+  key: text('key').primaryKey(),
+  value: text('value').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),

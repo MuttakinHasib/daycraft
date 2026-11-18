@@ -1,6 +1,7 @@
 import {
   ActivityKind,
   completionToggled,
+  isDayEdges,
   isActivityHue,
   isActivityKind,
   isIconName,
@@ -13,6 +14,7 @@ import {
   type ActivityChanges,
   type ActivityHue,
   type ActivityInput,
+  type DayEdges,
   type ISODate,
   type Subtask,
   type SubtaskInput,
@@ -21,7 +23,7 @@ import {
 import { and, asc, eq, inArray, isNotNull, isNull, ne } from 'drizzle-orm';
 import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
 
-import { activity, subtask, type ActivityRow, type SubtaskRow } from './schema';
+import { activity, setting, subtask, type ActivityRow, type SubtaskRow } from './schema';
 
 // The only way screens touch activity data. Inputs and outputs are domain types; rows never leave this file.
 
@@ -44,6 +46,11 @@ interface SubtaskWrite {
   inputs: SubtaskInput[];
 }
 
+interface SettingWrite {
+  key: SettingKey;
+  value: unknown;
+}
+
 interface ActivityWrite {
   id: string;
   changes: ActivityChanges;
@@ -61,9 +68,33 @@ export interface ActivityRepository {
   toggleDone(id: string): Activity;
   toggleSubtask(id: string): void;
   remove(id: string): void;
+  /** Null until the person saves day edges (or when the stored value breaks the rules). */
+  readDayEdges(): DayEdges | null;
+  /** Throws on edges that break the day-edge rules. */
+  setDayEdges(edges: DayEdges): void;
 }
 
 const MAX_DOTS = 4;
+
+const SettingKey = {
+  DAY_EDGES: 'day_edges',
+} as const;
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
+type SettingKey = (typeof SettingKey)[keyof typeof SettingKey];
+
+function parseDayEdges(json: string): DayEdges | null {
+  try {
+    const value: unknown = JSON.parse(json);
+    if (typeof value !== 'object' || value === null) return null;
+    const { wakeUp, bedtime } = value as Record<string, unknown>;
+    if (typeof wakeUp !== 'number' || typeof bedtime !== 'number') return null;
+    const edges = { wakeUp, bedtime };
+    return isDayEdges(edges) ? edges : null;
+  } catch {
+    return null;
+  }
+}
 
 function parseLabels(json: string): Activity['labels'] {
   try {
@@ -203,6 +234,11 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     return result;
   }
 
+  function writeSetting(tx: AppDatabase, { key, value }: SettingWrite) {
+    const row = { key, value: JSON.stringify(value), updatedAt: stamp() };
+    tx.insert(setting).values(row).onConflictDoUpdate({ target: setting.key, set: row }).run();
+  }
+
   function applyChanges(tx: AppDatabase, { id, changes }: ActivityWrite) {
     const row = tx
       .select({ doneAt: activity.doneAt })
@@ -221,6 +257,16 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
 
   return {
     readActivity,
+
+    readDayEdges() {
+      const row = db.select().from(setting).where(eq(setting.key, SettingKey.DAY_EDGES)).get();
+      return row ? parseDayEdges(row.value) : null;
+    },
+
+    setDayEdges(edges) {
+      if (!isDayEdges(edges)) throw new Error('Day edges break the rules');
+      write((tx) => writeSetting(tx, { key: SettingKey.DAY_EDGES, value: edges }));
+    },
 
     readDay(date) {
       const rows = db
