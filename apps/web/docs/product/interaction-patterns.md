@@ -49,19 +49,20 @@ Toast behavior:
     - **Rows card** (`card`, 22 radius, 56pt rows, 22pt icons in the activity hue, value, muted hint, chevron):
       - Date: "Tue, Nov 17" · "Today" / "Tomorrow" / "Yesterday" → the **Date sheet**;
       - Time: "9:30–11:30 AM" · "2 hr" → the **Time sheet**;
-      - Alert: "1 alert" · "At start" → the **Alert sheet**.
-    - **Pills** (48pt, `card`): Repeat (Never / Every day / Weekdays / Every week), Priority (tasks), Colour (hue and icon). Events show Location instead of Priority. Each opens its own small sheet.
+      - Alert: "1 alert" · "At start" → the **Alert sheet**. Hidden until notifications exist: a setting that never fires would mislead.
+    - **Pills** (48pt, `card`): Repeat (Never / Every day / Weekdays / Every week), Priority (tasks), Colour (hue and icon). Events show Location instead of Priority. Each opens its own small sheet. Until repeating activities are built, Repeat shows its value and does not open. Labels are not in the sheet; labels already saved on an activity are kept.
     - **Subtasks and notes card:** tickable subtasks, an "Add subtask" field (Return adds the next), a hairline, then the notes field.
     - **Delete task / Delete event:** a full-width `card` button with `danger` text, existing activities only.
-    - **⋯ menu:** Start focus (tasks), Duplicate, Move to Inbox (tasks), a separator, Delete (`danger`).
+    - **⋯ menu:** Start focus (tasks), Duplicate, Move to Inbox (tasks), a separator, Delete (`danger`). Start focus and Move to Inbox appear once Focus and Inbox exist.
+    - **Duplicate** opens a new activity sheet filled in with a copy: same title, kind, colour, icon, length, notes and subtasks (unticked), starting when the original ends. Nothing is saved until **Add to timeline**.
   - **Saving:**
-    - **Save changes** is hidden while the sheet matches what is saved. The first change (title, date, time, alert, repeat, priority, colour, notes, adding or renaming subtasks) slides it up from the bottom (`sheet-up`), pinned 30pt above the safe area. Saving writes, toasts `Saved · Today, 9:30 AM`, and the button slides away; the sheet stays open.
+    - **Save changes** is hidden while the sheet matches what is saved. The first change (title, date, time, alert, repeat, priority, colour, notes, adding or renaming subtasks) slides it up from the bottom (`sheet-up`), pinned 30pt above the safe area. Saving writes, toasts `Saved · Today, 9:30 AM` and closes the sheet.
     - **Instant actions don't wait for Save:** the check ring and subtask ticks save at once with their usual toast, as on the timeline.
     - **New activities** show the primary button from the start, reading **Add to timeline** (scheduled task), **Add task** (Anytime) or **Add event**, disabled until the title is not blank.
     - **Closing:** a clean sheet closes on × or swipe down. A sheet with unsaved changes blocks the swipe and shows an action sheet: "You have unsaved changes." · **Discard changes** (`danger`) · **Keep editing**.
     - **Delete** asks first: "Delete “{title}”? This can’t be undone." · **Delete task** · **Cancel**.
-  - **Date sheet:** month title, **Today** and ×; a Sunday-to-Saturday grid with up to two activity dots per day; the selected day is an `ink` circle, today is `accent` text. Picking a day sets it and closes the sheet.
-  - **Time sheet:** "Starts" stepper (−15 / time / +15); a **Duration** wheel (hours 0–12, minutes 0 / 15 / 30 / 45) on `card` with the selection band in `raised`; preset chips 15m 30m 45m 1h 1h 30m 2h; **Done**. Tasks also get the Timeline / Anytime switch here when Anytime is available.
+  - **Date sheet:** Plan's month grid: month title (tap for the year's months), ‹ ›, **Today** and ×; a Sunday-to-Saturday grid with activity dots; the selected day is an `ink` circle, today is `accent` text. Picking a day sets it and closes the sheet.
+  - **Time sheet:** a **Starts** wheel (hour, minute in 5-minute steps, AM/PM) and a **Duration** wheel (hours 0–12, minutes in 5-minute steps), both on `card` with the selection band in `raised`; fixed preset chips 15m 30m 45m 1h 1h 30m 2h; **Done**. Tasks also get the Timeline / Anytime switch here when Anytime is available.
   - **Alert sheet:** None / At start / 5 min before / 15 min before / 1 hr before (one alert for now); picking one closes the sheet.
   - **On the desktop** the activity sheet is the right-hand panel and its small sheets are popovers; the rules are the same.
   - **New habit / New routine / Month picker:** plain header (title in `heading` + close).
