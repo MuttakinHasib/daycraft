@@ -41,7 +41,7 @@ export function SubSheet({ onClose, children }: SubSheetProps) {
         style={{ maxHeight: PANEL_MAX_HEIGHT }}
         className="rounded-t-sheet bg-surface"
       >
-        <ScrollView bounces={false} contentContainerClassName="pb-safe-offset-4">
+        <ScrollView bounces={false} contentContainerClassName="pb-safe">
           {children}
         </ScrollView>
       </Animated.View>

@@ -61,7 +61,7 @@ Toast behavior:
     - **New activities** show the primary button from the start, reading **Add to timeline** (scheduled task), **Add task** (Anytime) or **Add event**, disabled until the title is not blank.
     - **Closing:** a clean sheet closes on × or swipe down. A sheet with unsaved changes blocks the swipe and shows an action sheet: "You have unsaved changes." · **Discard changes** (`danger`) · **Keep editing**.
     - **Delete** asks first: "Delete “{title}”? This can’t be undone." · **Delete task** · **Cancel**.
-  - **Date sheet:** Plan's month grid: month title (tap for the year's months), ‹ ›, **Today** and ×; a Sunday-to-Saturday grid with activity dots; the selected day is an `ink` circle, today is `accent` text. Picking a day sets it and closes the sheet.
+  - **Date sheet:** Plan's month picker: month title (tap for the year's months), **Today** and × joined in one glass group; a Sunday-to-Saturday grid with activity dots; the selected day is an `accent` circle, today is `accent` text. It is the same picker as Plan's month picker. Picking a day sets it and closes the sheet.
   - **Time sheet:** a **Starts** wheel (hour, minute in 5-minute steps, AM/PM) and a **Duration** wheel (hours 0–12, minutes in 5-minute steps), both on `card` with the selection band in `raised`; fixed preset chips 15m 30m 45m 1h 1h 30m 2h; **Done**. Tasks also get the Timeline / Anytime switch here when Anytime is available.
   - **Alert sheet:** None / At start / 5 min before / 15 min before / 1 hr before (one alert for now); picking one closes the sheet.
   - **On the desktop** the activity sheet is the right-hand panel and its small sheets are popovers; the rules are the same.

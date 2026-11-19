@@ -36,10 +36,8 @@ interface MonthPickerProps {
   today: ISODate;
   onPick: (date: ISODate) => void;
   onClose: () => void;
-  /** Shows a Today button that picks today. */
-  onToday?: () => void;
-  /** The selected day as an `ink` circle (the activity sheet's date) instead of `accent` (Plan). */
-  inkSelection?: boolean;
+  /** Picks today; in the days view it takes the place of ‹ ›. */
+  onToday: () => void;
 }
 
 interface DayGridProps {
@@ -47,7 +45,6 @@ interface DayGridProps {
   selected: ISODate;
   today: ISODate;
   onPick: (date: ISODate) => void;
-  inkSelection: boolean;
 }
 
 interface MonthGridProps {
@@ -58,7 +55,7 @@ interface MonthGridProps {
 }
 
 /** The month's days in weeks, with hue dots; days of the neighbouring months are dimmed. */
-function DayGrid({ shown, selected, today, onPick, inkSelection }: DayGridProps) {
+function DayGrid({ shown, selected, today, onPick }: DayGridProps) {
   const dates = monthGrid(shown);
   const dots = useWeekDots(dates);
   const weeks = Array.from({ length: dates.length / 7 }, (_, week) => dates.slice(week * 7, week * 7 + 7));
@@ -89,15 +86,13 @@ function DayGrid({ shown, selected, today, onPick, inkSelection }: DayGridProps)
               >
                 <View
                   className={cn('size-9 items-center justify-center rounded-full', {
-                    'bg-accent': isSelected && !inkSelection,
-                    'bg-ink': isSelected && inkSelection,
+                    'bg-accent': isSelected,
                   })}
                 >
                   <Text
                     style={TABULAR}
                     className={cn('type-activity', {
-                      'text-on-accent': isSelected && !inkSelection,
-                      'text-canvas': isSelected && inkSelection,
+                      'text-on-accent': isSelected,
                       'text-accent-text': !isSelected && isToday,
                       'text-ink': !isSelected && !isToday,
                     })}
@@ -164,7 +159,7 @@ function MonthGrid({ shown, selected, today, onPick }: MonthGridProps) {
  * The month picker sheet (timeline guide §12): a month grid with hue dots. ‹ ›, or a swipe, change the month;
  * tapping the title switches to the year's months, where ‹ › change the year. Tapping a day picks it.
  */
-export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSelection = false }: MonthPickerProps) {
+export function MonthPicker({ selected, today, onPick, onClose, onToday }: MonthPickerProps) {
   const [shown, setShown] = useState(() => monthOf(selected));
   const [view, setView] = useState<PickerView>(PickerView.DAYS);
   const months = view === PickerView.MONTHS;
@@ -173,7 +168,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSele
   const unit = months ? 'year' : 'month';
 
   return (
-    <View className="bg-surface px-5 pt-6 pb-10">
+    <View className="bg-surface px-5 pt-6 pb-2">
       <View className="mb-4 flex-row items-center gap-2">
         <Pressable
           accessibilityRole="button"
@@ -193,7 +188,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSele
         {/* With Today, the days view swaps ‹ › for it; swipes and the title's months still change the month. */}
         <ButtonGroup
           buttons={[
-            ...(onToday && !months
+            ...(!months
               ? [{ label: 'Today', onPress: onToday }]
               : [
                   { icon: 'chev-l' as const, accessibilityLabel: `Previous ${unit}`, onPress: () => step(-1) },
@@ -216,7 +211,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSele
               }}
             />
           ) : (
-            <DayGrid shown={shown} selected={selected} today={today} onPick={onPick} inkSelection={inkSelection} />
+            <DayGrid shown={shown} selected={selected} today={today} onPick={onPick} />
           )}
         </Animated.View>
       </GestureDetector>
