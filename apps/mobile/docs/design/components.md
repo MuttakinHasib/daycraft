@@ -27,6 +27,7 @@ Small controls are the platform's own buttons, so they look and press like the s
 
 - **IconButton** (×, ⋯, ‹ ›, + / −): iOS draws a SwiftUI glass button (`buttonStyle('glass')`, circle, `ink` tint; `bordered` before iOS 26) with the matching SF Symbol; Android draws Material 3's `FilledTonalIconButton` (`sunken` container, `ink` content) holding the app's own icon. 32pt (`sm`) or 44pt (`lg`). An icon without an SF Symbol mapping falls back to the drawn button (`DrawnIconButton`), which web always uses.
 - **TextButton** (Today): iOS glass capsule in Onest semibold 15; Android `FilledTonalButton`; web the small `Chip`.
+- **ButtonGroup** (Today ×, ‹ › ×): on iOS 26 the buttons are one connected piece of Liquid Glass (`GlassEffectContainer`, 2pt apart), as in the system's own sheet headers. The glass only draws; same-size React Native tap targets sit on top, because native taps inside a form sheet can fall through to the content below. Android and older iOS show the separate native buttons.
 - The activity sheet's ⋯ is a native menu: a 44pt glass circle opening the iOS menu, or the Android dropdown.
 - `accessibilityLabel` is **required** for IconButton (TypeScript-enforced).
 

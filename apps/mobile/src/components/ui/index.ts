@@ -7,6 +7,7 @@ export { Icon } from './icon';
 export { IconButton } from './icon-button';
 export { IconButtonSize } from './icon-button-types';
 export { TextButton } from './text-button';
+export { ButtonGroup } from './button-group';
 export { popIn } from './pop';
 export { SectionLabel } from './section-label';
 export { Segmented, SegmentedTone } from './segmented';

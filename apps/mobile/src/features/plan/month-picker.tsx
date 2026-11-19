@@ -12,7 +12,7 @@ import { Pressable, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { ActivityHueBackground, Icon, IconButton, IconButtonSize, TextButton } from '@/components/ui';
+import { ActivityHueBackground, ButtonGroup, Icon } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 
@@ -191,16 +191,17 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSele
         </Pressable>
         <View className="flex-1" />
         {/* With Today, the days view swaps ‹ › for it; swipes and the title's months still change the month. */}
-        {onToday && !months ? (
-          <TextButton label="Today" onPress={onToday} />
-        ) : (
-          <>
-            <IconButton icon="chev-l" accessibilityLabel={`Previous ${unit}`} onPress={() => step(-1)} />
-            <IconButton icon="chev-r" accessibilityLabel={`Next ${unit}`} onPress={() => step(1)} />
-          </>
-        )}
-        <View className="w-1" />
-        <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={onClose} />
+        <ButtonGroup
+          buttons={[
+            ...(onToday && !months
+              ? [{ label: 'Today', onPress: onToday }]
+              : [
+                  { icon: 'chev-l' as const, accessibilityLabel: `Previous ${unit}`, onPress: () => step(-1) },
+                  { icon: 'chev-r' as const, accessibilityLabel: `Next ${unit}`, onPress: () => step(1) },
+                ]),
+            { icon: 'x', accessibilityLabel: 'Close', onPress: onClose },
+          ]}
+        />
       </View>
       <GestureDetector gesture={swipe.gesture}>
         <Animated.View style={swipe.style}>
