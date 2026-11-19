@@ -43,8 +43,12 @@ _Avoid_: red line, cursor
 When a person's day starts and ends, set in onboarding as two daily routines, Rise and shine and Wind down. Not stored apart from those routines; the timeline itself runs from the day's first activity to its last.
 _Avoid_: day limits, working hours, Wake up and Bedtime (as anchors)
 
+**Activity sheet**:
+The one sheet that creates, shows and edits a task or event. It opens ready to edit; there is no separate view or edit screen.
+_Avoid_: detail sheet, editor, edit screen
+
 **Unscheduled**:
-A task with a date but no start time; shown as "Anytime" in the editor.
+A task with a date but no start time; shown as "Anytime" in the activity sheet.
 _Avoid_: backlog
 
 ### Kinds of activity
@@ -102,7 +106,7 @@ The run of consecutive dates (or weeks, for weekly habits) a habit was checked i
 Completed activities plus checked-in habits, divided by the total for the date. Derived.
 
 **Focus session**:
-A timed run of attention on one activity, started from its detail.
+A timed run of attention on one activity, started from its activity sheet.
 _Avoid_: pomodoro
 
 ### Longer horizons
