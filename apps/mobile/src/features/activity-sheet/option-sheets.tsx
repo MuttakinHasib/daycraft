@@ -1,25 +1,20 @@
-import { hueColors } from '@daycraft/design-tokens';
-import {
-  ACTIVITY_ICONS,
-  ActivityHue,
-  Priority,
-  type ActivityInput,
-  type ActivityHue as Hue,
-  type IconName,
-  type ISODate,
-  type Priority as PriorityLevel,
-} from '@daycraft/domain';
-import { useState, type ReactNode } from 'react';
+import { Priority, Repeat, type ISODate, type Priority as PriorityLevel } from '@daycraft/domain';
+import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-import { Button, Icon } from '@/components/ui';
+import { Button, Icon, Segmented } from '@/components/ui';
 import { MonthPicker } from '@/features/plan/month-picker';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
 import { SubSheetHeader } from './sub-sheet';
 
-const ICON_CELL_WIDTH = `${100 / 6}%` as const;
+const REPEAT_OPTIONS = [
+  { value: Repeat.NEVER, label: 'Once' },
+  { value: Repeat.DAILY, label: 'Daily' },
+  { value: Repeat.WEEKLY, label: 'Weekly' },
+  { value: Repeat.MONTHLY, label: 'Monthly' },
+] as const;
 
 export const PRIORITY_LABEL: Record<PriorityLevel, string> = {
   none: 'None',
@@ -27,26 +22,6 @@ export const PRIORITY_LABEL: Record<PriorityLevel, string> = {
   medium: 'Medium',
   high: 'High',
 };
-
-export const HUE_NAMES: Record<Hue, string> = {
-  clay: 'Clay',
-  amber: 'Amber',
-  sun: 'Sun',
-  sage: 'Sage',
-  pine: 'Pine',
-  sky: 'Sky',
-  iris: 'Iris',
-  rose: 'Rose',
-  slate: 'Slate',
-};
-
-/** What the colour sheet changes: the hue, the icon or both. */
-export type AppearanceChange = Partial<Pick<ActivityInput, 'hue' | 'icon'>>;
-
-interface SectionProps {
-  label: string;
-  children: ReactNode;
-}
 
 interface DateSheetProps {
   date: ISODate;
@@ -61,10 +36,9 @@ interface PrioritySheetProps {
   onClose: () => void;
 }
 
-interface ColourSheetProps {
-  hue: Hue;
-  icon: IconName;
-  onChange: (change: AppearanceChange) => void;
+interface RepeatSheetProps {
+  value: Repeat;
+  onChange: (repeat: Repeat) => void;
   onClose: () => void;
 }
 
@@ -72,15 +46,6 @@ interface LocationSheetProps {
   value: string;
   onDone: (location: string) => void;
   onClose: () => void;
-}
-
-function Section({ label, children }: SectionProps) {
-  return (
-    <View className="gap-3">
-      <Text className="type-body font-sans-semibold text-ink">{label}</Text>
-      {children}
-    </View>
-  );
 }
 
 /** Plan's month grid with Today: picking a day sets it and closes the sheet. */
@@ -124,58 +89,19 @@ export function PrioritySheet({ value, onPick, onClose }: PrioritySheetProps) {
   );
 }
 
-/** The activity's hue and icon; both apply as they are tapped. */
-export function ColourSheet({ hue, icon, onChange, onClose }: ColourSheetProps) {
+/** Once, Daily, Weekly or Monthly; the choice applies at once. */
+export function RepeatSheet({ value, onChange, onClose }: RepeatSheetProps) {
   return (
     <View>
-      <SubSheetHeader title="Colour and icon" onClose={onClose} />
-      <View className="gap-6 px-5">
-        <Section label="Colour">
-          <View className="flex-row justify-between">
-            {Object.values(ActivityHue).map((option) => {
-              const selected = option === hue;
-              return (
-                <Pressable
-                  key={option}
-                  accessibilityRole="button"
-                  accessibilityLabel={HUE_NAMES[option]}
-                  accessibilityState={{ selected }}
-                  hitSlop={4}
-                  onPress={() => onChange({ hue: option })}
-                  style={{ backgroundColor: hueColors[option] }}
-                  className="size-8 rounded-full"
-                >
-                  {selected && <View className="absolute -inset-1 rounded-full border-2 border-ink" />}
-                </Pressable>
-              );
-            })}
-          </View>
-        </Section>
-        <Section label="Icon">
-          <View className="flex-row flex-wrap gap-y-2.5">
-            {ACTIVITY_ICONS.map((option) => {
-              const selected = option === icon;
-              return (
-                <View key={option} style={{ width: ICON_CELL_WIDTH }} className="items-center">
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={option}
-                    accessibilityState={{ selected }}
-                    onPress={() => onChange({ icon: option })}
-                    style={selected ? { backgroundColor: hueColors[hue] } : undefined}
-                    className={cn('size-11 items-center justify-center rounded-full', { 'bg-sunken': !selected })}
-                  >
-                    <Icon
-                      name={option}
-                      size={20}
-                      colorClassName={cn({ 'text-ink-muted': !selected, 'text-on-hue': selected })}
-                    />
-                  </Pressable>
-                </View>
-              );
-            })}
-          </View>
-        </Section>
+      <SubSheetHeader title="Repeat" onClose={onClose} />
+      <View className="px-5 pb-2">
+        <Segmented
+          options={REPEAT_OPTIONS}
+          // A stored "Weekdays" (no longer offered) shows no selection until another is picked.
+          value={value}
+          onChange={onChange}
+          accessibilityLabel="Repeat"
+        />
       </View>
     </View>
   );

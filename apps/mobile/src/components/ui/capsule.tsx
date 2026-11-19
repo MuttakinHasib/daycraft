@@ -1,11 +1,11 @@
-import { hueColors, hueTints, withOpacity } from '@daycraft/design-tokens';
-import { ActivityHue } from '@daycraft/domain';
+import { hueTints, inkOn, withOpacity } from '@daycraft/design-tokens';
+import { ActivityHue, type ActivityColor } from '@daycraft/domain';
 import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { cn } from '@/lib/cn';
 
-import { ActivityHueBackground } from './hues';
+import { colorValue } from './activity-color';
 
 export const CapsuleState = {
   IDLE: 'idle',
@@ -20,7 +20,7 @@ export type CapsuleState = (typeof CapsuleState)[keyof typeof CapsuleState];
 const ACTIVE_BASE_OPACITY = 0.42;
 
 interface CapsuleProps {
-  hue?: ActivityHue;
+  hue?: ActivityColor;
   state?: CapsuleState;
   height?: number;
   /** For an active capsule, how much has passed (0–1): that part, from the top, is the solid hue. */
@@ -44,6 +44,8 @@ export function Capsule({
   children,
 }: CapsuleProps) {
   const active = state === CapsuleState.ACTIVE;
+  const color = colorValue(hue);
+  const lightColor = inkOn(color) === 'ink';
   return (
     <Pressable
       accessibilityRole="button"
@@ -56,33 +58,31 @@ export function Capsule({
         // A filled pill behind the capsule, not a border, so the ring stays concentric at any height.
         <View
           className="absolute -inset-1 rounded-full"
-          style={{ backgroundColor: withOpacity(hueColors[hue], hueTints.activeRing) }}
+          style={{ backgroundColor: withOpacity(color, hueTints.activeRing) }}
         />
       )}
       <View
-        // Solid hue; icons inside use text-on-hue (white).
-        style={height ? { height } : undefined}
+        // Solid hue; icons inside use `inkClassOn` (white, or dark on a light custom color).
+        style={{ height, backgroundColor: active ? undefined : color }}
         className={cn('flex w-12 min-h-12 items-center justify-center overflow-hidden rounded-capsule', {
-          [ActivityHueBackground[hue]]: !active,
           'bg-surface': active,
         })}
       >
         {active && (
           <>
+            <View className="absolute inset-0" style={{ backgroundColor: withOpacity(color, ACTIVE_BASE_OPACITY) }} />
             <View
-              className="absolute inset-0"
-              style={{ backgroundColor: withOpacity(hueColors[hue], ACTIVE_BASE_OPACITY) }}
-            />
-            <View
-              className={cn('absolute inset-x-0 top-0', ActivityHueBackground[hue])}
-              style={{ height: `${Math.min(1, Math.max(0, elapsed)) * 100}%` }}
+              className="absolute inset-x-0 top-0"
+              style={{ height: `${Math.min(1, Math.max(0, elapsed)) * 100}%`, backgroundColor: color }}
             />
           </>
         )}
         {children}
         {grip && (
           <View pointerEvents="none" className="absolute inset-x-0 bottom-0 h-4.5 items-center justify-center">
-            <View className="h-0.75 w-4 rounded-full bg-on-hue opacity-75" />
+            <View
+              className={cn('h-0.75 w-4 rounded-full opacity-75', { 'bg-on-hue': !lightColor, 'bg-ink': lightColor })}
+            />
           </View>
         )}
       </View>

@@ -139,5 +139,5 @@ _Avoid_: tutorial, walkthrough, welcome
 ### Color
 
 **Hue**:
-One of the nine activity colors an activity is tinted with.
+The color an activity is tinted with: one of the nine named activity colors, or a custom color the person picks.
 _Avoid_: color, theme color

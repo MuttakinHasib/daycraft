@@ -1,7 +1,7 @@
 import { getRandomBytes } from 'expo-crypto';
 import { useEffect, useEffectEvent, useState } from 'react';
 
-import { uuidV7, type Activity, type ISODate } from '@daycraft/domain';
+import { uuidV7, type Activity, type HexColor, type ISODate } from '@daycraft/domain';
 
 import { createActivityRepository, type WeekDots } from './activity-repository';
 import { database } from './database';
@@ -38,6 +38,11 @@ export function useDayActivities(date: ISODate): Activity[] {
 /** Each date's hue dots for the week strip. */
 export function useWeekDots(dates: ISODate[]): WeekDots {
   return useLive(() => activityRepository.readWeekDots(dates), dates.join(','));
+}
+
+/** The custom colors in use, oldest first. */
+export function useUsedCustomColors(): HexColor[] {
+  return useLive(() => activityRepository.readUsedCustomColors(), 'custom-colors');
 }
 
 /** One activity, or null once it is deleted. */

@@ -68,3 +68,11 @@ export function checkContrast(tokens: ContrastTokens = { semantic: semanticColor
     return { pair, ratio, minimum, passes: ratio >= minimum };
   });
 }
+
+/** Below this, white on a color is too faint for icons and labels (WCAG non-text contrast). */
+const ON_COLOR_MINIMUM = 3;
+
+/** Which ink to draw on an activity color: white (`on-hue`) when it reads, else `ink`. */
+export function inkOn(color: string): 'on-hue' | 'ink' {
+  return contrastRatio(semanticColors.light['on-hue'], color) >= ON_COLOR_MINIMUM ? 'on-hue' : 'ink';
+}

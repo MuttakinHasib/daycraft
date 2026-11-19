@@ -1,4 +1,3 @@
-import { hueColors } from '@daycraft/design-tokens';
 import {
   formatClock,
   formatGutterTime,
@@ -15,7 +14,7 @@ import type { ComponentRef, Ref } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Chip, ChipTone, Icon } from '@/components/ui';
+import { Chip, ChipTone, colorValue, Icon } from '@/components/ui';
 import { useThemeColors } from '@/theme/app-theme';
 
 import { ROW_TRANSITION, TimelineRow } from './timeline-row';
@@ -67,7 +66,7 @@ function Spine({ segment }: SpineProps) {
         opacity: segment.dimmed ? 0.45 : 1,
         backgroundImage:
           segment.kind === SpineKind.GRADIENT
-            ? `linear-gradient(to bottom, ${hueColors[segment.fromHue]}, ${hueColors[segment.toHue]})`
+            ? `linear-gradient(to bottom, ${colorValue(segment.fromHue)}, ${colorValue(segment.toHue)})`
             : undefined,
       }}
       className="absolute left-18.75 w-0.5 overflow-hidden"

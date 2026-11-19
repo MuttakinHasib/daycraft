@@ -55,6 +55,7 @@ export const IconName = {
   PLUS: 'plus',
   REPEAT: 'repeat',
   ROUTINE: 'routine',
+  SEARCH: 'search',
   SHUFFLE: 'shuffle',
   STOP: 'stop',
   TAG: 'tag',

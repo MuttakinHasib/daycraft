@@ -1,11 +1,9 @@
 import { clampToDay, clockParts, fromClockParts, type Timing } from '@daycraft/domain';
 import { Text, View } from 'react-native';
 
-import { Button, Chip, ChipSize } from '@/components/ui';
+import { Button, Chip, ChipSize, Wheel, type WheelOption } from '@/components/ui';
 
 import { SubSheetHeader } from './sub-sheet';
-import { Wheel } from './wheel';
-import type { WheelOption } from './wheel-types';
 
 const STEP = 5;
 const PRESETS = [

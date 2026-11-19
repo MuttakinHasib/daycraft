@@ -12,7 +12,7 @@ import { Pressable, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { ActivityHueBackground, ButtonGroup, Icon } from '@/components/ui';
+import { ButtonGroup, colorValue, Icon, Wheel, type WheelOption } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 
@@ -20,7 +20,12 @@ import { useHorizontalSwipe } from './use-horizontal-swipe';
 
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
 const WEEKDAY_SHORT = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1);
+const MONTH_OPTIONS: WheelOption[] = Array.from({ length: 12 }, (_, index) => ({
+  value: index + 1,
+  label: monthName(index + 1),
+}));
+// The month and year wheel reaches this many years either side of today.
+const YEAR_SPAN = 10;
 const MAX_DOTS = 3;
 
 const PickerView = {
@@ -47,11 +52,10 @@ interface DayGridProps {
   onPick: (date: ISODate) => void;
 }
 
-interface MonthGridProps {
+interface MonthYearWheelProps {
   shown: CalendarMonth;
-  selected: ISODate;
   today: ISODate;
-  onPick: (month: number) => void;
+  onChange: (month: CalendarMonth) => void;
 }
 
 /** The month's days in weeks, with hue dots; days of the neighbouring months are dimmed. */
@@ -102,7 +106,7 @@ function DayGrid({ shown, selected, today, onPick }: DayGridProps) {
                 </View>
                 <View className="h-1.75 flex-row gap-0.75">
                   {(dots[date] ?? []).slice(0, MAX_DOTS).map((hue) => (
-                    <View key={hue} className={cn('size-1.5 rounded-full', ActivityHueBackground[hue])} />
+                    <View key={hue} style={{ backgroundColor: colorValue(hue) }} className="size-1.5 rounded-full" />
                   ))}
                 </View>
               </Pressable>
@@ -114,58 +118,46 @@ function DayGrid({ shown, selected, today, onPick }: DayGridProps) {
   );
 }
 
-/** The twelve months of the shown year, to jump straight to one. */
-function MonthGrid({ shown, selected, today, onPick }: MonthGridProps) {
-  const current = monthOf(selected);
-  const thisMonth = monthOf(today);
+/** A native month and year wheel, ten years either side of today; turning it moves the calendar there. */
+function MonthYearWheel({ shown, today, onChange }: MonthYearWheelProps) {
+  const thisYear = monthOf(today).year;
+  const years: WheelOption[] = Array.from({ length: YEAR_SPAN * 2 + 1 }, (_, index) => {
+    const year = thisYear - YEAR_SPAN + index;
+    return { value: year, label: String(year) };
+  });
   return (
-    <View className="flex-row flex-wrap gap-y-2 pt-2">
-      {MONTHS.map((month) => {
-        const isSelected = current.year === shown.year && current.month === month;
-        const isThisMonth = thisMonth.year === shown.year && thisMonth.month === month;
-        return (
-          <Pressable
-            key={month}
-            accessibilityRole="button"
-            accessibilityState={{ selected: isSelected }}
-            accessibilityLabel={`${monthName(month)} ${shown.year}`}
-            onPress={() => onPick(month)}
-            className="w-1/3 items-center active:opacity-70"
-          >
-            <View
-              className={cn('h-11 w-24 items-center justify-center rounded-full', {
-                'bg-accent': isSelected,
-                'bg-sunken': !isSelected,
-              })}
-            >
-              <Text
-                className={cn('type-control font-sans-semibold', {
-                  'text-on-accent': isSelected,
-                  'text-accent-text': !isSelected && isThisMonth,
-                  'text-ink': !isSelected && !isThisMonth,
-                })}
-              >
-                {monthName(month, true)}
-              </Text>
-            </View>
-          </Pressable>
-        );
-      })}
-    </View>
+    <Wheel
+      accessibilityLabel="Month and year"
+      columns={[
+        {
+          key: 'month',
+          label: 'Month',
+          options: MONTH_OPTIONS,
+          value: shown.month,
+          onChange: (month) => onChange({ year: shown.year, month }),
+        },
+        {
+          key: 'year',
+          label: 'Year',
+          options: years,
+          value: shown.year,
+          onChange: (year) => onChange({ year, month: shown.month }),
+        },
+      ]}
+    />
   );
 }
 
 /**
- * The month picker sheet (timeline guide §12): a month grid with hue dots. ‹ ›, or a swipe, change the month;
- * tapping the title switches to the year's months, where ‹ › change the year. Tapping a day picks it.
+ * The month picker sheet (timeline guide §12): a month grid with hue dots; a swipe changes the month. Tapping the
+ * title switches to a native month and year wheel (⌄), and tapping it again goes back to the days. Tapping a day
+ * picks it; Today picks today.
  */
 export function MonthPicker({ selected, today, onPick, onClose, onToday }: MonthPickerProps) {
   const [shown, setShown] = useState(() => monthOf(selected));
   const [view, setView] = useState<PickerView>(PickerView.DAYS);
   const months = view === PickerView.MONTHS;
-  const step = (direction: 1 | -1) => setShown((month) => addMonths(month, direction * (months ? 12 : 1)));
-  const swipe = useHorizontalSwipe(step);
-  const unit = months ? 'year' : 'month';
+  const swipe = useHorizontalSwipe((direction) => setShown((month) => addMonths(month, direction)));
 
   return (
     <View className="bg-surface px-5 pt-6 pb-2">
@@ -173,27 +165,23 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday }: Month
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={
-            months ? `${shown.year}. Show days` : `${monthName(shown.month)} ${shown.year}. Choose a month`
+            months
+              ? `${monthName(shown.month)} ${shown.year}. Show days`
+              : `${monthName(shown.month)} ${shown.year}. Choose a month and year`
           }
           onPress={() => setView(months ? PickerView.DAYS : PickerView.MONTHS)}
           className="flex-row items-center gap-1 active:opacity-70"
         >
           <Text className="type-heading text-ink">
-            {months ? '' : `${monthName(shown.month)} `}
+            {`${monthName(shown.month)} `}
             <Text className="text-accent-text">{shown.year}</Text>
           </Text>
           <Icon name={months ? 'chev-d' : 'chev-r'} size={18} strokeWidth={2.5} colorClassName="text-accent-text" />
         </Pressable>
         <View className="flex-1" />
-        {/* With Today, the days view swaps ‹ › for it; swipes and the title's months still change the month. */}
         <ButtonGroup
           buttons={[
-            ...(!months
-              ? [{ label: 'Today', onPress: onToday }]
-              : [
-                  { icon: 'chev-l' as const, accessibilityLabel: `Previous ${unit}`, onPress: () => step(-1) },
-                  { icon: 'chev-r' as const, accessibilityLabel: `Next ${unit}`, onPress: () => step(1) },
-                ]),
+            { label: 'Today', onPress: onToday },
             { icon: 'x', accessibilityLabel: 'Close', onPress: onClose },
           ]}
         />
@@ -201,15 +189,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday }: Month
       <GestureDetector gesture={swipe.gesture}>
         <Animated.View style={swipe.style}>
           {months ? (
-            <MonthGrid
-              shown={shown}
-              selected={selected}
-              today={today}
-              onPick={(month) => {
-                setShown({ year: shown.year, month });
-                setView(PickerView.DAYS);
-              }}
-            />
+            <MonthYearWheel shown={shown} today={today} onChange={setShown} />
           ) : (
             <DayGrid shown={shown} selected={selected} today={today} onPick={onPick} />
           )}

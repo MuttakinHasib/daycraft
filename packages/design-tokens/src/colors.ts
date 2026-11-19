@@ -146,3 +146,45 @@ export function withOpacity(hex: string, opacity: number): string {
   const [r, g, b] = parseHexColor(hex);
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
+
+/** A color as hue (0–360), saturation (0–1) and value (0–1), as the custom color sliders move it. */
+export interface Hsv {
+  h: number;
+  s: number;
+  v: number;
+}
+
+const toHexPart = (value: number) =>
+  Math.round(Math.min(1, Math.max(0, value)) * 255)
+    .toString(16)
+    .padStart(2, '0');
+
+export function hexFromHsv({ h, s, v }: Hsv): string {
+  const hue = (((h % 360) + 360) % 360) / 60;
+  const chroma = v * s;
+  const x = chroma * (1 - Math.abs((hue % 2) - 1));
+  const m = v - chroma;
+  const sector = Math.floor(hue);
+  const [r, g, b] = [
+    [chroma, x, 0],
+    [x, chroma, 0],
+    [0, chroma, x],
+    [0, x, chroma],
+    [x, 0, chroma],
+    [chroma, 0, x],
+  ][sector % 6] ?? [0, 0, 0];
+  return `#${toHexPart((r ?? 0) + m)}${toHexPart((g ?? 0) + m)}${toHexPart((b ?? 0) + m)}`;
+}
+
+export function hsvFromHex(hex: string): Hsv {
+  const [r, g, b] = parseHexColor(hex).map((channel) => channel / 255) as [number, number, number];
+  const max = Math.max(r, g, b);
+  const delta = max - Math.min(r, g, b);
+  let h = 0;
+  if (delta > 0) {
+    if (max === r) h = 60 * (((g - b) / delta) % 6);
+    else if (max === g) h = 60 * ((b - r) / delta + 2);
+    else h = 60 * ((r - g) / delta + 4);
+  }
+  return { h: (h + 360) % 360, s: max === 0 ? 0 : delta / max, v: max };
+}

@@ -66,6 +66,20 @@ Toast behavior:
   - **Alert sheet:** None / At start / 5 min before / 15 min before / 1 hr before (one alert for now); picking one closes the sheet.
   - **On the desktop** the activity sheet is the right-hand panel and its small sheets are popovers; the rules are the same.
   - **New habit / New routine / Month picker:** plain header (title in `heading` + close).
+### Activity sheet, Structured-style controls (decided 2026-11-19)
+
+These follow the person's reference app and replace the matching parts above where they differ.
+
+- **Small sheets float:** Date, Time, Repeat, Priority, Location and Colour & Icon open as cards inset from the screen edges with all four corners rounded, stacked over the activity sheet; × closes; choices apply at once.
+- **Segmented control:** a dark `sunken` track with the selected option as an `accent` pill in `on-accent` text (Task / Event, Repeat, Duration).
+- **Date sheet:** tapping the month title switches the day grid to a native month and year wheel (title chevron turns to ⌄; tap again for the days). Today and × stay.
+- **Repeat sheet:** "Repeat" with ×, a segmented **Once · Daily · Weekly · Monthly**. The choice is stored now; occurrences come with repeating activities (onboarding ticket 01). No Pro panel. A stored "Weekdays" still shows as Weekdays.
+- **Subtasks:** typing the first letter in "Add subtask" turns that row into a subtask (with ×) and a new empty "Add subtask" row appears below; Return moves to it; an empty Return closes the keyboard. The header shows a done/total counter under the title once there are subtasks.
+- **Labels:** small "Subtasks" and "Notes" labels (`label` preset, `ink-subtle`) above each part of that card.
+- **Button:** a full-width `accent` pill reading **Update task** / **Update event** (was Save changes); still hidden until something changes, steps aside while the keyboard is up, and closes the sheet.
+- **Colour & Icon sheet:** a row of colour circles (selected ringed), ⋯ for a custom colour, a "Suggestions" chip with icons matched to the title, a bar of icon categories, a search field and the icon grid.
+- **Custom colour ("Choose a colour"):** a hue slider, a shade slider, a hex field, a preview capsule, and presets: the nine named colours plus the three most recent custom colours (no Edit). A custom colour is stored as a hex code in the same field as a named colour, looks the same in both themes, and works everywhere a named colour does. Icons and text on a light colour switch from `on-hue` to `ink` when white would fall below 3:1.
+
 - Switching a task from Anytime to Timeline restores the last start time. An event can never be unscheduled.
 
 ## Completing things

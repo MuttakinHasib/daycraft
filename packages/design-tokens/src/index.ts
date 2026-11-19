@@ -1,5 +1,16 @@
-export { CAPSULE_GRIP_OPACITY, hueColors, hueTints, semanticColors, SemanticColor, sheetHeaderTint, withOpacity } from './colors';
-export { checkContrast, contrastRatio } from './contrast';
+export {
+  CAPSULE_GRIP_OPACITY,
+  hexFromHsv,
+  hsvFromHex,
+  hueColors,
+  hueTints,
+  semanticColors,
+  SemanticColor,
+  sheetHeaderTint,
+  withOpacity,
+  type Hsv,
+} from './colors';
+export { checkContrast, contrastRatio, inkOn } from './contrast';
 export { cnConfig } from './cn-config';
 export { generateTailwindCss, generateUniwindCss } from './generate';
 export { glass } from './glass';

@@ -13,7 +13,16 @@ export {
   type Subtask,
   type SubtaskInput,
 } from './activity';
-export { ActivityHue, isActivityHue } from './activity-hue';
+export {
+  ActivityHue,
+  isActivityColor,
+  isActivityHue,
+  isHexColor,
+  recentCustomColors,
+  toHexColor,
+  type ActivityColor,
+  type HexColor,
+} from './activity-hue';
 export {
   addDays,
   addMonths,
@@ -97,3 +106,4 @@ export {
   type TimelineRow,
 } from './timeline/layout';
 export { ColorScheme, isThemePreference, resolveColorScheme, ThemePreference } from './theme';
+export { ICON_CATEGORIES, searchIcons, suggestIcons, type IconCategory } from './icon-catalog';

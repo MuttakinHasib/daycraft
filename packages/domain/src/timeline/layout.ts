@@ -1,5 +1,5 @@
 import type { Activity } from '../activity';
-import type { ActivityHue } from '../activity-hue';
+import type { ActivityColor } from '../activity-hue';
 import type { MinutesOfDay } from '../calendar';
 import { DAY_END, DAY_START, type Timing } from './day-limits';
 
@@ -65,8 +65,8 @@ export interface SpineSegment {
   top: number;
   height: number;
   kind: SpineKind;
-  fromHue: ActivityHue;
-  toHue: ActivityHue;
+  fromHue: ActivityColor;
+  toHue: ActivityColor;
   /** Both neighbors are done. */
   dimmed: boolean;
 }

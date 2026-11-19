@@ -1,7 +1,8 @@
 import {
   ActivityKind,
   completionToggled,
-  isActivityHue,
+  isActivityColor,
+  toHexColor,
   isActivityKind,
   isIconName,
   isLabel,
@@ -11,14 +12,15 @@ import {
   Repeat,
   type Activity,
   type ActivityChanges,
-  type ActivityHue,
+  type ActivityColor,
+  type HexColor,
   type ActivityInput,
   type ISODate,
   type Subtask,
   type SubtaskInput,
   type Timing,
 } from '@daycraft/domain';
-import { and, asc, eq, inArray, isNotNull, isNull, ne } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNotNull, isNull, like, ne } from 'drizzle-orm';
 import type { BaseSQLiteDatabase } from 'drizzle-orm/sqlite-core';
 
 import { activity, subtask, type ActivityRow, type SubtaskRow } from './schema';
@@ -35,7 +37,7 @@ export interface RepositoryDeps {
 }
 
 /** Each date's distinct activity hues, at most four, routines left out. */
-export type WeekDots = Record<ISODate, ActivityHue[]>;
+export type WeekDots = Record<ISODate, ActivityColor[]>;
 
 type Listener = () => void;
 
@@ -53,6 +55,8 @@ export interface ActivityRepository {
   readDay(date: ISODate): Activity[];
   readActivity(id: string): Activity | null;
   readWeekDots(dates: ISODate[]): WeekDots;
+  /** The custom hex colors activities use, oldest edit first, for the colour picker's recent presets. */
+  readUsedCustomColors(): HexColor[];
   /** Calls `listener` after every write. Returns the function that stops it. */
   subscribe(listener: Listener): () => void;
   create(input: ActivityInput): Activity;
@@ -85,7 +89,7 @@ function toActivity(row: ActivityRow, subtasks: Subtask[]): Activity {
     start: row.startMinute,
     durationMinutes: row.durationMinutes,
     title: row.title,
-    hue: isActivityHue(row.hue) ? row.hue : 'slate',
+    hue: isActivityColor(row.hue) ? (toHexColor(row.hue) ?? row.hue) : 'slate',
     icon: isIconName(row.icon) ? row.icon : 'check',
     kind: isActivityKind(row.kind) ? row.kind : ActivityKind.TASK,
     done: row.doneAt !== null,
@@ -233,8 +237,19 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
       return rows.map((row) => toActivity(row, subtasks.get(row.id) ?? []));
     },
 
+    readUsedCustomColors() {
+      return db
+        .select({ hue: activity.hue })
+        .from(activity)
+        .where(and(isNull(activity.deletedAt), like(activity.hue, '#%')))
+        .orderBy(asc(activity.updatedAt))
+        .all()
+        .map((row) => toHexColor(row.hue))
+        .filter((hex): hex is HexColor => hex !== null);
+    },
+
     readWeekDots(dates) {
-      const dots = Object.fromEntries(dates.map((date) => [date, [] as ActivityHue[]])) as WeekDots;
+      const dots = Object.fromEntries(dates.map((date) => [date, [] as ActivityColor[]])) as WeekDots;
       if (dates.length === 0) return dots;
       const rows = db
         .select({ date: activity.activityDate, hue: activity.hue })
@@ -251,7 +266,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
         .all();
       for (const row of rows) {
         const list = dots[row.date as ISODate];
-        if (list && isActivityHue(row.hue) && !list.includes(row.hue) && list.length < MAX_DOTS) list.push(row.hue);
+        if (list && isActivityColor(row.hue) && !list.includes(row.hue) && list.length < MAX_DOTS) list.push(row.hue);
       }
       return dots;
     },

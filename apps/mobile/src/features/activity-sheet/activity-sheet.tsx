@@ -31,7 +31,8 @@ import { Button, useToast } from '@/components/ui';
 import { activityRepository } from '@/data/activity-store';
 import { markJustCreated } from '@/features/plan/plan-state';
 
-import { ColourSheet, DateSheet, HUE_NAMES, LocationSheet, PRIORITY_LABEL, PrioritySheet } from './option-sheets';
+import { ColourIconSheet, colourName, CustomColourSheet } from './colour-sheets';
+import { DateSheet, LocationSheet, PRIORITY_LABEL, PrioritySheet, RepeatSheet } from './option-sheets';
 import { Card, Pill, Row, SubtasksNotesCard } from './sheet-body';
 import { SheetHeader } from './sheet-header';
 import { SubSheet } from './sub-sheet';
@@ -39,9 +40,10 @@ import { TimeSheet } from './time-sheet';
 
 const REPEAT_LABEL: Record<ActivityInput['repeat'], string> = {
   never: 'Repeat',
-  daily: 'Every day',
+  daily: 'Daily',
   weekdays: 'Weekdays',
-  weekly: 'Every week',
+  weekly: 'Weekly',
+  monthly: 'Monthly',
 };
 
 // Save floats this far above the bottom safe area.
@@ -50,8 +52,11 @@ const SAVE_LIFT = 30;
 const Panel = {
   DATE: 'date',
   TIME: 'time',
+  REPEAT: 'repeat',
   PRIORITY: 'priority',
   COLOUR: 'colour',
+  /** "Choose a colour", stacked over Colour & icon. */
+  CUSTOM_COLOUR: 'customColour',
   LOCATION: 'location',
 } as const;
 
@@ -66,7 +71,7 @@ interface ActivitySheetProps {
 }
 
 function primaryLabel(draft: ActivityInput, isNew: boolean): string {
-  if (!isNew) return 'Save changes';
+  if (!isNew) return draft.kind === ActivityKind.EVENT ? 'Update event' : 'Update task';
   if (draft.kind === ActivityKind.EVENT) return 'Add event';
   return draft.start === null ? 'Add task' : 'Add to timeline';
 }
@@ -127,13 +132,15 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
   const isNew = activityId === null;
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
-  const [panel, setPanel] = useState<Panel | null>(null);
+  // Small sheets stack: Colour & icon can open Choose a colour over itself.
+  const [panels, setPanels] = useState<Panel[]>([]);
+  const openPanel = (next: Panel) => setPanels((open) => [...open, next]);
   // Set once saving or deleting is done, so leaving skips the unsaved-changes question.
   const [leaving, setLeaving] = useState(false);
   const dirty = draftChanged(saved, draft);
   const isEvent = draft.kind === ActivityKind.EVENT;
   const change = (changes: Partial<ActivityInput>) => setDraft((current) => ({ ...current, ...changes }));
-  const closePanel = () => setPanel(null);
+  const closePanel = () => setPanels((open) => open.slice(0, -1));
 
   // Discard drops the guard and leaves; re-dispatching the blocked action would only ask again.
   usePreventRemove(dirty && !leaving, () => confirmDiscard(() => setLeaving(true)));
@@ -230,7 +237,7 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
           })
         }
         onToggleDone={toggleDone}
-        onOpenColour={() => setPanel(Panel.COLOUR)}
+        onOpenColour={() => openPanel(Panel.COLOUR)}
         onDuplicate={duplicate}
         onDelete={remove}
       />
@@ -252,7 +259,7 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
               value={short}
               hint={relative === short ? undefined : relative}
               accessibilityLabel={`Date, ${relative === short ? short : `${relative}, ${short}`}`}
-              onPress={() => setPanel(Panel.DATE)}
+              onPress={() => openPanel(Panel.DATE)}
             />
             <Row
               icon="clock"
@@ -260,37 +267,37 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
               value={time.value}
               hint={time.hint}
               accessibilityLabel={`Time, ${time.value}${time.hint ? `, ${time.hint}` : ''}`}
-              onPress={() => draft.start !== null && setPanel(Panel.TIME)}
+              onPress={() => draft.start !== null && openPanel(Panel.TIME)}
             />
           </Card>
           <View className="flex-row flex-wrap gap-2">
             <Pill
               icon="repeat"
               label={REPEAT_LABEL[draft.repeat]}
-              disabled
-              accessibilityLabel={`Repeat: ${draft.repeat === 'never' ? 'never' : REPEAT_LABEL[draft.repeat]}. Not available yet`}
+              accessibilityLabel={`Repeat: ${draft.repeat === 'never' ? 'once' : REPEAT_LABEL[draft.repeat]}`}
+              onPress={() => openPanel(Panel.REPEAT)}
             />
             {isEvent ? (
               <Pill
                 icon="pin"
                 label={draft.location || 'Location'}
                 accessibilityLabel={`Location${draft.location ? `: ${draft.location}` : ''}`}
-                onPress={() => setPanel(Panel.LOCATION)}
+                onPress={() => openPanel(Panel.LOCATION)}
               />
             ) : (
               <Pill
                 icon="flag"
                 label={draft.priority === Priority.NONE ? 'Priority' : PRIORITY_LABEL[draft.priority]}
                 accessibilityLabel={`Priority: ${PRIORITY_LABEL[draft.priority]}`}
-                onPress={() => setPanel(Panel.PRIORITY)}
+                onPress={() => openPanel(Panel.PRIORITY)}
               />
             )}
             <Pill
               icon="spark"
               swatch={draft.hue}
               label="Colour"
-              accessibilityLabel={`Colour and icon: ${HUE_NAMES[draft.hue]}`}
-              onPress={() => setPanel(Panel.COLOUR)}
+              accessibilityLabel={`Colour and icon: ${colourName(draft.hue)}`}
+              onPress={() => openPanel(Panel.COLOUR)}
             />
           </View>
           <SubtasksNotesCard
@@ -328,8 +335,8 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
           </Button>
         </Animated.View>
       )}
-      {panel && (
-        <SubSheet onClose={closePanel}>
+      {panels.map((panel) => (
+        <SubSheet key={panel} onClose={closePanel}>
           {panel === Panel.DATE && (
             <DateSheet
               date={draft.date}
@@ -348,6 +355,9 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
               onClose={closePanel}
             />
           )}
+          {panel === Panel.REPEAT && (
+            <RepeatSheet value={draft.repeat} onChange={(repeat) => change({ repeat })} onClose={closePanel} />
+          )}
           {panel === Panel.PRIORITY && (
             <PrioritySheet
               value={draft.priority}
@@ -359,7 +369,22 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
             />
           )}
           {panel === Panel.COLOUR && (
-            <ColourSheet hue={draft.hue} icon={draft.icon} onChange={change} onClose={closePanel} />
+            <ColourIconSheet
+              color={draft.hue}
+              icon={draft.icon}
+              title={draft.title}
+              onChange={change}
+              onCustom={() => openPanel(Panel.CUSTOM_COLOUR)}
+              onClose={closePanel}
+            />
+          )}
+          {panel === Panel.CUSTOM_COLOUR && (
+            <CustomColourSheet
+              color={draft.hue}
+              icon={draft.icon}
+              onChange={(hue) => change({ hue })}
+              onClose={closePanel}
+            />
           )}
           {panel === Panel.LOCATION && (
             <LocationSheet
@@ -372,7 +397,7 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
             />
           )}
         </SubSheet>
-      )}
+      ))}
     </View>
   );
 }

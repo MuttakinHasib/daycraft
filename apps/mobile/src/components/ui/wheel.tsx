@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import { IconButton } from '@/components/ui';
+import { IconButton } from './icon-button';
 
 import { WHEEL_HEIGHT, type WheelColumn, type WheelProps } from './wheel-types';
 

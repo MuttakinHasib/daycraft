@@ -37,7 +37,7 @@ interface SegmentedProps<TValue extends string> {
 const TRACK_PADDING = 3;
 const SEGMENT_GAP = 2;
 
-/** A segmented control. It takes the options and the selected value and reports a new value through `onChange`. The selection springs between options. */
+/** A segmented control: an accent pill on a sunken track (a light thumb on a hue band). It takes the options and the selected value and reports a new value through `onChange`. The selection springs between options. */
 export function Segmented<TValue extends string>({
   options,
   value,
@@ -80,7 +80,7 @@ export function Segmented<TValue extends string>({
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled }}
       onLayout={onTrackLayout}
-      className={cn('flex-row gap-0.5 rounded-tile p-0.75', {
+      className={cn('flex-row gap-0.5 rounded-full p-0.75', {
         'bg-sunken': !onHue,
         'bg-ink/12': onHue,
         'opacity-50': disabled,
@@ -88,8 +88,12 @@ export function Segmented<TValue extends string>({
     >
       {segmentWidth > 0 && hasSelection && (
         <Animated.View
-          style={[indicatorStyle, { boxShadow: shadows.thumb[scheme] }]}
-          className="absolute top-0.75 bottom-0.75 left-0.75 rounded-segment bg-raised"
+          // On a surface the selection is an accent pill; on a hue band it stays a light thumb so it doesn't fight the hue.
+          style={[indicatorStyle, onHue ? { boxShadow: shadows.thumb[scheme] } : undefined]}
+          className={cn('absolute top-0.75 bottom-0.75 left-0.75 rounded-full', {
+            'bg-accent': !onHue,
+            'bg-raised': onHue,
+          })}
         />
       )}
       {options.map((option) => {
@@ -102,12 +106,13 @@ export function Segmented<TValue extends string>({
             disabled={disabled}
             hitSlop={{ top: 6, bottom: 6 }}
             onPress={() => onChange(option.value)}
-            className="h-8 flex-1 items-center justify-center"
+            className="h-9 flex-1 items-center justify-center"
           >
             <Text
               className={cn('type-control', {
                 'text-ink-muted': !selected && !onHue,
-                'text-ink': selected,
+                'font-sans-semibold text-on-accent': selected && !onHue,
+                'text-ink': selected && onHue,
                 'text-ink opacity-80 dark:text-on-hue': !selected && onHue,
               })}
             >

@@ -1,9 +1,8 @@
-import { hueColors } from '@daycraft/design-tokens';
-import type { ActivityHue, IconName, SubtaskInput } from '@daycraft/domain';
-import { useState, type ReactNode } from 'react';
+import type { ActivityColor, IconName, SubtaskInput } from '@daycraft/domain';
+import { useRef, useState, type ComponentRef, type ReactNode, type Ref } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-import { ActivityHueText, Icon } from '@/components/ui';
+import { colorValue, Icon, inkClassOn, strokeColor } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
@@ -15,7 +14,7 @@ let nextDraftKey = 0;
 
 interface RowProps {
   icon: IconName;
-  hue: ActivityHue;
+  hue: ActivityColor;
   value: string;
   /** Muted text before the chevron, such as "Today" or "2 hr". */
   hint?: string;
@@ -29,14 +28,14 @@ interface PillProps {
   label: string;
   onPress?: () => void;
   /** A dot in this colour in place of the icon (the Colour pill). */
-  swatch?: ActivityHue;
+  swatch?: ActivityColor;
   /** Shown but not tappable yet, such as Repeat before repeating activities exist. */
   disabled?: boolean;
   accessibilityLabel: string;
 }
 
 interface SubtasksNotesCardProps {
-  hue: ActivityHue;
+  hue: ActivityColor;
   /** Events have notes but no subtasks. */
   showSubtasks: boolean;
   subtasks: SubtaskInput[];
@@ -48,6 +47,10 @@ interface SubtasksNotesCardProps {
 
 interface CardProps {
   children: ReactNode;
+}
+
+interface LabelProps {
+  children: string;
 }
 
 /** A light card holding a group of rows. */
@@ -64,7 +67,7 @@ export function Row({ icon, hue, value, hint, accessibilityLabel, onPress, first
       onPress={onPress}
       className="h-14 flex-row items-center gap-3.5 pl-4 active:bg-sunken"
     >
-      <Icon name={icon} size={22} colorClassName={ActivityHueText[hue]} />
+      <Icon name={icon} size={22} color={strokeColor(hue)} />
       <View className={cn('h-full flex-1 flex-row items-center gap-2 pr-4', { 'border-t border-line': !first })}>
         <Text style={TABULAR} numberOfLines={1} className="flex-1 type-body font-sans-medium text-ink">
           {value}
@@ -90,7 +93,7 @@ export function Pill({ icon, label, onPress, swatch, disabled = false, accessibi
       })}
     >
       {swatch ? (
-        <View style={{ backgroundColor: hueColors[swatch] }} className="size-4.5 rounded-full" />
+        <View style={{ backgroundColor: colorValue(swatch) }} className="size-4.5 rounded-full" />
       ) : (
         <Icon name={icon} size={17} colorClassName="text-ink-muted" />
       )}
@@ -101,7 +104,92 @@ export function Pill({ icon, label, onPress, swatch, disabled = false, accessibi
   );
 }
 
-/** Tickable, renamable subtasks, an Add subtask field, a hairline, then the notes. */
+/** A small section label inside a card. */
+function CardLabel({ children }: LabelProps) {
+  return <Text className="px-4 pt-3.5 pb-1 type-meta font-sans-semibold text-ink-subtle">{children}</Text>;
+}
+
+interface SubtaskRowProps {
+  /** Null for the trailing "Add subtask" row. */
+  subtask: SubtaskInput | null;
+  index: number;
+  hue: ActivityColor;
+  onType: (text: string) => void;
+  onToggle: () => void;
+  onRemove: () => void;
+  onReturn: () => void;
+  inputRef?: Ref<ComponentRef<typeof TextInput>>;
+}
+
+/**
+ * One subtask row, or the "Add subtask" row when `subtask` is null. Both render the same element tree, so when the
+ * add row turns into a subtask (same key) React keeps its text field: the cursor and the typed text stay put.
+ */
+function SubtaskRow({ subtask, index, hue, onType, onToggle, onRemove, onReturn, inputRef }: SubtaskRowProps) {
+  const colors = useThemeColors();
+  const color = colorValue(hue);
+  const isAdd = subtask === null;
+  const done = subtask?.done ?? false;
+  return (
+    <View className="min-h-12 flex-row items-center gap-3 border-b border-line pl-4">
+      <Pressable
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: done, disabled: isAdd }}
+        accessibilityLabel={subtask?.title ?? 'New subtask'}
+        disabled={isAdd}
+        hitSlop={10}
+        onPress={onToggle}
+        style={{
+          borderColor: isAdd ? colors['line-strong'] : strokeColor(hue),
+          backgroundColor: done ? color : undefined,
+        }}
+        className="size-5 items-center justify-center rounded-check border-2"
+      >
+        {done && <Icon name="check" size={12} strokeWidth={3.2} colorClassName={inkClassOn(hue)} />}
+      </Pressable>
+      <TextInput
+        ref={inputRef}
+        accessibilityLabel={isAdd ? 'Add subtask' : `Subtask ${index + 1}`}
+        defaultValue={subtask?.title}
+        onChangeText={onType}
+        onSubmitEditing={onReturn}
+        // Return on a subtask goes on to the add row; Return on the empty add row closes the keyboard.
+        submitBehavior={isAdd ? 'blurAndSubmit' : 'submit'}
+        returnKeyType={isAdd ? 'done' : 'next'}
+        placeholder="Add subtask"
+        placeholderTextColor={colors['ink-subtle']}
+        style={ONE_LINE_FIELD}
+        className={cn('h-12 flex-1 type-body', {
+          'text-ink': !done,
+          'text-ink-muted line-through': done,
+        })}
+      />
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`Remove ${subtask?.title || 'subtask'}`}
+        accessibilityElementsHidden={isAdd}
+        disabled={isAdd}
+        hitSlop={8}
+        onPress={onRemove}
+        className={cn('size-11 items-center justify-center', { 'opacity-0': isAdd })}
+      >
+        <Icon name="x" size={15} colorClassName="text-ink-subtle" />
+      </Pressable>
+    </View>
+  );
+}
+
+/** A fresh key for the next add row; it becomes the subtask's draft id once something is typed. */
+function nextAddKey(): string {
+  nextDraftKey += 1;
+  return `draft-${nextDraftKey}`;
+}
+
+/**
+ * Subtasks and notes in one card, each under a small label. Typing in "Add subtask" turns that row into a subtask
+ * and a fresh "Add subtask" row appears below it; Return moves to that row; an empty Return closes the keyboard.
+ * Ticks save at once (handled by the sheet); the rest waits for Update.
+ */
 export function SubtasksNotesCard({
   hue,
   showSubtasks,
@@ -112,87 +200,60 @@ export function SubtasksNotesCard({
   onChangeNotes,
 }: SubtasksNotesCardProps) {
   const colors = useThemeColors();
-  const [adding, setAdding] = useState('');
-  const add = () => {
-    const title = adding.trim();
-    if (!title) return;
-    nextDraftKey += 1;
-    // A draft id keeps the row's key stable; the repository gives unknown ids a real id when it saves.
-    onChangeSubtasks([...subtasks, { id: `draft-${nextDraftKey}`, title, done: false }]);
-    setAdding('');
-  };
+  const addRef = useRef<ComponentRef<typeof TextInput>>(null);
+  // The add row's key; the repository gives unknown ids a real id when it saves.
+  const [addKey, setAddKey] = useState(nextAddKey);
+  const keyOf = (subtask: SubtaskInput, index: number) => subtask.id ?? `row-${index}`;
+
   return (
     <Card>
-      {showSubtasks &&
-        subtasks.map((subtask, index) => (
-          <View
-            key={subtask.id ?? `copy-${index}`}
-            className="min-h-12 flex-row items-center gap-3 border-b border-line pl-4"
-          >
-            <Pressable
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: subtask.done }}
-              accessibilityLabel={subtask.title}
-              hitSlop={10}
-              onPress={() => onToggleSubtask(index)}
-              style={{
-                borderColor: hueColors[hue],
-                backgroundColor: subtask.done ? hueColors[hue] : undefined,
-              }}
-              className="size-5 items-center justify-center rounded-check border-2"
-            >
-              {subtask.done && <Icon name="check" size={12} strokeWidth={3.2} colorClassName="text-on-hue" />}
-            </Pressable>
-            <TextInput
-              accessibilityLabel={`Subtask ${index + 1}`}
-              defaultValue={subtask.title}
-              onChangeText={(title) =>
-                onChangeSubtasks(subtasks.map((item, i) => (i === index ? { ...item, title } : item)))
-              }
-              style={ONE_LINE_FIELD}
-              className={cn('h-12 flex-1 type-body', {
-                'text-ink': !subtask.done,
-                'text-ink-muted line-through': subtask.done,
-              })}
-            />
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`Remove ${subtask.title || 'subtask'}`}
-              hitSlop={8}
-              onPress={() => onChangeSubtasks(subtasks.filter((_, i) => i !== index))}
-              className="size-11 items-center justify-center"
-            >
-              <Icon name="x" size={15} colorClassName="text-ink-subtle" />
-            </Pressable>
-          </View>
-        ))}
       {showSubtasks && (
-        <View className="min-h-12 flex-row items-center gap-3 border-b border-line px-4">
-          <View className="size-5 rounded-check border-2 border-line-strong" />
-          <TextInput
-            accessibilityLabel="Add subtask"
-            value={adding}
-            onChangeText={setAdding}
-            onSubmitEditing={add}
-            // Return keeps the keyboard up to add the next one; an empty Return closes it.
-            submitBehavior={adding.trim() ? 'submit' : 'blurAndSubmit'}
-            returnKeyType="next"
-            placeholder="Add subtask"
-            placeholderTextColor={colors['ink-subtle']}
-            style={ONE_LINE_FIELD}
-            className="h-12 flex-1 type-body text-ink"
-          />
-        </View>
+        <>
+          <CardLabel>Subtasks</CardLabel>
+          {/* One list, so the add row keeps its key (and its text field) when it becomes a subtask. */}
+          {[
+            ...subtasks.map((subtask, index) => (
+              <SubtaskRow
+                key={keyOf(subtask, index)}
+                subtask={subtask}
+                index={index}
+                hue={hue}
+                onType={(title) =>
+                  onChangeSubtasks(subtasks.map((item, i) => (i === index ? { ...item, title } : item)))
+                }
+                onToggle={() => onToggleSubtask(index)}
+                onRemove={() => onChangeSubtasks(subtasks.filter((_, i) => i !== index))}
+                onReturn={() => addRef.current?.focus()}
+              />
+            )),
+            <SubtaskRow
+              key={addKey}
+              subtask={null}
+              index={subtasks.length}
+              hue={hue}
+              inputRef={addRef}
+              onType={(title) => {
+                if (!title) return;
+                onChangeSubtasks([...subtasks, { id: addKey, title, done: false }]);
+                setAddKey(nextAddKey());
+              }}
+              onToggle={() => undefined}
+              onRemove={() => undefined}
+              onReturn={() => undefined}
+            />,
+          ]}
+        </>
       )}
+      <CardLabel>Notes</CardLabel>
       <TextInput
         accessibilityLabel="Notes"
         defaultValue={notes}
         onChangeText={onChangeNotes}
         multiline
-        placeholder="Add notes, links or a reminder to self"
+        placeholder="Add notes, meeting links or phone numbers"
         placeholderTextColor={colors['ink-subtle']}
         textAlignVertical="top"
-        className="min-h-28 px-4 py-3.5 type-body text-ink"
+        className="min-h-24 px-4 pt-1 pb-3.5 type-body text-ink"
       />
     </Card>
   );

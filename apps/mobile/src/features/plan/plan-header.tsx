@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FlatList, Pressable, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { ActivityHueBackground, Icon, TextButton } from '@/components/ui';
+import { colorValue, Icon, TextButton } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
@@ -134,7 +134,7 @@ function WeekPage({ week, date, today, width, onSelectDate }: WeekPageProps) {
                   key={hue}
                   className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
                 >
-                  <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
+                  <View style={{ backgroundColor: colorValue(hue) }} className="size-1.75 rounded-full" />
                 </View>
               ))}
             </View>

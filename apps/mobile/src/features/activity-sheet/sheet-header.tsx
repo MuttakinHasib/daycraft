@@ -1,14 +1,23 @@
-import { withOpacity } from '@daycraft/design-tokens';
+import { inkOn, withOpacity } from '@daycraft/design-tokens';
 import { ActivityKind, formatTimeText, type ActivityInput, type ActivityKind as Kind } from '@daycraft/domain';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Icon, IconButton, IconButtonSize, popIn, Segmented, SegmentedTone } from '@/components/ui';
+import {
+  bandTextOn,
+  colorValue,
+  Icon,
+  IconButton,
+  IconButtonSize,
+  popIn,
+  Segmented,
+  SegmentedTone,
+} from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { useColorScheme, useThemeColors } from '@/theme/app-theme';
 
 import { MoreMenu } from './more-menu';
-import { BAND_TEXT, BandTile, HueBand } from './sheet-chrome';
+import { BandTile, HueBand } from './sheet-chrome';
 
 const KIND_OPTIONS = [
   { value: ActivityKind.TASK, label: 'Task' },
@@ -45,7 +54,11 @@ export function SheetHeader({
   const scheme = useColorScheme();
   const colors = useThemeColors();
   // TextInput takes its text and placeholder colors as values, not classes.
-  const ink = scheme === 'dark' ? colors['on-hue'] : colors.ink;
+  // On a light custom colour the dark band keeps dark text too.
+  const lightColour = inkOn(colorValue(draft.hue)) === 'ink';
+  const ink = scheme === 'dark' && !lightColour ? colors['on-hue'] : scheme === 'dark' ? colors.canvas : colors.ink;
+  const bandText = bandTextOn(draft.hue);
+  const doneSubtasks = draft.subtasks.filter((subtask) => subtask.done).length;
   const timeLabel = draft.start === null ? 'Anytime' : formatTimeText(draft.start, draft.durationMinutes);
   return (
     <HueBand hue={draft.hue}>
@@ -67,11 +80,11 @@ export function SheetHeader({
         {isNew && <View className="size-11" />}
       </View>
       <View className="mt-4.5 flex-row items-center gap-3.5">
-        <BandTile icon={draft.icon} onPress={onOpenColour} />
+        <BandTile icon={draft.icon} textClass={bandText} onPress={onOpenColour} />
         <View className="min-w-0 flex-1">
           <Text
             style={{ fontVariant: ['tabular-nums'] }}
-            className={cn('type-meta font-sans-semibold opacity-90', BAND_TEXT)}
+            className={cn('type-meta font-sans-semibold opacity-90', bandText)}
           >
             {timeLabel}
           </Text>
@@ -86,6 +99,18 @@ export function SheetHeader({
             style={{ borderBottomWidth: TITLE_RULE, color: ink }}
             className={cn('border-on-hue/50 pt-1 pb-1.5 type-heading', { 'line-through': draft.done })}
           />
+          {draft.subtasks.length > 0 && (
+            <View
+              accessible
+              accessibilityLabel={`${doneSubtasks} of ${draft.subtasks.length} subtasks done`}
+              className="mt-1.5 flex-row items-center gap-1 opacity-80"
+            >
+              <Icon name="checksq" size={13} colorClassName={bandText} />
+              <Text style={{ fontVariant: ['tabular-nums'] }} className={cn('type-meta font-sans-semibold', bandText)}>
+                {`${doneSubtasks}/${draft.subtasks.length}`}
+              </Text>
+            </View>
+          )}
         </View>
         {!isNew && (
           <Pressable
@@ -94,13 +119,21 @@ export function SheetHeader({
             accessibilityLabel={`${draft.done ? 'Mark not done' : 'Complete'}: ${draft.title}`}
             hitSlop={6}
             onPress={onToggleDone}
-            className={cn('size-8 items-center justify-center rounded-full border-2 border-on-hue', {
-              'bg-on-hue': draft.done,
+            // On a light colour the ring takes the band's dark text colour so it stays visible.
+            style={lightColour ? { borderColor: ink, backgroundColor: draft.done ? ink : undefined } : undefined}
+            className={cn('size-8 items-center justify-center rounded-full border-2', {
+              'border-on-hue': !lightColour,
+              'bg-on-hue': draft.done && !lightColour,
             })}
           >
             {draft.done && (
               <Animated.View entering={popIn}>
-                <Icon name="check" size={17} strokeWidth={3.2} colorClassName="text-ink" />
+                <Icon
+                  name="check"
+                  size={17}
+                  strokeWidth={3.2}
+                  colorClassName={lightColour ? 'text-on-hue' : 'text-ink'}
+                />
               </Animated.View>
             )}
           </Pressable>

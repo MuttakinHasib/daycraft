@@ -1,4 +1,4 @@
-import type { ActivityHue } from './activity-hue';
+import type { ActivityColor } from './activity-hue';
 import type { ISODate, MinutesOfDay } from './calendar';
 import type { IconName } from './icon-name';
 
@@ -25,8 +25,10 @@ export type Priority = (typeof Priority)[keyof typeof Priority];
 export const Repeat = {
   NEVER: 'never',
   DAILY: 'daily',
+  /** Kept for activities saved before Monthly; no longer offered. */
   WEEKDAYS: 'weekdays',
   WEEKLY: 'weekly',
+  MONTHLY: 'monthly',
 } as const;
 
 export type Repeat = (typeof Repeat)[keyof typeof Repeat];
@@ -79,7 +81,8 @@ export interface Activity {
   /** 0 for a point in time, drawn as a circle. */
   durationMinutes: number;
   title: string;
-  hue: ActivityHue;
+  /** A named hue or a custom hex color. */
+  hue: ActivityColor;
   icon: IconName;
   kind: ActivityKind;
   done: boolean;

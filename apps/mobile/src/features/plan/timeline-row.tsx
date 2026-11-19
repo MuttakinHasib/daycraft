@@ -11,7 +11,7 @@ import { Pressable, Text, View } from 'react-native';
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
-import { Capsule, CapsuleState, CheckRing, Icon, popIn, Tag, TagTone } from '@/components/ui';
+import { Capsule, CapsuleState, CheckRing, Icon, inkClassOn, popIn, Tag, TagTone } from '@/components/ui';
 import { cn } from '@/lib/cn';
 
 import { DragMode, type TimelineDrag } from './use-timeline-drag';
@@ -115,7 +115,7 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
             onPress={open}
             accessibilityLabel={capsuleLabel}
           >
-            <Icon name={activity.icon} size={22} colorClassName="text-on-hue" />
+            <Icon name={activity.icon} size={22} colorClassName={inkClassOn(activity.hue)} />
           </Capsule>
         </Animated.View>
       </GestureDetector>
