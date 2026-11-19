@@ -81,3 +81,29 @@ export function datePartsOf(date: ISODate): { year: number; month: number; day: 
   const [year, monthIndex, day] = parts(date);
   return { year, month: monthIndex + 1, day };
 }
+
+/** A calendar month: the year and the month (1–12). */
+export interface CalendarMonth {
+  year: number;
+  month: number;
+}
+
+export function monthOf(date: ISODate): CalendarMonth {
+  const { year, month } = datePartsOf(date);
+  return { year, month };
+}
+
+/** The month `months` later (or earlier when negative). */
+export function addMonths({ year, month }: CalendarMonth, months: number): CalendarMonth {
+  const index = year * 12 + (month - 1) + months;
+  return { year: Math.floor(index / 12), month: (index % 12) + 1 };
+}
+
+/** The month's dates in whole Sunday-to-Saturday weeks, with the neighbouring months' days that fill them. */
+export function monthGrid({ year, month }: CalendarMonth): ISODate[] {
+  const first = toISODate(new Date(year, month - 1, 1));
+  const last = toISODate(new Date(year, month, 0));
+  const start = addDays(first, -weekdayOf(first));
+  const end = addDays(last, 6 - weekdayOf(last));
+  return Array.from({ length: daysBetween(start, end) + 1 }, (_, index) => addDays(start, index));
+}

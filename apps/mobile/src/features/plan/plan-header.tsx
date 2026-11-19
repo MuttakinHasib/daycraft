@@ -8,13 +8,18 @@ import {
   type DailyProgress,
   type ISODate,
 } from '@daycraft/domain';
+import { router } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
 import { ActivityHueBackground, Chip, ChipSize, ChipTone, Icon } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
+
+import { useHorizontalSwipe } from './use-horizontal-swipe';
 
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
 const RING_SIZE = 44;
@@ -83,10 +88,11 @@ function ProgressRing({ progress }: ProgressRingProps) {
   );
 }
 
-/** Sunday to Saturday around the selected date, with hue dots; ‹ › move a week and keep the weekday. */
+/** Sunday to Saturday around the selected date, with hue dots; ‹ › or a swipe move a week and keep the weekday. */
 function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
   const week = weekOf(date);
   const dots = useWeekDots(week);
+  const swipe = useHorizontalSwipe((step) => onSelectDate(addDays(date, 7 * step)));
   return (
     <View className="mt-4 flex-row items-center">
       <Pressable
@@ -97,45 +103,49 @@ function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
       >
         <Icon name="chev-l" size={16} colorClassName="text-ink-subtle" />
       </Pressable>
-      {week.map((day, index) => {
-        const selected = day === date;
-        const isToday = day === today;
-        return (
-          <Pressable
-            key={day}
-            accessibilityRole="button"
-            accessibilityState={{ selected }}
-            accessibilityLabel={`${formatShortDate(day)}${isToday ? ', today' : ''}`}
-            onPress={() => onSelectDate(day)}
-            className="flex-1 items-center gap-1.25 py-0.5 active:opacity-70"
-          >
-            <Text className="type-meta font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
-            <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': selected })}>
-              <Text
-                style={TABULAR}
-                className={cn('type-activity', {
-                  'text-on-accent': selected,
-                  'text-accent-text': !selected && isToday,
-                  'text-ink': !selected && !isToday,
-                })}
+      <GestureDetector gesture={swipe.gesture}>
+        <Animated.View style={swipe.style} className="flex-1 flex-row">
+          {week.map((day, index) => {
+            const selected = day === date;
+            const isToday = day === today;
+            return (
+              <Pressable
+                key={day}
+                accessibilityRole="button"
+                accessibilityState={{ selected }}
+                accessibilityLabel={`${formatShortDate(day)}${isToday ? ', today' : ''}`}
+                onPress={() => onSelectDate(day)}
+                className="flex-1 items-center gap-1.25 py-0.5 active:opacity-70"
               >
-                {datePartsOf(day).day}
-              </Text>
-            </View>
-            <View className="h-2.5 flex-row items-center">
-              {(dots[day] ?? []).map((hue) => (
-                // A canvas halo around each dot keeps overlapping dots apart.
-                <View
-                  key={hue}
-                  className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
-                >
-                  <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
+                <Text className="type-meta font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
+                <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': selected })}>
+                  <Text
+                    style={TABULAR}
+                    className={cn('type-activity', {
+                      'text-on-accent': selected,
+                      'text-accent-text': !selected && isToday,
+                      'text-ink': !selected && !isToday,
+                    })}
+                  >
+                    {datePartsOf(day).day}
+                  </Text>
                 </View>
-              ))}
-            </View>
-          </Pressable>
-        );
-      })}
+                <View className="h-2.5 flex-row items-center">
+                  {(dots[day] ?? []).map((hue) => (
+                    // A canvas halo around each dot keeps overlapping dots apart.
+                    <View
+                      key={hue}
+                      className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
+                    >
+                      <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
+                    </View>
+                  ))}
+                </View>
+              </Pressable>
+            );
+          })}
+        </Animated.View>
+      </GestureDetector>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Next week"
@@ -155,11 +165,24 @@ export function PlanHeader({ date, today, progress, onSelectDate }: PlanHeaderPr
   return (
     <View className="px-5 pt-6 pb-2">
       <View className="flex-row items-center justify-between gap-3">
-        {/* The month picker (and the title's chevron that opens it) comes in a later slice. */}
-        <Text accessibilityRole="header" numberOfLines={1} className="shrink type-date text-ink">
-          {`${title.monthDay}, `}
-          <Text className="text-accent-text">{title.year}</Text>
-        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${title.monthDay}, ${title.year}. Choose a date`}
+          onPress={() => router.push('/month-picker')}
+          className="shrink flex-row items-center gap-1.5 active:opacity-70"
+        >
+          <Text
+            accessibilityRole="header"
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.75}
+            className="shrink type-date text-ink"
+          >
+            {`${title.monthDay}, `}
+            <Text className="text-accent-text">{title.year}</Text>
+          </Text>
+          <Icon name="chev-r" size={20} strokeWidth={2.5} colorClassName="text-accent-text" />
+        </Pressable>
         <View className="flex-row items-center gap-2">
           {!isToday && (
             <Chip size={ChipSize.SM} tone={ChipTone.ACCENT_SOFT} onPress={() => onSelectDate(today)}>

@@ -67,11 +67,11 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
   - On the right: **Today** chip (only when another date is selected) and a 44pt daily progress ring (4pt stroke on a `line-strong` track). It shows the number without a % sign in 13pt extrabold, a check in `accent-text` at 100%, and only the track at 0.
 - **Subline:** `body-sm` muted: "Tuesday · Today · 6 of 19 done".
 - **Week strip:**
-  - Seven columns Sun–Sat with 22pt ‹ › week arrows at both ends.
+  - Seven columns Sun–Sat with 22pt ‹ › week arrows at both ends; a horizontal swipe also moves a week.
   - Each column has a weekday label (`label` size, subtle), a 36pt date circle and up to four 7pt hue dots, one per distinct non-routine activity color that day.
   - The selected date's circle is filled with `accent` (text `on-accent`); today's number is shown in `accent-text`.
 - **Timeline panel:**
-  - `surface` background, top corners `radius-sheet` (30), top hairline and a 36×4 grabber.
+  - `surface` background, top corners `radius-sheet` (30) and a top hairline. No grabber: the panel doesn't move.
   - Inside, the **habit row** sits on top: horizontally scrolling 44pt circles 56pt apart, each with an 11pt label below; the last one is "+ Habit".
   - The **timeline** sits below. See [timeline-guide](timeline-guide.md).
 

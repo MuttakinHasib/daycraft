@@ -146,8 +146,8 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 
 ## 12. Date navigation
 
-- **Week strip:** tap a day; ‹ › moves ±7 days and keeps the weekday.
-- **Month picker sheet:** month and year title with ‹ ›, a 7-column month grid (52pt cells) with hue dots. Tapping a day selects it and closes the sheet.
+- **Week strip:** tap a day; ‹ › or a horizontal swipe (left for the next week) moves ±7 days and keeps the weekday. The strip follows the finger a little and settles back.
+- **Month picker sheet:** opened by tapping the date title. Month and year title with ‹ ›, a 7-column month grid (52pt cells) with up to three hue dots; days of the neighbouring months are dimmed. A horizontal swipe also changes the month. Tapping the title switches to the year's twelve months, where ‹ › and the swipe change the year; tapping a month goes back to its days. Tapping a day selects it and closes the sheet.
 - The **Today** chip appears when another date is selected.
 - Habits: checking in on a future date is blocked with the toast "Habits can be checked in on or before today".
 

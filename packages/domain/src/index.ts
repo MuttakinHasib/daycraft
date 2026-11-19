@@ -16,15 +16,19 @@ export {
 export { ActivityHue, isActivityHue } from './activity-hue';
 export {
   addDays,
+  addMonths,
   datePartsOf,
   daysBetween,
   fromISODate,
   isISODate,
   minutesOfDay,
+  monthGrid,
+  monthOf,
   todayISO,
   toISODate,
   weekdayOf,
   weekOf,
+  type CalendarMonth,
   type ISODate,
   type MinutesOfDay,
 } from './calendar';
@@ -68,6 +72,7 @@ export {
   formatShortDate,
   formatShortDuration,
   formatTimeText,
+  monthName,
   type DateTitle,
 } from './timeline/format';
 export {
