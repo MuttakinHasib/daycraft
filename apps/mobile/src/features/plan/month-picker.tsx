@@ -12,7 +12,7 @@ import { Pressable, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { ActivityHueBackground, Icon, IconButton, IconButtonSize } from '@/components/ui';
+import { ActivityHueBackground, Chip, ChipSize, Icon, IconButton, IconButtonSize } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 
@@ -36,6 +36,10 @@ interface MonthPickerProps {
   today: ISODate;
   onPick: (date: ISODate) => void;
   onClose: () => void;
+  /** Shows a Today button that picks today. */
+  onToday?: () => void;
+  /** The selected day as an `ink` circle (the activity sheet's date) instead of `accent` (Plan). */
+  inkSelection?: boolean;
 }
 
 interface DayGridProps {
@@ -43,6 +47,7 @@ interface DayGridProps {
   selected: ISODate;
   today: ISODate;
   onPick: (date: ISODate) => void;
+  inkSelection: boolean;
 }
 
 interface MonthGridProps {
@@ -53,7 +58,7 @@ interface MonthGridProps {
 }
 
 /** The month's days in weeks, with hue dots; days of the neighbouring months are dimmed. */
-function DayGrid({ shown, selected, today, onPick }: DayGridProps) {
+function DayGrid({ shown, selected, today, onPick, inkSelection }: DayGridProps) {
   const dates = monthGrid(shown);
   const dots = useWeekDots(dates);
   const weeks = Array.from({ length: dates.length / 7 }, (_, week) => dates.slice(week * 7, week * 7 + 7));
@@ -82,11 +87,17 @@ function DayGrid({ shown, selected, today, onPick }: DayGridProps) {
                 onPress={() => onPick(date)}
                 className={cn('h-13 flex-1 items-center gap-0.5 pt-1 active:opacity-70', { 'opacity-40': !inMonth })}
               >
-                <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': isSelected })}>
+                <View
+                  className={cn('size-9 items-center justify-center rounded-full', {
+                    'bg-accent': isSelected && !inkSelection,
+                    'bg-ink': isSelected && inkSelection,
+                  })}
+                >
                   <Text
                     style={TABULAR}
                     className={cn('type-activity', {
-                      'text-on-accent': isSelected,
+                      'text-on-accent': isSelected && !inkSelection,
+                      'text-canvas': isSelected && inkSelection,
                       'text-accent-text': !isSelected && isToday,
                       'text-ink': !isSelected && !isToday,
                     })}
@@ -153,7 +164,7 @@ function MonthGrid({ shown, selected, today, onPick }: MonthGridProps) {
  * The month picker sheet (timeline guide §12): a month grid with hue dots. ‹ ›, or a swipe, change the month;
  * tapping the title switches to the year's months, where ‹ › change the year. Tapping a day picks it.
  */
-export function MonthPicker({ selected, today, onPick, onClose }: MonthPickerProps) {
+export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSelection = false }: MonthPickerProps) {
   const [shown, setShown] = useState(() => monthOf(selected));
   const [view, setView] = useState<PickerView>(PickerView.DAYS);
   const months = view === PickerView.MONTHS;
@@ -179,8 +190,19 @@ export function MonthPicker({ selected, today, onPick, onClose }: MonthPickerPro
           <Icon name={months ? 'chev-d' : 'chev-r'} size={18} strokeWidth={2.5} colorClassName="text-accent-text" />
         </Pressable>
         <View className="flex-1" />
-        <IconButton icon="chev-l" accessibilityLabel={`Previous ${unit}`} onPress={() => step(-1)} />
-        <IconButton icon="chev-r" accessibilityLabel={`Next ${unit}`} onPress={() => step(1)} />
+        {/* With Today, the days view swaps ‹ › for it; swipes and the title's months still change the month. */}
+        {onToday && !months ? (
+          <View className="h-11 justify-center">
+            <Chip size={ChipSize.SM} onPress={onToday}>
+              Today
+            </Chip>
+          </View>
+        ) : (
+          <>
+            <IconButton icon="chev-l" accessibilityLabel={`Previous ${unit}`} onPress={() => step(-1)} />
+            <IconButton icon="chev-r" accessibilityLabel={`Next ${unit}`} onPress={() => step(1)} />
+          </>
+        )}
         <View className="w-1" />
         <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={onClose} />
       </View>
@@ -197,7 +219,7 @@ export function MonthPicker({ selected, today, onPick, onClose }: MonthPickerPro
               }}
             />
           ) : (
-            <DayGrid shown={shown} selected={selected} today={today} onPick={onPick} />
+            <DayGrid shown={shown} selected={selected} today={today} onPick={onPick} inkSelection={inkSelection} />
           )}
         </Animated.View>
       </GestureDetector>

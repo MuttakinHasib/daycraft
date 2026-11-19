@@ -1,9 +1,9 @@
-import { editorDefaults, EntryPoint, minutesOfDay, todayISO } from '@daycraft/domain';
+import { duplicateDraft, editorDefaults, EntryPoint, minutesOfDay, todayISO } from '@daycraft/domain';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 
 import { activityRepository } from '@/data/activity-store';
-import { ActivityEditor } from '@/features/activity-editor/activity-editor';
+import { ActivitySheet } from '@/features/activity-sheet/activity-sheet';
 import { selectedDateOr } from '@/features/plan/plan-state';
 
 const ENTRY_POINTS: ReadonlySet<string> = new Set(Object.values(EntryPoint));
@@ -14,12 +14,14 @@ function optionalNumber(value: string | undefined): number | undefined {
   return Number.isFinite(number) ? number : undefined;
 }
 
-/** The editor sheet for a new task, pre-filled for the entry point it was opened from. */
+/** The activity sheet for a new task, pre-filled for the entry point it was opened from, or a copy (`from`). */
 export default function NewActivityRoute() {
-  const params = useLocalSearchParams<{ entry?: string; start?: string; duration?: string }>();
+  const params = useLocalSearchParams<{ entry?: string; start?: string; duration?: string; from?: string }>();
   const [setup] = useState(() => {
     const clock = new Date();
     const today = todayISO(clock);
+    const original = params.from ? activityRepository.readActivity(params.from) : null;
+    if (original) return { today, initial: duplicateDraft(original) };
     const date = selectedDateOr(today);
     const entry = params.entry && ENTRY_POINTS.has(params.entry) ? (params.entry as EntryPoint) : EntryPoint.PLUS;
     const initial = editorDefaults({
@@ -33,5 +35,5 @@ export default function NewActivityRoute() {
     });
     return { today, initial };
   });
-  return <ActivityEditor initial={setup.initial} activityId={null} today={setup.today} />;
+  return <ActivitySheet initial={setup.initial} activityId={null} today={setup.today} />;
 }

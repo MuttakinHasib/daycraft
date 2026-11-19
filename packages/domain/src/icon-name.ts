@@ -48,6 +48,7 @@ export const IconName = {
   KANBAN: 'kanban',
   LIST: 'list',
   MINUS: 'minus',
+  MORE: 'more',
   PAUSE: 'pause',
   PIN: 'pin',
   PLAY: 'play',
