@@ -12,7 +12,7 @@ import { AppTheme, useScreenStatusBarStyle, useThemeColors } from '@/theme/app-t
 
 import '@/global.css';
 
-// The activity editor and detail open as native form sheets: they close on swipe down or a tap outside.
+// The activity sheet opens as a native form sheet: it closes on swipe down or a tap outside.
 const ACTIVITY_SHEET: NativeStackNavigationOptions = {
   presentation: 'formSheet',
   sheetAllowedDetents: [0.94],
@@ -34,7 +34,6 @@ function RootStack() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="activity/new" options={ACTIVITY_SHEET} />
       <Stack.Screen name="activity/[id]/index" options={ACTIVITY_SHEET} />
-      <Stack.Screen name="activity/[id]/edit" options={ACTIVITY_SHEET} />
       <Stack.Screen name="month-picker" options={monthPickerSheet} />
     </Stack>
   );

@@ -144,3 +144,45 @@ export function savedToast({ activity, today, created }: SavedToastInput): strin
   const when = activity.start === null ? 'no set time' : formatClock(activity.start);
   return `${verb} · ${formatRelativeDate(activity.date, today)}, ${when}`;
 }
+
+// Completion and subtask ticks save at once, so they never count as unsaved changes.
+function editableFields({ done: _done, subtasks, ...fields }: ActivityInput) {
+  return { ...fields, subtasks: subtasks.map(({ id, title }) => ({ id, title })) };
+}
+
+/** Whether the activity sheet holds changes that Save would write. */
+export function draftChanged(saved: ActivityInput, draft: ActivityInput): boolean {
+  return JSON.stringify(editableFields(saved)) !== JSON.stringify(editableFields(draft));
+}
+
+/** A new activity copied from `activity`, starting when it ends, not done, with unticked subtasks of its own. */
+export function duplicateDraft(activity: Activity): ActivityInput {
+  const { id: _id, subtasks, ...fields } = activity;
+  const timing =
+    activity.start === null
+      ? { start: null, durationMinutes: activity.durationMinutes }
+      : clampToDay({ start: activity.start + activity.durationMinutes, durationMinutes: activity.durationMinutes });
+  return {
+    ...fields,
+    ...timing,
+    done: false,
+    subtasks: subtasks.map(({ title }) => ({ title, done: false })),
+  };
+}
+
+/** A minute of day on a 12-hour clock, as the time wheel shows it. */
+export interface ClockParts {
+  /** 1–12. */
+  hour: number;
+  minute: number;
+  pm: boolean;
+}
+
+export function clockParts(minuteOfDay: MinutesOfDay): ClockParts {
+  const hour24 = Math.floor(minuteOfDay / 60);
+  return { hour: hour24 % 12 || 12, minute: minuteOfDay % 60, pm: hour24 >= 12 };
+}
+
+export function fromClockParts({ hour, minute, pm }: ClockParts): MinutesOfDay {
+  return ((hour % 12) + (pm ? 12 : 0)) * 60 + minute;
+}

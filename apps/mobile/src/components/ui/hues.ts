@@ -25,3 +25,15 @@ export const ActivityHueBorder: Record<ActivityHue, string> = {
   rose: 'border-rose',
   slate: 'border-slate',
 };
+
+export const ActivityHueText: Record<ActivityHue, string> = {
+  clay: 'text-clay',
+  amber: 'text-amber',
+  sun: 'text-sun',
+  sage: 'text-sage',
+  pine: 'text-pine',
+  sky: 'text-sky',
+  iris: 'text-iris',
+  rose: 'text-rose',
+  slate: 'text-slate',
+};

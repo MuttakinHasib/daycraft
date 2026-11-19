@@ -4,23 +4,12 @@ import type { ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { Icon } from '@/components/ui';
-import { cn } from '@/lib/cn';
 import { useColorScheme } from '@/theme/app-theme';
 
-// The parts the activity editor and detail sheets share: the hue band at the top and the footer.
+// The activity sheet's hue band and the pieces on it.
 
 /** Text and icons on the band. Light: ink on the 40% tint. Dark: on-hue on the solid hue. */
 export const BAND_TEXT = 'text-ink dark:text-on-hue';
-
-export const BandTileShape = {
-  /** The editor: a 56 circle. */
-  CIRCLE: 'circle',
-  /** The detail sheet: a 56×72 capsule. */
-  CAPSULE: 'capsule',
-} as const;
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
-export type BandTileShape = (typeof BandTileShape)[keyof typeof BandTileShape];
 
 interface HueBandProps {
   hue: ActivityHue;
@@ -35,13 +24,8 @@ interface BandButtonProps {
 
 interface BandTileProps {
   icon: IconName;
-  shape: BandTileShape;
-}
-
-interface SheetFooterProps {
-  /** Shows the danger Delete button first when given. */
-  onDelete?: () => void;
-  children: ReactNode;
+  /** Opens the colour and icon sheet. */
+  onPress: () => void;
 }
 
 /** The sheet's header band in the activity's hue. */
@@ -73,35 +57,16 @@ export function BandButton({ icon, accessibilityLabel, onPress }: BandButtonProp
   );
 }
 
-/** The activity's icon on the band, ringed in on-hue. */
-export function BandTile({ icon, shape }: BandTileProps) {
+/** The activity's icon on the band, a 56×72 capsule ringed in on-hue; tapping it changes colour and icon. */
+export function BandTile({ icon, onPress }: BandTileProps) {
   return (
-    <View
-      className={cn('items-center justify-center border-2 border-on-hue/55 bg-ink/8', {
-        'size-14 rounded-full': shape === BandTileShape.CIRCLE,
-        'h-18 w-14 rounded-capsule': shape === BandTileShape.CAPSULE,
-      })}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Colour and icon"
+      onPress={onPress}
+      className="h-18 w-14 items-center justify-center rounded-capsule border-2 border-on-hue/55 bg-ink/8 active:opacity-70"
     >
       <Icon name={icon} size={25} colorClassName={BAND_TEXT} />
-    </View>
-  );
-}
-
-/** The sheet's footer: an optional Delete, then the main action. */
-export function SheetFooter({ onDelete, children }: SheetFooterProps) {
-  return (
-    <View collapsable={false} className="flex-row gap-2.5 border-t border-line px-5 pt-3 pb-safe-offset-3">
-      {onDelete && (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Delete"
-          onPress={onDelete}
-          className="size-13 items-center justify-center rounded-full bg-sunken active:opacity-70"
-        >
-          <Icon name="trash" size={19} colorClassName="text-danger" />
-        </Pressable>
-      )}
-      <View className="flex-1">{children}</View>
-    </View>
+    </Pressable>
   );
 }

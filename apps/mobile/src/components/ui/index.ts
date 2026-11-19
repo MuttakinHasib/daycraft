@@ -2,7 +2,7 @@ export { Button, ButtonSize, ButtonVariant } from './button';
 export { Capsule, CapsuleState } from './capsule';
 export { CheckRing } from './check-ring';
 export { Chip, ChipSize, ChipTone } from './chip';
-export { ActivityHueBackground, ActivityHueBorder } from './hues';
+export { ActivityHueBackground, ActivityHueBorder, ActivityHueText } from './hues';
 export { Icon } from './icon';
 export { IconButton, IconButtonSize } from './icon-button';
 export { popIn } from './pop';
