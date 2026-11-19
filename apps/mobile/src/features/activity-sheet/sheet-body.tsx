@@ -8,6 +8,8 @@ import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
+// iOS draws a single-line field's text below center when it has a line height; 0 leaves the font's own.
+const ONE_LINE_FIELD = { lineHeight: 0 };
 
 let nextDraftKey = 0;
 
@@ -147,6 +149,7 @@ export function SubtasksNotesCard({
               onChangeText={(title) =>
                 onChangeSubtasks(subtasks.map((item, i) => (i === index ? { ...item, title } : item)))
               }
+              style={ONE_LINE_FIELD}
               className={cn('h-12 flex-1 type-body', {
                 'text-ink': !subtask.done,
                 'text-ink-muted line-through': subtask.done,
@@ -176,6 +179,7 @@ export function SubtasksNotesCard({
             returnKeyType="next"
             placeholder="Add subtask"
             placeholderTextColor={colors['ink-subtle']}
+            style={ONE_LINE_FIELD}
             className="h-12 flex-1 type-body text-ink"
           />
         </View>
