@@ -47,8 +47,8 @@ src/app/
       projects/[projectId].tsx
       journal.tsx
   focus/[activityId].tsx      # full-screen modal
-  activity/[activityId].tsx   # detail sheet (formSheet/modal presentation)
-  activity/edit.tsx           # editor sheet (new + edit via params)
+  activity/new.tsx            # activity sheet, creating (formSheet presentation)
+  activity/[activityId].tsx   # activity sheet, opened editable; no separate edit route
   habit/new.tsx
   routine/new.tsx
   month-picker.tsx

@@ -91,7 +91,7 @@ src/app/
 **Right panel (aside):**
 
 - flex 1 1 340, max 420.
-- **Detail card** (when an activity is selected): replaces the phone detail sheet.
+- **Activity panel** (when an activity is selected): the phone's activity sheet, editable in place, with **Save changes** when something changed.
   - Hue header band: kind tag ("Task · Today"), close ×, a 48×64 capsule icon, the time, and an **editable title input**.
   - Body:
     - Duration segmented 15m–2h;

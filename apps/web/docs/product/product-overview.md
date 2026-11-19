@@ -49,14 +49,14 @@ These are the flows every release must keep working. They are the end-to-end tes
 
 1. **See today.** Open the app. Plan scrolls so the current time sits about a third of the way down, and the current block shows its progress and time left.
 2. **Move between dates.** Tap a day in the week strip, use the ‹ › week arrows, tap the date title to open the month picker, tap the **Today** chip to return.
-3. **Create a task.** Click **+ New task** in the sidebar (or an empty half-hour on the timeline, or "Add task" in a free-time gap) to open the editor sheet. Set the title, time, duration, color, icon, priority, labels, subtasks, repeat and notes, then tap **Add to timeline**.
-4. **Edit a task.** Tap a block to open its detail sheet, tap the pencil, change what you need, then tap **Save changes**.
-5. **Complete.** Tap the check ring on a block, in the detail sheet, or in All tasks.
+3. **Create a task.** Click **+ New task** in the sidebar (or an empty half-hour on the timeline, or "Add task" in a free-time gap) to open the activity sheet. Set the title, time, duration, color, icon, priority, labels, subtasks, repeat and notes, then tap **Add to timeline**.
+4. **Edit a task.** Tap a block. The activity sheet opens ready to edit; change what you need, and **Save changes** appears. Tap it to save.
+5. **Complete.** Tap the check ring on a block, in the activity sheet, or in All tasks.
 6. **Reschedule.** Drag a block vertically (5-minute snapping). **Resize:** drag its bottom grip.
 7. **Create an event.** Tap **+** (or an empty slot), then switch the editor's Task/Event toggle to Event.
 8. **Habits.** Tap a habit circle on Plan, or the check button in Habits. Add a habit from the "+ Habit" circle on Plan or the + on Habits.
 9. **Routines.** Create one (name, steps with durations, color, icon). **Add to today** places it at the next free slot.
-10. **Focus.** In an activity's detail sheet, tap Start focus, choose a length, run the session and end it, then tap "Mark task as done".
+10. **Focus.** In an activity's sheet, open ⋯ and tap Start focus, choose a length, run the session and end it, then tap "Mark task as done".
 11. **Capture and plan.** Type in Inbox and the item appears. **Plan** opens the editor pre-filled, and saving removes the item from Inbox.
 12. **Theme.** More → Appearance → Light / Dark (web: the sidebar's Light/Dark switch).
 

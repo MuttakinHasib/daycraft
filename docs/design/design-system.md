@@ -70,7 +70,7 @@ Shares live in `hueTints` and `sheetHeaderTint` (`@daycraft/design-tokens`); cod
 | 70% border | Week-grid task block (fill `surface`) |
 | 24% | Completed project milestone tag (text `ink`) |
 | 42% over `surface` | Active capsule base (the part still ahead); the elapsed part is the solid hue |
-| Light: 40% over `canvas`, `ink` text. Dark: the solid hue, `on-hue` text | Detail and editor sheet header band (`sheetHeaderTint`) |
+| Light: 40% over `canvas`, `ink` text. Dark: the solid hue, `on-hue` text | Activity sheet header band (`sheetHeaderTint`) |
 | 42% | Headline highlight marker |
 | 60% border, dashed | Habit circle, not done |
 | `on-hue` at 75% | The 16×3 bar in a capsule's resize grip (`CAPSULE_GRIP_OPACITY`) |
