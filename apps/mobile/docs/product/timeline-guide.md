@@ -59,7 +59,7 @@ The timeline is proportional to time, but blocks never overlap visually. Impleme
 
 ## 4. Time labels
 
-- **Activity start labels:** `micro` (11) / semibold / `ink-muted`, tabular figures, format `9:30` (no AM/PM). Each sits at the row's top + 3. Hidden when within 16pt of the now line.
+- **Activity start labels:** `micro` (11) / semibold / `ink-muted`, tabular figures, format `9:30` (no AM/PM). Each sits at the row's top + 3; a zero-duration activity without a meta line centers its start label and its text column on the circle instead. Hidden when within 16pt of the now line.
 - **Hour labels:** `micro` / medium weight / `ink-subtle`, format `9 AM`, at `mapTimeToY(h × 60)`. Each comes with a 1px `line` hairline from x 52 to the right padding. An hour label is **only shown in free space**: hide it if it falls within any row's `[top − 12, top + rowHeight + 6]` or within 18pt of the now line.
 - Hours shown: every whole hour inside `R0` to `R1`, never midnight.
 
