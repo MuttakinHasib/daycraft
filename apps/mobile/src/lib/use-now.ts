@@ -8,10 +8,13 @@ export function useNow(): Date {
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const schedule = () => {
-      timer = setTimeout(() => {
-        setNow(new Date());
-        schedule();
-      }, MINUTE_MS - (Date.now() % MINUTE_MS) + 50);
+      timer = setTimeout(
+        () => {
+          setNow(new Date());
+          schedule();
+        },
+        MINUTE_MS - (Date.now() % MINUTE_MS) + 50,
+      );
     };
     schedule();
     return () => clearTimeout(timer);

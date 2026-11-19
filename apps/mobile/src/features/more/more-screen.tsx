@@ -12,7 +12,10 @@ async function loadDemoDays() {
   if (__DEV__) {
     const demo = await import('@/data/demo-days');
     demo.loadDemoDays(todayISO(new Date()));
-    Alert.alert('Demo days loaded', "The design prototype's activities now fill the week before today through two weeks after.");
+    Alert.alert(
+      'Demo days loaded',
+      "The design prototype's activities now fill the week before today through two weeks after.",
+    );
   }
 }
 
