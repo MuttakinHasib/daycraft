@@ -32,12 +32,9 @@ The timeline sits inside the Today panel (`surface`, `radius-sheet` top corners)
 
 ## 2. Time scale and range
 
-- Day range: **5:00 AM to midnight** (`D0 = 300`, `D1 = 1440` minutes).
+- Range: from the first timed activity's start to where the last one ends, so the timeline opens and closes on an activity, never on a bare hour line. On today the range also stretches to the current time, so the now line always shows. An empty today shows the current hour and the next four; an empty other day shows 8:00 AM to 6:00 PM. The range never leaves 5:00 AM to midnight (`D0 = 300`, `D1 = 1440` minutes; call the range `R0` to `R1`), which is still where drag and the editor can place an activity. Before 5:00 AM the now line is hidden. Half-hour slots start on the first :00 or :30 inside the range.
 - Scale: **1.1 pt per minute** on phone (66 pt/hour), **1.25** on desktop.
 - Times are local wall-clock minutes of day (see [architecture](../development/architecture.md#dates-and-time)).
-- **Day edges:** once the person has saved day edges (in [onboarding](onboarding.md); defaults 7:00 AM and 11:00 PM), the timeline shows a **Wake up** anchor and a **Bedtime** anchor. Both stay inside 5:00 AM to midnight, at least 6 hours apart, in 15-minute steps. They are markers: the timeline still runs 5:00 AM to midnight, and activities may sit before Wake up or after Bedtime.
-  - **Look:** the time in the gutter (`type-micro` semibold, `ink-muted`), a hairline (`line-strong`) across the row area, a 24pt circle on the spine (`surface` with a `line-strong` border) holding a 13pt sun or moon in `ink-muted`, and the name beside it (`type-control`, `ink-muted`). No hue: the day edges belong to the day, not to an activity. VoiceOver reads "Wake up, 7:00 AM".
-  - **Layout:** each anchor takes 28pt in the push-down (§3) like a point-in-time row, so a capsule never covers it. One that falls inside an activity's time sits right below that row, and later rows move down. Hour labels within 18pt of an anchor are hidden, and a free-time hint moves below an anchor in its gap.
 
 ## 3. Layout algorithm (push-down + anchored time map)
 
@@ -48,13 +45,13 @@ The timeline is proportional to time, but blocks never overlap visually. Impleme
    - `capsuleHeight = durationMinutes > 0 ? max(48, durationMinutes × S) : 48`. Zero-duration activities render as a 48pt circle.
    - `hasMeta` is true if the activity has subtasks, is an event, or is active (see §6).
    - `rowHeight = max(capsuleHeight, hasMeta ? 80 : 48)`.
-   - `top = (start − D0) × S + 18 + offset`. If `top < previousRowBottom + 12`, push it down to `previousRowBottom + 12` and add the difference to `offset`. The minimum gap between rows is 12.
+   - `top = (start − R0) × S + 18 + offset`. If `top < previousRowBottom + 12`, push it down to `previousRowBottom + 12` and add the difference to `offset`. The minimum gap between rows is 12.
 3. Build **anchors** `(minute, y)`:
-   - Start with `(D0, 18)`.
+   - Start with `(R0, 18)`. A zero-duration activity at `R0` moves this anchor to its circle center.
    - Per activity with duration: add `(start, top)` and `(start + duration, top + capsuleHeight)`.
    - Per zero-duration activity: add `(start, top + 24)`.
    - Clamp each anchor so both minute and y are non-decreasing.
-   - End with `(D1, lastY + (D1 − lastMinute) × S)`.
+   - End with `(R1, lastY + (R1 − lastMinute) × S)`.
 4. `mapTimeToY(minute)` interpolates linearly between anchors. Every time-based element (hour labels, half-hour slots, now line) uses this map. That keeps them consistent with pushed-down blocks: free time stretches or compresses, while blocks keep their real start.
 5. Content height = `max(last anchor y, last row bottom) + 150` on phone (`+ 60` on desktop), so the last block can scroll above the tab bar.
 
@@ -64,7 +61,7 @@ The timeline is proportional to time, but blocks never overlap visually. Impleme
 
 - **Activity start labels:** `micro` (11) / semibold / `ink-muted`, tabular figures, format `9:30` (no AM/PM). Each sits at the row's top + 3. Hidden when within 16pt of the now line.
 - **Hour labels:** `micro` / medium weight / `ink-subtle`, format `9 AM`, at `mapTimeToY(h × 60)`. Each comes with a 1px `line` hairline from x 52 to the right padding. An hour label is **only shown in free space**: hide it if it falls within any row's `[top − 12, top + rowHeight + 6]` or within 18pt of the now line.
-- Hours shown: 5 AM through 11 PM.
+- Hours shown: every whole hour inside `R0` to `R1`, never midnight.
 
 ## 5. The spine
 

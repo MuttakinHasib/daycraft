@@ -1,12 +1,10 @@
 import { hueColors } from '@daycraft/design-tokens';
 import {
-  DayEdge,
   formatClock,
   formatGutterTime,
   formatHour,
   formatShortDuration,
   SpineKind,
-  type Anchor,
   type DayLayout,
   type FreeTimeHint,
   type MinutesOfDay,
@@ -49,11 +47,6 @@ interface FreeTimeProps {
 interface NowLineProps {
   y: number;
   now: MinutesOfDay;
-}
-
-interface DayEdgeMarkProps {
-  edge: DayEdge;
-  anchor: Anchor;
 }
 
 interface SpineProps {
@@ -134,37 +127,6 @@ function NowLine({ y, now }: NowLineProps) {
   );
 }
 
-const DAY_EDGE_TEXT: Record<DayEdge, { label: string; icon: 'sun' | 'moon' }> = {
-  [DayEdge.WAKE_UP]: { label: 'Wake up', icon: 'sun' },
-  [DayEdge.BEDTIME]: { label: 'Bedtime', icon: 'moon' },
-};
-
-/** A day edge anchor: its time in the gutter, a hairline, and a sun or moon on the spine with its name (timeline guide §2). */
-function DayEdgeMark({ edge, anchor: { minute, y } }: DayEdgeMarkProps) {
-  const { label, icon } = DAY_EDGE_TEXT[edge];
-  return (
-    <View
-      accessible
-      accessibilityLabel={`${label}, ${formatClock(minute)}`}
-      pointerEvents="none"
-      style={{ top: y }}
-      className="absolute inset-x-0 h-0"
-    >
-      <Text
-        style={{ fontVariant: ['tabular-nums'] }}
-        className="absolute -top-2 left-1 w-10 text-right type-micro font-sans-semibold text-ink-muted"
-      >
-        {formatGutterTime(minute)}
-      </Text>
-      <View className="absolute top-0 right-5 left-13 h-px bg-line-strong" />
-      <View className="absolute -top-3 left-16 size-6 items-center justify-center rounded-full border border-line-strong bg-surface">
-        <Icon name={icon} size={13} colorClassName="text-ink-muted" />
-      </View>
-      <Text className="absolute -top-2.5 left-24 bg-surface px-1 type-control text-ink-muted">{label}</Text>
-    </View>
-  );
-}
-
 /** The Plan timeline: renders `layoutDay`'s output and holds no layout logic of its own. */
 export function Timeline({
   layout,
@@ -212,12 +174,6 @@ export function Timeline({
         {layout.spine.map((segment, index) => (
           <Spine key={index} segment={segment} />
         ))}
-        {layout.dayEdges && (
-          <>
-            <DayEdgeMark edge={DayEdge.WAKE_UP} anchor={layout.dayEdges.wakeUp} />
-            <DayEdgeMark edge={DayEdge.BEDTIME} anchor={layout.dayEdges.bedtime} />
-          </>
-        )}
         {layout.nowY !== null && <NowLine y={layout.nowY} now={now} />}
         {layout.freeTime.map((hint) => (
           <FreeTime key={hint.next.id} hint={hint} onAdd={onAddInGap} />
