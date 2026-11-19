@@ -123,7 +123,7 @@ Between consecutive activities, if the gap is ≥ 60 min **and** ≥ 76pt of ver
 
 - **Move:** press on the capsule and drag vertically.
 - **Resize:** press on the bottom grip and drag. The grip is an 18pt-tall area at the bottom of capsules with duration ≥ 15 min, showing a 16×3 `on-hue` (white) bar at 75%.
-- **Threshold:** movement under 6pt is a tap. A tap opens the detail sheet; a drag must not also trigger it (suppress the press for ~80ms after a drag).
+- **Threshold:** movement under 6pt is a tap. A tap opens the activity sheet, ready to edit; a drag must not also trigger it (suppress the press for ~80ms after a drag).
 - **Snap:** `deltaMinutes = round(dy / S / 5) × 5`. All times move in 5-minute steps.
 - **Clamp:** move keeps `start` within `[D0, D1 − max(duration, 5)]`. Resize keeps `duration` within `[5, D1 − start]`. The editor applies the same limits (one rule in `@daycraft/domain`): nothing starts before 5:00 AM or ends after midnight.
 - **During drag:** layout is recomputed with the preview values, so other rows reflow (they animate; the dragged row does not). The floating time pill shows the new range.
