@@ -3,12 +3,12 @@ import { ActivityKind, formatTimeText, type ActivityInput, type ActivityKind as 
 import { Pressable, Text, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { Icon, popIn, Segmented, SegmentedTone } from '@/components/ui';
+import { Icon, IconButton, IconButtonSize, popIn, Segmented, SegmentedTone } from '@/components/ui';
 import { cn } from '@/lib/cn';
 import { useColorScheme, useThemeColors } from '@/theme/app-theme';
 
 import { MoreMenu } from './more-menu';
-import { BAND_TEXT, BandButton, BandTile, HueBand } from './sheet-chrome';
+import { BAND_TEXT, BandTile, HueBand } from './sheet-chrome';
 
 const KIND_OPTIONS = [
   { value: ActivityKind.TASK, label: 'Task' },
@@ -50,7 +50,7 @@ export function SheetHeader({
   return (
     <HueBand hue={draft.hue}>
       <View className="flex-row items-center justify-between gap-3">
-        <BandButton icon="x" accessibilityLabel="Close" onPress={onClose} />
+        <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={onClose} />
         {isNew ? (
           <View className="w-47.5">
             <Segmented
@@ -64,7 +64,7 @@ export function SheetHeader({
         ) : (
           <MoreMenu onDuplicate={onDuplicate} onDelete={onDelete} />
         )}
-        {isNew && <View className="size-10" />}
+        {isNew && <View className="size-11" />}
       </View>
       <View className="mt-4.5 flex-row items-center gap-3.5">
         <BandTile icon={draft.icon} onPress={onOpenColour} />

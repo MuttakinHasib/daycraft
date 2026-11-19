@@ -21,14 +21,14 @@ Specified once for both apps in the root [components](../../../../docs/design/co
 
 Build these as primitives in `src/components/ui/` when the first screen needs them, not before.
 
-### IconButton
+### IconButton and TextButton (native)
 
-- 40pt (`md`) or 32pt (`sm`), pill, `bg-sunken`, `text-ink`, icon 18 (sm: 16).
-- Variants:
-  - `ghost`: transparent background, for calendar arrows;
-  - `onHue`: `bg-white/20`, white icon, for colored sheet headers;
-  - `danger`: `text-danger`, for delete.
-- `accessibilityLabel` is **required** (TypeScript-enforced).
+Small controls are the platform's own buttons, so they look and press like the system's (added 2026-11-19):
+
+- **IconButton** (×, ⋯, ‹ ›, + / −): iOS draws a SwiftUI glass button (`buttonStyle('glass')`, circle, `ink` tint; `bordered` before iOS 26) with the matching SF Symbol; Android draws Material 3's `FilledTonalIconButton` (`sunken` container, `ink` content) holding the app's own icon. 32pt (`sm`) or 44pt (`lg`). An icon without an SF Symbol mapping falls back to the drawn button (`DrawnIconButton`), which web always uses.
+- **TextButton** (Today): iOS glass capsule in Onest semibold 15; Android `FilledTonalButton`; web the small `Chip`.
+- The activity sheet's ⋯ is a native menu: a 44pt glass circle opening the iOS menu, or the Android dropdown.
+- `accessibilityLabel` is **required** for IconButton (TypeScript-enforced).
 
 ### TextField
 
@@ -88,14 +88,14 @@ Build these as primitives in `src/components/ui/` when the first screen needs th
 
 ## States every interactive component needs
 
-| State | Treatment |
-|---|---|
-| Pressed | `active:` scale 0.96 or opacity 0.9 (primary button 0.98) |
-| Selected / pressed toggle | `data-[pressed=true]` / `data-[checked=true]` styles + `accessibilityState` |
-| Disabled | `opacity-50`, no press feedback, `accessibilityState={{ disabled: true }}` |
-| Loading | Keep the size; replace the label with a small `ActivityIndicator` in the label color; disable presses |
-| Focus (keyboard/web) | Platform focus ring; web 2pt accent outline, offset 2 |
-| Error | Field: border `danger`, message `type-meta` `text-danger` below. Screen: EmptyState-style message + Retry chip |
+| State                     | Treatment                                                                                                      |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Pressed                   | `active:` scale 0.96 or opacity 0.9 (primary button 0.98)                                                      |
+| Selected / pressed toggle | `data-[pressed=true]` / `data-[checked=true]` styles + `accessibilityState`                                    |
+| Disabled                  | `opacity-50`, no press feedback, `accessibilityState={{ disabled: true }}`                                     |
+| Loading                   | Keep the size; replace the label with a small `ActivityIndicator` in the label color; disable presses          |
+| Focus (keyboard/web)      | Platform focus ring; web 2pt accent outline, offset 2                                                          |
+| Error                     | Field: border `danger`, message `type-meta` `text-danger` below. Screen: EmptyState-style message + Retry chip |
 
 ## Loading and errors (screens)
 
