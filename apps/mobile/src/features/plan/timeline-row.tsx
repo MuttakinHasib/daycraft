@@ -48,6 +48,8 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
   const start = activity.start ?? 0;
   const done = state === RowState.DONE;
   const resizable = activity.durationMinutes >= 15;
+  // A single time (no length, no meta line) centers its start label and text on the circle.
+  const centered = activity.durationMinutes === 0 && !row.hasMeta;
   const doneSubtasks = activity.subtasks.filter((subtask) => subtask.done).length;
   const capsuleLabel = `${activity.title}, ${formatRange(start, activity.durationMinutes)}. Drag to move${
     resizable ? ', drag the bottom grip to resize' : ''
@@ -83,7 +85,10 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
       {row.showStartLabel && (
         <Text
           style={TABULAR}
-          className="absolute top-0.75 left-1 w-10 text-right type-micro font-sans-semibold text-ink-muted"
+          className={cn('absolute left-1 w-10 text-right type-micro font-sans-semibold text-ink-muted', {
+            'top-0.75': !centered,
+            'top-4': centered,
+          })}
         >
           {formatGutterTime(start)}
         </Text>
@@ -129,7 +134,10 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
         accessibilityRole="button"
         accessibilityLabel={`Open ${activity.title}`}
         onPress={open}
-        className="absolute top-0 right-14 left-28 items-start gap-px pt-0.5"
+        className={cn('absolute top-0 right-14 left-28 items-start gap-px', {
+          'pt-0.5': !centered,
+          'bottom-0 justify-center': centered,
+        })}
       >
         <View className="flex-row items-center gap-1.25">
           <Text numberOfLines={1} style={TABULAR} className="type-meta font-sans-medium text-ink-muted">
