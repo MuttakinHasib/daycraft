@@ -2,6 +2,7 @@ import {
   addDays,
   datePartsOf,
   dateTitle,
+  daysBetween,
   formatRelativeDate,
   formatShortDate,
   weekOf,
@@ -9,9 +10,8 @@ import {
   type ISODate,
 } from '@daycraft/domain';
 import { router } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
-import { GestureDetector } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+import { useEffect, useRef, useState } from 'react';
+import { FlatList, Pressable, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { ActivityHueBackground, Chip, ChipSize, ChipTone, Icon } from '@/components/ui';
@@ -19,14 +19,15 @@ import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
-import { useHorizontalSwipe } from './use-horizontal-swipe';
-
 const TABULAR = { fontVariant: ['tabular-nums' as const] };
 const RING_SIZE = 44;
 const RING_RADIUS = 19;
 const RING_STROKE = 4;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 const WEEKDAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// The strip pages through ten years of weeks either side of today's.
+const PAGE_SPAN = 520;
+const PAGES = Array.from({ length: PAGE_SPAN * 2 + 1 }, (_, index) => index);
 
 interface PlanHeaderProps {
   date: ISODate;
@@ -88,11 +89,85 @@ function ProgressRing({ progress }: ProgressRingProps) {
   );
 }
 
-/** Sunday to Saturday around the selected date, with hue dots; ‹ › or a swipe move a week and keep the weekday. */
-function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
-  const week = weekOf(date);
+interface WeekPageProps {
+  week: ISODate[];
+  date: ISODate;
+  today: ISODate;
+  width: number;
+  onSelectDate: (date: ISODate) => void;
+}
+
+/** One page of the strip: a Sunday-to-Saturday week with hue dots. */
+function WeekPage({ week, date, today, width, onSelectDate }: WeekPageProps) {
   const dots = useWeekDots(week);
-  const swipe = useHorizontalSwipe((step) => onSelectDate(addDays(date, 7 * step)));
+  return (
+    <View style={{ width }} className="flex-row">
+      {week.map((day, index) => {
+        const selected = day === date;
+        const isToday = day === today;
+        return (
+          <Pressable
+            key={day}
+            accessibilityRole="button"
+            accessibilityState={{ selected }}
+            accessibilityLabel={`${formatShortDate(day)}${isToday ? ', today' : ''}`}
+            onPress={() => onSelectDate(day)}
+            className="flex-1 items-center gap-1.25 py-0.5 active:opacity-70"
+          >
+            <Text className="type-meta font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
+            <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': selected })}>
+              <Text
+                style={TABULAR}
+                className={cn('type-activity', {
+                  'text-on-accent': selected,
+                  'text-accent-text': !selected && isToday,
+                  'text-ink': !selected && !isToday,
+                })}
+              >
+                {datePartsOf(day).day}
+              </Text>
+            </View>
+            <View className="h-2.5 flex-row items-center">
+              {(dots[day] ?? []).map((hue) => (
+                // A canvas halo around each dot keeps overlapping dots apart.
+                <View
+                  key={hue}
+                  className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
+                >
+                  <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
+                </View>
+              ))}
+            </View>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+/**
+ * Sunday to Saturday around the selected date, with hue dots. The weeks are pages of a native paged list, so a
+ * swipe drags the next week in under the finger; ‹ › page the same way. Both keep the weekday.
+ */
+function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
+  // Pages are counted from the week of `today` at mount, PAGE_SPAN weeks either way.
+  const [anchor] = useState(() => weekOf(today)[0] ?? today);
+  const [width, setWidth] = useState(0);
+  const listRef = useRef<FlatList<number>>(null);
+  const pageOf = (day: ISODate) => PAGE_SPAN + Math.floor(daysBetween(anchor, day) / 7);
+  const page = pageOf(date);
+  const weekdayOffset = daysBetween(weekOf(date)[0] ?? date, date);
+
+  // Follow a date picked elsewhere (arrows, a day, the month picker, Today).
+  useEffect(() => {
+    if (width > 0) listRef.current?.scrollToOffset({ offset: page * width, animated: true });
+  }, [page, width]);
+
+  const settle = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const landed = Math.round(event.nativeEvent.contentOffset.x / width);
+    if (landed !== page) onSelectDate(addDays(date, (landed - page) * 7));
+  };
+
   return (
     <View className="mt-4 flex-row items-center">
       <Pressable
@@ -103,49 +178,38 @@ function WeekStrip({ date, today, onSelectDate }: WeekStripProps) {
       >
         <Icon name="chev-l" size={16} colorClassName="text-ink-subtle" />
       </Pressable>
-      <GestureDetector gesture={swipe.gesture}>
-        <Animated.View style={swipe.style} className="flex-1 flex-row">
-          {week.map((day, index) => {
-            const selected = day === date;
-            const isToday = day === today;
-            return (
-              <Pressable
-                key={day}
-                accessibilityRole="button"
-                accessibilityState={{ selected }}
-                accessibilityLabel={`${formatShortDate(day)}${isToday ? ', today' : ''}`}
-                onPress={() => onSelectDate(day)}
-                className="flex-1 items-center gap-1.25 py-0.5 active:opacity-70"
-              >
-                <Text className="type-meta font-sans-semibold text-ink-subtle">{WEEKDAY_SHORT[index]}</Text>
-                <View className={cn('size-9 items-center justify-center rounded-full', { 'bg-accent': selected })}>
-                  <Text
-                    style={TABULAR}
-                    className={cn('type-activity', {
-                      'text-on-accent': selected,
-                      'text-accent-text': !selected && isToday,
-                      'text-ink': !selected && !isToday,
-                    })}
-                  >
-                    {datePartsOf(day).day}
-                  </Text>
-                </View>
-                <View className="h-2.5 flex-row items-center">
-                  {(dots[day] ?? []).map((hue) => (
-                    // A canvas halo around each dot keeps overlapping dots apart.
-                    <View
-                      key={hue}
-                      className="-ml-1.25 size-2.5 items-center justify-center rounded-full bg-canvas first:ml-0"
-                    >
-                      <View className={cn('size-1.75 rounded-full', ActivityHueBackground[hue])} />
-                    </View>
-                  ))}
-                </View>
-              </Pressable>
-            );
-          })}
-        </Animated.View>
-      </GestureDetector>
+      <View className="flex-1 overflow-hidden" onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+        {width > 0 && (
+          <FlatList
+            ref={listRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            data={PAGES}
+            keyExtractor={String}
+            initialScrollIndex={page}
+            contentOffset={{ x: page * width, y: 0 }}
+            getItemLayout={(_, index) => ({ length: width, offset: width * index, index })}
+            initialNumToRender={1}
+            windowSize={3}
+            maxToRenderPerBatch={2}
+            onMomentumScrollEnd={settle}
+            renderItem={({ item }) => {
+              const sunday = addDays(anchor, (item - PAGE_SPAN) * 7);
+              return (
+                <WeekPage
+                  week={weekOf(sunday)}
+                  date={item === page ? date : addDays(sunday, weekdayOffset)}
+                  today={today}
+                  width={width}
+                  onSelectDate={onSelectDate}
+                />
+              );
+            }}
+            extraData={`${date}|${today}`}
+          />
+        )}
+      </View>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="Next week"
