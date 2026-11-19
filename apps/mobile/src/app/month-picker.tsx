@@ -17,6 +17,10 @@ export default function MonthPickerRoute() {
         router.back();
       }}
       onClose={() => router.back()}
+      onToday={() => {
+        selectDate(today);
+        router.back();
+      }}
     />
   );
 }

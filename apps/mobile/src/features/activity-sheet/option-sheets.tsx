@@ -85,16 +85,7 @@ function Section({ label, children }: SectionProps) {
 
 /** Plan's month grid with Today: picking a day sets it and closes the sheet. */
 export function DateSheet({ date, today, onPick, onClose }: DateSheetProps) {
-  return (
-    <MonthPicker
-      selected={date}
-      today={today}
-      onPick={onPick}
-      onClose={onClose}
-      onToday={() => onPick(today)}
-      inkSelection
-    />
-  );
+  return <MonthPicker selected={date} today={today} onPick={onPick} onClose={onClose} onToday={() => onPick(today)} />;
 }
 
 /** None, Low, Medium or High; picking one closes the sheet. */
