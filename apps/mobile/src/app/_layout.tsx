@@ -1,4 +1,3 @@
-import { radii } from '@daycraft/design-tokens';
 import { Stack, type NativeStackNavigationOptions } from 'expo-router';
 import { useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -16,7 +15,7 @@ import '@/global.css';
 const ACTIVITY_SHEET: NativeStackNavigationOptions = {
   presentation: 'formSheet',
   sheetAllowedDetents: [0.94],
-  sheetCornerRadius: radii.sheet.px,
+  // No corner radius of our own: iOS rounds the sheet to match the screen's corners.
   sheetGrabberVisible: false,
 };
 
