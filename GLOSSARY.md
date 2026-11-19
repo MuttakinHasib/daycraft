@@ -40,16 +40,8 @@ The current-time indicator on the timeline.
 _Avoid_: red line, cursor
 
 **Day edges**:
-The two daily times that bound the timeline: Wake up and Bedtime. One pair per person, the same every day.
-_Avoid_: day limits, working hours
-
-**Wake up**:
-The day edge where the timeline starts.
-_Avoid_: day start, morning
-
-**Bedtime**:
-The day edge where the timeline ends, no later than midnight.
-_Avoid_: day end, sleep time
+When a person's day starts and ends, set in onboarding as two daily routines, Rise and shine and Wind down. Not stored apart from those routines; the timeline itself runs from the day's first activity to its last.
+_Avoid_: day limits, working hours, Wake up and Bedtime (as anchors)
 
 **Unscheduled**:
 A task with a date but no start time; shown as "Anytime" in the editor.
@@ -100,7 +92,7 @@ An activity's recurrence preset: never, daily, weekdays or weekly.
 _Avoid_: recurrence rule (in UI)
 
 **Occurrence**:
-One dated activity created from a repeating activity; editing it changes only that date.
+One dated activity created from a repeating activity. Changing it asks whether the change is for this task only, all future tasks or all tasks; completing it is always for that date only.
 _Avoid_: instance (in code)
 
 **Streak**:
@@ -137,7 +129,7 @@ The launch animation in which the logo builds itself, shown on every launch.
 _Avoid_: launch screen (that is the plain native background under it)
 
 **Onboarding**:
-The screens shown once per device before the first Plan: the intro, then setup steps that save the day edges, daily habits and one task. Never named in UI copy.
+The screens shown once per device before the first Plan: the intro, then setup steps that create the day edges routines, daily habits and one task. Never named in UI copy.
 _Avoid_: tutorial, walkthrough, welcome
 
 ### Color

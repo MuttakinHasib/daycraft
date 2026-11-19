@@ -47,11 +47,12 @@ The example items are fixed demo content (for example Finish the slides 2 hr, Gr
 
 ## 1 · Day edges
 
-"When does your day start and end?" / "Drag Wake up and Bedtime, or use the buttons."
+"When does your day start and end?" / "Drag Rise and shine and Wind down, or use the buttons."
 
-- The Plan sheet slides up (0.55 s, ease-out) with a real timeline: **Wake up** and **Bedtime** anchors, hour lines, the spine, and the free-time hint ("17 hr to plan").
-- Drag either anchor, or use its − / + buttons. Both snap to **15 minutes**, with a light haptic on each snap. The drag label pill is the timeline's own.
-- Defaults: Wake up **7:00 AM**, Bedtime **11:00 PM**. Range 5:00 AM to midnight (the timeline's own range; a later Bedtime waits for its own decision); the day is at least **6 hours** long.
+- The Plan sheet slides up (0.55 s, ease-out) with a real timeline holding two routines, **Rise and shine** (alarm icon) and **Wind down** (moon icon), as point-in-time capsules, with the spine and the free-time hint between them ("16 hr to plan").
+- Drag either one, or use its − / + buttons. Both snap to **15 minutes**, with a light haptic on each snap. The drag label pill is the timeline's own.
+- Defaults: Rise and shine **7:00 AM**, Wind down **11:00 PM**. Both stay inside 5:00 AM to midnight, at least **6 hours** apart.
+- Both are saved as routines that repeat **daily**. They are ordinary activities: Plan starts and ends on them, and they are changed later like any repeating activity (the editor asks "this task only, all future tasks or all tasks").
 
 ## 2 · Habits
 
@@ -77,28 +78,28 @@ Built after the Habits slice: the app has no habits yet. Until then onboarding h
 
 "Put it on your timeline." / "Drag it to move it. Drag its bottom edge to change how long it takes."
 
-- The task lands at the **first free 15-minute slot after now** (now plus 5 minutes, rounded up), between Wake up and Bedtime, with the now line and the free-time hint.
-- Same move, resize grip, drag label, 5-minute snapping and toast as Plan ([timeline-guide](timeline-guide.md)): it is the Plan timeline. Only the Wake up and Bedtime anchors snap to 15 minutes. Arrow keys move it by 15 minutes; Shift + arrows resize it. Its accessibility actions give the same control without dragging.
+- The task lands at the **first free 15-minute slot after now** (now plus 5 minutes, rounded up), between Rise and shine and Wind down, with the now line and the free-time hint.
+- Same move, resize grip, drag label, 5-minute snapping and toast as Plan ([timeline-guide](timeline-guide.md)): it is the Plan timeline. Only the Day edges step snaps to 15 minutes. Arrow keys move it by 15 minutes; Shift + arrows resize it. Its accessibility actions give the same control without dragging.
 
 ## Ready
 
-The real Plan screen: date header, progress ring, week strip, habit strip (once habits exist), the Wake up anchor, the task and the Bedtime anchor (Plan shows the day edges from now on, [timeline-guide §2](timeline-guide.md#2-time-scale-and-range)); the tab bar fades in. Toast "Today is set up" with a **Replay** action.
+The real Plan screen: date header, progress ring, week strip, habit strip (once habits exist), and the timeline from Rise and shine through the task to Wind down ([timeline-guide §2](timeline-guide.md#2-time-scale-and-range)); the tab bar fades in. Toast "Today is set up" with a **Replay** action.
 
 ## What it saves
 
 **Done** writes, in one transaction:
 
-- wake-up and bedtime to settings;
+- Rise and shine and Wind down as daily routines (on replay, the existing two are moved for all future days instead of added again);
 - the chosen habits (daily);
 - the one task on today, at its placed start and length.
 
-**Skip** goes straight to Plan with default edges (7:00 AM to 11:00 PM) and whatever was set so far.
+**Skip** goes straight to Plan with the two routines at whatever was set so far (7:00 AM and 11:00 PM by default) and no half-made task.
 
 Then `hasOnboarded` is stored locally (`expo-sqlite/kv-store`, like the theme preference). More gets a **Replay onboarding** row; replay never deletes data, it only adds.
 
 ## Accessibility and motion
 
-- Every gesture has a non-drag equivalent: the − / + buttons on the edges, accessibility actions on the task, plain rows for habits.
+- Every gesture has a non-drag equivalent: the − / + buttons on the two routines, accessibility actions on the task, plain rows for habits.
 - Headline highlights are decoration; screen readers hear the plain sentence.
 - Reduce Motion: the sheet jumps between positions instead of sliding, the intro shows each beat's end state, and the splash only fades.
 
@@ -106,4 +107,5 @@ Then `hasOnboarded` is stored locally (`expo-sqlite/kv-store`, like the theme pr
 
 - Proposed route: `src/app/onboarding.tsx` as a full-screen stack screen above `(tabs)`, chosen in the root layout after the splash. Keep it thin; the flow lives in `src/features/onboarding/`.
 - Render the real `TimelineSheet`, `HabitStrip` and `ListRow` with an onboarding data source instead of copies. Animate the sheet's top between steps with Reanimated (0.55 s, ease-out).
-- The anchors use Gesture Handler pan gestures with 15-minute snapping and `expo-haptics` on each snap; the task uses Plan's own drag (`useTimelineDrag`).
+- The two routines use Gesture Handler pan gestures with 15-minute snapping and `expo-haptics` on each snap; the task uses Plan's own drag (`useTimelineDrag`).
+- Needs repeating activities ([ADR-0006](../../../../docs/adr/0006-repeat-as-rrule-subset-with-materialized-occurrences.md)) built first.
