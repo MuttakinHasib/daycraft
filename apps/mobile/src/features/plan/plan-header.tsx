@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FlatList, Pressable, Text, View, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { ActivityHueBackground, Chip, ChipSize, ChipTone, Icon } from '@/components/ui';
+import { ActivityHueBackground, Icon, TextButton } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
@@ -248,11 +248,7 @@ export function PlanHeader({ date, today, progress, onSelectDate }: PlanHeaderPr
           <Icon name="chev-r" size={20} strokeWidth={2.5} colorClassName="text-accent-text" />
         </Pressable>
         <View className="flex-row items-center gap-2">
-          {!isToday && (
-            <Chip size={ChipSize.SM} tone={ChipTone.ACCENT_SOFT} onPress={() => onSelectDate(today)}>
-              Today
-            </Chip>
-          )}
+          {!isToday && <TextButton label="Today" onPress={() => onSelectDate(today)} />}
           <ProgressRing progress={progress} />
         </View>
       </View>

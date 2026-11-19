@@ -16,12 +16,6 @@ interface HueBandProps {
   children: ReactNode;
 }
 
-interface BandButtonProps {
-  icon: IconName;
-  accessibilityLabel: string;
-  onPress: () => void;
-}
-
 interface BandTileProps {
   icon: IconName;
   /** Opens the colour and icon sheet. */
@@ -40,20 +34,6 @@ export function HueBand({ hue, children }: HueBandProps) {
         {children}
       </View>
     </View>
-  );
-}
-
-/** A 40 round button on the band, such as Close and Edit. */
-export function BandButton({ icon, accessibilityLabel, onPress }: BandButtonProps) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
-      onPress={onPress}
-      className="size-10 items-center justify-center rounded-full bg-ink/8 active:opacity-70"
-    >
-      <Icon name={icon} size={18} colorClassName={BAND_TEXT} />
-    </Pressable>
   );
 }
 

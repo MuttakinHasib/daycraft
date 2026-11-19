@@ -12,7 +12,7 @@ import { Pressable, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { ActivityHueBackground, Chip, ChipSize, Icon, IconButton, IconButtonSize } from '@/components/ui';
+import { ActivityHueBackground, Icon, IconButton, IconButtonSize, TextButton } from '@/components/ui';
 import { useWeekDots } from '@/data/activity-store';
 import { cn } from '@/lib/cn';
 
@@ -192,11 +192,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday, inkSele
         <View className="flex-1" />
         {/* With Today, the days view swaps ‹ › for it; swipes and the title's months still change the month. */}
         {onToday && !months ? (
-          <View className="h-11 justify-center">
-            <Chip size={ChipSize.SM} onPress={onToday}>
-              Today
-            </Chip>
-          </View>
+          <TextButton label="Today" onPress={onToday} />
         ) : (
           <>
             <IconButton icon="chev-l" accessibilityLabel={`Previous ${unit}`} onPress={() => step(-1)} />
