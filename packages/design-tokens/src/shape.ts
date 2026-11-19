@@ -20,7 +20,7 @@ export const radii: Record<Radius, { px: number; use: string }> = {
   card: { px: 20, use: 'Cards, kanban columns' },
   capsule: { px: 24, use: 'Timeline capsule (48 wide)' },
   panel: { px: 24, use: 'Desktop panels' },
-  sheet: { px: 30, use: 'Bottom sheets, Plan timeline panel' },
+  sheet: { px: 30, use: 'Plan timeline panel and small sheets inside a sheet; native iOS sheets use the system corners' },
 };
 
 /** Elevation, used sparingly: tab bar, sheets, toast (float) and a dragged capsule (lift). */

@@ -39,7 +39,7 @@ export function SubSheet({ onClose, children }: SubSheetProps) {
         exiting={SlideOutDown.duration(durations.fadeIn)}
         // Tall panels (colour and icon) scroll inside the space the activity sheet has.
         style={{ maxHeight: PANEL_MAX_HEIGHT }}
-        className="rounded-t-sheet bg-surface"
+        className="overflow-hidden rounded-t-sheet bg-surface"
       >
         <ScrollView bounces={false} contentContainerClassName="pb-safe">
           {children}
