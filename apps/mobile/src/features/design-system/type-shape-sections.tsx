@@ -36,7 +36,9 @@ export function TypeSection() {
         ))}
       </View>
       <Text className="type-meta text-ink-subtle">
-        {`Families: ${Object.values(fontFamilies).map((family) => `font-${family.className}`).join(', ')}`}
+        {`Families: ${Object.values(fontFamilies)
+          .map((family) => `font-${family.className}`)
+          .join(', ')}`}
       </Text>
     </Section>
   );

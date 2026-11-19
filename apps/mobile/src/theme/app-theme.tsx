@@ -1,31 +1,16 @@
-import { semanticColors, type SemanticColor } from "@daycraft/design-tokens";
-import {
-  ColorScheme,
-  isThemePreference,
-  ThemePreference,
-} from "@daycraft/domain";
-import { isRunningInExpoGo } from "expo";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-  type Theme,
-} from "expo-router";
-import { Storage } from "expo-sqlite/kv-store";
-import { StatusBar } from "expo-status-bar";
-import {
-  createContext,
-  use,
-  useLayoutEffect,
-  useState,
-  type ReactNode,
-} from "react";
-import { Uniwind, useUniwind } from "uniwind";
+import { semanticColors, type SemanticColor } from '@daycraft/design-tokens';
+import { ColorScheme, isThemePreference, ThemePreference } from '@daycraft/domain';
+import { isRunningInExpoGo } from 'expo';
+import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from 'expo-router';
+import { Storage } from 'expo-sqlite/kv-store';
+import { StatusBar } from 'expo-status-bar';
+import { createContext, use, useLayoutEffect, useState, type ReactNode } from 'react';
+import { Uniwind, useUniwind } from 'uniwind';
 
 // Uniwind applies the saved preference to every className; code that cannot take a className
 // reads the scheme and token values from here, never from React Native's useColorScheme.
 
-const THEME_PREFERENCE_KEY = "daycraft.theme-preference";
+const THEME_PREFERENCE_KEY = 'daycraft.theme-preference';
 
 // Builds keep the SDK template's view-controller-based status bar (each screen sets its own);
 // Expo Go hard-codes it off, so there the status bar is set app-wide instead.
@@ -56,10 +41,10 @@ export function useColorScheme(): ColorScheme {
  * The Stack's `statusBarStyle` screen option for the current theme. Undefined in Expo Go, where
  * react-native-screens cannot set it and `AppTheme` renders an app-wide status bar instead.
  */
-export function useScreenStatusBarStyle(): "light" | "dark" | undefined {
+export function useScreenStatusBarStyle(): 'light' | 'dark' | undefined {
   const scheme = useColorScheme();
   if (APP_WIDE_STATUS_BAR) return undefined;
-  return scheme === ColorScheme.DARK ? "light" : "dark";
+  return scheme === ColorScheme.DARK ? 'light' : 'dark';
 }
 
 /** Semantic token values for the current theme, for APIs that cannot take a className. */
@@ -70,8 +55,7 @@ export function useThemeColors(): Record<SemanticColor, string> {
 /** The saved theme preference and a setter that applies and stores it. */
 export function useThemePreference(): ThemePreferenceState {
   const state = use(ThemePreferenceContext);
-  if (!state)
-    throw new Error("useThemePreference must be used inside <AppTheme>.");
+  if (!state) throw new Error('useThemePreference must be used inside <AppTheme>.');
   return state;
 }
 
@@ -108,9 +92,7 @@ export function AppTheme({ children }: AppThemeProps) {
   return (
     <ThemePreferenceContext value={{ preference, setPreference }}>
       <ThemeProvider value={navigationTheme}>
-        {APP_WIDE_STATUS_BAR && (
-          <StatusBar style={scheme === ColorScheme.DARK ? "light" : "dark"} />
-        )}
+        {APP_WIDE_STATUS_BAR && <StatusBar style={scheme === ColorScheme.DARK ? 'light' : 'dark'} />}
         {children}
       </ThemeProvider>
     </ThemePreferenceContext>

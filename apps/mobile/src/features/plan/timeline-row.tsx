@@ -107,10 +107,10 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
           className="absolute top-0 left-13"
         >
           <Capsule
-          hue={activity.hue}
-          state={CAPSULE_STATE[state]}
-          height={row.capsuleHeight}
-          elapsed={row.elapsed}
+            hue={activity.hue}
+            state={CAPSULE_STATE[state]}
+            height={row.capsuleHeight}
+            elapsed={row.elapsed}
             grip={resizable}
             onPress={open}
             accessibilityLabel={capsuleLabel}

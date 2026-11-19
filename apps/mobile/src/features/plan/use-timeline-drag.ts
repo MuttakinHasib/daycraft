@@ -82,7 +82,8 @@ export function useTimelineDrag(onCommit: (drag: CommittedDrag) => void): Timeli
       const delta = snapMinutes(deltaY, PHONE_SCALE);
       const preview =
         current.mode === DragMode.MOVE ? movedTiming(current.original, delta) : resizedTiming(current.original, delta);
-      if (preview.start === current.preview.start && preview.durationMinutes === current.preview.durationMinutes) return;
+      if (preview.start === current.preview.start && preview.durationMinutes === current.preview.durationMinutes)
+        return;
       set({ ...current, preview });
     },
 
