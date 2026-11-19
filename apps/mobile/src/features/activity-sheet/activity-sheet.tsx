@@ -1,3 +1,4 @@
+import { durations } from '@daycraft/design-tokens';
 import {
   ActivityKind,
   draftChanged,
@@ -17,7 +18,13 @@ import {
 import { router, usePreventRemove } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActionSheetIOS, Alert, Platform, Pressable, ScrollView, Text, View } from 'react-native';
-import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import Animated, {
+  SlideInDown,
+  SlideOutDown,
+  useAnimatedKeyboard,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, useToast } from '@/components/ui';
@@ -106,6 +113,17 @@ function confirmDiscard(onDiscard: () => void) {
 export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps) {
   const toast = useToast();
   const insets = useSafeAreaInsets();
+  const keyboard = useAnimatedKeyboard();
+  // While typing, Save steps aside: floating above the keyboard it would cover the field being edited.
+  // It slides back when the keyboard goes down.
+  const saveLift = useAnimatedStyle(() => {
+    const typing = keyboard.height.value > 0;
+    return {
+      paddingBottom: insets.bottom + SAVE_LIFT,
+      opacity: withTiming(typing ? 0 : 1, { duration: durations.press }),
+      transform: [{ translateY: withTiming(typing ? 24 : 0, { duration: durations.press }) }],
+    };
+  });
   const isNew = activityId === null;
   const [saved, setSaved] = useState(initial);
   const [draft, setDraft] = useState(initial);
@@ -222,6 +240,8 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
           className="flex-1"
           keyboardShouldPersistTaps="handled"
           automaticallyAdjustKeyboardInsets
+          // Dragging the content down closes the keyboard, which brings Save back.
+          keyboardDismissMode="interactive"
           contentContainerClassName="gap-3 px-5 pt-5 pb-32"
         >
           <Card>
@@ -300,7 +320,7 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
           entering={isNew ? undefined : SlideInDown}
           exiting={SlideOutDown}
           pointerEvents="box-none"
-          style={{ paddingBottom: insets.bottom + SAVE_LIFT }}
+          style={saveLift}
           className="absolute inset-x-0 bottom-0 px-5"
         >
           <Button disabled={draft.title.trim() === ''} onPress={save}>
