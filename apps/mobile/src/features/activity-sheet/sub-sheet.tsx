@@ -1,4 +1,4 @@
-import { durations } from '@daycraft/design-tokens';
+import { durations, radii } from '@daycraft/design-tokens';
 import type { ReactNode } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
@@ -38,8 +38,14 @@ export function SubSheet({ onClose, children }: SubSheetProps) {
         entering={SlideInDown.duration(durations.sheetUp)}
         exiting={SlideOutDown.duration(durations.fadeIn)}
         // Tall panels (colour and icon) scroll inside the space the activity sheet has.
-        style={{ maxHeight: PANEL_MAX_HEIGHT }}
-        className="overflow-hidden rounded-t-sheet bg-surface"
+        // The radius is set here, not as a class: the animated panel drops class-based corners.
+        style={{
+          maxHeight: PANEL_MAX_HEIGHT,
+          borderTopLeftRadius: radii.sheet.px,
+          borderTopRightRadius: radii.sheet.px,
+          overflow: 'hidden',
+        }}
+        className="bg-surface"
       >
         <ScrollView bounces={false} contentContainerClassName="pb-safe">
           {children}
