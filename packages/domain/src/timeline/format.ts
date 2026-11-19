@@ -84,6 +84,12 @@ export function formatRelativeDate(date: ISODate, today: ISODate): string {
 }
 
 /** The parts of Plan's date title and subline. */
+/** The month's name (1–12), or its first three letters when `short`. */
+export function monthName(month: number, short = false): string {
+  const name = MONTHS[month - 1] ?? '';
+  return short ? name.slice(0, 3) : name;
+}
+
 export interface DateTitle {
   /** `November 17` */
   monthDay: string;
