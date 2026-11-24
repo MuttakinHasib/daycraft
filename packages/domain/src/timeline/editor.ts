@@ -89,6 +89,7 @@ export function editorDefaults(input: EditorDefaultsInput): ActivityInput {
     labels: [],
     location: '',
     projectId: null,
+    seriesId: null,
   };
 }
 
@@ -165,6 +166,8 @@ export function duplicateDraft(activity: Activity): ActivityInput {
   return {
     ...fields,
     ...timing,
+    // A copy is a one-off: it doesn't join the original's series.
+    seriesId: null,
     done: false,
     subtasks: subtasks.map(({ title }) => ({ title, done: false })),
   };

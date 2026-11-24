@@ -72,7 +72,7 @@ These follow the person's reference app and replace the matching parts above whe
 - **Small sheets float:** Date, Time, Repeat, Priority, Location and Colour & Icon open as cards inset from the screen edges with all four corners rounded, stacked over the activity sheet; × closes; choices apply at once.
 - **Segmented control:** a dark `sunken` track with the selected option as an `accent` pill in `on-accent` text (Task / Event, Repeat, Duration).
 - **Date sheet:** tapping the month title switches the day grid to a native month and year wheel (title chevron turns to ⌄; tap again for the days). Today and × stay.
-- **Repeat sheet:** "Repeat" with ×, a segmented **Once · Daily · Weekly · Monthly**. The choice is stored now; occurrences come with repeating activities (onboarding ticket 01). No Pro panel. A stored "Weekdays" still shows as Weekdays.
+- **Repeat sheet:** "Repeat" with ×, a segmented **Once · Daily · Weekly · Monthly**. Choosing one makes the activity a series: it appears on every matching date, each with its own completion and subtasks. No Pro panel. A stored "Weekdays" still shows as Weekdays.
 - **Subtasks:** typing the first letter in "Add subtask" turns that row into a subtask (with ×) and a new empty "Add subtask" row appears below; Return moves to it; an empty Return closes the keyboard. The header shows a done/total counter under the title once there are subtasks.
 - **Labels:** small "Subtasks" and "Notes" labels (`label` preset, `ink-subtle`) above each part of that card.
 - **Button:** a full-width `accent` pill reading **Update task** / **Update event** (was Save changes); still hidden until something changes, steps aside while the keyboard is up, and closes the sheet.
@@ -126,3 +126,10 @@ These follow the person's reference app and replace the matching parts above whe
 - Direct and warm, never cute: "Inbox zero", "A blank canvas", "Ready when you are".
 - Times: `9:30 AM`, ranges `9:30–11:30 AM` (en dash). Durations: `45 min`, `1 hr 30 min`; compact `1h 30m` in tags and gaps.
 - Dates: `Today`, `Tomorrow`, `Yesterday`, otherwise `Thu, Nov 19`.
+
+## Repeating activities (built 2026-11-25)
+
+- A repeating activity is a series (ADR-0006); each date it falls on gets its own occurrence, created when Plan or the week strip first shows that date.
+- Changing what the dates share (title, time, length, colour, icon, type or Repeat), from the sheet or by dragging, asks **Apply changes to which tasks?** with what changed ("Start time moved") and **Update this task only** / **Update all future tasks** / **Update all tasks** / Cancel. Deleting asks **Delete which tasks?** the same way. The toast says "· this and later dates" or "· every date".
+- Completion, subtask ticks, notes and priority belong to one date and never ask.
+- "This task only" detaches the date; series edits leave detached and done dates alone. A deleted date stays deleted.

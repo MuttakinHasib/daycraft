@@ -33,12 +33,15 @@ export const activity = sqliteTable(
     projectId: text('project_id'),
     goalId: text('goal_id'),
     seriesId: text('series_id'),
+    // Set when an occurrence was changed on its own ("this task only"): series edits leave it alone.
+    detachedAt: text('detached_at'),
     routineId: text('routine_id'),
     status: text('status'),
     ...syncColumns,
   },
   (table) => [
     index('activity_date_idx').on(table.activityDate),
+    index('activity_series_date_idx').on(table.seriesId, table.activityDate),
     check('activity_event_has_start', sql`${table.kind} <> 'event' OR ${table.startMinute} IS NOT NULL`),
   ],
 );
@@ -58,6 +61,28 @@ export const subtask = sqliteTable(
   (table) => [index('subtask_activity_idx').on(table.activityId)],
 );
 
+// A repeating activity (ADR-0006): the rule and what each new occurrence starts with. Occurrences are activity rows.
+export const activitySeries = sqliteTable('activity_series', {
+  id: text('id').primaryKey(),
+  rrule: text('rrule').notNull(),
+  startDate: text('start_date').notNull(),
+  // Null while the series runs on; the last date once "all future tasks" changes or deletes it.
+  untilDate: text('until_date'),
+  startMinute: integer('start_minute'),
+  durationMinutes: integer('duration_minutes').notNull().default(0),
+  title: text('title').notNull(),
+  hue: text('hue').notNull(),
+  icon: text('icon').notNull(),
+  kind: text('kind').notNull(),
+  notes: text('notes').notNull().default(''),
+  priority: text('priority').notNull().default('none'),
+  labels: text('labels').notNull().default('[]'),
+  location: text('location').notNull().default(''),
+  // A JSON array of subtask titles each new occurrence starts with, unticked.
+  subtasks: text('subtasks').notNull().default('[]'),
+  ...syncColumns,
+});
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),
@@ -70,3 +95,4 @@ export const syncOutbox = sqliteTable('sync_outbox', {
 
 export type ActivityRow = typeof activity.$inferSelect;
 export type SubtaskRow = typeof subtask.$inferSelect;
+export type SeriesRow = typeof activitySeries.$inferSelect;

@@ -93,6 +93,8 @@ export interface Activity {
   labels: Label[];
   location: string;
   projectId: string | null;
+  /** The repeating series this activity is an occurrence of, or null for a one-off. */
+  seriesId: string | null;
 }
 
 /** A subtask as written by the editor: an existing one keeps its id, a new one has none yet. */

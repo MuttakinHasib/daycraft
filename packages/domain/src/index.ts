@@ -107,3 +107,17 @@ export {
 } from './timeline/layout';
 export { ColorScheme, isThemePreference, resolveColorScheme, ThemePreference } from './theme';
 export { ICON_CATEGORIES, searchIcons, suggestIcons, type IconCategory } from './icon-catalog';
+export {
+  changeSummary,
+  EditScope,
+  formatRule,
+  occurrenceDates,
+  occurrenceId,
+  parseRule,
+  RepeatFrequency,
+  repeatOf,
+  ruleFor,
+  templateChanged,
+  type OccurrenceRange,
+  type RepeatRule,
+} from './repeat';

@@ -1,5 +1,7 @@
 import {
   addDays,
+  EditScope,
+  Repeat,
   weekdayOf,
   type ActivityHue,
   type ActivityInput,
@@ -8,7 +10,7 @@ import {
   type ISODate,
   type Label,
   type Priority,
-  type Repeat,
+  type Repeat as RepeatPreset,
   type SubtaskInput,
 } from '@daycraft/domain';
 
@@ -31,7 +33,7 @@ interface DemoExtras {
   done?: boolean;
   notes?: string;
   subtasks?: SubtaskInput[];
-  repeat?: Repeat;
+  repeat?: RepeatPreset;
   priority?: Priority;
   labels?: Label[];
   location?: string;
@@ -51,6 +53,7 @@ function demo(base: DemoBase, extras: DemoExtras = {}): ActivityInput {
     labels: extras.labels ?? [],
     location: extras.location ?? '',
     projectId: null,
+    seriesId: null,
   };
 }
 
@@ -297,12 +300,39 @@ function nearby(date: ISODate): ActivityInput[] {
 
 /** Replaces the activities from a week before `date` to two weeks after with the prototype's demo days. */
 export function loadDemoDays(date: ISODate): void {
-  for (let offset = -DAYS_BEFORE; offset <= DAYS_AFTER; offset++) {
-    for (const existing of activityRepository.readDay(addDays(date, offset))) activityRepository.remove(existing.id);
+  const range = Array.from({ length: DAYS_BEFORE + DAYS_AFTER + 1 }, (_, index) => addDays(date, index - DAYS_BEFORE));
+  // Ending each series first stops it creating new dates; a second pass clears what is left (done ones).
+  for (const day of range) {
+    for (const existing of activityRepository.readDay(day)) {
+      activityRepository.remove(existing.id, existing.seriesId ? EditScope.ALL : EditScope.THIS);
+    }
+  }
+  for (const day of range) {
+    for (const existing of activityRepository.readDay(day)) activityRepository.remove(existing.id);
   }
   const inputs: ActivityInput[] = [];
   for (let offset = -DAYS_BEFORE; offset <= DAYS_AFTER; offset++)
     inputs.push(...everyDay(addDays(date, offset), offset));
   inputs.push(...today(date), ...nearby(date));
-  for (const input of inputs) activityRepository.create(input);
+  inputs.sort((a, b) => a.date.localeCompare(b.date));
+
+  // A repeating routine is one series from its first date; later dates only set their own completion and ticks.
+  const seriesByTitle = new Map<string, string>();
+  for (const input of inputs) {
+    const seriesId = input.repeat === Repeat.NEVER ? undefined : seriesByTitle.get(input.title);
+    if (!seriesId) {
+      const created = activityRepository.create(input);
+      if (created.seriesId) seriesByTitle.set(input.title, created.seriesId);
+      continue;
+    }
+    const occurrence = activityRepository.readDay(input.date).find((item) => item.seriesId === seriesId);
+    if (!occurrence) continue;
+    activityRepository.update(occurrence.id, {
+      done: input.done,
+      subtasks: occurrence.subtasks.map((subtask, index) => ({
+        ...subtask,
+        done: input.subtasks[index]?.done ?? false,
+      })),
+    });
+  }
 }

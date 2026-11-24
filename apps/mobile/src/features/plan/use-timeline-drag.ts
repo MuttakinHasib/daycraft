@@ -56,7 +56,7 @@ function commitMessage(mode: DragMode, timing: Timing): string {
 }
 
 /** Drag state for the timeline. `onCommit` saves a finished drag. */
-export function useTimelineDrag(onCommit: (drag: CommittedDrag) => void): TimelineDrag {
+export function useTimelineDrag(onCommit: (drag: CommittedDrag) => void | Promise<void>): TimelineDrag {
   const [active, setActive] = useState<ActiveDrag | null>(null);
   // Gesture callbacks read the latest drag synchronously, between renders.
   const activeRef = useRef<ActiveDrag | null>(null);

@@ -1,7 +1,9 @@
 import { durations } from '@daycraft/design-tokens';
 import {
   ActivityKind,
+  changeSummary,
   draftChanged,
+  EditScope,
   formatClock,
   formatDuration,
   formatRange,
@@ -9,6 +11,7 @@ import {
   formatShortDate,
   Priority,
   savedToast,
+  templateChanged,
   validateActivity,
   VALIDATION_MESSAGES,
   type Activity,
@@ -30,6 +33,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, useToast } from '@/components/ui';
 import { activityRepository } from '@/data/activity-store';
 import { markJustCreated } from '@/features/plan/plan-state';
+import { askScope, ScopeAction, scopeToastSuffix } from '@/features/repeat/ask-scope';
 
 import { ColourIconSheet, colourName, CustomColourSheet } from './colour-sheets';
 import { DateSheet, LocationSheet, PRIORITY_LABEL, PrioritySheet, RepeatSheet } from './option-sheets';
@@ -148,17 +152,26 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
     if (leaving) router.back();
   }, [leaving]);
 
-  const save = () => {
+  const noun = isEvent ? 'event' : 'task';
+
+  const save = async () => {
     const result = validateActivity(draft);
     if (!result.ok) {
       toast(VALIDATION_MESSAGES[result.reason]);
       return;
     }
+    // A change to what a repeating activity's dates share asks where it goes; anything else is this date only.
+    let scope: EditScope = EditScope.THIS;
+    if (activityId && saved.seriesId && templateChanged(saved, result.value)) {
+      const asked = await askScope({ action: ScopeAction.UPDATE, summary: changeSummary(saved, result.value), noun });
+      if (!asked) return;
+      scope = asked;
+    }
     const written = activityId
-      ? activityRepository.update(activityId, result.value)
+      ? activityRepository.update(activityId, result.value, scope)
       : activityRepository.create(result.value);
     if (isNew) markJustCreated(written.id);
-    toast(savedToast({ activity: written, today, created: isNew }));
+    toast(`${savedToast({ activity: written, today, created: isNew })}${scopeToastSuffix(scope)}`);
     setLeaving(true);
   };
 
@@ -197,20 +210,23 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
     }));
   };
 
-  const remove = () => {
+  const removeWith = (scope: EditScope) => {
     if (!activityId) return;
-    const noun = isEvent ? 'event' : 'task';
+    activityRepository.remove(activityId, scope);
+    toast(`Deleted · ${saved.title}${scopeToastSuffix(scope)}`);
+    setLeaving(true);
+  };
+
+  const remove = async () => {
+    if (!activityId) return;
+    if (saved.seriesId) {
+      const scope = await askScope({ action: ScopeAction.DELETE, noun });
+      if (scope) removeWith(scope);
+      return;
+    }
     Alert.alert(`Delete “${saved.title}”?`, 'This can’t be undone.', [
       { text: 'Cancel', style: 'cancel' },
-      {
-        text: `Delete ${noun}`,
-        style: 'destructive',
-        onPress: () => {
-          activityRepository.remove(activityId);
-          toast(`Deleted · ${saved.title}`);
-          setLeaving(true);
-        },
-      },
+      { text: `Delete ${noun}`, style: 'destructive', onPress: () => removeWith(EditScope.THIS) },
     ]);
   };
 

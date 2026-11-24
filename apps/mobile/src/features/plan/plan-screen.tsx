@@ -1,5 +1,8 @@
 import {
+  ActivityKind,
+  changeSummary,
   dailyProgress,
+  EditScope,
   EntryPoint,
   layoutDay,
   minutesOfDay,
@@ -15,6 +18,7 @@ import { ScrollView, View } from 'react-native';
 
 import { TabRoute, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
+import { askScope, ScopeAction, scopeToastSuffix } from '@/features/repeat/ask-scope';
 import { useNow } from '@/lib/use-now';
 
 import { PlanHeader } from './plan-header';
@@ -55,9 +59,22 @@ export function PlanScreen() {
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const toast = useToast();
-  const drag = useTimelineDrag(({ id, timing, message }) => {
-    activityRepository.reschedule(id, timing);
-    toast(message);
+  const drag = useTimelineDrag(async ({ id, timing, message }) => {
+    const moved = activities.find((item) => item.id === id);
+    // A repeating activity asks first whether the move is for this date only or for the series too.
+    let scope: EditScope = EditScope.THIS;
+    if (moved?.seriesId) {
+      const { id: _id, ...saved } = moved;
+      const asked = await askScope({
+        action: ScopeAction.UPDATE,
+        summary: changeSummary(saved, { ...saved, start: timing.start, durationMinutes: timing.durationMinutes }),
+        noun: moved.kind === ActivityKind.EVENT ? 'event' : 'task',
+      });
+      if (!asked) return;
+      scope = asked;
+    }
+    activityRepository.reschedule(id, timing, scope);
+    toast(`${message}${scopeToastSuffix(scope)}`);
   });
   const layout = layoutDay({ activities, scale: PHONE_SCALE, isToday: date === today, now, preview: drag.preview });
   const toggleDone = (id: string) => {
