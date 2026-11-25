@@ -2,7 +2,7 @@
 
 The first run: the animated splash, a three-beat story about the problem, then four short setup steps that end on the real Plan screen. About a minute, and every step can be skipped. Phone only; the web app has no onboarding yet.
 
-**Status:** designed, not built. The splash is built (`src/features/splash/animated-splash.tsx`); everything after it is still to do. The design lives on the canvas: page "v3 · Clean", board "v3 · Onboarding · light (splash → setup)" (interactive, with a Start tweak per step), board "18 · Splash animation", and the "Onboarding spec" board on the page "Splash & onboarding".
+**Status:** partly built. The splash and the Day edges step are built (`src/features/splash/`, `src/features/onboarding/`, 2026-11-25); the intro, One thing and Place it are still to do, so the counter reads "Step 1 of 1" and Continue ends on Plan. The design lives on the canvas: page "v3 · Clean", board "v3 · Onboarding · light (splash → setup)" (interactive, with a Start tweak per step), board "18 · Splash animation", and the "Onboarding spec" board on the page "Splash & onboarding".
 
 ## Principles
 
@@ -50,7 +50,7 @@ The example items are fixed demo content (for example Finish the slides 2 hr, Gr
 "When does your day start and end?" / "Drag Rise and shine and Wind down, or use the buttons."
 
 - The Plan sheet slides up (0.55 s, ease-out) with a real timeline holding two routines, **Rise and shine** (alarm icon) and **Wind down** (moon icon), as point-in-time capsules, with the spine and the free-time hint between them ("16 hr to plan").
-- Drag either one, or use its − / + buttons. Both snap to **15 minutes**, with a light haptic on each snap. The drag label pill is the timeline's own.
+- Drag either one, or use its − / + buttons (two small cards under the headline). The whole day is fitted into the sheet on this step so both routines stay in view. Both snap to **15 minutes**, with a light haptic on each snap. The drag label pill is the timeline's own.
 - Defaults: Rise and shine **7:00 AM**, Wind down **11:00 PM**. Both stay inside 5:00 AM to midnight, at least **6 hours** apart.
 - Both are saved as routines that repeat **daily**. They are ordinary activities: Plan starts and ends on them, and they are changed later like any repeating activity (the editor asks "this task only, all future tasks or all tasks").
 

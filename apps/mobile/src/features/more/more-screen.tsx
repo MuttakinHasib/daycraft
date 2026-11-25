@@ -31,6 +31,16 @@ export function MoreScreen() {
             <Icon name="chev-r" size={18} colorClassName="text-ink-subtle" />
           </Pressable>
         </Link>
+        <Link href="/onboarding" asChild>
+          <Pressable
+            accessibilityRole="button"
+            className="min-h-13 flex-row items-center gap-3 border-t border-line px-4 active:bg-sunken"
+          >
+            <Icon name="repeat" size={18} colorClassName="text-ink-subtle" />
+            <Text className="type-body flex-1 text-ink">Replay onboarding</Text>
+            <Icon name="chev-r" size={18} colorClassName="text-ink-subtle" />
+          </Pressable>
+        </Link>
         {__DEV__ && (
           <Pressable
             accessibilityRole="button"

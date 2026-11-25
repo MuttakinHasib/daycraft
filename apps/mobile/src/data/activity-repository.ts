@@ -9,6 +9,8 @@ import {
   isPriority,
   isRepeat,
   addDays,
+  DayEdge,
+  isDayEdges,
   DAYCRAFT_NAMESPACE,
   daysBetween,
   EditScope,
@@ -30,6 +32,7 @@ import {
   type ISODate,
   type Subtask,
   type SubtaskInput,
+  type DayEdges,
   type RepeatRule,
   type Timing,
 } from '@daycraft/domain';
@@ -83,6 +86,41 @@ export interface ActivityRepository {
   toggleDone(id: string): Activity;
   toggleSubtask(id: string): void;
   remove(id: string, scope?: EditScope): void;
+  /** The day edges from that date's Rise and shine and Wind down routines, or null before onboarding saved them. */
+  readDayEdges(date: ISODate): DayEdges | null;
+  /** Saves the day edges as the two daily routines from `date`, or moves the existing ones from that date on. */
+  saveDayEdges(edges: DayEdges, date: ISODate): void;
+}
+
+interface DayEdgeRoutine {
+  edge: DayEdge;
+  minute: number;
+  date: ISODate;
+}
+
+/** The routines that hold the day edges, by title (onboarding doc). */
+const DAY_EDGE_TITLES: Record<DayEdge, string> = { wakeUp: 'Rise and shine', windDown: 'Wind down' };
+
+function dayEdgeRoutine({ edge, minute, date }: DayEdgeRoutine): ActivityInput {
+  const wakeUp = edge === DayEdge.WAKE_UP;
+  return {
+    date,
+    start: minute,
+    durationMinutes: 0,
+    title: DAY_EDGE_TITLES[edge],
+    hue: wakeUp ? 'clay' : 'slate',
+    icon: wakeUp ? 'alarm' : 'moon',
+    kind: ActivityKind.ROUTINE,
+    done: false,
+    notes: '',
+    subtasks: [],
+    repeat: Repeat.DAILY,
+    priority: Priority.NONE,
+    labels: [],
+    location: '',
+    projectId: null,
+    seriesId: null,
+  };
 }
 
 interface SeriesEdit {
@@ -563,7 +601,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     softDelete(tx, [...new Set([...doomed, row.id])]);
   }
 
-  return {
+  const repository: ActivityRepository = {
     readActivity,
 
     readDay(date) {
@@ -696,5 +734,29 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
         else removeFromSeries(tx, { row, series, scope });
       });
     },
+
+    readDayEdges(date) {
+      const routines = repository.readDay(date);
+      const wakeUp = routines.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES.wakeUp);
+      const windDown = routines.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES.windDown);
+      if (wakeUp?.start == null || windDown?.start == null) return null;
+      return { wakeUp: wakeUp.start, windDown: windDown.start };
+    },
+
+    saveDayEdges(edges, date) {
+      if (!isDayEdges(edges)) throw new Error('Day edges break the rules');
+      const day = repository.readDay(date);
+      for (const edge of [DayEdge.WAKE_UP, DayEdge.WIND_DOWN] as const) {
+        const minute = edges[edge];
+        const existing = day.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES[edge]);
+        if (existing) {
+          // Replay moves the routine from this date on; earlier dates keep their time.
+          if (existing.start !== minute) repository.update(existing.id, { start: minute }, EditScope.FUTURE);
+          continue;
+        }
+        repository.create(dayEdgeRoutine({ edge, minute, date }));
+      }
+    },
   };
+  return repository;
 }

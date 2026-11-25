@@ -6,6 +6,7 @@ import {
   PHONE_SCALE,
   resizedTiming,
   snapMinutes,
+  SNAP_MINUTES,
   type Activity,
   type DragPreview,
   type Timing,
@@ -55,8 +56,18 @@ function commitMessage(mode: DragMode, timing: Timing): string {
   return `Now ${formatDuration(timing.durationMinutes)} · ends ${formatClock(timing.start + timing.durationMinutes)}`;
 }
 
+export interface DragOptions {
+  /** Minutes a drag snaps to: 5 on Plan, 15 for the day edges in onboarding. */
+  step?: number;
+  /** Points per minute of the timeline being dragged (onboarding fits the whole day). */
+  scale?: number;
+}
+
 /** Drag state for the timeline. `onCommit` saves a finished drag. */
-export function useTimelineDrag(onCommit: (drag: CommittedDrag) => void | Promise<void>): TimelineDrag {
+export function useTimelineDrag(
+  onCommit: (drag: CommittedDrag) => void | Promise<void>,
+  { step = SNAP_MINUTES, scale = PHONE_SCALE }: DragOptions = {},
+): TimelineDrag {
   const [active, setActive] = useState<ActiveDrag | null>(null);
   // Gesture callbacks read the latest drag synchronously, between renders.
   const activeRef = useRef<ActiveDrag | null>(null);
@@ -79,7 +90,7 @@ export function useTimelineDrag(onCommit: (drag: CommittedDrag) => void | Promis
     update(deltaY) {
       const current = activeRef.current;
       if (!current) return;
-      const delta = snapMinutes(deltaY, PHONE_SCALE);
+      const delta = Math.round(snapMinutes(deltaY, scale) / step) * step || 0;
       const preview =
         current.mode === DragMode.MOVE ? movedTiming(current.original, delta) : resizedTiming(current.original, delta);
       if (preview.start === current.preview.start && preview.durationMinutes === current.preview.durationMinutes)

@@ -31,16 +31,17 @@ interface TimelineProps {
   /** The activity created a moment ago: its capsule pops in. */
   justCreatedId: string | null;
   drag: TimelineDrag;
-  onOpen: (id: string) => void;
-  onToggle: (id: string) => void;
-  onCreateAt: (start: MinutesOfDay) => void;
-  onPlanDay: () => void;
-  onAddInGap: (timing: Timing) => void;
+  // Each action is left out where the timeline is only for placing (onboarding): its control is hidden.
+  onOpen?: (id: string) => void;
+  onToggle?: (id: string) => void;
+  onCreateAt?: (start: MinutesOfDay) => void;
+  onPlanDay?: () => void;
+  onAddInGap?: (timing: Timing) => void;
 }
 
 interface FreeTimeProps {
   hint: FreeTimeHint;
-  onAdd: (timing: Timing) => void;
+  onAdd?: (timing: Timing) => void;
 }
 
 interface NowLineProps {
@@ -94,18 +95,20 @@ function FreeTime({ hint, onAdd }: FreeTimeProps) {
           {rest}
         </Text>
       </View>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`Add a task at ${formatClock(hint.addStart)}`}
-        hitSlop={6}
-        onPress={() => onAdd({ start: hint.addStart, durationMinutes: hint.addDuration })}
-        className="h-8 flex-row items-center gap-1.5 rounded-full bg-sunken pr-3 pl-1.5 active:opacity-85"
-      >
-        <View className="size-4.5 items-center justify-center rounded-full bg-accent">
-          <Icon name="plus" size={12} strokeWidth={2.8} colorClassName="text-on-accent" />
-        </View>
-        <Text className="type-control text-accent-text">Add task</Text>
-      </Pressable>
+      {onAdd && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Add a task at ${formatClock(hint.addStart)}`}
+          hitSlop={6}
+          onPress={() => onAdd({ start: hint.addStart, durationMinutes: hint.addDuration })}
+          className="h-8 flex-row items-center gap-1.5 rounded-full bg-sunken pr-3 pl-1.5 active:opacity-85"
+        >
+          <View className="size-4.5 items-center justify-center rounded-full bg-accent">
+            <Icon name="plus" size={12} strokeWidth={2.8} colorClassName="text-on-accent" />
+          </View>
+          <Text className="type-control text-accent-text">Add task</Text>
+        </Pressable>
+      )}
     </View>
   );
 }
@@ -148,16 +151,17 @@ export function Timeline({
       showsVerticalScrollIndicator={false}
     >
       <View style={{ height: layout.contentHeight }}>
-        {layout.slots.map((slot) => (
-          <Pressable
-            key={slot.start}
-            accessibilityRole="button"
-            accessibilityLabel={`Add something at ${formatClock(slot.start)}`}
-            onPress={() => onCreateAt(slot.start)}
-            style={{ top: slot.top, height: slot.height }}
-            className="absolute right-3 left-13 rounded-tile active:bg-accent-soft"
-          />
-        ))}
+        {onCreateAt &&
+          layout.slots.map((slot) => (
+            <Pressable
+              key={slot.start}
+              accessibilityRole="button"
+              accessibilityLabel={`Add something at ${formatClock(slot.start)}`}
+              onPress={() => onCreateAt(slot.start)}
+              style={{ top: slot.top, height: slot.height }}
+              className="absolute right-3 left-13 rounded-tile active:bg-accent-soft"
+            />
+          ))}
         {!empty &&
           layout.hours.map((label) => (
             <View key={label.hour} pointerEvents="none" style={{ top: label.y }} className="absolute right-5 left-0">
@@ -194,9 +198,11 @@ export function Timeline({
             <Text className="type-body-sm text-ink-muted">
               Nothing planned for this day yet. Tap any hour to drop something in, or start from a routine.
             </Text>
-            <Chip tone={ChipTone.ACCENT} icon="plus" onPress={onPlanDay}>
-              Plan this day
-            </Chip>
+            {onPlanDay && (
+              <Chip tone={ChipTone.ACCENT} icon="plus" onPress={onPlanDay}>
+                Plan this day
+              </Chip>
+            )}
           </View>
         )}
       </View>

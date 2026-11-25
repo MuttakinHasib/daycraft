@@ -38,8 +38,10 @@ interface TimelineRowProps {
   /** True while this row is being dragged: it lifts and stops animating. */
   dragging: boolean;
   drag: TimelineDrag;
-  onOpen: (id: string) => void;
-  onToggle: (id: string) => void;
+  /** Left out where the row can't be opened (onboarding). */
+  onOpen?: (id: string) => void;
+  /** Left out where the row has no check ring (onboarding). */
+  onToggle?: (id: string) => void;
 }
 
 /** One activity on the timeline: start label, capsule, text column and check ring (timeline guide §1, §6). */
@@ -72,7 +74,7 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
     onDeactivate: (event) => drag.end(event.canceled),
   });
   const open = () => {
-    if (!drag.isPressSuppressed()) onOpen(activity.id);
+    if (!drag.isPressSuppressed()) onOpen?.(activity.id);
   };
 
   return (
@@ -131,8 +133,9 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
         </GestureDetector>
       )}
       <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={`Open ${activity.title}`}
+        accessibilityRole={onOpen ? 'button' : 'text'}
+        disabled={!onOpen}
+        accessibilityLabel={onOpen ? `Open ${activity.title}` : undefined}
         onPress={open}
         className={cn('absolute top-0 right-14 left-28 items-start gap-px', {
           'pt-0.5': !centered,
@@ -167,14 +170,16 @@ export function TimelineRow({ row, isNew, dragging, drag, onOpen, onToggle }: Ti
           </View>
         )}
       </Pressable>
-      <View className="absolute top-3 right-5">
-        <CheckRing
-          checked={done}
-          hue={activity.hue}
-          onPress={() => onToggle(activity.id)}
-          accessibilityLabel={`${done ? 'Mark not done' : 'Complete'}: ${activity.title}`}
-        />
-      </View>
+      {onToggle && (
+        <View className="absolute top-3 right-5">
+          <CheckRing
+            checked={done}
+            hue={activity.hue}
+            onPress={() => onToggle(activity.id)}
+            accessibilityLabel={`${done ? 'Mark not done' : 'Complete'}: ${activity.title}`}
+          />
+        </View>
+      )}
     </Animated.View>
   );
 }

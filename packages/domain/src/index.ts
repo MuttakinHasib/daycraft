@@ -121,3 +121,22 @@ export {
   type OccurrenceRange,
   type RepeatRule,
 } from './repeat';
+export {
+  DAY_EDGE_STEP,
+  DayEdge,
+  DEFAULT_DAY_EDGES,
+  isDayEdges,
+  MIN_DAY_MINUTES,
+  onboardingReducer,
+  OnboardingScreen,
+  onboardingView,
+  startOnboarding,
+  withDayEdge,
+  type DayEdgeChange,
+  type DayEdges,
+  type OnboardingDraft,
+  type OnboardingEvent,
+  type OnboardingOutcome,
+  type OnboardingState,
+  type OnboardingView,
+} from './onboarding/onboarding';
