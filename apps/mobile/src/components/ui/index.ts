@@ -1,5 +1,5 @@
 export { Button, ButtonSize, ButtonVariant } from './button';
-export { Capsule, CapsuleState } from './capsule';
+export { Capsule, CapsuleState, type CapsuleAccessibilityProps } from './capsule';
 export { CheckRing } from './check-ring';
 export { Chip, ChipSize, ChipTone } from './chip';
 export { bandTextOn, colorValue, inkClassOn, strokeColor } from './activity-color';
@@ -15,6 +15,6 @@ export { Segmented, SegmentedTone } from './segmented';
 export { Sheet } from './sheet';
 export { CreateAction, TabBar, TabRoute } from './tab-bar';
 export { Tag, TagTone } from './tag';
-export { ToastProvider, useToast } from './toast';
+export { ToastProvider, useToast, type ToastAction } from './toast';
 export { Wheel } from './wheel';
 export type { WheelColumn, WheelOption } from './wheel-types';

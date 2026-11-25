@@ -1,6 +1,6 @@
 import { durations, easing } from '@daycraft/design-tokens';
 import { createContext, use, useEffect, useRef, useState, type ReactNode } from 'react';
-import { AccessibilityInfo, Platform, Text, View } from 'react-native';
+import { AccessibilityInfo, Platform, Pressable, Text, View } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { FullWindowOverlay } from 'react-native-screens';
 
@@ -11,7 +11,13 @@ const VISIBLE_MS = 2400;
 // The tab bar sits 24 from the bottom and is 60 tall; the toast floats 20 above it.
 const TOAST_BOTTOM = 104;
 
-type ShowToast = (message: string) => void;
+/** One action a toast can carry, such as **Replay** after onboarding. */
+export interface ToastAction {
+  label: string;
+  onPress: () => void;
+}
+
+type ShowToast = (message: string, action?: ToastAction) => void;
 
 interface ToastProviderProps {
   children: ReactNode;
@@ -20,6 +26,7 @@ interface ToastProviderProps {
 interface ToastState {
   id: number;
   message: string;
+  action?: ToastAction;
 }
 
 const ToastContext = createContext<ShowToast | null>(null);
@@ -44,9 +51,9 @@ export function ToastProvider({ children }: ToastProviderProps) {
   const [toast, setToast] = useState<ToastState | null>(null);
   const nextId = useRef(0);
 
-  const show: ShowToast = (message) => {
+  const show: ShowToast = (message, action) => {
     nextId.current += 1;
-    setToast({ id: nextId.current, message });
+    setToast({ id: nextId.current, message, action });
     // The one announcement: queued, so it waits for whatever the screen reader is saying (polite).
     AccessibilityInfo.announceForAccessibilityWithOptions(message, { queue: true });
   };
@@ -62,7 +69,11 @@ export function ToastProvider({ children }: ToastProviderProps) {
       {children}
       {toast && (
         <Overlay>
-          <View pointerEvents="none" style={{ bottom: TOAST_BOTTOM }} className="absolute inset-x-5 items-center">
+          <View
+            pointerEvents={toast.action ? 'box-none' : 'none'}
+            style={{ bottom: TOAST_BOTTOM }}
+            className="absolute inset-x-5 items-center"
+          >
             <Animated.View
               key={toast.id}
               entering={enter}
@@ -73,6 +84,19 @@ export function ToastProvider({ children }: ToastProviderProps) {
               <Text numberOfLines={1} className="shrink type-body-sm font-sans-semibold text-canvas">
                 {toast.message}
               </Text>
+              {toast.action && (
+                <Pressable
+                  accessibilityRole="button"
+                  hitSlop={10}
+                  onPress={() => {
+                    setToast(null);
+                    toast.action?.onPress();
+                  }}
+                  className="-mr-2 ml-1 h-7 justify-center rounded-full bg-accent px-3 active:opacity-85"
+                >
+                  <Text className="type-control font-sans-semibold text-on-accent">{toast.action.label}</Text>
+                </Pressable>
+              )}
             </Animated.View>
           </View>
         </Overlay>

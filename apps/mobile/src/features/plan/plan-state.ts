@@ -12,11 +12,13 @@ interface PlanState {
   selectedDate: ISODate | null;
   /** The activity created last, until its pop has played. */
   justCreatedId: string | null;
+  /** Counts the landings other screens ask Plan for. */
+  landings: number;
 }
 
 const POP_MS = 900;
 
-let state: PlanState = { selectedDate: null, justCreatedId: null };
+let state: PlanState = { selectedDate: null, justCreatedId: null, landings: 0 };
 const listeners = new Set<Listener>();
 
 function update(next: Partial<PlanState>) {
@@ -52,4 +54,16 @@ export function markJustCreated(id: string) {
   setTimeout(() => {
     if (state.justCreatedId === id) update({ justCreatedId: null });
   }, POP_MS);
+}
+
+/**
+ * Asks Plan to land again. For a screen over the whole tab bar that rebuilds the day Plan shows, as onboarding
+ * does: Plan lands by itself only when its own tab is chosen again.
+ */
+export function requestLanding() {
+  update({ landings: state.landings + 1 });
+}
+
+export function useLandings(): number {
+  return useSyncExternalStore(subscribe, () => state.landings);
 }

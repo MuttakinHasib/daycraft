@@ -1,6 +1,6 @@
 import { hueTints, inkOn, withOpacity } from '@daycraft/design-tokens';
 import { ActivityHue, type ActivityColor } from '@daycraft/domain';
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { cn } from '@/lib/cn';
@@ -19,7 +19,13 @@ export type CapsuleState = (typeof CapsuleState)[keyof typeof CapsuleState];
 // The active capsule's base is the hue at this strength over the panel, as `color-mix(hue 42%, surface)`.
 const ACTIVE_BASE_OPACITY = 0.42;
 
-interface CapsuleProps {
+/** What screen readers can do to the capsule besides tapping it: its accessibility actions. */
+export type CapsuleAccessibilityProps = Pick<
+  ComponentProps<typeof Pressable>,
+  'accessibilityActions' | 'onAccessibilityAction'
+>;
+
+interface CapsuleProps extends CapsuleAccessibilityProps {
   hue?: ActivityColor;
   state?: CapsuleState;
   height?: number;
@@ -41,6 +47,8 @@ export function Capsule({
   grip = false,
   onPress,
   accessibilityLabel,
+  accessibilityActions,
+  onAccessibilityAction,
   children,
 }: CapsuleProps) {
   const active = state === CapsuleState.ACTIVE;
@@ -50,6 +58,8 @@ export function Capsule({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityActions={accessibilityActions}
+      onAccessibilityAction={onAccessibilityAction}
       data-state={state}
       onPress={onPress}
       className="relative data-[state=done]:opacity-45"

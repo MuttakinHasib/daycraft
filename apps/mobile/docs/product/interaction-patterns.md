@@ -29,12 +29,14 @@ Short, past tense or state, with a middle dot `·` separating the object. No exc
 | Capture               | `Captured to Inbox`                                                        |
 | Validation            | `Give it a name first` · `Name your habit first` · `Add at least one step` |
 | Theme                 | `Light appearance` / `Dark appearance`                                     |
+| Onboarding Done       | `Today is set up` with **Replay**                                          |
 
 Toast behavior:
 
 - One toast at a time; a new one replaces the current one.
 - Auto-dismiss after 2.4s.
 - Positioned above the tab bar.
+- At most one action, a small accent pill at the end (**Replay**); tapping it closes the toast. Without an action the toast ignores touches.
 - On screen readers it is a polite live announcement (`accessibilityLiveRegion="polite"` / `AccessibilityInfo.announceForAccessibility`).
 
 ## Sheets
@@ -65,6 +67,7 @@ Toast behavior:
   - **Time sheet:** a **Starts** wheel (hour, minute in 5-minute steps, AM/PM) and a **Duration** wheel (hours 0–12, minutes in 5-minute steps), both on `card` with the selection band in `raised`; fixed preset chips 15m 30m 45m 1h 1h 30m 2h; **Done**. Tasks also get the Timeline / Anytime switch here when Anytime is available.
   - **Alert sheet:** None / At start / 5 min before / 15 min before / 1 hr before (one alert for now); picking one closes the sheet.
   - **New habit / New routine / Month picker:** plain header (title in `heading` + close).
+
 ### Activity sheet, Structured-style controls (decided 2026-11-19)
 
 These follow the person's reference app and replace the matching parts above where they differ.

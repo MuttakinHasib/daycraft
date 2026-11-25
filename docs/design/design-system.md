@@ -51,7 +51,7 @@ Nine hues, the same in both themes: `clay`, `amber`, `sun`, `sage`, `pine`, `sky
 
 - Hues color **user content only**: capsules, hue tiles, habit circles, mood, the spine. Never chrome, buttons or brand.
 - Icons and text on a hue use `text-on-hue` (white). Hue tags (WORK, HOME) are `on-hue` text on the solid hue.
-- To highlight a word in a headline, put a 42% hue marker behind it (`rounded-tile`, padding 0 6); never color the text.
+- To highlight a word in a headline, put a 42% hue marker behind it (`rounded-tile`, padding 0 6); never color the text. On native the marker is a View behind the word, reaching 3pt above the line box so the space over the capitals matches the sides, with any punctuation after it kept on its line.
 - Map each hue to its class with complete string literals (`bg-${hue}` is never built at runtime; Tailwind scans class names at build time).
 - Typical use: clay for deep work (the default task hue), amber for mornings and meals, sun for errands and calls, sage for movement and health, pine for writing and planning, sky for meetings (the default event hue), iris for learning and reflection, rose for people, slate for rest.
 

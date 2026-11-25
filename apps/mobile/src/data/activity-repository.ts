@@ -30,6 +30,8 @@ import {
   type HexColor,
   type ActivityInput,
   type ISODate,
+  type OnboardingOutcome,
+  type OnboardingTask,
   type Subtask,
   type SubtaskInput,
   type DayEdges,
@@ -88,8 +90,11 @@ export interface ActivityRepository {
   remove(id: string, scope?: EditScope): void;
   /** The day edges from that date's Rise and shine and Wind down routines, or null before onboarding saved them. */
   readDayEdges(date: ISODate): DayEdges | null;
-  /** Saves the day edges as the two daily routines from `date`, or moves the existing ones from that date on. */
-  saveDayEdges(edges: DayEdges, date: ISODate): void;
+  /**
+   * Saves what onboarding ended with, in one transaction: the day edges as the two daily routines from `date` (or
+   * moved from `date` on), and the task on `date` unless there is none (Skip). Returns the task.
+   */
+  saveOnboarding(outcome: OnboardingOutcome, date: ISODate): Activity | null;
 }
 
 interface DayEdgeRoutine {
@@ -115,6 +120,28 @@ function dayEdgeRoutine({ edge, minute, date }: DayEdgeRoutine): ActivityInput {
     notes: '',
     subtasks: [],
     repeat: Repeat.DAILY,
+    priority: Priority.NONE,
+    labels: [],
+    location: '',
+    projectId: null,
+    seriesId: null,
+  };
+}
+
+/** The task onboarding adds, as a new activity on its date. */
+function onboardingTask(task: OnboardingTask, date: ISODate): ActivityInput {
+  return {
+    date,
+    start: task.start,
+    durationMinutes: task.durationMinutes,
+    title: task.title,
+    hue: task.hue,
+    icon: task.icon,
+    kind: ActivityKind.TASK,
+    done: false,
+    notes: '',
+    subtasks: [],
+    repeat: Repeat.NEVER,
     priority: Priority.NONE,
     labels: [],
     location: '',
@@ -298,9 +325,27 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     };
   }
 
+  // The transaction that is open while a write runs. A write made inside it joins it instead of opening its own:
+  // the edges and the task of one onboarding save, or the occurrences a read creates on the way.
+  let openTx: AppDatabase | null = null;
+
+  function transact<T>(run: (tx: AppDatabase) => T): T {
+    if (openTx) return run(openTx);
+    return db.transaction((tx) => {
+      openTx = tx as unknown as AppDatabase;
+      try {
+        return run(openTx);
+      } finally {
+        openTx = null;
+      }
+    });
+  }
+
   function write<T>(run: (tx: AppDatabase) => T): T {
-    const result = db.transaction((tx) => run(tx as unknown as AppDatabase));
-    notify();
+    // Only the write that opened the transaction tells listeners, once everything in it is saved.
+    const outermost = openTx === null;
+    const result = transact(run);
+    if (outermost) notify();
     return result;
   }
 
@@ -395,7 +440,7 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
       if (missing.length === 0) continue;
       const now = stamp();
       const titles = parseTitles(series.subtasks);
-      db.transaction((tx) => {
+      transact((tx) => {
         for (const date of missing) {
           const id = occurrenceId(series.id, date);
           tx.insert(activity)
@@ -601,6 +646,22 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
     softDelete(tx, [...new Set([...doomed, row.id])]);
   }
 
+  // Saves the day edges as the two daily routines from `date`, or moves the existing ones from that date on.
+  function saveDayEdges(edges: DayEdges, date: ISODate) {
+    if (!isDayEdges(edges)) throw new Error('Day edges break the rules');
+    const day = repository.readDay(date);
+    for (const edge of [DayEdge.WAKE_UP, DayEdge.WIND_DOWN] as const) {
+      const minute = edges[edge];
+      const existing = day.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES[edge]);
+      if (existing) {
+        // Replay moves the routine from this date on; earlier dates keep their time.
+        if (existing.start !== minute) repository.update(existing.id, { start: minute }, EditScope.FUTURE);
+        continue;
+      }
+      repository.create(dayEdgeRoutine({ edge, minute, date }));
+    }
+  }
+
   const repository: ActivityRepository = {
     readActivity,
 
@@ -735,27 +796,22 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
       });
     },
 
+    saveOnboarding(outcome, date) {
+      const task = outcome.task && onboardingTask(outcome.task, date);
+      let created: Activity | null = null;
+      write(() => {
+        saveDayEdges(outcome.dayEdges, date);
+        if (task) created = repository.create(task);
+      });
+      return created;
+    },
+
     readDayEdges(date) {
       const routines = repository.readDay(date);
       const wakeUp = routines.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES.wakeUp);
       const windDown = routines.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES.windDown);
       if (wakeUp?.start == null || windDown?.start == null) return null;
       return { wakeUp: wakeUp.start, windDown: windDown.start };
-    },
-
-    saveDayEdges(edges, date) {
-      if (!isDayEdges(edges)) throw new Error('Day edges break the rules');
-      const day = repository.readDay(date);
-      for (const edge of [DayEdge.WAKE_UP, DayEdge.WIND_DOWN] as const) {
-        const minute = edges[edge];
-        const existing = day.find((item) => item.seriesId && item.title === DAY_EDGE_TITLES[edge]);
-        if (existing) {
-          // Replay moves the routine from this date on; earlier dates keep their time.
-          if (existing.start !== minute) repository.update(existing.id, { start: minute }, EditScope.FUTURE);
-          continue;
-        }
-        repository.create(dayEdgeRoutine({ edge, minute, date }));
-      }
     },
   };
   return repository;

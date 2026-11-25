@@ -10,7 +10,7 @@ import {
   type SpineSegment,
   type Timing,
 } from '@daycraft/domain';
-import type { ComponentRef, Ref } from 'react';
+import type { ComponentRef, ReactNode, Ref } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -37,6 +37,14 @@ interface TimelineProps {
   onCreateAt?: (start: MinutesOfDay) => void;
   onPlanDay?: () => void;
   onAddInGap?: (timing: Timing) => void;
+  /** Controls at a row's right edge (onboarding's − / + on the day edges). */
+  renderAccessory?: (activityId: string) => ReactNode;
+  /** Which rows the drag gestures move; every row when left out (Plan). */
+  isDraggable?: (activityId: string) => boolean;
+  /** Which rows offer moving and resizing as accessibility actions (onboarding's Place it; proposed for Plan). */
+  hasDragActions?: (activityId: string) => boolean;
+  /** Called when the timeline's content gets its size. */
+  onContentSizeChange?: (width: number, height: number) => void;
 }
 
 interface FreeTimeProps {
@@ -141,12 +149,17 @@ export function Timeline({
   onCreateAt,
   onPlanDay,
   onAddInGap,
+  renderAccessory,
+  isDraggable,
+  hasDragActions,
+  onContentSizeChange,
 }: TimelineProps) {
   const empty = layout.rows.length === 0;
   return (
     <ScrollView
       ref={scrollRef}
       scrollEnabled={drag.preview === null}
+      onContentSizeChange={onContentSizeChange}
       className="flex-1"
       showsVerticalScrollIndicator={false}
     >
@@ -190,6 +203,9 @@ export function Timeline({
             drag={drag}
             onOpen={onOpen}
             onToggle={onToggle}
+            draggable={isDraggable?.(row.activity.id) ?? true}
+            dragActions={hasDragActions?.(row.activity.id) ?? false}
+            accessory={renderAccessory?.(row.activity.id)}
           />
         ))}
         {empty && (

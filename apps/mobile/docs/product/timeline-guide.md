@@ -161,7 +161,7 @@ When a date has no scheduled activities, the text column shows (no timeline chro
 - Text column label: "Open {title}".
 - Check ring: role checkbox, label "Complete: {title}" / "Mark not done: {title}".
 - **Drag alternative (required):** the editor's time stepper (−15 / +15 min) and duration segments do everything drag does. Keyboard and VoiceOver users must be able to reschedule without dragging.
-- **Proposed:** VoiceOver `accessibilityActions` on the capsule ("Move 15 minutes later/earlier", "Extend 15 minutes") calling the same commit function.
+- **Proposed:** VoiceOver `accessibilityActions` on the capsule ("Move 15 minutes later/earlier", "Extend 15 minutes") calling the same commit function. Built on 2026-11-26 for onboarding's Place it only (`Timeline`'s `hasDragActions` and `useTimelineDrag`'s `nudge`); still proposed for Plan, which does not pass it.
 - Respect Reduce Motion: no reflow animation, no pop (see [accessibility](../design/accessibility.md)).
 
 ## 15. Desktop differences

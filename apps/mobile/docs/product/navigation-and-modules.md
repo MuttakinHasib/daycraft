@@ -30,7 +30,7 @@ Proposed; create the files as the screens are built. Keep route files thin: they
 ```text
 src/app/
   _layout.tsx                 # providers, theme, fonts, root stack, animated splash
-  onboarding.tsx              # first run: intro + four setup steps (see onboarding.md)
+  onboarding.tsx              # first run: intro + setup steps (Habits joins later; see onboarding.md)
   (tabs)/
     _layout.tsx               # Plan · Habits · + · Goals · More
     index.tsx                 # Plan (timeline)

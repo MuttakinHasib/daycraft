@@ -12,6 +12,7 @@ import {
   type Timing,
 } from '@daycraft/domain';
 import { useRef, useState } from 'react';
+import { AccessibilityInfo } from 'react-native';
 
 // Drag to move and drag the grip to resize (timeline guide §10). Moves snap to 5 minutes and stay within the day;
 // the preview drives the layout so other rows reflow; release commits, an interrupted gesture changes nothing.
@@ -26,6 +27,8 @@ export type DragMode = (typeof DragMode)[keyof typeof DragMode];
 
 // A tap right after a drag must not also open the detail sheet.
 const SUPPRESS_PRESS_MS = 80;
+// An accessibility action moves or resizes by this many minutes (timeline guide §14).
+const NUDGE_MINUTES = 15;
 
 interface ActiveDrag {
   id: string;
@@ -41,12 +44,21 @@ export interface CommittedDrag {
   message: string;
 }
 
+/** One step of a drag without dragging: which activity, moved or resized, and which way. */
+export interface DragNudge {
+  activity: Activity;
+  mode: DragMode;
+  direction: 1 | -1;
+}
+
 export interface TimelineDrag {
   /** The activity being dragged and its preview timing, for the layout. */
   preview: DragPreview | null;
   begin: (activity: Activity, mode: DragMode) => void;
   update: (deltaY: number) => void;
   end: (canceled: boolean) => void;
+  /** Moves or resizes by 15 minutes as a finished drag would, then says the new time for screen readers. */
+  nudge: (nudge: DragNudge) => void;
   /** True for a moment after a drag ends, so the release isn't also a tap. */
   isPressSuppressed: () => boolean;
 }
@@ -106,6 +118,21 @@ export function useTimelineDrag(
       const { original, preview } = current;
       if (preview.start === original.start && preview.durationMinutes === original.durationMinutes) return;
       onCommit({ id: current.id, timing: preview, message: commitMessage(current.mode, preview) });
+    },
+
+    nudge({ activity, mode, direction }) {
+      if (activity.start === null) return;
+      const original = { start: activity.start, durationMinutes: activity.durationMinutes };
+      const timing =
+        mode === DragMode.MOVE
+          ? movedTiming(original, NUDGE_MINUTES * direction)
+          : resizedTiming(original, NUDGE_MINUTES * direction);
+      // At the day's edge there is nothing left to move or resize to.
+      if (timing.start === original.start && timing.durationMinutes === original.durationMinutes) return;
+      const message = commitMessage(mode, timing);
+      onCommit({ id: activity.id, timing, message });
+      // The action has no visible drag to answer it, so the new time is spoken.
+      AccessibilityInfo.announceForAccessibility(message);
     },
 
     isPressSuppressed: () => Date.now() < suppressUntil.current,

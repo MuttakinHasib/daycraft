@@ -23,13 +23,16 @@ import { useNow } from '@/lib/use-now';
 import { useTopInset } from '@/lib/use-top-inset';
 
 import { PlanHeader } from './plan-header';
-import { selectDate, useJustCreatedId, useSelectedDate } from './plan-state';
+import { selectDate, useJustCreatedId, useLandings, useSelectedDate } from './plan-state';
 import { Timeline } from './timeline';
 import { useTimelineDrag } from './use-timeline-drag';
 
 // Where Plan lands (timeline guide §11): the now line 170pt from the top on today, else the first activity 10pt from it.
 const NOW_OFFSET = 170;
 const FIRST_ROW_OFFSET = 10;
+// A landing can be asked for before the day is laid out: Plan is revealed while onboarding is still saving its
+// rows. Content that gets its size within this long of landing lands again, with the day then on screen.
+const LANDED_GRACE_MS = 1000;
 
 function openEditorAt(start: MinutesOfDay) {
   router.push({ pathname: '/activity/new', params: { entry: EntryPoint.SLOT, start } });
@@ -58,6 +61,7 @@ export function PlanScreen() {
   const today = todayISO(clock);
   const date = useSelectedDate(today);
   const justCreatedId = useJustCreatedId();
+  const landings = useLandings();
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const toast = useToast();
@@ -93,8 +97,13 @@ export function PlanScreen() {
   const scrollToLanding = useCallback(() => {
     scrollRef.current?.scrollTo({ y: landingY(layoutRef.current), animated: false });
   }, []);
+  const landedAt = useRef(0);
+  const land = useCallback(() => {
+    landedAt.current = Date.now();
+    scrollToLanding();
+  }, [scrollToLanding]);
 
-  useEffect(scrollToLanding, [date, scrollToLanding]);
+  useEffect(land, [date, landings, land]);
 
   // Land again when Plan's tab is chosen after another tab, but not when a sheet over Plan closes:
   // a sheet also blurs Plan, yet Plan stays the selected tab.
@@ -106,14 +115,14 @@ export function PlanScreen() {
       leftPlanTab.current = state?.routes[state.index]?.name !== TabRoute.PLAN;
     });
     const stopFocus = navigation.addListener('focus', () => {
-      if (leftPlanTab.current) scrollToLanding();
+      if (leftPlanTab.current) land();
       leftPlanTab.current = false;
     });
     return () => {
       stopBlur();
       stopFocus();
     };
-  }, [navigation, scrollToLanding]);
+  }, [navigation, land]);
 
   return (
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
@@ -130,6 +139,9 @@ export function PlanScreen() {
           onCreateAt={openEditorAt}
           onPlanDay={planDay}
           onAddInGap={openEditorInGap}
+          onContentSizeChange={() => {
+            if (Date.now() - landedAt.current < LANDED_GRACE_MS) scrollToLanding();
+          }}
         />
       </View>
     </View>
