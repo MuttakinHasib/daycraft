@@ -20,6 +20,7 @@ import { TabRoute, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
 import { askScope, ScopeAction, scopeToastSuffix } from '@/features/repeat/ask-scope';
 import { useNow } from '@/lib/use-now';
+import { useTopInset } from '@/lib/use-top-inset';
 
 import { PlanHeader } from './plan-header';
 import { selectDate, useJustCreatedId, useSelectedDate } from './plan-state';
@@ -52,6 +53,7 @@ function landingY(layout: DayLayout): number {
 }
 
 export function PlanScreen() {
+  const topInset = useTopInset();
   const clock = useNow();
   const today = todayISO(clock);
   const date = useSelectedDate(today);
@@ -114,7 +116,7 @@ export function PlanScreen() {
   }, [navigation, scrollToLanding]);
 
   return (
-    <View className="flex-1 bg-canvas pt-safe">
+    <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
       <PlanHeader date={date} today={today} progress={dailyProgress(activities)} onSelectDate={selectDate} />
       <View className="mt-2 flex-1 overflow-hidden rounded-t-sheet border-t border-line bg-surface">
         <Timeline

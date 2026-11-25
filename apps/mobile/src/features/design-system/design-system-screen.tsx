@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
 import { Icon } from '@/components/ui';
+import { useTopInset } from '@/lib/use-top-inset';
 
 import { ContrastSection, HueSection, HueTintSection, SemanticColorSection } from './color-sections';
 import {
@@ -17,11 +18,16 @@ import { ElevationSection, RadiusSection, TypeSection } from './type-shape-secti
 
 export function DesignSystemScreen() {
   const router = useRouter();
+  const topInset = useTopInset();
   // Pops back to the More list (or replaces this screen with it after a deep link). Plain `back()`
   // could follow the tab history to another tab instead.
   const goBack = () => router.dismissTo('/more');
   return (
-    <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-8 px-5 pt-safe-offset-2 pb-30">
+    <ScrollView
+      className="flex-1 bg-canvas"
+      contentContainerStyle={{ paddingTop: topInset }}
+      contentContainerClassName="gap-8 px-5 pb-30"
+    >
       <View className="gap-1">
         <Pressable
           accessibilityRole="link"

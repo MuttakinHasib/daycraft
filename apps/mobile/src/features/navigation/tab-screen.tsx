@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
+import { useTopInset } from '@/lib/use-top-inset';
+
+// Space between the tucked top inset and the title.
+const TITLE_GAP = 8;
+
 interface TabScreenProps {
   title: string;
   description: string;
@@ -9,8 +14,13 @@ interface TabScreenProps {
 
 /** A tab root: the display title, one line under it, and bottom padding so the last content can scroll above the tab bar. */
 export function TabScreen({ title, description, children }: TabScreenProps) {
+  const topInset = useTopInset();
   return (
-    <ScrollView className="flex-1 bg-canvas" contentContainerClassName="gap-6 px-5 pt-safe-offset-6 pb-30">
+    <ScrollView
+      className="flex-1 bg-canvas"
+      contentContainerStyle={{ paddingTop: topInset + TITLE_GAP }}
+      contentContainerClassName="gap-6 px-5 pb-30"
+    >
       <View className="gap-2">
         <Text accessibilityRole="header" className="type-display text-ink">
           {title}

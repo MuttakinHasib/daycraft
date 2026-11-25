@@ -227,7 +227,7 @@ export function PlanHeader({ date, today, progress, onSelectDate }: PlanHeaderPr
   const title = dateTitle(date);
   const isToday = date === today;
   return (
-    <View className="px-5 pt-6 pb-2">
+    <View className="px-5 pt-2 pb-2">
       <View className="flex-row items-center justify-between gap-3">
         <Pressable
           accessibilityRole="button"
