@@ -2,13 +2,14 @@ import { DropdownMenu, DropdownMenuItem, Host, Text } from '@expo/ui/jetpack-com
 import { useState } from 'react';
 
 import { IconButton, IconButtonSize } from '@/components/ui';
-import { useThemeColors } from '@/theme/app-theme';
+import { useColorScheme, useThemeColors } from '@/theme/app-theme';
 
 import type { MoreMenuProps } from './more-menu-types';
 
 /** The band's ⋯ off iOS: the native button opens a Material 3 dropdown with Duplicate and Delete. */
 export function MoreMenu({ onDuplicate, onDelete }: MoreMenuProps) {
   const colors = useThemeColors();
+  const scheme = useColorScheme();
   const [open, setOpen] = useState(false);
   const choose = (action: () => void) => () => {
     setOpen(false);
@@ -17,7 +18,7 @@ export function MoreMenu({ onDuplicate, onDelete }: MoreMenuProps) {
   return (
     <>
       <IconButton icon="more" size={IconButtonSize.LG} accessibilityLabel="More" onPress={() => setOpen(true)} />
-      <Host matchContents>
+      <Host colorScheme={scheme} matchContents>
         <DropdownMenu expanded={open} onDismissRequest={() => setOpen(false)} color={colors.elevated}>
           <DropdownMenu.Items>
             <DropdownMenuItem onClick={choose(onDuplicate)}>

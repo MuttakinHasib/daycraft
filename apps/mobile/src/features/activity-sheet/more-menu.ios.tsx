@@ -22,7 +22,7 @@ export function MoreMenu({ onDuplicate, onDelete }: MoreMenuProps) {
   // Matches the band's text: ink on the light tint, on-hue on the solid dark band.
   const color = scheme === 'dark' ? colors['on-hue'] : colors.ink;
   return (
-    <Host matchContents>
+    <Host matchContents colorScheme={scheme}>
       <Menu
         label={
           // The trigger is drawn as a 44pt glass circle so it matches the × beside it; a menu's own

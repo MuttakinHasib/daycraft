@@ -3,16 +3,17 @@ import { font, foregroundStyle, frame, labelsHidden, pickerStyle, tag } from '@e
 
 import { View } from 'react-native';
 
-import { useThemeColors } from '@/theme/app-theme';
+import { useColorScheme, useThemeColors } from '@/theme/app-theme';
 
 import { WHEEL_HEIGHT, type WheelProps } from './wheel-types';
 
 /** Native iOS picker wheels side by side, one per column, in Onest. */
 export function Wheel({ columns, accessibilityLabel }: WheelProps) {
   const colors = useThemeColors();
+  const scheme = useColorScheme();
   return (
     <View accessibilityLabel={accessibilityLabel}>
-      <Host style={{ height: WHEEL_HEIGHT }}>
+      <Host colorScheme={scheme} style={{ height: WHEEL_HEIGHT }}>
         <HStack spacing={0}>
           {columns.map((column) => (
             <Picker

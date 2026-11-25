@@ -31,6 +31,7 @@
 - Options: **System** (default), **Light**, **Dark** (`ThemePreference` and `resolveColorScheme` in `@daycraft/domain`).
 - `useThemePreference()` from the theme module returns the preference and a setter. The setter saves it in `expo-sqlite/kv-store` (per device, never synced) and applies it with `Uniwind.setTheme`; the saved value is read synchronously and applied in a layout effect, so a saved Light or Dark never flashes the OS scheme first.
 - Switching does not reset navigation or scroll position. The design-system screen has the control until the Appearance screen exists.
+- Every `@expo/ui` `Host` takes `colorScheme={useColorScheme()}` from the theme module. Without it the SwiftUI or Compose content follows the phone's own scheme, so with Light chosen on a phone in dark mode the glass buttons draw dark on a light sheet.
 
 ## Web
 
