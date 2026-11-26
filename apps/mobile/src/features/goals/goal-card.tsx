@@ -1,8 +1,10 @@
 import { goalProgress, targetLine, type Goal, type ISODate, type Milestone } from '@daycraft/domain';
+import { router } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colorValue, Icon, inkClassOn, useToast } from '@/components/ui';
+import { Chip, ChipSize, colorValue, Icon, inkClassOn, useToast } from '@/components/ui';
 import { goalRepository } from '@/data/goal-store';
 import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
@@ -21,20 +23,32 @@ interface GoalCardProps {
 
 /**
  * The Goals card (navigation-and-modules): a 56pt ring in the goal's hue with the percent inside, then the
- * title and, when the goal has one, the target line with its flag, and the milestone checklist below.
- * Tapping a milestone toggles it and never expands the card.
+ * title, the description and, when the goal has one, the target line with its flag, and the milestone checklist
+ * below. Tapping the ring, title or description expands the card to its Edit goal and Delete goal rows; tapping
+ * a milestone toggles it and never expands the card.
  */
 export function GoalCard({ goal, today }: GoalCardProps) {
+  const [open, setOpen] = useState(false);
   const percent = goalProgress(goal.milestones);
   const line = targetLine(goal.targetDate, today);
+  const toggleOpen = () => setOpen((current) => !current);
   return (
     <View className="rounded-card bg-card p-4">
       <View className="flex-row items-center gap-4">
-        <GoalRing hue={goal.hue} percent={percent} />
-        <View className="flex-1 gap-0.5">
+        <Pressable onPress={toggleOpen} className="active:opacity-70">
+          <GoalRing hue={goal.hue} percent={percent} />
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? `Hide actions: ${goal.title}` : `Show actions: ${goal.title}`}
+          accessibilityState={{ expanded: open }}
+          onPress={toggleOpen}
+          className="flex-1 gap-0.5 active:opacity-70"
+        >
           <Text numberOfLines={2} className="type-activity font-sans-semibold text-ink">
             {goal.title}
           </Text>
+          {goal.description && <Text className="type-body-sm text-ink-muted">{goal.description}</Text>}
           {line && (
             <View className="flex-row items-center gap-1.5">
               <Icon name="flag" size={13} colorClassName="text-ink-muted" />
@@ -43,7 +57,7 @@ export function GoalCard({ goal, today }: GoalCardProps) {
               </Text>
             </View>
           )}
-        </View>
+        </Pressable>
       </View>
       {goal.milestones.length > 0 && (
         <View className="mt-3.5 gap-0.5">
@@ -52,9 +66,21 @@ export function GoalCard({ goal, today }: GoalCardProps) {
           ))}
         </View>
       )}
-    </View>
-  );
-}
+      {open && (
+        <View className="mt-3.5 flex-row gap-2 border-t border-line pt-3">
+          <Chip
+            size={ChipSize.SM}
+            onPress={() => router.push({ pathname: '/goal/new', params: { id: goal.id } })}
+            accessibilityLabel={`Edit goal: ${goal.title}`}
+          >
+            Edit goal
+          </Chip>
+          {/* Delete's confirm and soft delete arrive with the delete ticket; the row is here so the layout is set. */}
+          <Chip size={ChipSize.SM} accessibilityLabel={`Delete goal: ${goal.title}`}>
+            Delete goal
+          </Chip>
+        </View>
+      )}
     </View>
   );
 }

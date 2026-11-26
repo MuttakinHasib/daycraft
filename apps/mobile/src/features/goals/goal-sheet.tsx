@@ -1,4 +1,12 @@
-import { ActivityHue, formatShortDateWithYear, todayISO, validateGoalName, type ISODate, type MilestoneInput } from '@daycraft/domain';
+import {
+  ActivityHue,
+  formatShortDateWithYear,
+  todayISO,
+  validateGoalName,
+  type Goal,
+  type ISODate,
+  type MilestoneChange,
+} from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -11,24 +19,33 @@ import { SubSheet } from '@/features/activity-sheet/sub-sheet';
 import { useNow } from '@/lib/use-now';
 import { useThemeColors } from '@/theme/app-theme';
 
-// The goal sheet (New goal): the button is always enabled and a blank title toasts "Name your goal first"
-// instead of saving. The Target date row opens the date sheet, whose Clear removes the date; the hue row opens
-// the hue-only sub-sheet; milestones are composed below in the order they are added, with no cap. They are
-// checked on the card, not here.
+// The goal sheet (New goal and Edit goal): the button is always enabled and a blank title toasts "Name your goal
+// first" instead of saving. Edit opens pre-filled and saves in place, keeping a kept milestone's done flag and
+// dropping a removed one. The Target date row opens the date sheet, whose Clear removes the date; the hue row
+// opens the hue-only sub-sheet; milestones are composed below in the order they are added, with no cap. They
+// are checked on the card, not here.
 
 // iOS draws a single-line field's text below center when it has a line height; 0 leaves the font's own.
 const ONE_LINE_FIELD = { lineHeight: 0 };
 
-export function GoalSheet() {
+interface GoalSheetProps {
+  /** Pre-fills the sheet for Edit goal. */
+  goal?: Goal;
+}
+
+export function GoalSheet({ goal }: GoalSheetProps) {
   const toast = useToast();
   const colors = useThemeColors();
   const today = todayISO(useNow());
-  const [title, setTitle] = useState('');
-  const [hue, setHue] = useState<ActivityHue>(ActivityHue.SAGE);
-  const [targetDate, setTargetDate] = useState<ISODate | null>(null);
+  const [title, setTitle] = useState(goal?.title ?? '');
+  const [description, setDescription] = useState(goal?.description ?? '');
+  const [hue, setHue] = useState<ActivityHue>(goal?.hue ?? ActivityHue.SAGE);
+  const [targetDate, setTargetDate] = useState<ISODate | null>(goal?.targetDate ?? null);
   const [hueOpen, setHueOpen] = useState(false);
   const [dateOpen, setDateOpen] = useState(false);
-  const [milestones, setMilestones] = useState<MilestoneInput[]>([]);
+  const [milestones, setMilestones] = useState<MilestoneChange[]>(
+    goal ? goal.milestones.map((milestone) => ({ id: milestone.id, title: milestone.title })) : [],
+  );
   const [draft, setDraft] = useState('');
 
   const addMilestone = () => {
@@ -48,8 +65,25 @@ export function GoalSheet() {
       toast(message);
       return;
     }
-    goalRepository.create({ title: title.trim(), hue, targetDate: targetDate ?? undefined, milestones });
-    toast('Goal added');
+    if (goal) {
+      goalRepository.update(goal.id, {
+        title: title.trim(),
+        description: description.trim() || null,
+        hue,
+        targetDate,
+        milestones,
+      });
+      toast('Goal saved');
+    } else {
+      goalRepository.create({
+        title: title.trim(),
+        description: description.trim() || undefined,
+        hue,
+        targetDate: targetDate ?? undefined,
+        milestones,
+      });
+      toast('Goal added');
+    }
     router.back();
   };
 
@@ -57,7 +91,7 @@ export function GoalSheet() {
     <View className="flex-1 bg-surface">
       <View className="flex-row items-center justify-between px-5 pt-4">
         <Text accessibilityRole="header" className="type-heading text-ink">
-          New goal
+          {goal ? 'Edit goal' : 'New goal'}
         </Text>
         <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={() => router.back()} />
       </View>
@@ -79,6 +113,18 @@ export function GoalSheet() {
               placeholder="e.g. Run a half marathon"
               placeholderTextColor={colors['ink-subtle']}
               className="h-11 border-b border-line type-heading text-ink"
+            />
+          </View>
+          <View className="px-5 pt-4">
+            <TextInput
+              accessibilityLabel="Goal description"
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              placeholder="Add a description"
+              placeholderTextColor={colors['ink-subtle']}
+              textAlignVertical="top"
+              className="min-h-11 border-b border-line type-body text-ink-muted"
             />
           </View>
           <View className="px-5 pt-6">
@@ -150,7 +196,7 @@ export function GoalSheet() {
         </ScrollView>
       </View>
       <View className="absolute inset-x-0 bottom-0 px-5 pb-8">
-        <Button onPress={save}>Add goal</Button>
+        <Button onPress={save}>{goal ? 'Save' : 'Add goal'}</Button>
       </View>
       {hueOpen && (
         <SubSheet onClose={() => setHueOpen(false)}>

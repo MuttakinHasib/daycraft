@@ -14,10 +14,18 @@ export interface MilestoneInput {
   title: string;
 }
 
+/** What editing a goal's milestones may change: a kept id keeps its done flag, an absent id is a new one. */
+export interface MilestoneChange {
+  id?: string;
+  title: string;
+}
+
 /** A long-term direction made of milestones: never an activity and never on the timeline. */
 export interface Goal {
   id: string;
   title: string;
+  /** What the goal is working toward, in the author's words; null when it has none. */
+  description: string | null;
   /** The date the goal should be reached by (glossary), or null when it has none. */
   targetDate: ISODate | null;
   hue: ActivityHue;
@@ -30,15 +38,22 @@ export interface Goal {
 /** What creating a goal starts from: the sheet's fields. */
 export interface GoalInput {
   title: string;
+  /** Optional: a goal without one shows no description. */
+  description?: string;
   /** Optional: a goal without one shows no target line. */
   targetDate?: ISODate;
   hue: ActivityHue;
   milestones: MilestoneInput[];
 }
 
-/** What editing a goal may change; `targetDate: null` clears the target date. */
+/** What editing a goal may change; `targetDate: null` clears the target date, `description: null` the
+ * description, and `milestones` replaces the list in its given order (kept ids keep their done flag). */
 export interface GoalChanges {
+  title?: string;
+  description?: string | null;
+  hue?: ActivityHue;
   targetDate?: ISODate | null;
+  milestones?: MilestoneChange[];
 }
 
 /** The message when the sheet tries to save a goal with no usable title. Mirrors HABIT_NAME_MESSAGE. */

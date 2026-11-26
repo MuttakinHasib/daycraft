@@ -43,6 +43,13 @@
       "when": 1795712197162,
       "tag": "0005_goal_milestones",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1795712753724,
+      "tag": "0006_goal_description",
+      "breakpoints": true
     }
   ]
 }

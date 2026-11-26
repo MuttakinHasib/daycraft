@@ -67,6 +67,7 @@ export {
   type GoalChanges,
   type GoalInput,
   type Milestone,
+  type MilestoneChange,
   type MilestoneInput,
 } from './goal';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
