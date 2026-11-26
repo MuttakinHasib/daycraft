@@ -53,6 +53,7 @@ export {
   weeklyCount,
   weeklyStreak,
   windowStartOf,
+  type HabitChanges,
   type StreakInput,
   type Habit,
   type HabitInput,

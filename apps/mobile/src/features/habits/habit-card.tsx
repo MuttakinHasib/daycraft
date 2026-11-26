@@ -10,11 +10,11 @@ import {
   type Habit,
   type ISODate,
 } from '@daycraft/domain';
+import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
-
-import { ActivityHueBackground, ActivityHueText, colorValue, Icon, inkClassOn, strokeColor } from '@/components/ui';
-import { toggleCheckIn, useCheckInDates } from '@/data/habit-store';
+import { Alert, Pressable, Text, View } from 'react-native';
+import { ActivityHueBackground, ActivityHueText, colorValue, Icon, inkClassOn, strokeColor, TextButton, useToast } from '@/components/ui';
+import { habitRepository, toggleCheckIn, useCheckInDates } from '@/data/habit-store';
 import { cn } from '@/lib/cn';
 
 // The Habits tab card (navigation-and-modules): hue icon, name, frequency and streak, the 44pt check button
@@ -111,11 +111,25 @@ function WeekBars({ habit, today }: { habit: Habit; today: ISODate }) {
 // One letter per weekday, Sunday first (the reference's W T F S S M T row).
 const WEEKDAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-/** The expanded history: "Last 5 weeks" with the completion %, over the heatmap of those weeks. */
+/** The expanded history: "Last 5 weeks" with the completion %, the heatmap, and Edit and Delete habit. */
 function HabitHistory({ habit, today }: { habit: Habit; today: ISODate }) {
+  const toast = useToast();
   const checkIns = new Set(useCheckInDates(habit.id));
   const percent = completionPercent(habit, Array.from(checkIns), { today });
   const start = windowStartOf({ today });
+  const deleteHabit = () => {
+    Alert.alert(`Delete “${habit.name}”?`, 'This can’t be undone.', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          habitRepository.remove(habit.id);
+          toast(`Deleted · ${habit.name}`);
+        },
+      },
+    ]);
+  };
   return (
     <View className="gap-3 border-t border-line pt-3">
       <View className="flex-row justify-between">
@@ -141,6 +155,10 @@ function HabitHistory({ habit, today }: { habit: Habit; today: ISODate }) {
             })}
           </View>
         ))}
+      </View>
+      <View className="flex-row gap-2">
+        <TextButton label="Edit habit" onPress={() => router.push({ pathname: '/habit/new', params: { id: habit.id } })} />
+        <TextButton label="Delete habit" onPress={deleteHabit} />
       </View>
     </View>
   );

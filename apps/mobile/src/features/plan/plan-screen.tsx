@@ -153,6 +153,7 @@ export function PlanScreen() {
         {showHabitRow && (
           <HabitRow
             habits={habits}
+            date={date}
             checkedIds={checkedHabitIds}
             onToggleHabit={toggleHabit}
             onAddHabit={() => router.push('/habit/new')}

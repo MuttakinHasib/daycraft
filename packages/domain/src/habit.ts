@@ -35,6 +35,15 @@ export interface HabitInput {
   target: number | null;
 }
 
+/** What editing a habit may change: the sheet's fields, applied from now on. */
+export interface HabitChanges {
+  name?: string;
+  icon?: IconName;
+  hue?: ActivityHue;
+  frequency?: HabitFrequency;
+  target?: number | null;
+}
+
 /** The message when the sheet tries to save a habit with no usable name (the prototype's toast). */
 export const HABIT_NAME_MESSAGE = 'Name your habit first';
 

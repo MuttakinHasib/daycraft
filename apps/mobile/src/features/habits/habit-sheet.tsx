@@ -1,4 +1,4 @@
-import { ActivityHue, HabitFrequency, isActivityHue, validateHabitName, type IconName } from '@daycraft/domain';
+import { ActivityHue, HabitFrequency, isActivityHue, validateHabitName, type Habit, type IconName } from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
@@ -9,22 +9,27 @@ import { ColourIconSheet } from '@/features/activity-sheet/colour-sheets';
 import { SubSheet } from '@/features/activity-sheet/sub-sheet';
 import { useThemeColors } from '@/theme/app-theme';
 
-// The New habit sheet (reference: sheet-new-habit, prototype's save behaviour): the button is always enabled
-// and a blank name toasts "Name your habit first" instead of saving. Colour and icon change in the activity
-// sheet's own picker (Q9).
+// The habit sheet (reference: sheet-new-habit, prototype's save behaviour): the button is always enabled and a
+// blank name toasts "Name your habit first" instead of saving. Colour and icon change in the activity sheet's
+// own picker (Q9). Edit habit opens the same sheet pre-filled and saves in place.
 
 // The Target range for a weekly habit (glossary): 1 to 7.
 const TARGET_MIN = 1;
 const TARGET_MAX = 7;
 
-export function HabitSheet() {
+interface HabitSheetProps {
+  /** Pre-fills the sheet for Edit habit. */
+  habit?: Habit;
+}
+
+export function HabitSheet({ habit }: HabitSheetProps) {
   const toast = useToast();
   const colors = useThemeColors();
-  const [name, setName] = useState('');
-  const [hue, setHue] = useState<ActivityHue>(ActivityHue.SAGE);
-  const [icon, setIcon] = useState<IconName>('leaf');
-  const [frequency, setFrequency] = useState<HabitFrequency>(HabitFrequency.DAILY);
-  const [target, setTarget] = useState(4);
+  const [name, setName] = useState(habit?.name ?? '');
+  const [hue, setHue] = useState<ActivityHue>(habit?.hue ?? ActivityHue.SAGE);
+  const [icon, setIcon] = useState<IconName>(habit?.icon ?? 'leaf');
+  const [frequency, setFrequency] = useState<HabitFrequency>(habit?.frequency ?? HabitFrequency.DAILY);
+  const [target, setTarget] = useState(habit?.target ?? 3);
   const [colourOpen, setColourOpen] = useState(false);
 
   const save = () => {
@@ -33,14 +38,20 @@ export function HabitSheet() {
       toast(message);
       return;
     }
-    habitRepository.create({
+    const changes = {
       name: name.trim(),
       icon,
       hue,
       frequency,
       target: frequency === HabitFrequency.WEEKLY ? target : null,
-    });
-    toast('Habit added · tap it to check in');
+    };
+    if (habit) {
+      habitRepository.update(habit.id, changes);
+      toast('Habit saved');
+    } else {
+      habitRepository.create(changes);
+      toast('Habit added · tap it to check in');
+    }
     router.back();
   };
 
@@ -48,7 +59,7 @@ export function HabitSheet() {
     <View className="flex-1 bg-surface">
       <View className="flex-row items-center justify-between px-5 pt-4">
         <Text accessibilityRole="header" className="type-heading text-ink">
-          New habit
+          {habit ? 'Edit habit' : 'New habit'}
         </Text>
         <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={() => router.back()} />
       </View>
@@ -101,7 +112,7 @@ export function HabitSheet() {
         )}
       </View>
       <View className="absolute inset-x-0 bottom-0 px-5 pb-8">
-        <Button onPress={save}>Add habit</Button>
+        <Button onPress={save}>{habit ? 'Save' : 'Add habit'}</Button>
       </View>
       {colourOpen && (
         <SubSheet onClose={() => setColourOpen(false)}>

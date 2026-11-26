@@ -1,5 +1,5 @@
 import { sheetHeaderTint, withOpacity } from '@daycraft/design-tokens';
-import type { Habit } from '@daycraft/domain';
+import type { Habit, ISODate } from '@daycraft/domain';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 
 import { ActivityHueText, colorValue, Icon } from '@/components/ui';
@@ -11,12 +11,45 @@ import { useColorScheme } from '@/theme/app-theme';
 interface HabitCircleProps {
   habit: Habit;
   checked: boolean;
-  onToggle: () => void;
+  /** A habit that no longer existed on the date is shown as it was, not a button. */
+  readOnly?: boolean;
+  onToggle?: () => void;
 }
 
 /** One habit's circle and label: dashed in its hue until checked, solid with a check badge once checked. */
-function HabitCircle({ habit, checked, onToggle }: HabitCircleProps) {
+function HabitCircle({ habit, checked, readOnly = false, onToggle }: HabitCircleProps) {
   const scheme = useColorScheme();
+  const circle = (
+    <View
+      style={
+        checked
+          ? { backgroundColor: colorValue(habit.hue) }
+          : {
+              borderColor: colorValue(habit.hue),
+              borderStyle: 'dashed',
+              backgroundColor: withOpacity(colorValue(habit.hue), sheetHeaderTint[scheme]),
+            }
+      }
+      className="size-11 items-center justify-center rounded-full border-2"
+    >
+      <Icon name={habit.icon} size={18} colorClassName={checked ? 'text-on-hue' : ActivityHueText[habit.hue]} />
+      {checked && (
+        <View className="absolute -bottom-0.5 -right-0.5 size-5 items-center justify-center rounded-full bg-ink">
+          <Icon name="check" size={11} strokeWidth={3} colorClassName="text-canvas" />
+        </View>
+      )}
+    </View>
+  );
+  if (readOnly) {
+    return (
+      <View style={{ width: 56 }} className="items-center gap-1.5 opacity-60">
+        {circle}
+        <Text numberOfLines={1} className="type-micro font-sans-medium text-ink">
+          {habit.name}
+        </Text>
+      </View>
+    );
+  }
   return (
     <View style={{ width: 56 }} className="items-center gap-1.5">
       <Pressable
@@ -24,27 +57,9 @@ function HabitCircle({ habit, checked, onToggle }: HabitCircleProps) {
         accessibilityState={{ checked }}
         accessibilityLabel={`${habit.name}${checked ? ', checked in' : ''}`}
         onPress={onToggle}
-        style={
-          checked
-            ? { backgroundColor: colorValue(habit.hue) }
-            : {
-                borderColor: colorValue(habit.hue),
-                borderStyle: 'dashed',
-                backgroundColor: withOpacity(colorValue(habit.hue), sheetHeaderTint[scheme]),
-              }
-        }
-        className="size-11 items-center justify-center rounded-full border-2 active:opacity-80"
+        className="active:opacity-80"
       >
-        <Icon
-          name={habit.icon}
-          size={18}
-          colorClassName={checked ? 'text-on-hue' : ActivityHueText[habit.hue]}
-        />
-        {checked && (
-          <View className="absolute -bottom-0.5 -right-0.5 size-5 items-center justify-center rounded-full bg-ink">
-            <Icon name="check" size={11} strokeWidth={3} colorClassName="text-canvas" />
-          </View>
-        )}
+        {circle}
       </Pressable>
       <Text numberOfLines={1} className="type-micro font-sans-medium text-ink">
         {habit.name}
@@ -76,6 +91,8 @@ function AddHabitCircle({ onPress }: AddHabitCircleProps) {
 
 interface HabitRowProps {
   habits: readonly Habit[];
+  /** The date the row shows, for the read-only rule and the toggle. */
+  date: ISODate;
   /** The ids checked in on `date`, from the repository. */
   checkedIds: readonly string[];
   onToggleHabit: (habit: Habit) => void;
@@ -83,7 +100,7 @@ interface HabitRowProps {
 }
 
 /** Plan's habit row: always present, even with no habits, ending in the + circle. */
-export function HabitRow({ habits, checkedIds, onToggleHabit, onAddHabit }: HabitRowProps) {
+export function HabitRow({ habits, date, checkedIds, onToggleHabit, onAddHabit }: HabitRowProps) {
   const checked = new Set(checkedIds);
   return (
     <View className="border-b border-line">
@@ -97,6 +114,7 @@ export function HabitRow({ habits, checkedIds, onToggleHabit, onAddHabit }: Habi
             key={habit.id}
             habit={habit}
             checked={checked.has(habit.id)}
+            readOnly={habit.deletedDate !== null && date >= habit.deletedDate}
             onToggle={() => onToggleHabit(habit)}
           />
         ))}

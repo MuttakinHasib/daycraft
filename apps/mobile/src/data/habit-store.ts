@@ -40,6 +40,11 @@ export function useCheckInDates(habitId: string): ISODate[] {
   });
 }
 
+/** One habit by id, or null when it is gone. */
+export function useHabit(id: string): Habit | null {
+  return useLive({ read: () => habitRepository.readHabit(id), key: `habit:${id}`, repository: habitRepository });
+}
+
 /**
  * Checks the habit in when it was not checked in, and unchecks it when it was, for one date.
  * Returns whether the habit is checked in after the toggle, for the caller's toast.

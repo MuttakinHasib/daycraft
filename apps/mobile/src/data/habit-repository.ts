@@ -2,6 +2,7 @@ import {
   checkInId,
   todayISO,
   type Habit,
+  type HabitChanges,
   type HabitInput,
   type ISODate,
 } from '@daycraft/domain';
@@ -38,6 +39,12 @@ export interface HabitRepository {
   listLiveHabits(): Habit[];
   /** The habits that existed on the date (created on or before it, deleted after it), in creation order. */
   readHabitsOn(date: ISODate): Habit[];
+  /** One habit by id, or null when it is gone. */
+  readHabit(id: string): Habit | null;
+  /** Applies the changes to the habit; the streak is re-derived from the check-ins, which stay. */
+  update(id: string, changes: HabitChanges): Habit;
+  /** Soft delete: the habit leaves today onward; its check-ins are kept for the dates it existed. */
+  remove(id: string): void;
   /** Checking in twice writes the same row (the id is derived), never a duplicate. */
   checkIn(habitId: string, date: ISODate): void;
   uncheckIn(habitId: string, date: ISODate): void;
@@ -92,6 +99,33 @@ export function createHabitRepository(db: AppDatabase, deps: RepositoryDeps): Ha
         .orderBy(asc(habit.createdAt), asc(habit.id))
         .all()
         .map(toHabit);
+    },
+
+    readHabit(id) {
+      const row = db.select().from(habit).where(eq(habit.id, id)).get();
+      return row ? toHabit(row as HabitRow) : null;
+    },
+
+    update(id, changes) {
+      const now = deps.now().toISOString();
+      const values: Partial<HabitRow> = { updatedAt: now };
+      if (changes.name !== undefined) values.name = changes.name;
+      if (changes.icon !== undefined) values.icon = changes.icon;
+      if (changes.hue !== undefined) values.hue = changes.hue;
+      if (changes.frequency !== undefined) values.frequency = changes.frequency;
+      if (changes.target !== undefined) values.target = changes.target;
+      db.update(habit).set(values).where(eq(habit.id, id)).run();
+      notify();
+      return this.readHabit(id) as Habit;
+    },
+
+    remove(id) {
+      const now = deps.now();
+      db.update(habit)
+        .set({ deletedDate: todayISO(now), deletedAt: now.toISOString(), updatedAt: now.toISOString() })
+        .where(eq(habit.id, id))
+        .run();
+      notify();
     },
 
     checkIn(habitId, date) {
