@@ -125,6 +125,22 @@ export const goal = sqliteTable('goal', {
   updatedAt: text('updated_at').notNull(),
 });
 
+// A goal's milestones (glossary): ordered by position, with no dates in v1. `done` is a flag rather than a
+// timestamp because nothing reads when a milestone was reached. The goal's soft delete hides them with it.
+export const goalMilestone = sqliteTable(
+  'goal_milestone',
+  {
+    id: text('id').primaryKey(),
+    goalId: text('goal_id')
+      .notNull()
+      .references(() => goal.id),
+    position: integer('position').notNull(),
+    title: text('title').notNull(),
+    done: integer('done', { mode: 'boolean' }).notNull().default(false),
+  },
+  (table) => [index('goal_milestone_goal_idx').on(table.goalId, table.position)],
+);
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),
@@ -141,3 +157,4 @@ export type SeriesRow = typeof activitySeries.$inferSelect;
 export type HabitRow = typeof habit.$inferSelect;
 export type HabitCheckInRow = typeof habitCheckIn.$inferSelect;
 export type GoalRow = typeof goal.$inferSelect;
+export type GoalMilestoneRow = typeof goalMilestone.$inferSelect;

@@ -6,6 +6,7 @@ import m0001 from './0001_repeating_activities.sql';
 import m0002 from './0002_habits.sql';
 import m0003 from './0003_goals.sql';
 import m0004 from './0004_goal_target_date.sql';
+import m0005 from './0005_goal_milestones.sql';
 
   export default {
     journal,
@@ -14,7 +15,8 @@ import m0004 from './0004_goal_target_date.sql';
 m0001,
 m0002,
 m0003,
-m0004
+m0004,
+m0005
     }
   }
   

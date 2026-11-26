@@ -1,8 +1,10 @@
-import { goalProgress, targetLine, type Goal, type ISODate } from '@daycraft/domain';
-import { Text, View } from 'react-native';
+import { goalProgress, targetLine, type Goal, type ISODate, type Milestone } from '@daycraft/domain';
+import { Pressable, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colorValue, Icon } from '@/components/ui';
+import { colorValue, Icon, inkClassOn, useToast } from '@/components/ui';
+import { goalRepository } from '@/data/goal-store';
+import { cn } from '@/lib/cn';
 import { useThemeColors } from '@/theme/app-theme';
 
 const RING_SIZE = 56;
@@ -19,29 +21,87 @@ interface GoalCardProps {
 
 /**
  * The Goals card (navigation-and-modules): a 56pt ring in the goal's hue with the percent inside, then the
- * title and, when the goal has one, the target line with its flag.
+ * title and, when the goal has one, the target line with its flag, and the milestone checklist below.
+ * Tapping a milestone toggles it and never expands the card.
  */
 export function GoalCard({ goal, today }: GoalCardProps) {
-  // Milestones arrive in a later slice, so every goal has none and reads 0% for now.
-  const percent = goalProgress([]);
+  const percent = goalProgress(goal.milestones);
   const line = targetLine(goal.targetDate, today);
   return (
-    <View className="flex-row items-center gap-4 rounded-card bg-card p-4">
-      <GoalRing hue={goal.hue} percent={percent} />
-      <View className="flex-1 gap-0.5">
-        <Text numberOfLines={2} className="type-activity font-sans-semibold text-ink">
-          {goal.title}
-        </Text>
-        {line && (
-          <View className="flex-row items-center gap-1.5">
-            <Icon name="flag" size={13} colorClassName="text-ink-muted" />
-            <Text style={TABULAR} className="type-meta font-sans-semibold text-ink-muted">
-              {line}
-            </Text>
-          </View>
-        )}
+    <View className="rounded-card bg-card p-4">
+      <View className="flex-row items-center gap-4">
+        <GoalRing hue={goal.hue} percent={percent} />
+        <View className="flex-1 gap-0.5">
+          <Text numberOfLines={2} className="type-activity font-sans-semibold text-ink">
+            {goal.title}
+          </Text>
+          {line && (
+            <View className="flex-row items-center gap-1.5">
+              <Icon name="flag" size={13} colorClassName="text-ink-muted" />
+              <Text style={TABULAR} className="type-meta font-sans-semibold text-ink-muted">
+                {line}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
+      {goal.milestones.length > 0 && (
+        <View className="mt-3.5 gap-0.5">
+          {goal.milestones.map((milestone) => (
+            <MilestoneRow key={milestone.id} goal={goal} milestone={milestone} />
+          ))}
+        </View>
+      )}
     </View>
+  );
+}
+    </View>
+  );
+}
+
+interface MilestoneRowProps {
+  goal: Goal;
+  milestone: Milestone;
+}
+
+/** One milestone row (the reference's checklist): a 20pt square filled and outlined in the goal's hue when
+ * done, outlined in `line-strong` when open, and its 14pt medium title struck through and dimmed when done. */
+function MilestoneRow({ goal, milestone }: MilestoneRowProps) {
+  const toast = useToast();
+  const colors = useThemeColors();
+  const hue = colorValue(goal.hue);
+  // The row is 36 tall; the slop reaches the 44pt target, as the chip does for its 36.
+  const toggle = () => {
+    const done = goalRepository.toggleMilestone(milestone.id);
+    if (done) toast(`Milestone reached · ${milestone.title}`);
+  };
+  return (
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked: milestone.done }}
+      accessibilityLabel={milestone.done ? `Mark not done: ${milestone.title}` : `Complete: ${milestone.title}`}
+      hitSlop={{ top: 4, bottom: 4 }}
+      onPress={toggle}
+      className="min-h-9 flex-row items-center gap-2.5 active:opacity-70"
+    >
+      <View
+        style={{
+          borderColor: milestone.done ? hue : colors['line-strong'],
+          backgroundColor: milestone.done ? hue : undefined,
+        }}
+        className="size-5 items-center justify-center rounded-check border-2"
+      >
+        {milestone.done && <Icon name="check" size={12} strokeWidth={3.2} colorClassName={inkClassOn(goal.hue)} />}
+      </View>
+      <Text
+        className={cn('type-body-sm font-sans-medium', {
+          'text-ink': !milestone.done,
+          'text-ink-muted line-through': milestone.done,
+        })}
+      >
+        {milestone.title}
+      </Text>
+    </Pressable>
   );
 }
 
