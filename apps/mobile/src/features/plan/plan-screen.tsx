@@ -143,7 +143,12 @@ export function PlanScreen() {
 
   return (
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
-      <PlanHeader date={date} today={today} progress={dailyProgress(activities)} onSelectDate={selectDate} />
+      <PlanHeader
+        date={date}
+        today={today}
+        progress={dailyProgress(activities, { habits, checkedIds: checkedHabitIds })}
+        onSelectDate={selectDate}
+      />
       <View className="mt-2 flex-1 overflow-hidden rounded-t-sheet border-t border-line bg-surface">
         {showHabitRow && (
           <HabitRow

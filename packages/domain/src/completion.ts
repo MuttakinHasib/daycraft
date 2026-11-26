@@ -1,4 +1,5 @@
 import type { Activity } from './activity';
+import type { Habit } from './habit';
 
 /**
  * The activity after its check ring is tapped. Completing it completes every subtask;
@@ -13,7 +14,7 @@ export function completionToggled(activity: Activity): Activity {
   };
 }
 
-/** Completed scheduled activities over all scheduled activities for the date, as the design counts them. Habit check-ins join this when habits land. */
+/** Completed scheduled activities plus checked-in habits over all of them for the date, as the design counts them. */
 export interface DailyProgress {
   done: number;
   total: number;
@@ -21,9 +22,15 @@ export interface DailyProgress {
   percent: number;
 }
 
-export function dailyProgress(activities: readonly Activity[]): DailyProgress {
+/** The habits that existed on the date, and which of them are checked in (one rule for both numbers). */
+export interface DailyProgressHabits {
+  habits: readonly Habit[];
+  checkedIds: readonly string[];
+}
+
+export function dailyProgress(activities: readonly Activity[], { habits, checkedIds }: DailyProgressHabits): DailyProgress {
   const scheduled = activities.filter((activity) => activity.start !== null);
-  const total = scheduled.length;
-  const done = scheduled.filter((activity) => activity.done).length;
+  const total = scheduled.length + habits.length;
+  const done = scheduled.filter((activity) => activity.done).length + checkedIds.filter((id) => habits.some((habit) => habit.id === id)).length;
   return { done, total, percent: total === 0 ? 0 : Math.round((done / total) * 100) };
 }
