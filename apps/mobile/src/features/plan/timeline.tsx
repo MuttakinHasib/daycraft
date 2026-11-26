@@ -98,7 +98,7 @@ function FreeTime({ hint, onAdd }: FreeTimeProps) {
     <View pointerEvents="box-none" style={{ top: hint.top }} className="absolute right-5 left-28 items-start gap-2">
       <View className="flex-row items-center gap-1.5">
         <Icon name="clock" size={15} colorClassName="text-ink-muted" />
-        <Text numberOfLines={1} className="shrink type-body-sm font-sans-medium text-ink-muted">
+        <Text numberOfLines={2} className="shrink type-body-sm font-sans-medium text-ink-muted">
           <Text className="font-sans-semibold text-accent-text">{formatShortDuration(hint.minutes)}</Text>
           {rest}
         </Text>

@@ -1,6 +1,6 @@
 import { inkOn, withOpacity } from '@daycraft/design-tokens';
 import { ActivityKind, formatTimeText, type ActivityInput, type ActivityKind as Kind } from '@daycraft/domain';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import {
@@ -58,6 +58,13 @@ export function SheetHeader({
   const lightColour = inkOn(colorValue(draft.hue)) === 'ink';
   const ink = scheme === 'dark' && !lightColour ? colors['on-hue'] : scheme === 'dark' ? colors.canvas : colors.ink;
   const bandText = bandTextOn(draft.hue);
+  // The band is a tint in light mode (and on light custom colours in dark), so white would not reach 3:1
+  // against it; the ring takes the band's ink colour there, as the time and title do.
+  const bandIsTinted = scheme === 'light' || lightColour;
+  // The segmented control has a fixed width that fits its labels at the default size; at accessibility
+  // sizes the labels grow past it, so there it takes the free width between × and the spacer instead.
+  const { fontScale } = useWindowDimensions();
+  const largeType = fontScale >= 1.3;
   const doneSubtasks = draft.subtasks.filter((subtask) => subtask.done).length;
   const timeLabel = draft.start === null ? 'Anytime' : formatTimeText(draft.start, draft.durationMinutes);
   return (
@@ -65,7 +72,7 @@ export function SheetHeader({
       <View className="flex-row items-center justify-between gap-3">
         <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={onClose} />
         {isNew ? (
-          <View className="w-47.5">
+          <View className={cn(largeType ? 'flex-1' : 'w-47.5')}>
             <Segmented
               options={KIND_OPTIONS}
               value={draft.kind}
@@ -77,15 +84,12 @@ export function SheetHeader({
         ) : (
           <MoreMenu onDuplicate={onDuplicate} onDelete={onDelete} />
         )}
-        {isNew && <View className="size-11" />}
+        {isNew && <View className={cn({ 'size-11': !largeType, 'w-11': largeType })} />}
       </View>
       <View className="mt-4.5 flex-row items-center gap-3.5">
         <BandTile icon={draft.icon} textClass={bandText} onPress={onOpenColour} />
         <View className="min-w-0 flex-1">
-          <Text
-            style={{ fontVariant: ['tabular-nums'] }}
-            className={cn('type-meta font-sans-semibold opacity-90', bandText)}
-          >
+          <Text style={{ fontVariant: ['tabular-nums'] }} className={cn('type-meta font-sans-semibold', bandText)}>
             {timeLabel}
           </Text>
           <TextInput
@@ -119,11 +123,12 @@ export function SheetHeader({
             accessibilityLabel={`${draft.done ? 'Mark not done' : 'Complete'}: ${draft.title}`}
             hitSlop={6}
             onPress={onToggleDone}
-            // On a light colour the ring takes the band's dark text colour so it stays visible.
-            style={lightColour ? { borderColor: ink, backgroundColor: draft.done ? ink : undefined } : undefined}
+            // On a tinted band the ring takes the band's ink colour so it stays visible; on the solid hue
+            // it stays on-hue (white), which passes 3:1 there.
+            style={bandIsTinted ? { borderColor: ink, backgroundColor: draft.done ? ink : undefined } : undefined}
             className={cn('size-8 items-center justify-center rounded-full border-2', {
-              'border-on-hue': !lightColour,
-              'bg-on-hue': draft.done && !lightColour,
+              'border-on-hue': !bandIsTinted,
+              'bg-on-hue': draft.done && !bandIsTinted,
             })}
           >
             {draft.done && (
@@ -132,7 +137,7 @@ export function SheetHeader({
                   name="check"
                   size={17}
                   strokeWidth={3.2}
-                  colorClassName={lightColour ? 'text-on-hue' : 'text-ink'}
+                  colorClassName={bandIsTinted ? 'text-on-hue' : 'text-ink'}
                 />
               </Animated.View>
             )}

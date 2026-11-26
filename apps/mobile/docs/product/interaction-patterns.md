@@ -78,8 +78,8 @@ These follow the person's reference app and replace the matching parts above whe
 - **Repeat sheet:** "Repeat" with ×, a segmented **Once · Daily · Weekly · Monthly**. Choosing one makes the activity a series: it appears on every matching date, each with its own completion and subtasks. No Pro panel. A stored "Weekdays" still shows as Weekdays.
 - **Subtasks:** typing the first letter in "Add subtask" turns that row into a subtask (with ×) and a new empty "Add subtask" row appears below; Return moves to it; an empty Return closes the keyboard. The header shows a done/total counter under the title once there are subtasks.
 - **Labels:** small "Subtasks" and "Notes" labels (`label` preset, `ink-subtle`) above each part of that card.
-- **Button:** a full-width `accent` pill reading **Update task** / **Update event** (was Save changes); still hidden until something changes, steps aside while the keyboard is up, and closes the sheet.
-- **Colour & Icon sheet:** a row of colour circles (selected ringed), ⋯ for a custom colour, a "Suggestions" chip with icons matched to the title, a bar of icon categories, a search field and the icon grid.
+- **Button:** a full-width `accent` pill reading **Update task** / **Update event** (was Save changes); still hidden until something changes, steps aside while the keyboard is up (the fields continue under it, so a floating button would cover them — onboarding's One-thing sheet keeps its CTA above the keyboard instead, where the title is the last field), and closes the sheet.
+- **Colour & Icon sheet:** colour circles wrapping over as many lines as they need (selected ringed), ⋯ for a custom colour, a "Suggestions" chip with icons matched to the title, a bar of icon categories, a search field and the icon grid.
 - **Custom colour ("Choose a colour"):** a hue slider, a shade slider, a hex field, a preview capsule, and presets: the nine named colours plus the three most recent custom colours (no Edit). A custom colour is stored as a hex code in the same field as a named colour, looks the same in both themes, and works everywhere a named colour does. Icons and text on a light colour switch from `on-hue` to `ink` when white would fall below 3:1.
 
 - Switching a task from Anytime to Timeline restores the last start time. An event can never be unscheduled.
@@ -121,7 +121,7 @@ These follow the person's reference app and replace the matching parts above whe
 ## Destructive actions
 
 - Delete is an icon button in `danger` color, never the primary button.
-- Prototype: immediate delete plus toast. Proposed: Undo in the toast (D5). Never add a confirm dialog for single-item deletes without approval.
+- The activity sheet asks before deleting a single activity: "Delete “{title}”? This can't be undone." · **Delete task** · **Cancel** (decided, D5). A repeating activity asks the scope question instead. Deletes outside the sheet are immediate with a toast; Undo in the toast stays a proposal for surfaces without a dialog.
 
 ## Copy style
 

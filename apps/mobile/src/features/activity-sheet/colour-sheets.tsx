@@ -13,7 +13,7 @@ import {
   type IconName,
 } from '@daycraft/domain';
 import { useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 
 import { Capsule, colorValue, Icon, IconButton, IconButtonSize, inkClassOn } from '@/components/ui';
 import { useUsedCustomColors } from '@/data/activity-store';
@@ -141,11 +141,12 @@ export function ColourIconSheet({ color, icon, title, onChange, onCustom, onClos
           <IconButton icon="more" size={IconButtonSize.LG} accessibilityLabel="Custom colour" onPress={onCustom} />
         }
       />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-1 px-4">
+      {/* Wrapping, not a scroll row: the nine named colours plus recents read at a glance. */}
+      <View className="flex-row flex-wrap gap-1 px-4">
         {choices.map((choice) => (
           <Swatch key={choice} color={choice} selected={choice === color} onPress={() => onChange({ hue: choice })} />
         ))}
-      </ScrollView>
+      </View>
       <View className="gap-4 px-5 pt-5">
         {suggestions.length > 0 && (
           <View className="gap-3">

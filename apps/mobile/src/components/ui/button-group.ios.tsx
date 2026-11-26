@@ -32,7 +32,8 @@ export function ButtonGroup(props: ButtonGroupProps) {
   const { buttons } = props;
   return (
     <View>
-      <View pointerEvents="none">
+      {/* The glass only draws; the tap targets below carry the accessibility, so the drawn buttons hide. */}
+      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <Host colorScheme={scheme} matchContents>
           <GlassEffectContainer spacing={pressed ? MERGE_DISTANCE : 0}>
             <HStack spacing={GAP}>

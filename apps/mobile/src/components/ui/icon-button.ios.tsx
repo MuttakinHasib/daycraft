@@ -53,7 +53,8 @@ export function IconButton(props: IconButtonProps) {
       style={{ width: px, height: px }}
       className="rounded-full active:opacity-70"
     >
-      <View pointerEvents="none">
+      {/* The glass only draws; the tap target carries the accessibility, so the drawn symbol hides. */}
+      <View pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <Host matchContents colorScheme={scheme}>
           <Image
             systemName={symbol}
