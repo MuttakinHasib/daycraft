@@ -1,9 +1,21 @@
-import { dailyStreak, HabitFrequency, type Habit, type ISODate } from '@daycraft/domain';
+import {
+  addDays,
+  dailyStreak,
+  HabitFrequency,
+  weekdayOf,
+  weeklyCount,
+  weeklyStreak,
+  type Habit,
+  type ISODate,
+} from '@daycraft/domain';
 import { Pressable, Text, View } from 'react-native';
 
 import { ActivityHueBackground, ActivityHueText, colorValue, Icon, inkClassOn, strokeColor } from '@/components/ui';
 import { toggleCheckIn, useCheckInDates } from '@/data/habit-store';
 import { cn } from '@/lib/cn';
+
+// The Habits tab card (navigation-and-modules): hue icon, name, frequency and streak, the 44pt check button
+// for today, the last 7 days as bars ending today, and "This week · N of Target" for a weekly habit.
 
 interface HabitCardProps {
   habit: Habit;
@@ -11,36 +23,82 @@ interface HabitCardProps {
   today: ISODate;
 }
 
-/** The Habits tab card: hue icon, name, "Every day · N-day streak" and the 44pt check button for today. */
+/** The Habits tab card for one habit. The bars and the heatmap are display-only; only today's button checks in. */
 export function HabitCard({ habit, checked, today }: HabitCardProps) {
   const checkIns = useCheckInDates(habit.id);
-  const streak = dailyStreak(habit, checkIns, { today });
-  const streakLine =
-    streak === 0 ? 'Start a streak' : habit.frequency === HabitFrequency.WEEKLY ? `${streak}-week streak` : `${streak}-day streak`;
-  const frequencyLine = habit.frequency === HabitFrequency.WEEKLY ? `${habit.target}× a week` : 'Every day';
+  const weekly = habit.frequency === HabitFrequency.WEEKLY;
+  const streak = weekly ? weeklyStreak(habit, checkIns, { today }) : dailyStreak(habit, checkIns, { today });
+  const streakLine = streak === 0 ? 'Start a streak' : `${streak}-${weekly ? 'week' : 'day'} streak`;
+  const frequencyLine = weekly ? `${habit.target}× a week` : 'Every day';
   return (
-    <View className="flex-row items-center gap-3 rounded-card bg-card p-4">
-      <View
-        style={{ backgroundColor: colorValue(habit.hue) }}
-        className="size-10 items-center justify-center rounded-full"
-      >
-        <Icon name={habit.icon} size={18} colorClassName={inkClassOn(habit.hue)} />
-      </View>
-      <View className="flex-1 gap-0.5">
-        <Text numberOfLines={1} className="type-activity font-sans-semibold text-ink">
-          {habit.name}
-        </Text>
-        <View className="flex-row items-center gap-1.5">
-          <Text className="type-body-sm text-ink-muted">{frequencyLine}</Text>
-          <Text className="type-body-sm text-ink-muted">·</Text>
-          <Icon name="flame" size={14} colorClassName="text-amber" />
-          <Text className="type-body-sm text-ink-muted">{streakLine}</Text>
+    <View className="gap-3 rounded-card bg-card p-4">
+      <View className="flex-row items-center gap-3">
+        <View
+          style={{ backgroundColor: colorValue(habit.hue) }}
+          className="size-10 items-center justify-center rounded-full"
+        >
+          <Icon name={habit.icon} size={18} colorClassName={inkClassOn(habit.hue)} />
         </View>
+        <View className="flex-1 gap-0.5">
+          <Text numberOfLines={1} className="type-activity font-sans-semibold text-ink">
+            {habit.name}
+          </Text>
+          <View className="flex-row items-center gap-1.5">
+            <Text className="type-body-sm text-ink-muted">{frequencyLine}</Text>
+            <Text className="type-body-sm text-ink-muted">·</Text>
+            <Icon name="flame" size={14} colorClassName="text-amber" />
+            <Text className="type-body-sm text-ink-muted">{streakLine}</Text>
+          </View>
+        </View>
+        <HabitCheckButton habit={habit} checked={checked} today={today} />
       </View>
-      <HabitCheckButton habit={habit} checked={checked} today={today} />
+      <WeekBars habit={habit} today={today} />
+      {weekly && habit.target !== null && (
+        <View className="flex-row justify-between">
+          <Text className="type-meta text-ink-muted">This week</Text>
+          <Text className="type-meta font-sans-semibold text-ink">
+            {weeklyCount(habit, checkIns, { today })} of {habit.target}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
+
+/** The last 7 days ending today as bars in the hue, with the weekday letter under each. */
+function WeekBars({ habit, today }: { habit: Habit; today: ISODate }) {
+  const checkIns = new Set(useCheckInDates(habit.id));
+  return (
+    <View className="flex-row gap-1">
+      {Array.from({ length: 7 }, (_, index) => {
+        const date = addDays(today, index - 6);
+        const checkedDay = checkIns.has(date);
+        const isToday = date === today;
+        return (
+          <View key={date} className="flex-1 items-center gap-1">
+            <View
+              className={cn('h-2 w-full rounded-full', {
+                [ActivityHueBackground[habit.hue]]: checkedDay,
+                'bg-sunken': !checkedDay,
+              })}
+            />
+            <Text
+              className={cn('type-micro font-sans-semibold', {
+                'text-ink': isToday,
+                'text-ink-subtle': !isToday,
+              })}
+            >
+              {WEEKDAY_LETTERS[weekdayOf(date)]}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
+// One letter per weekday, Sunday first (the reference's W T F S S M T row).
+const WEEKDAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 interface HabitCheckButtonProps {
   habit: Habit;

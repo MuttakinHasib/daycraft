@@ -49,7 +49,9 @@ export {
   HabitFrequency,
   HABIT_NAME_MESSAGE,
   validateHabitName,
-  type DailyStreakInput,
+  weeklyCount,
+  weeklyStreak,
+  type StreakInput,
   type Habit,
   type HabitInput,
 } from './habit';

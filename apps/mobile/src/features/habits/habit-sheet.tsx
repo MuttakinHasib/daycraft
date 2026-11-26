@@ -3,15 +3,19 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-import { Button, colorValue, Icon, inkClassOn, IconButton, IconButtonSize, useToast } from '@/components/ui';
+import { Button, colorValue, Icon, inkClassOn, IconButton, IconButtonSize, Segmented, useToast } from '@/components/ui';
 import { habitRepository } from '@/data/habit-store';
 import { ColourIconSheet } from '@/features/activity-sheet/colour-sheets';
 import { SubSheet } from '@/features/activity-sheet/sub-sheet';
 import { useThemeColors } from '@/theme/app-theme';
 
 // The New habit sheet (reference: sheet-new-habit, prototype's save behaviour): the button is always enabled
-// and a blank name toasts "Name your habit first" instead of saving. Name, colour and icon now; frequency
-// joins with weekly habits. Colour and icon change in the activity sheet's own picker (Q9).
+// and a blank name toasts "Name your habit first" instead of saving. Colour and icon change in the activity
+// sheet's own picker (Q9).
+
+// The Target range for a weekly habit (glossary): 1 to 7.
+const TARGET_MIN = 1;
+const TARGET_MAX = 7;
 
 export function HabitSheet() {
   const toast = useToast();
@@ -19,6 +23,8 @@ export function HabitSheet() {
   const [name, setName] = useState('');
   const [hue, setHue] = useState<ActivityHue>(ActivityHue.SAGE);
   const [icon, setIcon] = useState<IconName>('leaf');
+  const [frequency, setFrequency] = useState<HabitFrequency>(HabitFrequency.DAILY);
+  const [target, setTarget] = useState(4);
   const [colourOpen, setColourOpen] = useState(false);
 
   const save = () => {
@@ -27,7 +33,13 @@ export function HabitSheet() {
       toast(message);
       return;
     }
-    habitRepository.create({ name: name.trim(), icon, hue, frequency: HabitFrequency.DAILY, target: null });
+    habitRepository.create({
+      name: name.trim(),
+      icon,
+      hue,
+      frequency,
+      target: frequency === HabitFrequency.WEEKLY ? target : null,
+    });
     toast('Habit added · tap it to check in');
     router.back();
   };
@@ -58,6 +70,35 @@ export function HabitSheet() {
           placeholderTextColor={colors['ink-subtle']}
           className="h-11 flex-1 border-b border-line type-heading text-ink"
         />
+      </View>
+      <View className="gap-2 px-5 pt-6">
+        <Text className="type-body font-sans-semibold text-ink">How often</Text>
+        <Segmented
+          options={[
+            { value: HabitFrequency.DAILY, label: 'Every day' },
+            { value: HabitFrequency.WEEKLY, label: 'Weekly' },
+          ]}
+          value={frequency}
+          onChange={setFrequency}
+          accessibilityLabel="How often"
+        />
+        {frequency === HabitFrequency.WEEKLY && (
+          <View className="flex-row items-center justify-center gap-6 py-1">
+            <IconButton
+              icon="minus"
+              size={IconButtonSize.LG}
+              accessibilityLabel="One day less a week"
+              onPress={() => setTarget((current) => Math.max(TARGET_MIN, current - 1))}
+            />
+            <Text className="type-activity font-sans-semibold text-ink">{target}× a week</Text>
+            <IconButton
+              icon="plus"
+              size={IconButtonSize.LG}
+              accessibilityLabel="One day more a week"
+              onPress={() => setTarget((current) => Math.min(TARGET_MAX, current + 1))}
+            />
+          </View>
+        )}
       </View>
       <View className="absolute inset-x-0 bottom-0 px-5 pb-8">
         <Button onPress={save}>Add habit</Button>
