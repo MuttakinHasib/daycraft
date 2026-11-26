@@ -1,5 +1,5 @@
 import type { Activity } from '../activity';
-import type { ActivityColor } from '../activity-hue';
+import type { ActivityColor, ActivityHue } from '../activity-hue';
 import type { MinutesOfDay } from '../calendar';
 import { suggestIcons } from '../icon-catalog';
 import type { IconName } from '../icon-name';
@@ -124,6 +124,7 @@ export function placeTask({ activities, edges, now, durationMinutes }: PlaceTask
 
 export const OnboardingScreen = {
   DAY_EDGES: 'dayEdges',
+  HABITS: 'habits',
   ONE_THING: 'oneThing',
   PLACE_IT: 'placeIt',
 } as const;
@@ -131,17 +132,48 @@ export const OnboardingScreen = {
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
 export type OnboardingScreen = (typeof OnboardingScreen)[keyof typeof OnboardingScreen];
 
-// The setup steps in order; the counter reads "Step N of" their count. Habits joins once the app has habits.
+// The setup steps in order; the counter reads "Step N of" their count.
 const SETUP_STEPS: readonly OnboardingScreen[] = [
   OnboardingScreen.DAY_EDGES,
+  OnboardingScreen.HABITS,
   OnboardingScreen.ONE_THING,
   OnboardingScreen.PLACE_IT,
 ];
+
+/** A daily habit onboarding offers as a preset row, with its fixed icon and hue. */
+export interface OnboardingHabitPreset {
+  title: string;
+  icon: IconName;
+  hue: ActivityHue;
+}
+
+// The eight presets of the Habits step (onboarding doc), each daily. Read and Meditate are the prototype's;
+// the rest are picked from the hue guide, one hue each (recorded in the Habits slice's ticket 06).
+export const HABIT_PRESETS: readonly OnboardingHabitPreset[] = [
+  { title: 'Drink water', icon: 'drop', hue: 'sky' },
+  { title: 'Move for 20 minutes', icon: 'run', hue: 'clay' },
+  { title: 'Read', icon: 'book', hue: 'iris' },
+  { title: 'Meditate', icon: 'wind', hue: 'pine' },
+  { title: 'Journal', icon: 'pen', hue: 'amber' },
+  { title: 'Stretch', icon: 'leaf', hue: 'sage' },
+  { title: 'No phone in bed', icon: 'moon', hue: 'slate' },
+  { title: 'Take vitamins', icon: 'heart', hue: 'rose' },
+];
+
+/** At most four presets can be picked (onboarding doc). */
+export const MAX_ONBOARDING_HABITS = 4;
+
+/** How a habit name is matched on Replay: case and spaces ignored. */
+export function habitKeyOf(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '');
+}
 
 export interface OnboardingDraft {
   dayEdges: DayEdges;
   /** The task being made; its start is only meaningful from Place it on. */
   task: OnboardingTask;
+  /** The titles of the picked habit presets, in pick order. */
+  pickedHabits: readonly string[];
 }
 
 /** What onboarding ends with: `finished` for Done, false for Skip (the edges so far are kept, no half-made task). */
@@ -149,11 +181,15 @@ export interface OnboardingOutcome {
   finished: boolean;
   dayEdges: DayEdges;
   task: OnboardingTask | null;
+  /** The picked daily habit presets, minus the ones the person already has. */
+  habits: readonly OnboardingHabitPreset[];
 }
 
 export interface OnboardingState {
   screen: OnboardingScreen;
   draft: OnboardingDraft;
+  /** Presets the person already has on Replay, as their `habitKeyOf` keys. */
+  ownedHabits: readonly string[];
   outcome: OnboardingOutcome | null;
   /** The last save failed: the flow is open again and says so until Done or Skip is pressed once more. */
   saveFailed: boolean;
@@ -166,6 +202,8 @@ export type OnboardingEvent =
   | { type: 'skip' }
   | { type: 'setEdge'; edge: DayEdge; minute: number }
   | { type: 'stepEdge'; edge: DayEdge; by: 1 | -1 }
+  /** Ticks or unticks a preset on the Habits step. */
+  | { type: 'toggleHabit'; title: string }
   | { type: 'setTitle'; title: string }
   | { type: 'pickIdea'; title: string }
   | { type: 'setTaskTiming'; start: MinutesOfDay; durationMinutes: number }
@@ -173,11 +211,13 @@ export type OnboardingEvent =
   | { type: 'saveFailed' };
 
 export interface OnboardingView {
-  /** "Step 1 of 3", or null on screens outside setup. */
+  /** "Step 1 of 4", or null on screens outside setup. */
   step: string | null;
   cta: string;
   ctaEnabled: boolean;
   canGoBack: boolean;
+  /** True with four presets picked: the unticked rows dim and cannot be ticked. */
+  capReached: boolean;
 }
 
 const EMPTY_TASK: OnboardingTask = {
@@ -188,31 +228,47 @@ const EMPTY_TASK: OnboardingTask = {
   durationMinutes: DEFAULT_TASK_MINUTES,
 };
 
-/** A first run opening on its first step, with the day edges already in place (defaults, or the saved ones on replay). */
-export function startOnboarding(dayEdges: DayEdges): OnboardingState {
+/**
+ * A first run opening on its first step, with the day edges already in place (defaults, or the saved ones on
+ * replay). On Replay the names of the habits the person already has mark their presets as added: ticked, inert
+ * and never saved again, matched ignoring case and spaces.
+ */
+export function startOnboarding(dayEdges: DayEdges, ownedHabitNames: readonly string[] = []): OnboardingState {
+  const ownedHabits = ownedHabitNames.map(habitKeyOf);
+  const pickedHabits = HABIT_PRESETS.filter(
+    (preset) => !ownedHabits.includes(habitKeyOf(preset.title)) && PRESELECTED_HABITS.has(preset.title),
+  ).map((preset) => preset.title);
   return {
     screen: SETUP_STEPS[0] ?? OnboardingScreen.DAY_EDGES,
-    draft: { dayEdges, task: EMPTY_TASK },
+    draft: { dayEdges, task: EMPTY_TASK, pickedHabits },
+    ownedHabits,
     outcome: null,
     saveFailed: false,
   };
 }
 
+/** The presets ticked before anything is touched (onboarding doc). */
+const PRESELECTED_HABITS: ReadonlySet<string> = new Set(['Drink water', 'Read', 'Meditate']);
+
 const hasTitle = (task: OnboardingTask) => task.title.trim().length > 0;
 
 const CTA: Record<OnboardingScreen, string> = {
   dayEdges: 'Continue',
+  habits: 'Continue',
   oneThing: 'Add to timeline',
   placeIt: 'Done',
 };
 
 export function onboardingView({ screen, draft }: OnboardingState): OnboardingView {
   const index = SETUP_STEPS.indexOf(screen);
+  const capReached = screen === OnboardingScreen.HABITS && draft.pickedHabits.length >= MAX_ONBOARDING_HABITS;
+  const habitsCta = draft.pickedHabits.length > 0 ? CTA[screen] : 'Continue without habits';
   return {
     step: index >= 0 ? `Step ${index + 1} of ${SETUP_STEPS.length}` : null,
-    cta: CTA[screen],
+    cta: screen === OnboardingScreen.HABITS ? habitsCta : CTA[screen],
     ctaEnabled: screen !== OnboardingScreen.ONE_THING || hasTitle(draft.task),
     canGoBack: index > 0,
+    capReached,
   };
 }
 
@@ -243,6 +299,14 @@ function withTask(state: OnboardingState, task: OnboardingTask): OnboardingState
   return { ...state, draft: { ...state.draft, task } };
 }
 
+/** The picked presets to save: the picked ones that are not already owned. */
+function habitSeedsOf(state: OnboardingState): OnboardingHabitPreset[] {
+  return state.draft.pickedHabits
+    .filter((title) => !state.ownedHabits.includes(habitKeyOf(title)))
+    .map((title) => HABIT_PRESETS.find((preset) => preset.title === title))
+    .filter((preset): preset is OnboardingHabitPreset => preset !== undefined);
+}
+
 export function onboardingReducer(state: OnboardingState, event: OnboardingEvent): OnboardingState {
   // A failed save is the one event that reopens an ended flow.
   if (event.type === 'saveFailed') return state.outcome ? { ...state, outcome: null, saveFailed: true } : state;
@@ -259,6 +323,16 @@ export function onboardingReducer(state: OnboardingState, event: OnboardingEvent
         minute: current + event.by * DAY_EDGE_STEP,
       });
       return { ...state, draft: { ...state.draft, dayEdges } };
+    }
+    case 'toggleHabit': {
+      if (state.screen !== OnboardingScreen.HABITS) return state;
+      if (state.ownedHabits.includes(habitKeyOf(event.title))) return state;
+      const picked = state.draft.pickedHabits;
+      if (picked.includes(event.title)) {
+        return { ...state, draft: { ...state.draft, pickedHabits: picked.filter((title) => title !== event.title) } };
+      }
+      if (picked.length >= MAX_ONBOARDING_HABITS) return state;
+      return { ...state, draft: { ...state.draft, pickedHabits: [...picked, event.title] } };
     }
     case 'setTitle':
       return withTask(state, typedTask(task, event.title));
@@ -285,14 +359,19 @@ export function onboardingReducer(state: OnboardingState, event: OnboardingEvent
       if (next) return { ...state, screen: next };
       return {
         ...state,
-        outcome: { finished: true, dayEdges: state.draft.dayEdges, task },
+        outcome: {
+          finished: true,
+          dayEdges: state.draft.dayEdges,
+          task,
+          habits: habitSeedsOf(state),
+        },
         saveFailed: false,
       };
     }
     case 'skip':
       return {
         ...state,
-        outcome: { finished: false, dayEdges: state.draft.dayEdges, task: null },
+        outcome: { finished: false, dayEdges: state.draft.dayEdges, task: null, habits: [] },
         saveFailed: false,
       };
     default:

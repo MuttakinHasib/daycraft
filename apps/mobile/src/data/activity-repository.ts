@@ -95,6 +95,8 @@ export interface ActivityRepository {
    * moved from `date` on), and the task on `date` unless there is none (Skip). Returns the task.
    */
   saveOnboarding(outcome: OnboardingOutcome, date: ISODate): Activity | null;
+  /** Runs `run` inside one write transaction: everything written in it commits or rolls back together. */
+  inTransaction<T>(run: (tx: AppDatabase) => T): T;
 }
 
 interface DayEdgeRoutine {
@@ -804,6 +806,10 @@ export function createActivityRepository(db: AppDatabase, deps: RepositoryDeps):
         if (task) created = repository.create(task);
       });
       return created;
+    },
+
+    inTransaction(run) {
+      return write(run);
     },
 
     readDayEdges(date) {

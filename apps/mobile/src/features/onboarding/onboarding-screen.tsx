@@ -3,7 +3,9 @@ import {
   DayEdge,
   DEFAULT_DAY_EDGES,
   formatDuration,
+  HABIT_PRESETS,
   layoutDay,
+  MAX_ONBOARDING_HABITS,
   minutesOfDay,
   onboardingReducer,
   OnboardingScreen as Screen,
@@ -16,6 +18,7 @@ import {
   todayISO,
   type Activity,
   type DayEdges,
+  type HabitInput,
   type ISODate,
   type OnboardingEvent,
   type OnboardingOutcome,
@@ -30,16 +33,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button, Icon, IconButton, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
+import { habitRepository } from '@/data/habit-store';
+import { HabitRow } from '@/features/plan/habit-row';
 import { markJustCreated, requestLanding, selectDate } from '@/features/plan/plan-state';
 import { Timeline } from '@/features/plan/timeline';
 import { useTimelineDrag } from '@/features/plan/use-timeline-drag';
 import { useNow } from '@/lib/use-now';
 import { useTopInset } from '@/lib/use-top-inset';
 
+import { HabitsStep } from './habits-step';
 import { Headline, type HeadlineCopy } from './headline';
 import { BeatDots, IntroBeat, IntroStory, STORY_TOTAL_MINUTES } from './intro-story';
 import { OneThing } from './one-thing';
 import { markOnboarded } from './onboarding-store';
+
+import type { Habit } from '@daycraft/domain';
 
 // Onboarding (onboarding doc; canvas page "v3 · Clean", board "v3 · Onboarding · light"). The intro story, then
 // Day edges, One thing and Place it on one continuous Plan sheet that slides between steps.
@@ -94,6 +102,13 @@ const STEP_COPY: Record<Screen, HeadlineCopy> = {
     after: '?',
     hue: 'amber',
     sub: 'Drag Rise and shine and Wind down, or use the buttons.',
+  },
+  habits: {
+    before: 'Pick a few ',
+    highlight: 'daily habits',
+    after: '.',
+    hue: 'iris',
+    sub: 'Up to four. They sit above your timeline as one-tap check-ins.',
   },
   oneThing: { before: 'What’s ', highlight: 'one thing', after: ' you want to do today?', hue: 'clay' },
   placeIt: {
@@ -189,7 +204,10 @@ export function OnboardingScreen() {
   const insets = useSafeAreaInsets();
   const topInset = useTopInset();
   const [state, dispatch] = useReducer(onboardingReducer, null, () =>
-    startOnboarding(activityRepository.readDayEdges(today) ?? DEFAULT_DAY_EDGES),
+    startOnboarding(
+      activityRepository.readDayEdges(today) ?? DEFAULT_DAY_EDGES,
+      habitRepository.listLiveHabits().map((habit) => habit.name),
+    ),
   );
   const send = (event: OnboardingEvent) => dispatch(event);
   const [phase, setPhase] = useState<Phase>(Phase.INTRO);
@@ -273,9 +291,21 @@ export function OnboardingScreen() {
     const outcome = state.outcome;
     if (!outcome || savedOutcome.current === outcome) return;
     savedOutcome.current = outcome;
-    let created: Activity | null = null;
+    // `created` is set inside the transaction's callback, so it is read through a holder TS can see.
+    const saved: { activity: Activity | null } = { activity: null };
     try {
-      created = activityRepository.saveOnboarding(outcome, today);
+      // The habits join the routines' and the task's one transaction, so a failure saves none of them.
+      activityRepository.inTransaction((tx) => {
+        const habits: HabitInput[] = outcome.habits.map((preset) => ({
+          name: preset.title,
+          icon: preset.icon,
+          hue: preset.hue,
+          frequency: 'daily',
+          target: null,
+        }));
+        if (habits.length > 0) habitRepository.createOnboardingHabits({ habits, date: today, tx });
+        saved.activity = activityRepository.saveOnboarding(outcome, today);
+      });
     } catch {
       AccessibilityInfo.announceForAccessibility(SAVE_FAILED);
       dispatch({ type: 'saveFailed' });
@@ -285,6 +315,7 @@ export function OnboardingScreen() {
     selectDate(today);
     // Plan sits under onboarding and does not land again by itself when a full-screen screen closes.
     requestLanding();
+    const created = saved.activity;
     if (created) markJustCreated(created.id);
     // Onboarding always ends on Plan: dismissed down to it when it is in the history (under a first run, or under
     // Replay from another tab), and replacing onboarding when it is the only screen, as after a link or a cold start.
@@ -298,6 +329,21 @@ export function OnboardingScreen() {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     send({ type: 'stepEdge', edge, by });
   };
+
+  // The Habits step's strip above the timeline: the picked presets as the row shows them on Plan, no + (Q26).
+  const stripHabits: Habit[] = state.draft.pickedHabits.map((title) => {
+    const preset = HABIT_PRESETS.find((item) => item.title === title);
+    return {
+      id: title,
+      name: title,
+      icon: preset?.icon ?? 'check',
+      hue: preset?.hue ?? 'clay',
+      frequency: 'daily' as const,
+      target: null,
+      createdDate: today,
+      deletedDate: null,
+    };
+  });
 
   const count = useCountUp(intro && beat === IntroBeat.COST, STORY_TOTAL_MINUTES);
   const introCopy = INTRO_COPY[beat];
@@ -342,16 +388,39 @@ export function OnboardingScreen() {
         <View className="h-4.5 items-center justify-center">
           <View className="h-1 w-9 rounded-full bg-line-strong" />
         </View>
-        <Timeline
-          layout={layout}
-          now={now}
-          scrollRef={scrollRef}
-          justCreatedId={poppedId}
-          drag={drag}
-          isDraggable={isDraggable}
-          hasDragActions={hasDragActions}
-          renderAccessory={placing ? undefined : (id) => <EdgeSteppers edge={id as DayEdge} onStep={step} />}
-        />
+        {screen === Screen.HABITS && (
+          <View className="flex-1">
+            {stripHabits.length > 0 && (
+              <HabitRow
+                habits={stripHabits}
+                date={today}
+                checkedIds={stripHabits.map((habit) => habit.id)}
+                onToggleHabit={(habit) => send({ type: 'toggleHabit', title: habit.name })}
+              />
+            )}
+            <ScrollView bounces={false}>
+              <HabitsStep
+                presets={HABIT_PRESETS}
+                owned={state.ownedHabits}
+                picked={state.draft.pickedHabits}
+                capReached={view.capReached}
+                onToggle={(title) => send({ type: 'toggleHabit', title })}
+              />
+            </ScrollView>
+          </View>
+        )}
+        {screen !== Screen.HABITS && (
+          <Timeline
+            layout={layout}
+            now={now}
+            scrollRef={scrollRef}
+            justCreatedId={poppedId}
+            drag={drag}
+            isDraggable={isDraggable}
+            hasDragActions={hasDragActions}
+            renderAccessory={placing ? undefined : (id) => <EdgeSteppers edge={id as DayEdge} onStep={step} />}
+          />
+        )}
       </Animated.View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}

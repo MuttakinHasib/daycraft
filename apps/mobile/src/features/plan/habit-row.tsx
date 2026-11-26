@@ -96,10 +96,11 @@ interface HabitRowProps {
   /** The ids checked in on `date`, from the repository. */
   checkedIds: readonly string[];
   onToggleHabit: (habit: Habit) => void;
-  onAddHabit: () => void;
+  /** Omitted in onboarding, where presets are the only way to pick habits (no + there). */
+  onAddHabit?: () => void;
 }
 
-/** Plan's habit row: always present, even with no habits, ending in the + circle. */
+/** Plan's habit row: always present, even with no habits, ending in the + circle when it can add. */
 export function HabitRow({ habits, date, checkedIds, onToggleHabit, onAddHabit }: HabitRowProps) {
   const checked = new Set(checkedIds);
   return (
@@ -118,7 +119,7 @@ export function HabitRow({ habits, date, checkedIds, onToggleHabit, onAddHabit }
             onToggle={() => onToggleHabit(habit)}
           />
         ))}
-        <AddHabitCircle onPress={onAddHabit} />
+        {onAddHabit && <AddHabitCircle onPress={onAddHabit} />}
       </ScrollView>
     </View>
   );

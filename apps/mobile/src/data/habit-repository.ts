@@ -45,6 +45,11 @@ export interface HabitRepository {
   update(id: string, changes: HabitChanges): Habit;
   /** Soft delete: the habit leaves today onward; its check-ins are kept for the dates it existed. */
   remove(id: string): void;
+  /**
+   * Writes onboarding's chosen habits inside the transaction the caller opened (the one that saves the routines
+   * and the task), each created on `date`. Calls the listeners after, once the caller commits.
+   */
+  createOnboardingHabits(input: { habits: readonly HabitInput[]; date: ISODate; tx: AppDatabase }): void;
   /** Checking in twice writes the same row (the id is derived), never a duplicate. */
   checkIn(habitId: string, date: ISODate): void;
   uncheckIn(habitId: string, date: ISODate): void;
@@ -159,6 +164,28 @@ export function createHabitRepository(db: AppDatabase, deps: RepositoryDeps): Ha
         .where(eq(habitCheckIn.checkInDate, date))
         .all()
         .map((row) => row.habitId);
+    },
+
+    createOnboardingHabits({ habits, date, tx }) {
+      const now = deps.now().toISOString();
+      for (const input of habits) {
+        tx.insert(habit)
+          .values({
+            id: deps.newId(),
+            name: input.name,
+            icon: input.icon,
+            hue: input.hue,
+            frequency: input.frequency,
+            target: input.target,
+            createdDate: date,
+            deletedDate: null,
+            createdAt: now,
+            updatedAt: now,
+            deletedAt: null,
+          })
+          .run();
+      }
+      notify();
     },
 
     subscribe(listener) {
