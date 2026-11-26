@@ -2,7 +2,7 @@
 
 The first run: the animated splash, a three-beat story about the problem, then four short setup steps that end on the real Plan screen. About a minute, and every step can be skipped. Phone only; the web app has no onboarding yet.
 
-**Status:** built except Habits (2026-11-25). The splash, the intro story, Day edges, One thing, Place it and the Ready toast are in `src/features/splash/` and `src/features/onboarding/`; the flow's rules are in `packages/domain/src/onboarding/`. Habits waits for the Habits slice, so the counter reads "Step N of 3". Checked on 2026-11-26 in light and dark at 390×844 and 375×812, with Reduce Motion on, and that Done and Skip end on Plan from a first run and from Replay. The screens follow the canvas: page "v3 · Clean", board "v3 · Onboarding · light (splash → setup)" (interactive, with a Start tweak per step), board "18 · Splash animation", and the "Onboarding spec" board on the page "Splash & onboarding".
+**Status:** built (2026-11-26, with the Habits slice). The splash, the intro story, Day edges, Habits, One thing, Place it and the Ready toast are in `src/features/splash/` and `src/features/onboarding/`; the flow's rules are in `packages/domain/src/onboarding/`. The counter reads "Step N of 4". Checked on 2026-11-26 in light and dark at 390×844 and 375×812, with Reduce Motion on, and that Done and Skip end on Plan from a first run and from Replay; the Habits step's rows, strip and copy were checked in light and dark, and its save is covered by the transaction tests. The screens follow the canvas: page "v3 · Clean", board "v3 · Onboarding · light (splash → setup)" (interactive, with a Start tweak per step), board "18 · Splash animation", and the "Onboarding spec" board on the page "Splash & onboarding".
 
 ## Principles
 
@@ -27,7 +27,7 @@ The first run: the animated splash, a three-beat story about the problem, then f
 | 4   | Place it        | Put it on your **timeline**.               | Done                                                    |
 | —   | Ready           | (the Plan screen)                          | —                                                       |
 
-Bold words are the headline highlight: a soft marker in the step's hue (sky, rose and sage for the intro beats; amber for Day edges, iris for Habits, clay for One thing, pine for Place it). Setup steps show "STEP N OF 4" (label style) above the 30pt headline ("Step N of 3" until the Habits step exists). The header is **‹ Back** in the accent text colour (top left; hidden on the first beat) and **Skip** in muted ink (top right). The CTA is a full-width primary button 16pt from the sides, floating over the sheet with the float shadow. Back on Day edges returns to the last intro beat.
+Bold words are the headline highlight: a soft marker in the step's hue (sky, rose and sage for the intro beats; amber for Day edges, iris for Habits, clay for One thing, pine for Place it). Setup steps show "STEP N OF 4" (label style) above the 30pt headline. The header is **‹ Back** in the accent text colour (top left; hidden on the first beat) and **Skip** in muted ink (top right). The CTA is a full-width primary button 16pt from the sides, floating over the sheet with the float shadow. Back on Day edges returns to the last intro beat.
 
 ## Splash
 
@@ -56,14 +56,14 @@ The example items are fixed demo content (for example Finish the slides 2 hr, Gr
 
 ## 2 · Habits
 
-Built after the Habits slice: the app has no habits yet. Until then onboarding has three setup steps ("Step N of 3") and skips this one.
-
 "Pick a few daily habits." / "Up to four. They sit above your timeline as one-tap check-ins."
 
-- List rows with a 32pt hue tile and a check ring: Drink water, Move for 20 minutes, Read, Meditate, Journal, Stretch, No phone in bed, Take vitamins.
+- List rows with a 32pt hue tile and a check ring: Drink water, Move for 20 minutes, Read, Meditate, Journal, Stretch, No phone in bed, Take vitamins. Each preset is daily with a fixed icon and hue: drop/sky, run/clay, book/iris, wind/pine, pen/amber, leaf/sage, moon/slate, heart/rose.
 - Preselected: Drink water, Read, Meditate. **At most four**; when four are picked, the others dim until one is unticked.
-- The sheet's habit strip fills as rows are ticked (items pop in).
+- The sheet's habit strip fills as rows are ticked (items pop in). There is no + in onboarding: the presets are the only way to pick, and during the step the sheet shows the strip and the rows instead of the timeline.
 - With none picked the CTA reads "Continue without habits".
+- **Replay** marks a preset the person already has (matched by name, ignoring case and spaces) as added: ticked, inert under an "Added" note, not counted toward the four, and never saved again.
+- Done saves the picked habits with the routines and the task in **one transaction**; a failed write saves none of it. Skip saves no habits.
 
 ## 3 · One thing
 

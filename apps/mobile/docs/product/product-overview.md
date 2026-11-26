@@ -100,8 +100,10 @@ interface Activity {
 interface Habit {
   id: string; name: string; icon: IconName; hue: ActivityHue;
   frequency: 'daily' | 'weekly';
-  weeklyTarget: number;         // [target] 2–6 when weekly, 0 when daily
-  checkIns: Record<ISODate, boolean>; // [hist]
+  target: number | null;        // [target] 1–7 when weekly, null when daily
+  createdDate: ISODate;         // nothing before it counts
+  deletedDate: ISODate | null;  // soft delete; its check-ins are kept
+  // Check-ins are rows of (habit, date), one per date, with a v5 id of that pair.
 }
 
 interface Routine { id: string; name: string; icon: IconName; hue: ActivityHue;

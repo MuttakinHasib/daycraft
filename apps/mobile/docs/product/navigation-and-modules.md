@@ -120,14 +120,14 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Habits
 
-- Tab root, no top switch. The + opens **New habit**.
+- Tab root, no top switch. The + opens **New habit**; the empty state carries a New habit chip.
 - Summary line: "3 of 5 checked in today." (adds "A perfect day." when all are done).
 - **Card:**
-  - 40pt hue circle icon, name, "Every day" or "4× a week", then a flame icon with "13-day streak" (or "Start a streak" at 0).
-  - A 44pt check button on the right: outlined in the hue, filled when checked in.
-  - Below: a 7-day bar row with weekday letters.
-- Weekly habits add "This week · 3 of 4".
-- Tapping the name expands a **5-week heatmap** (7 columns, 6pt-radius cells) and a completion %.
+  - 40pt hue circle icon, name, "Every day" or "4× a week", then a flame icon with "13-day streak" (or "Start a streak" at 0). The streak counts completed days, or completed weeks that met the Target; the current day or week never breaks it, and nothing before the habit existed counts.
+  - A 44pt check button on the right: outlined in the hue, filled when checked in. It checks in today only; the bars are display-only.
+  - Below: a 7-day bar row with weekday letters, the last seven days ending today.
+- Weekly habits add "This week · 3 of 4", with the true count past the Target.
+- Tapping the name expands a **5-week heatmap** (7 columns, 6pt-radius cells) with "N% completion" (check-ins ÷ the days the habit existed in the window), and **Edit habit** and **Delete habit**. Delete asks first, keeps the check-ins, and the habit's circles on dates it existed stay, read-only.
 
 ### Routines
 
