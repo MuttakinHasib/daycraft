@@ -128,7 +128,7 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
   - 40pt hue circle icon, name, "Every day" or "4× a week", then a flame icon with "13-day streak" (or "Start a streak" at 0). The streak counts completed days, or completed weeks that met the Target; the current day or week never breaks it, and nothing before the habit existed counts.
   - A 44pt check button on the right: outlined in the hue, filled when checked in. It checks in today only; the bars are display-only.
   - Below: a 7-day bar row with weekday letters, the last seven days ending today.
-- Weekly habits add "This week · 3 of 4", with the true count past the Target.
+- Weekly habits add a "This week" line split across the card: the label on the left, "3 of 4" on the right, with the true count past the Target.
 - Tapping the name expands a **5-week heatmap** (7 columns, 6pt-radius cells) with "N% completion" (check-ins ÷ the days the habit existed in the window), and **Edit habit** and **Delete habit**. Delete asks first, keeps the check-ins, and the habit's circles on dates it existed stay, read-only.
 
 ### Routines

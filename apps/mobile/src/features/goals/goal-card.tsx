@@ -181,7 +181,7 @@ function GoalRing({ hue, percent }: GoalRingProps) {
           cy={RING_CENTER}
           r={RING_RADIUS}
           fill="none"
-          stroke={colors['line-strong']}
+          stroke={colors.sunken}
           strokeWidth={RING_STROKE}
         />
         {percent > 0 && (
