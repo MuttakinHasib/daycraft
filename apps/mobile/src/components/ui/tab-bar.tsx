@@ -71,6 +71,7 @@ interface Slot {
 export const CreateAction = {
   NEW_TASK: 'New task',
   NEW_HABIT: 'New habit',
+  NEW_GOAL: 'New goal',
 } as const;
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- const + same-named type is intentional
@@ -100,7 +101,9 @@ function isTabRoute(name: string): name is TabRoute {
 }
 
 function createActionFor(routeName: string | undefined): CreateAction {
-  return routeName === TabRoute.HABITS ? CreateAction.NEW_HABIT : CreateAction.NEW_TASK;
+  if (routeName === TabRoute.HABITS) return CreateAction.NEW_HABIT;
+  if (routeName === TabRoute.GOALS) return CreateAction.NEW_GOAL;
+  return CreateAction.NEW_TASK;
 }
 
 function TabButton({ item, focused, onPress, onLayout }: TabButtonProps) {

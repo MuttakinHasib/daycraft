@@ -111,6 +111,18 @@ export const habitCheckIn = sqliteTable(
   (table) => [index('habit_check_in_habit_idx').on(table.habitId, table.checkInDate)],
 );
 
+// A goal (Goals): a long-term direction, never an activity. Its hue is a domain name, as on habits. Like a habit,
+// a delete sets `deleted_date`, a local calendar date, and every read filters it out.
+export const goal = sqliteTable('goal', {
+  id: text('id').primaryKey(),
+  title: text('title').notNull(),
+  hue: text('hue').notNull(),
+  createdDate: text('created_date').notNull(),
+  deletedDate: text('deleted_date'),
+  createdAt: text('created_at').notNull(),
+  updatedAt: text('updated_at').notNull(),
+});
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),
@@ -126,3 +138,4 @@ export type SubtaskRow = typeof subtask.$inferSelect;
 export type SeriesRow = typeof activitySeries.$inferSelect;
 export type HabitRow = typeof habit.$inferSelect;
 export type HabitCheckInRow = typeof habitCheckIn.$inferSelect;
+export type GoalRow = typeof goal.$inferSelect;

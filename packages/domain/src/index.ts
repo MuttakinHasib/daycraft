@@ -58,6 +58,13 @@ export {
   type Habit,
   type HabitInput,
 } from './habit';
+export {
+  GOAL_NAME_MESSAGE,
+  goalProgress,
+  validateGoalName,
+  type Goal,
+  type GoalInput,
+} from './goal';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
 export { DAYCRAFT_NAMESPACE, uuidV5, uuidV7 } from './ids';
 export {

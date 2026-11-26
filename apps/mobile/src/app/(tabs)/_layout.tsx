@@ -8,6 +8,10 @@ function create(action: CreateAction) {
     router.push({ pathname: '/activity/new', params: { entry: EntryPoint.PLUS } });
     return;
   }
+  if (action === CreateAction.NEW_GOAL) {
+    router.push('/goal/new');
+    return;
+  }
   router.push('/habit/new');
 }
 
