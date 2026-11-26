@@ -29,7 +29,7 @@ It should feel like a **personal life-management workspace**, not a task manager
 |---|---|---|
 | **Plan** | Date header (title opens the month picker), week strip, daily progress ring, habit check-in row, the timeline. Scheduled tasks and events both live here | Plan (tab) |
 | **Habits** | Daily or N×/week habits, streaks, 7-day row, 5-week history heatmap | Habits (tab) |
-| **Goals** | Target date, progress from milestones, related habits/tasks | Goals (tab) |
+| **Goals** | Target date, progress from milestones. Related links are not in v1 | Goals (tab) |
 | **Inbox** | Quick capture; each item can be planned onto the timeline or cleared | More → Inbox |
 | **Upcoming** | Chronological next 14 days of scheduled items, plus due-but-unscheduled tasks | More → Upcoming |
 | **All tasks** | Every task with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | More → All tasks |

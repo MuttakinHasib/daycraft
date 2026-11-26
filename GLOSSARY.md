@@ -118,6 +118,10 @@ _Avoid_: pomodoro
 **Goal**:
 Long-term direction made of milestones.
 
+**Target date**:
+A goal's date by which it should be reached. Not the habit's **Target**.
+_Avoid_: deadline (that is a project's), due date
+
 **Milestone**:
 A completion marker on a goal or a project.
 
