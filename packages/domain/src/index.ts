@@ -64,6 +64,8 @@ export {
   validateGoalName,
   type Goal,
   type GoalInput,
+  type Milestone,
+  type MilestoneInput,
 } from './goal';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
 export { DAYCRAFT_NAMESPACE, uuidV5, uuidV7 } from './ids';
