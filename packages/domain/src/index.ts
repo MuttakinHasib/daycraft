@@ -61,8 +61,10 @@ export {
 export {
   GOAL_NAME_MESSAGE,
   goalProgress,
+  targetLine,
   validateGoalName,
   type Goal,
+  type GoalChanges,
   type GoalInput,
 } from './goal';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
@@ -107,6 +109,7 @@ export {
   formatRange,
   formatRelativeDate,
   formatShortDate,
+  formatShortDateWithYear,
   formatShortDuration,
   formatTimeText,
   monthName,

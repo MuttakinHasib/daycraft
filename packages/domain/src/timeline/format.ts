@@ -74,6 +74,11 @@ export function formatShortDate(date: ISODate): string {
   return `${WEEKDAYS[local.getDay()]?.slice(0, 3)}, ${MONTHS[local.getMonth()]?.slice(0, 3)} ${local.getDate()}`;
 }
 
+/** `Thu, Nov 19, 2026`: a date that stands alone, like the goal card's target date. */
+export function formatShortDateWithYear(date: ISODate): string {
+  return `${formatShortDate(date)}, ${fromISODate(date).getFullYear()}`;
+}
+
 /** `Today`, `Tomorrow`, `Yesterday`, or `Thu, Nov 19`: where a toast says something went. */
 export function formatRelativeDate(date: ISODate, today: ISODate): string {
   const offset = daysBetween(today, date);

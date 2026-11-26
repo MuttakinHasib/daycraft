@@ -43,6 +43,8 @@ interface MonthPickerProps {
   onClose: () => void;
   /** Picks today; in the days view it takes the place of ‹ ›. */
   onToday: () => void;
+  /** Clears the picked date; absent when the date is required, so the button stays hidden. */
+  onClear?: () => void;
 }
 
 interface DayGridProps {
@@ -153,7 +155,7 @@ function MonthYearWheel({ shown, today, onChange }: MonthYearWheelProps) {
  * title switches to a native month and year wheel (⌄), and tapping it again goes back to the days. Tapping a day
  * picks it; Today picks today.
  */
-export function MonthPicker({ selected, today, onPick, onClose, onToday }: MonthPickerProps) {
+export function MonthPicker({ selected, today, onPick, onClose, onToday, onClear }: MonthPickerProps) {
   const [shown, setShown] = useState(() => monthOf(selected));
   const [view, setView] = useState<PickerView>(PickerView.DAYS);
   const months = view === PickerView.MONTHS;
@@ -182,6 +184,7 @@ export function MonthPicker({ selected, today, onPick, onClose, onToday }: Month
         <ButtonGroup
           buttons={[
             { label: 'Today', onPress: onToday },
+            ...(onClear ? [{ label: 'Clear', onPress: onClear }] : []),
             { icon: 'x', accessibilityLabel: 'Close', onPress: onClose },
           ]}
         />

@@ -1,5 +1,11 @@
-import { todayISO, type Goal, type GoalInput, type ISODate } from '@daycraft/domain';
-import { asc, isNull } from 'drizzle-orm';
+import {
+  todayISO,
+  type Goal,
+  type GoalChanges,
+  type GoalInput,
+  type ISODate,
+} from '@daycraft/domain';
+import { asc, eq, isNull } from 'drizzle-orm';
 
 import { type AppDatabase } from './activity-repository';
 import { goal, type GoalRow } from './schema';
@@ -17,6 +23,7 @@ function toGoal(row: GoalRow): Goal {
   return {
     id: row.id,
     title: row.title,
+    targetDate: (row.targetDate as ISODate | null) ?? null,
     hue: row.hue as Goal['hue'],
     createdDate: row.createdDate as ISODate,
   };
@@ -26,6 +33,8 @@ export interface GoalRepository {
   create(input: GoalInput): Goal;
   /** Live goals (not deleted) in creation order. */
   listLiveGoals(): Goal[];
+  /** Applies the changes to the goal; `targetDate: null` clears the target date. */
+  update(id: string, changes: GoalChanges): Goal;
   /** Calls `listener` after every write. Returns the function that stops it. */
   subscribe(listener: Listener): () => void;
 }
@@ -40,6 +49,7 @@ export function createGoalRepository(db: AppDatabase, deps: GoalRepositoryDeps):
       const row: GoalRow = {
         id: deps.newId(),
         title: input.title,
+        targetDate: input.targetDate ?? null,
         hue: input.hue,
         createdDate: todayISO(deps.now()),
         deletedDate: null,
@@ -59,6 +69,16 @@ export function createGoalRepository(db: AppDatabase, deps: GoalRepositoryDeps):
         .orderBy(asc(goal.createdAt), asc(goal.id))
         .all()
         .map(toGoal);
+    },
+
+    update(id, changes) {
+      const now = deps.now().toISOString();
+      const values: Partial<GoalRow> = { updatedAt: now };
+      if (changes.targetDate !== undefined) values.targetDate = changes.targetDate;
+      db.update(goal).set(values).where(eq(goal.id, id)).run();
+      notify();
+      const row = db.select().from(goal).where(eq(goal.id, id)).get();
+      return toGoal(row as GoalRow);
     },
 
     subscribe(listener) {

@@ -28,6 +28,8 @@ interface DateSheetProps {
   today: ISODate;
   onPick: (date: ISODate) => void;
   onClose: () => void;
+  /** Clears the date instead of picking one; absent when the date is required (the activity sheet). */
+  onClear?: () => void;
 }
 
 interface PrioritySheetProps {
@@ -49,8 +51,17 @@ interface LocationSheetProps {
 }
 
 /** Plan's month grid with Today: picking a day sets it and closes the sheet. */
-export function DateSheet({ date, today, onPick, onClose }: DateSheetProps) {
-  return <MonthPicker selected={date} today={today} onPick={onPick} onClose={onClose} onToday={() => onPick(today)} />;
+export function DateSheet({ date, today, onPick, onClose, onClear }: DateSheetProps) {
+  return (
+    <MonthPicker
+      selected={date}
+      today={today}
+      onPick={onPick}
+      onClose={onClose}
+      onToday={() => onPick(today)}
+      onClear={onClear}
+    />
+  );
 }
 
 /** None, Low, Medium or High; picking one closes the sheet. */

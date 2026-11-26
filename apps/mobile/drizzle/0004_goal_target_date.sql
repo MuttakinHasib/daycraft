@@ -1,0 +1,1 @@
+ALTER TABLE `goal` ADD `target_date` text;

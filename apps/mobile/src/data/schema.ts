@@ -116,6 +116,8 @@ export const habitCheckIn = sqliteTable(
 export const goal = sqliteTable('goal', {
   id: text('id').primaryKey(),
   title: text('title').notNull(),
+  // The local date the goal should be reached by (glossary); null when it has none.
+  targetDate: text('target_date'),
   hue: text('hue').notNull(),
   createdDate: text('created_date').notNull(),
   deletedDate: text('deleted_date'),

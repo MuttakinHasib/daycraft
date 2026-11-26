@@ -1,8 +1,8 @@
-import { goalProgress, type Goal } from '@daycraft/domain';
+import { goalProgress, targetLine, type Goal, type ISODate } from '@daycraft/domain';
 import { Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colorValue } from '@/components/ui';
+import { colorValue, Icon } from '@/components/ui';
 import { useThemeColors } from '@/theme/app-theme';
 
 const RING_SIZE = 56;
@@ -14,18 +14,33 @@ const TABULAR = { fontVariant: ['tabular-nums' as const] };
 
 interface GoalCardProps {
   goal: Goal;
+  today: ISODate;
 }
 
-/** The Goals card (navigation-and-modules): a 56pt ring in the goal's hue with the percent inside, then the title. */
-export function GoalCard({ goal }: GoalCardProps) {
+/**
+ * The Goals card (navigation-and-modules): a 56pt ring in the goal's hue with the percent inside, then the
+ * title and, when the goal has one, the target line with its flag.
+ */
+export function GoalCard({ goal, today }: GoalCardProps) {
   // Milestones arrive in a later slice, so every goal has none and reads 0% for now.
   const percent = goalProgress([]);
+  const line = targetLine(goal.targetDate, today);
   return (
     <View className="flex-row items-center gap-4 rounded-card bg-card p-4">
       <GoalRing hue={goal.hue} percent={percent} />
-      <Text numberOfLines={2} className="flex-1 type-activity font-sans-semibold text-ink">
-        {goal.title}
-      </Text>
+      <View className="flex-1 gap-0.5">
+        <Text numberOfLines={2} className="type-activity font-sans-semibold text-ink">
+          {goal.title}
+        </Text>
+        {line && (
+          <View className="flex-row items-center gap-1.5">
+            <Icon name="flag" size={13} colorClassName="text-ink-muted" />
+            <Text style={TABULAR} className="type-meta font-sans-semibold text-ink-muted">
+              {line}
+            </Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 }
