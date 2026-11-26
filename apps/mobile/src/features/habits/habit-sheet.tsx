@@ -1,0 +1,81 @@
+import { ActivityHue, HabitFrequency, isActivityHue, validateHabitName, type IconName } from '@daycraft/domain';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
+
+import { Button, colorValue, Icon, inkClassOn, IconButton, IconButtonSize, useToast } from '@/components/ui';
+import { habitRepository } from '@/data/habit-store';
+import { ColourIconSheet } from '@/features/activity-sheet/colour-sheets';
+import { SubSheet } from '@/features/activity-sheet/sub-sheet';
+import { useThemeColors } from '@/theme/app-theme';
+
+// The New habit sheet (reference: sheet-new-habit, prototype's save behaviour): the button is always enabled
+// and a blank name toasts "Name your habit first" instead of saving. Name, colour and icon now; frequency
+// joins with weekly habits. Colour and icon change in the activity sheet's own picker (Q9).
+
+export function HabitSheet() {
+  const toast = useToast();
+  const colors = useThemeColors();
+  const [name, setName] = useState('');
+  const [hue, setHue] = useState<ActivityHue>(ActivityHue.SAGE);
+  const [icon, setIcon] = useState<IconName>('leaf');
+  const [colourOpen, setColourOpen] = useState(false);
+
+  const save = () => {
+    const message = validateHabitName(name);
+    if (message) {
+      toast(message);
+      return;
+    }
+    habitRepository.create({ name: name.trim(), icon, hue, frequency: HabitFrequency.DAILY, target: null });
+    toast('Habit added · tap it to check in');
+    router.back();
+  };
+
+  return (
+    <View className="flex-1 bg-surface">
+      <View className="flex-row items-center justify-between px-5 pt-4">
+        <Text accessibilityRole="header" className="type-heading text-ink">
+          New habit
+        </Text>
+        <IconButton icon="x" size={IconButtonSize.LG} accessibilityLabel="Close" onPress={() => router.back()} />
+      </View>
+      <View className="flex-row items-center gap-4 px-5 pt-6">
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Colour and icon"
+          onPress={() => setColourOpen(true)}
+          style={{ backgroundColor: colorValue(hue) }}
+          className="size-14 items-center justify-center rounded-full active:opacity-80"
+        >
+          <Icon name={icon} size={24} colorClassName={inkClassOn(hue)} />
+        </Pressable>
+        <TextInput
+          accessibilityLabel="Habit name"
+          value={name}
+          onChangeText={setName}
+          placeholder="e.g. Drink water, Stretch"
+          placeholderTextColor={colors['ink-subtle']}
+          className="h-11 flex-1 border-b border-line type-heading text-ink"
+        />
+      </View>
+      <View className="absolute inset-x-0 bottom-0 px-5 pb-8">
+        <Button onPress={save}>Add habit</Button>
+      </View>
+      {colourOpen && (
+        <SubSheet onClose={() => setColourOpen(false)}>
+          <ColourIconSheet
+            color={hue}
+            icon={icon}
+            title={name}
+            onChange={(change) => {
+              if (change.hue && isActivityHue(change.hue)) setHue(change.hue);
+              if (change.icon) setIcon(change.icon);
+            }}
+            onClose={() => setColourOpen(false)}
+          />
+        </SubSheet>
+      )}
+    </View>
+  );
+}

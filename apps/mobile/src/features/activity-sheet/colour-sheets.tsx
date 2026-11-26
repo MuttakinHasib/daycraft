@@ -47,7 +47,8 @@ interface ColourIconSheetProps {
   /** The activity's title, for icon suggestions. */
   title: string;
   onChange: (change: AppearanceChange) => void;
-  onCustom: () => void;
+  /** Opens the custom colour sheet; habits have the nine named hues only, so it is left out there. */
+  onCustom?: () => void;
   onClose: () => void;
 }
 
@@ -138,7 +139,9 @@ export function ColourIconSheet({ color, icon, title, onChange, onCustom, onClos
         title="Colour & icon"
         onClose={onClose}
         aside={
-          <IconButton icon="more" size={IconButtonSize.LG} accessibilityLabel="Custom colour" onPress={onCustom} />
+          onCustom && (
+            <IconButton icon="more" size={IconButtonSize.LG} accessibilityLabel="Custom colour" onPress={onCustom} />
+          )
         }
       />
       {/* Wrapping, not a scroll row: the nine named colours plus recents read at a glance. */}

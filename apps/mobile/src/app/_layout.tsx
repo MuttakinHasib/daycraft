@@ -43,6 +43,7 @@ function RootStack() {
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="activity/new" options={ACTIVITY_SHEET} />
       <Stack.Screen name="activity/[id]/index" options={ACTIVITY_SHEET} />
+      <Stack.Screen name="habit/new" options={ACTIVITY_SHEET} />
       <Stack.Screen name="month-picker" options={monthPickerSheet} />
       <Stack.Screen name="onboarding" options={{ presentation: 'fullScreenModal', gestureEnabled: false }} />
     </Stack>

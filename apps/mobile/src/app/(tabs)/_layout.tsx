@@ -1,6 +1,5 @@
 import { EntryPoint } from '@daycraft/domain';
 import { router, Tabs } from 'expo-router';
-import { Alert } from 'react-native';
 
 import { CreateAction, TabBar, TabRoute } from '@/components/ui';
 
@@ -9,8 +8,7 @@ function create(action: CreateAction) {
     router.push({ pathname: '/activity/new', params: { entry: EntryPoint.PLUS } });
     return;
   }
-  // TODO: the New habit sheet comes with the Habits module.
-  Alert.alert(action, 'Habits are coming soon.');
+  router.push('/habit/new');
 }
 
 export default function TabsLayout() {

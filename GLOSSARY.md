@@ -80,6 +80,10 @@ _Avoid_: streak (the streak is derived)
 **Check-in**:
 A habit's completion record for one date.
 
+**Target**:
+How many days a week a weekly habit wants a check-in: 1 to 7.
+_Avoid_: goal
+
 **Inbox item**:
 A raw capture in the Inbox, not yet an activity.
 _Avoid_: note
@@ -100,7 +104,7 @@ One dated activity created from a repeating activity. Changing it asks whether t
 _Avoid_: instance (in code)
 
 **Streak**:
-The run of consecutive dates (or weeks, for weekly habits) a habit was checked in. Always derived, never stored.
+The run of consecutive periods in which a habit met its frequency: days for a daily habit, weeks for a weekly habit. The current day or week never breaks it, and time before the habit existed does not count. Always derived, never stored.
 
 **Daily progress**:
 Completed activities plus checked-in habits, divided by the total for the date. Derived.

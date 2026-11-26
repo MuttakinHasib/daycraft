@@ -83,6 +83,34 @@ export const activitySeries = sqliteTable('activity_series', {
   ...syncColumns,
 });
 
+// A habit and its check-ins (ADR-0005): children are rows, and the check-in's id is a v5 id of (habit, date),
+// so checking in twice writes the same row. created_date and deleted_date are local calendar dates (glossary).
+export const habit = sqliteTable('habit', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  icon: text('icon').notNull(),
+  hue: text('hue').notNull(),
+  frequency: text('frequency').notNull(),
+  // Null for a daily habit; 1–7 for a weekly one.
+  target: integer('target'),
+  createdDate: text('created_date').notNull(),
+  deletedDate: text('deleted_date'),
+  ...syncColumns,
+});
+
+export const habitCheckIn = sqliteTable(
+  'habit_check_in',
+  {
+    id: text('id').primaryKey(),
+    habitId: text('habit_id')
+      .notNull()
+      .references(() => habit.id),
+    checkInDate: text('check_in_date').notNull(),
+    ...syncColumns,
+  },
+  (table) => [index('habit_check_in_habit_idx').on(table.habitId, table.checkInDate)],
+);
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),
@@ -96,3 +124,5 @@ export const syncOutbox = sqliteTable('sync_outbox', {
 export type ActivityRow = typeof activity.$inferSelect;
 export type SubtaskRow = typeof subtask.$inferSelect;
 export type SeriesRow = typeof activitySeries.$inferSelect;
+export type HabitRow = typeof habit.$inferSelect;
+export type HabitCheckInRow = typeof habitCheckIn.$inferSelect;

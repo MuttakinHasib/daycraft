@@ -9,6 +9,7 @@ import {
   PHONE_SCALE,
   todayISO,
   type DayLayout,
+  type Habit,
   type MinutesOfDay,
   type Timing,
 } from '@daycraft/domain';
@@ -18,10 +19,13 @@ import { ScrollView, View } from 'react-native';
 
 import { TabRoute, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
+import { habitRepository, toggleCheckIn, useCheckedHabitIds, useHabits } from '@/data/habit-store';
+import { hasOnboarded } from '@/features/onboarding/onboarding-store';
 import { askScope, ScopeAction, scopeToastSuffix } from '@/features/repeat/ask-scope';
 import { useNow } from '@/lib/use-now';
 import { useTopInset } from '@/lib/use-top-inset';
 
+import { HabitRow } from './habit-row';
 import { PlanHeader } from './plan-header';
 import { selectDate, useJustCreatedId, useLandings, useSelectedDate } from './plan-state';
 import { Timeline } from './timeline';
@@ -65,6 +69,19 @@ export function PlanScreen() {
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const toast = useToast();
+  const habits = useHabits();
+  const checkedHabitIds = useCheckedHabitIds(date);
+  // No habit row during onboarding: no habits exist yet, and the + is not on the sheet there (Q26).
+  const showHabitRow = hasOnboarded();
+  // The row checks in the date Plan selects; the Habits slice's ticket 01 checks in today only.
+  const toggleHabit = (habit: Habit) => {
+    if (date !== today) {
+      toast('Habits can be checked in on or before today');
+      return;
+    }
+    const checked = toggleCheckIn(habit.id, date);
+    toast(checked ? `${habit.name} · checked in` : `${habit.name} · unchecked`);
+  };
   const drag = useTimelineDrag(async ({ id, timing, message }) => {
     const moved = activities.find((item) => item.id === id);
     // A repeating activity asks first whether the move is for this date only or for the series too.
@@ -128,6 +145,14 @@ export function PlanScreen() {
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
       <PlanHeader date={date} today={today} progress={dailyProgress(activities)} onSelectDate={selectDate} />
       <View className="mt-2 flex-1 overflow-hidden rounded-t-sheet border-t border-line bg-surface">
+        {showHabitRow && (
+          <HabitRow
+            habits={habits}
+            checkedIds={checkedHabitIds}
+            onToggleHabit={toggleHabit}
+            onAddHabit={() => router.push('/habit/new')}
+          />
+        )}
         <Timeline
           layout={layout}
           now={now}

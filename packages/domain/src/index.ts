@@ -42,6 +42,17 @@ export {
   type MinutesOfDay,
 } from './calendar';
 export { completionToggled, dailyProgress, type DailyProgress } from './completion';
+export {
+  checkInId,
+  dailyStreak,
+  habitExistsOn,
+  HabitFrequency,
+  HABIT_NAME_MESSAGE,
+  validateHabitName,
+  type DailyStreakInput,
+  type Habit,
+  type HabitInput,
+} from './habit';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
 export { DAYCRAFT_NAMESPACE, uuidV5, uuidV7 } from './ids';
 export {
