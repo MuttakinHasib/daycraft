@@ -28,6 +28,16 @@ import { useThemeColors } from '@/theme/app-theme';
 // iOS draws a single-line field's text below center when it has a line height; 0 leaves the font's own.
 const ONE_LINE_FIELD = { lineHeight: 0 };
 
+let nextDraftId = 0;
+
+/** A fresh draft id for the next composed milestone; the composer field also carries it as its key, so Add
+ * hands it to the new milestone and takes the next one, remounting the field empty. The repository gives
+ * unknown ids a real id when it saves. */
+function nextMilestoneDraftId(): string {
+  nextDraftId += 1;
+  return `draft-${nextDraftId}`;
+}
+
 interface GoalSheetProps {
   /** Pre-fills the sheet for Edit goal. */
   goal?: Goal;
@@ -47,12 +57,16 @@ export function GoalSheet({ goal }: GoalSheetProps) {
     goal ? goal.milestones.map((milestone) => ({ id: milestone.id, title: milestone.title })) : [],
   );
   const [draft, setDraft] = useState('');
+  // The composer field's key and the draft id Add hands to the new milestone. Every change in the list has
+  // an id: a kept one from Edit, a draft one from Add.
+  const [draftId, setDraftId] = useState(nextMilestoneDraftId);
 
   const addMilestone = () => {
     const name = draft.trim();
     if (!name) return;
-    setMilestones((current) => [...current, { title: name }]);
+    setMilestones((current) => [...current, { id: draftId, title: name }]);
     setDraft('');
+    setDraftId(nextMilestoneDraftId());
   };
 
   const removeMilestone = (index: number) => {
@@ -108,7 +122,7 @@ export function GoalSheet({ goal }: GoalSheetProps) {
           <View className="px-5 pt-6">
             <TextInput
               accessibilityLabel="Goal title"
-              value={title}
+              defaultValue={title}
               onChangeText={setTitle}
               placeholder="e.g. Run a half marathon"
               placeholderTextColor={colors['ink-subtle']}
@@ -118,7 +132,7 @@ export function GoalSheet({ goal }: GoalSheetProps) {
           <View className="px-5 pt-4">
             <TextInput
               accessibilityLabel="Goal description"
-              value={description}
+              defaultValue={description}
               onChangeText={setDescription}
               multiline
               placeholder="Add a description"
@@ -160,8 +174,8 @@ export function GoalSheet({ goal }: GoalSheetProps) {
               <Text className="px-4 pt-3.5 pb-1 type-meta font-sans-semibold text-ink-subtle">Milestones</Text>
               <View className="flex-row items-center gap-2 px-4 pb-3">
                 <TextInput
+                  key={draftId}
                   accessibilityLabel="New milestone"
-                  value={draft}
                   onChangeText={setDraft}
                   onSubmitEditing={addMilestone}
                   returnKeyType="done"
@@ -176,7 +190,7 @@ export function GoalSheet({ goal }: GoalSheetProps) {
                 </Chip>
               </View>
               {milestones.map((milestone, index) => (
-                <View key={index} className="h-12 flex-row items-center border-t border-line pl-4">
+                <View key={milestone.id} className="h-12 flex-row items-center border-t border-line pl-4">
                   <Text numberOfLines={1} className="flex-1 pr-3 type-body text-ink">
                     {milestone.title}
                   </Text>

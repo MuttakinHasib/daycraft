@@ -90,17 +90,18 @@ export function createGoalRepository(db: AppDatabase, deps: GoalRepositoryDeps):
 
   return {
     create(input) {
-      const now = deps.now().toISOString();
+      // One clock read, so `createdAt` and `createdDate` cannot disagree across midnight.
+      const now = deps.now();
       const row: GoalRow = {
         id: deps.newId(),
         title: input.title,
         description: input.description ?? null,
         targetDate: input.targetDate ?? null,
         hue: input.hue,
-        createdDate: todayISO(deps.now()),
+        createdDate: todayISO(now),
         deletedDate: null,
-        createdAt: now,
-        updatedAt: now,
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString(),
       };
       const rows = input.milestones.map((milestone, position) => ({
         id: deps.newId(),

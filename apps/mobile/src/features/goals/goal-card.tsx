@@ -1,4 +1,11 @@
-import { goalProgress, targetLine, type Goal, type ISODate, type Milestone } from '@daycraft/domain';
+import {
+  goalProgress,
+  targetLine,
+  type ActivityHue,
+  type Goal,
+  type ISODate,
+  type Milestone,
+} from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
@@ -86,7 +93,7 @@ export function GoalCard({ goal, today }: GoalCardProps) {
       {goal.milestones.length > 0 && (
         <View className="mt-3.5 gap-0.5">
           {goal.milestones.map((milestone) => (
-            <MilestoneRow key={milestone.id} goal={goal} milestone={milestone} />
+            <MilestoneRow key={milestone.id} hue={goal.hue} milestone={milestone} />
           ))}
         </View>
       )}
@@ -109,16 +116,16 @@ export function GoalCard({ goal, today }: GoalCardProps) {
 }
 
 interface MilestoneRowProps {
-  goal: Goal;
+  hue: ActivityHue;
   milestone: Milestone;
 }
 
 /** One milestone row (the reference's checklist): a 20pt square filled and outlined in the goal's hue when
  * done, outlined in `line-strong` when open, and its 14pt medium title struck through and dimmed when done. */
-function MilestoneRow({ goal, milestone }: MilestoneRowProps) {
+function MilestoneRow({ hue, milestone }: MilestoneRowProps) {
   const toast = useToast();
   const colors = useThemeColors();
-  const hue = colorValue(goal.hue);
+  const hueValue = colorValue(hue);
   // The row is 36 tall; the slop reaches the 44pt target, as the chip does for its 36.
   const toggle = () => {
     const done = goalRepository.toggleMilestone(milestone.id);
@@ -135,12 +142,12 @@ function MilestoneRow({ goal, milestone }: MilestoneRowProps) {
     >
       <View
         style={{
-          borderColor: milestone.done ? hue : colors['line-strong'],
-          backgroundColor: milestone.done ? hue : undefined,
+          borderColor: milestone.done ? hueValue : colors['line-strong'],
+          backgroundColor: milestone.done ? hueValue : undefined,
         }}
         className="size-5 items-center justify-center rounded-check border-2"
       >
-        {milestone.done && <Icon name="check" size={12} strokeWidth={3.2} colorClassName={inkClassOn(goal.hue)} />}
+        {milestone.done && <Icon name="check" size={12} strokeWidth={3.2} colorClassName={inkClassOn(hue)} />}
       </View>
       <Text
         className={cn('type-body-sm font-sans-medium', {
