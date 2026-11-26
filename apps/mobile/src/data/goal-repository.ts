@@ -7,7 +7,7 @@ import {
   type Milestone,
   type MilestoneChange,
 } from '@daycraft/domain';
-import { asc, eq, inArray, isNull } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
 
 import { type AppDatabase } from './activity-repository';
 import { goal, goalMilestone, type GoalMilestoneRow, type GoalRow } from './schema';
@@ -69,13 +69,15 @@ export interface GoalRepository {
   create(input: GoalInput): Goal;
   /** Live goals (not deleted) in creation order, each with its milestones in their position order. */
   listLiveGoals(): Goal[];
-  /** One goal by id with its milestones, or null when it is gone. */
+  /** One goal by id with its milestones, or null when it is gone or deleted. */
   readGoal(id: string): Goal | null;
   /**
    * Applies the changes to the goal; `targetDate: null` clears the target date, `description: null` the
    * description, and `milestones` replaces the list in its given order, keeping a kept id's done flag.
    */
   update(id: string, changes: GoalChanges): Goal;
+  /** Soft delete: sets the goal's `deleted_date`, so it and its milestones stop listing; the data is kept. */
+  softDeleteGoal(id: string): void;
   /** Flips one milestone's done flag. Returns whether it is done after the toggle, for the caller's toast. */
   toggleMilestone(id: string): boolean;
   /** Calls `listener` after every write. Returns the function that stops it. */
@@ -140,7 +142,7 @@ export function createGoalRepository(db: AppDatabase, deps: GoalRepositoryDeps):
     },
 
     readGoal(id) {
-      const row = db.select().from(goal).where(eq(goal.id, id)).get();
+      const row = db.select().from(goal).where(and(eq(goal.id, id), isNull(goal.deletedDate))).get();
       if (!row) return null;
       const milestones = db
         .select()
@@ -178,6 +180,15 @@ export function createGoalRepository(db: AppDatabase, deps: GoalRepositoryDeps):
       const updated = this.readGoal(id);
       if (!updated) throw new Error(`No goal ${id}`);
       return updated;
+    },
+
+    softDeleteGoal(id) {
+      const now = deps.now();
+      db.update(goal)
+        .set({ deletedDate: todayISO(now), updatedAt: now.toISOString() })
+        .where(eq(goal.id, id))
+        .run();
+      notify();
     },
 
     subscribe(listener) {

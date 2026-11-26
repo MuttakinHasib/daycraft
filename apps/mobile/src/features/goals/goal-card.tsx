@@ -1,7 +1,7 @@
 import { goalProgress, targetLine, type Goal, type ISODate, type Milestone } from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import { Chip, ChipSize, colorValue, Icon, inkClassOn, useToast } from '@/components/ui';
@@ -29,9 +29,23 @@ interface GoalCardProps {
  */
 export function GoalCard({ goal, today }: GoalCardProps) {
   const [open, setOpen] = useState(false);
+  const toast = useToast();
   const percent = goalProgress(goal.milestones);
   const line = targetLine(goal.targetDate, today);
   const toggleOpen = () => setOpen((current) => !current);
+  const deleteGoal = () => {
+    Alert.alert(`Delete “${goal.title}”?`, 'This can’t be undone.', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          goalRepository.softDeleteGoal(goal.id);
+          toast(`Deleted · ${goal.title}`);
+        },
+      },
+    ]);
+  };
   return (
     <View className="rounded-card bg-card p-4">
       <View className="flex-row items-center gap-4">
@@ -75,8 +89,7 @@ export function GoalCard({ goal, today }: GoalCardProps) {
           >
             Edit goal
           </Chip>
-          {/* Delete's confirm and soft delete arrive with the delete ticket; the row is here so the layout is set. */}
-          <Chip size={ChipSize.SM} accessibilityLabel={`Delete goal: ${goal.title}`}>
+          <Chip size={ChipSize.SM} onPress={deleteGoal} accessibilityLabel={`Delete goal: ${goal.title}`}>
             Delete goal
           </Chip>
         </View>
