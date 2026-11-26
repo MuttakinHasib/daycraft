@@ -44,6 +44,7 @@ export {
 export { completionToggled, dailyProgress, type DailyProgress } from './completion';
 export {
   checkInId,
+  completionPercent,
   dailyStreak,
   habitExistsOn,
   HabitFrequency,
@@ -51,6 +52,7 @@ export {
   validateHabitName,
   weeklyCount,
   weeklyStreak,
+  windowStartOf,
   type StreakInput,
   type Habit,
   type HabitInput,

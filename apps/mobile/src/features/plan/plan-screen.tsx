@@ -19,7 +19,7 @@ import { ScrollView, View } from 'react-native';
 
 import { TabRoute, useToast } from '@/components/ui';
 import { activityRepository, useDayActivities } from '@/data/activity-store';
-import { habitRepository, toggleCheckIn, useCheckedHabitIds, useHabits } from '@/data/habit-store';
+import { habitRepository, toggleCheckIn, useCheckedHabitIds, useHabitsOn } from '@/data/habit-store';
 import { hasOnboarded } from '@/features/onboarding/onboarding-store';
 import { askScope, ScopeAction, scopeToastSuffix } from '@/features/repeat/ask-scope';
 import { useNow } from '@/lib/use-now';
@@ -69,13 +69,13 @@ export function PlanScreen() {
   const activities = useDayActivities(date);
   const now = minutesOfDay(clock);
   const toast = useToast();
-  const habits = useHabits();
+  const habits = useHabitsOn(date);
   const checkedHabitIds = useCheckedHabitIds(date);
   // No habit row during onboarding: no habits exist yet, and the + is not on the sheet there (Q26).
   const showHabitRow = hasOnboarded();
-  // The row checks in the date Plan selects; the Habits slice's ticket 01 checks in today only.
+  // The row checks in the date Plan selects, on or before today (Q16); a future date is blocked.
   const toggleHabit = (habit: Habit) => {
-    if (date !== today) {
+    if (date > today) {
       toast('Habits can be checked in on or before today');
       return;
     }

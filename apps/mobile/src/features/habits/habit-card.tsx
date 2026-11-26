@@ -1,13 +1,16 @@
 import {
   addDays,
+  completionPercent,
   dailyStreak,
   HabitFrequency,
   weekdayOf,
   weeklyCount,
   weeklyStreak,
+  windowStartOf,
   type Habit,
   type ISODate,
 } from '@daycraft/domain';
+import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import { ActivityHueBackground, ActivityHueText, colorValue, Icon, inkClassOn, strokeColor } from '@/components/ui';
@@ -15,7 +18,8 @@ import { toggleCheckIn, useCheckInDates } from '@/data/habit-store';
 import { cn } from '@/lib/cn';
 
 // The Habits tab card (navigation-and-modules): hue icon, name, frequency and streak, the 44pt check button
-// for today, the last 7 days as bars ending today, and "This week · N of Target" for a weekly habit.
+// for today, the last 7 days as bars ending today, "This week · N of Target" for a weekly habit, and, when
+// the name is tapped, the 5-week heatmap with its completion %. Only today's button checks in.
 
 interface HabitCardProps {
   habit: Habit;
@@ -23,9 +27,9 @@ interface HabitCardProps {
   today: ISODate;
 }
 
-/** The Habits tab card for one habit. The bars and the heatmap are display-only; only today's button checks in. */
 export function HabitCard({ habit, checked, today }: HabitCardProps) {
   const checkIns = useCheckInDates(habit.id);
+  const [open, setOpen] = useState(false);
   const weekly = habit.frequency === HabitFrequency.WEEKLY;
   const streak = weekly ? weeklyStreak(habit, checkIns, { today }) : dailyStreak(habit, checkIns, { today });
   const streakLine = streak === 0 ? 'Start a streak' : `${streak}-${weekly ? 'week' : 'day'} streak`;
@@ -39,7 +43,13 @@ export function HabitCard({ habit, checked, today }: HabitCardProps) {
         >
           <Icon name={habit.icon} size={18} colorClassName={inkClassOn(habit.hue)} />
         </View>
-        <View className="flex-1 gap-0.5">
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? `Hide history: ${habit.name}` : `Show history: ${habit.name}`}
+          accessibilityState={{ expanded: open }}
+          onPress={() => setOpen((current) => !current)}
+          className="flex-1 gap-0.5 active:opacity-70"
+        >
           <Text numberOfLines={1} className="type-activity font-sans-semibold text-ink">
             {habit.name}
           </Text>
@@ -49,7 +59,7 @@ export function HabitCard({ habit, checked, today }: HabitCardProps) {
             <Icon name="flame" size={14} colorClassName="text-amber" />
             <Text className="type-body-sm text-ink-muted">{streakLine}</Text>
           </View>
-        </View>
+        </Pressable>
         <HabitCheckButton habit={habit} checked={checked} today={today} />
       </View>
       <WeekBars habit={habit} today={today} />
@@ -61,6 +71,7 @@ export function HabitCard({ habit, checked, today }: HabitCardProps) {
           </Text>
         </View>
       )}
+      {open && <HabitHistory habit={habit} today={today} />}
     </View>
   );
 }
@@ -99,6 +110,41 @@ function WeekBars({ habit, today }: { habit: Habit; today: ISODate }) {
 
 // One letter per weekday, Sunday first (the reference's W T F S S M T row).
 const WEEKDAY_LETTERS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+/** The expanded history: "Last 5 weeks" with the completion %, over the heatmap of those weeks. */
+function HabitHistory({ habit, today }: { habit: Habit; today: ISODate }) {
+  const checkIns = new Set(useCheckInDates(habit.id));
+  const percent = completionPercent(habit, Array.from(checkIns), { today });
+  const start = windowStartOf({ today });
+  return (
+    <View className="gap-3 border-t border-line pt-3">
+      <View className="flex-row justify-between">
+        <Text className="type-meta text-ink-muted">Last 5 weeks</Text>
+        <Text className="type-meta font-sans-semibold text-ink">{percent}% completion</Text>
+      </View>
+      <View className="gap-1">
+        {Array.from({ length: 5 }, (_, week) => (
+          <View key={week} className="flex-row gap-1">
+            {Array.from({ length: 7 }, (_, day) => {
+              const date = addDays(start, week * 7 + day);
+              const future = date > today;
+              const checkedDay = checkIns.has(date);
+              return (
+                <View
+                  key={date}
+                  className={cn('h-6 flex-1 rounded-check', {
+                    [ActivityHueBackground[habit.hue]]: checkedDay,
+                    'bg-sunken': !checkedDay && !future,
+                  })}
+                />
+              );
+            })}
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
 
 interface HabitCheckButtonProps {
   habit: Habit;

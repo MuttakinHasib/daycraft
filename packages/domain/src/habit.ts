@@ -1,4 +1,4 @@
-import { addDays, type ISODate, weekdayOf } from './calendar';
+import { addDays, daysBetween, type ISODate, weekdayOf } from './calendar';
 import type { ActivityHue } from './activity-hue';
 import type { IconName } from './icon-name';
 import { DAYCRAFT_NAMESPACE, uuidV5 } from './ids';
@@ -101,4 +101,22 @@ export function weeklyStreak(habit: Habit, checkIns: readonly ISODate[], { today
 export function weeklyCount(habit: Habit, checkIns: readonly ISODate[], { today }: StreakInput): number {
   const weekStart = addDays(today, -weekdayOf(today));
   return checkIns.filter((date) => date >= weekStart && date <= today && date >= habit.createdDate).length;
+}
+
+/** The Sunday that starts the 5-week window the heatmap and the completion % read. */
+export function windowStartOf({ today }: StreakInput): ISODate {
+  return addDays(today, -weekdayOf(today) - 28);
+}
+
+/**
+ * Check-ins in the 5-week window ÷ the days from the later of the window's first Sunday and the creation date
+ * through today, rounded. Days before the habit existed are left out of both numbers.
+ */
+export function completionPercent(habit: Habit, checkIns: readonly ISODate[], input: StreakInput): number {
+  const { today } = input;
+  const start = windowStartOf(input) > habit.createdDate ? windowStartOf(input) : habit.createdDate;
+  let days = daysBetween(start, today);
+  if (days < 1) days = 1;
+  const count = checkIns.filter((date) => date >= start && date <= today).length;
+  return Math.round((count / days) * 100);
 }

@@ -5,7 +5,7 @@ import {
   type HabitInput,
   type ISODate,
 } from '@daycraft/domain';
-import { and, asc, eq, isNull } from 'drizzle-orm';
+import { and, asc, eq, gt, isNull, lte, or } from 'drizzle-orm';
 
 import { type AppDatabase } from './activity-repository';
 import { habit, habitCheckIn, type HabitCheckInRow, type HabitRow } from './schema';
@@ -36,6 +36,8 @@ export interface HabitRepository {
   create(input: HabitInput): Habit;
   /** Live habits (not deleted) in creation order. */
   listLiveHabits(): Habit[];
+  /** The habits that existed on the date (created on or before it, deleted after it), in creation order. */
+  readHabitsOn(date: ISODate): Habit[];
   /** Checking in twice writes the same row (the id is derived), never a duplicate. */
   checkIn(habitId: string, date: ISODate): void;
   uncheckIn(habitId: string, date: ISODate): void;
@@ -77,6 +79,16 @@ export function createHabitRepository(db: AppDatabase, deps: RepositoryDeps): Ha
         .select()
         .from(habit)
         .where(isNull(habit.deletedAt))
+        .orderBy(asc(habit.createdAt), asc(habit.id))
+        .all()
+        .map(toHabit);
+    },
+
+    readHabitsOn(date) {
+      return db
+        .select()
+        .from(habit)
+        .where(and(lte(habit.createdDate, date), or(isNull(habit.deletedDate), gt(habit.deletedDate, date))))
         .orderBy(asc(habit.createdAt), asc(habit.id))
         .all()
         .map(toHabit);

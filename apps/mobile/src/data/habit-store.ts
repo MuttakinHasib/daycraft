@@ -17,6 +17,11 @@ export function useHabits(): Habit[] {
   return useLive({ read: () => habitRepository.listLiveHabits(), key: 'habits', repository: habitRepository });
 }
 
+/** The habits that existed on the date, for Plan's row on that date. */
+export function useHabitsOn(date: ISODate): Habit[] {
+  return useLive({ read: () => habitRepository.readHabitsOn(date), key: `habits:${date}`, repository: habitRepository });
+}
+
 /** The habits checked in on the date. */
 export function useCheckedHabitIds(date: ISODate): string[] {
   return useLive({
