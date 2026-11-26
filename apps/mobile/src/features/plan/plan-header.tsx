@@ -252,9 +252,8 @@ export function PlanHeader({ date, today, progress, onSelectDate }: PlanHeaderPr
           <ProgressRing progress={progress} />
         </View>
       </View>
-      {/* Today says the weekday; another day lets the relative date carry it, so the weekday is not said twice. */}
       <Text className="mt-1 type-body-sm font-sans-medium text-ink-muted">
-        {`${isToday ? `${title.weekday} · Today` : formatRelativeDate(date, today)} · ${progress.done} of ${progress.total} done`}
+        {`${title.weekday} · ${isToday ? 'Today' : formatRelativeDate(date, today)} · ${progress.done} of ${progress.total} done`}
       </Text>
       <WeekStrip date={date} today={today} onSelectDate={onSelectDate} />
     </View>
