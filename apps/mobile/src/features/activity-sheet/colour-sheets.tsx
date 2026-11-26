@@ -65,6 +65,18 @@ interface SwatchProps {
   onPress: () => void;
 }
 
+interface SwatchRowProps<T extends ActivityColor> {
+  choices: T[];
+  selected: ActivityColor;
+  onPick: (color: T) => void;
+}
+
+interface HueSheetProps {
+  hue: ActivityHue;
+  onChange: (hue: ActivityHue) => void;
+  onClose: () => void;
+}
+
 interface IconCellProps {
   icon: IconName;
   color: ActivityColor;
@@ -100,6 +112,34 @@ function Swatch({ color, selected, onPress }: SwatchProps) {
     >
       <View style={{ backgroundColor: colorValue(color) }} className="size-8 rounded-full" />
     </Pressable>
+  );
+}
+
+/** Swatches that wrap rather than scroll: the nine named colours plus recents read at a glance. */
+function SwatchRow<T extends ActivityColor>({ choices, selected, onPick }: SwatchRowProps<T>) {
+  return (
+    <View className="flex-row flex-wrap gap-1 px-4">
+      {choices.map((choice) => (
+        <Swatch key={choice} color={choice} selected={choice === selected} onPress={() => onPick(choice)} />
+      ))}
+    </View>
+  );
+}
+
+/** "Colour": the nine named hues for a sheet with no icon (a goal). Choosing one applies it and closes the sheet. */
+export function HueSheet({ hue, onChange, onClose }: HueSheetProps) {
+  return (
+    <View>
+      <SubSheetHeader title="Colour" onClose={onClose} />
+      <SwatchRow
+        choices={NAMED_COLOURS}
+        selected={hue}
+        onPick={(choice) => {
+          onChange(choice);
+          onClose();
+        }}
+      />
+    </View>
   );
 }
 
@@ -144,12 +184,7 @@ export function ColourIconSheet({ color, icon, title, onChange, onCustom, onClos
           )
         }
       />
-      {/* Wrapping, not a scroll row: the nine named colours plus recents read at a glance. */}
-      <View className="flex-row flex-wrap gap-1 px-4">
-        {choices.map((choice) => (
-          <Swatch key={choice} color={choice} selected={choice === color} onPress={() => onChange({ hue: choice })} />
-        ))}
-      </View>
+      <SwatchRow choices={choices} selected={color} onPick={(choice) => onChange({ hue: choice })} />
       <View className="gap-4 px-5 pt-5">
         {suggestions.length > 0 && (
           <View className="gap-3">
