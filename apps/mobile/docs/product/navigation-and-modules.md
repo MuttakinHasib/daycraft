@@ -13,13 +13,14 @@ The animated splash, then [onboarding](onboarding.md) on the first run (Plan on 
   - **Habits** and **Goals** are tab roots with no top segmented control.
   - **More** holds everything else, in three groups (see [More](#more)). It shows the Inbox count as a badge and stays highlighted for every screen opened from it.
 - **+ (beside the tab pill, [ADR-0009](../../../../docs/adr/0009-tab-bar-plus-beside-the-pill.md)):** context-aware. Its action and `accessibilityLabel` follow the current screen:
-  - on Plan, Goals, Projects, Inbox, Upcoming, Journal and More, **New task** (editor with the next free 15-minute slot after now on today, or 9:00 AM on other days);
+  - on Plan, Projects, Inbox, Upcoming, Journal and More, **New task** (editor with the next free 15-minute slot after now on today, or 9:00 AM on other days);
   - on All tasks, **New task** with no time (Anytime);
   - on Habits, the **New habit** sheet;
+  - on Goals, the **New goal** sheet;
   - on Routines, the **New routine** sheet.
 - **Sub-screens** of More show a **‹ More** back control (Project detail shows **‹ Projects**).
 - **Focus** is full-screen: the tab bar is hidden. Close (×) returns to Plan.
-- **Sheets** (detail, editor, new habit, new routine, month picker) slide up over the current screen with a scrim. Tapping the scrim closes them.
+- **Sheets** (detail, editor, new habit, new goal, new routine, month picker) slide up over the current screen with a scrim. Tapping the scrim closes them.
 - No screen has top tabs. Segmented controls appear only inside content (All tasks filters, Project List/Board, editor Task/Event).
 - Implementation: a custom floating pill tab bar, decided in [ADR-0003](../../../../docs/adr/0003-custom-floating-pill-tab-bar.md) (D1).
 
@@ -50,6 +51,7 @@ src/app/
   activity/new.tsx            # activity sheet, creating (formSheet presentation)
   activity/[activityId].tsx   # activity sheet, opened editable; no separate edit route
   habit/new.tsx
+  goal/new.tsx
   routine/new.tsx
   month-picker.tsx
 ```
@@ -139,13 +141,16 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Goals
 
-- Tab root, no top switch. The + adds a task (there is no new-goal sheet yet).
-- **Card:**
-  - 56pt progress ring with a percentage, title, description.
-  - "Target Sun, Dec 20, 2026 · 33 days left".
-  - Milestone checklist (20pt squares, `radius-check`); checked milestones are struck through.
-  - Related tags.
-- Checking a milestone shows the toast "Milestone reached · …".
+- Tab root, no top switch. The + opens the **New goal** sheet; the empty state ("No goals yet.") carries a New goal chip.
+- Subline: "Long-term direction, broken into milestones."
+- **Card:** one per live goal, in the order created.
+  - 56pt progress ring (4pt stroke) in the goal's hue with the percentage inside; a goal with no milestones shows 0%. There are no related chips in v1.
+  - Title, then the description when there is one.
+  - **Target date** line with a flag: "Target Sun, Dec 20, 2026 · 33 days left", or "· N days past" once the date has passed; a goal with no Target date shows no line.
+  - Milestone checklist (20pt squares, `radius-check`); a checked milestone is filled and outlined in the goal's hue, its title struck through and dimmed.
+- Tapping a milestone toggles it in place and never expands the card. Checking one toasts "Milestone reached · {title}"; unchecking toasts nothing, and the last milestone adds no extra toast.
+- Tapping the ring, title or description expands **Edit goal** and **Delete goal**. Edit goal opens the shared New/Edit sheet pre-filled; Delete goal asks "Delete “{title}”? This can't be undone.", then soft-deletes the goal — it and its milestones stop listing, the rows are kept — and toasts "Deleted · {title}".
+- **New goal / Edit goal sheet** (one sheet for both): title, optional description, a **Target date** row that opens the date sheet (Clear removes the date), a Colour row that opens the hue sub-sheet, and a milestone composer (a field and an Add button, a remove × on each row, no cap). Save is always enabled; a blank title toasts "Name your goal first" and does not save. New reads **Add goal** and toasts "Goal added"; Edit reads **Save** and toasts "Goal saved".
 
 ### Projects
 

@@ -65,7 +65,7 @@ Toast behavior:
   - **Time sheet:** a **Starts** wheel (hour, minute in 5-minute steps, AM/PM) and a **Duration** wheel (hours 0–12, minutes in 5-minute steps), both on `card` with the selection band in `raised`; fixed preset chips 15m 30m 45m 1h 1h 30m 2h; **Done**. Tasks also get the Timeline / Anytime switch here when Anytime is available.
   - **Alert sheet:** None / At start / 5 min before / 15 min before / 1 hr before (one alert for now); picking one closes the sheet.
   - **On the desktop** the activity sheet is the right-hand panel and its small sheets are popovers; the rules are the same.
-  - **New habit / New routine / Month picker:** plain header (title in `heading` + close).
+  - **New habit / New goal / New routine / Month picker:** plain header (title in `heading` + close).
 ### Activity sheet, Structured-style controls (decided 2026-11-19)
 
 These follow the person's reference app and replace the matching parts above where they differ.
@@ -93,10 +93,10 @@ These follow the person's reference app and replace the matching parts above whe
 
 | Entry point                                                   | Opens                              | Pre-filled                                                                                              |
 | ------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **+** (Plan, Goals, Projects, Inbox, Upcoming, Journal, More) | Activity sheet (new task)          | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
+| **+** (Plan, Projects, Inbox, Upcoming, Journal, More) | Activity sheet (new task)          | date = selected date; start = next free slot after now (today) or 9:00 AM; 30 min; hue clay; icon check |
 | Empty half-hour on timeline                                   | Activity sheet (new task)          | that start time                                                                                         |
 | "Add task" in a gap                                           | Activity sheet (new task)          | gap start, gap-sized duration (15–60)                                                                   |
-| **+** on Habits / Routines                                    | New habit / New routine sheet      | None                                                                                                    |
+| **+** on Habits / Goals / Routines                                    | New habit / New goal / New routine sheet | None                                                                                              |
 | All tasks **+ Task** chip, or **+** on All tasks              | Activity sheet (new task, Anytime) | today                                                                                                   |
 | Inbox **Plan**                                                | Activity sheet (new task)          | title, notes from the item; saving removes the item from Inbox                                          |
 | All tasks **Place**                                           | Activity sheet                     | suggested start; past dates move to today                                                               |

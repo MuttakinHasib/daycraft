@@ -29,7 +29,7 @@ It should feel like a **personal life-management workspace**, not a task manager
 |---|---|---|
 | **Plan** | Date header (title opens the month picker), week strip, daily progress ring, habit check-in row, the timeline. Scheduled tasks and events both live here | Sidebar → Plan |
 | **Habits** | Daily or N×/week habits, streaks, 7-day row, 5-week history heatmap | Sidebar → Habits |
-| **Goals** | Target date, progress from milestones, related habits/tasks | Sidebar → Goals |
+| **Goals** | Target date, progress from milestones. Related links are not in v1 | Sidebar → Goals |
 | **Inbox** | Quick capture; each item can be planned onto the timeline or cleared | Sidebar → Inbox |
 | **Upcoming** | Chronological next 14 days of scheduled items, plus due-but-unscheduled tasks | Sidebar → Upcoming |
 | **All tasks** | Every task with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | Sidebar → All tasks |
@@ -108,8 +108,14 @@ interface Habit {
 
 interface Routine { id: string; name: string; icon: IconName; hue: ActivityHue;
   steps: { title: string; minutes: number }[] }                       // [steps: {t, d}]
-interface Goal { id: string; title: string; description: string; targetDate: ISODate;
-  hue: ActivityHue; milestones: { title: string; done: boolean }[]; related: { icon: IconName; title: string }[] }
+interface Goal {
+  id: string; title: string; hue: ActivityHue;   // goals have no icon; the ring in the hue is the visual
+  description: string | null;         // null when it has none
+  targetDate: ISODate | null;         // null when it has none; the card then shows no target line
+  createdDate: ISODate;
+  deletedDate: ISODate | null;        // soft delete; it and its milestones stop listing, the rows are kept
+  milestones: { id: string; title: string; done: boolean }[];  // ordered as added, no dates in v1
+}
 interface Project { id: string; name: string; icon: IconName; hue: ActivityHue; deadline: ISODate; description: string;
   milestones: { title: string; date: ISODate; done: boolean }[];
   tasks: { id: string; title: string; status: 'todo' | 'doing' | 'done'; due: ISODate }[] }

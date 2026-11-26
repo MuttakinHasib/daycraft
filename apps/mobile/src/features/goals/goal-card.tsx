@@ -49,13 +49,23 @@ export function GoalCard({ goal, today }: GoalCardProps) {
   return (
     <View className="rounded-card bg-card p-4">
       <View className="flex-row items-center gap-4">
-        <Pressable onPress={toggleOpen} className="active:opacity-70">
+        {/* A Pressable is the accessible element (React Native makes it one), so the ring's announcement
+            lives here, not on the ring: the goal's title with the "N percent complete" the ring shows. */}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${open ? 'Hide actions' : 'Show actions'}: ${goal.title}, ${percent} percent complete`}
+          accessibilityState={{ expanded: open }}
+          onPress={toggleOpen}
+          className="active:opacity-70"
+        >
           <GoalRing hue={goal.hue} percent={percent} />
         </Pressable>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={open ? `Hide actions: ${goal.title}` : `Show actions: ${goal.title}`}
           accessibilityState={{ expanded: open }}
+          // A title-only goal makes the header ~22 tall; the slop reaches the 44pt target.
+          hitSlop={{ top: 12, bottom: 12 }}
           onPress={toggleOpen}
           className="flex-1 gap-0.5 active:opacity-70"
         >
@@ -152,12 +162,7 @@ interface GoalRingProps {
 function GoalRing({ hue, percent }: GoalRingProps) {
   const colors = useThemeColors();
   return (
-    <View
-      accessible
-      accessibilityRole="image"
-      accessibilityLabel={`${percent} percent complete`}
-      className="size-14 items-center justify-center"
-    >
+    <View className="size-14 items-center justify-center">
       <Svg
         width={RING_SIZE}
         height={RING_SIZE}

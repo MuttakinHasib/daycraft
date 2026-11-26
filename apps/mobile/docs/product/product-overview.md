@@ -108,8 +108,14 @@ interface Habit {
 
 interface Routine { id: string; name: string; icon: IconName; hue: ActivityHue;
   steps: { title: string; minutes: number }[] }                       // [steps: {t, d}]
-interface Goal { id: string; title: string; description: string; targetDate: ISODate;
-  hue: ActivityHue; milestones: { title: string; done: boolean }[]; related: { icon: IconName; title: string }[] }
+interface Goal {
+  id: string; title: string; hue: ActivityHue;   // goals have no icon; the ring in the hue is the visual
+  description: string | null;         // null when it has none
+  targetDate: ISODate | null;         // null when it has none; the card then shows no target line
+  createdDate: ISODate;
+  deletedDate: ISODate | null;        // soft delete; it and its milestones stop listing, the rows are kept
+  milestones: { id: string; title: string; done: boolean }[];  // ordered as added, no dates in v1
+}
 interface Project { id: string; name: string; icon: IconName; hue: ActivityHue; deadline: ISODate; description: string;
   milestones: { title: string; date: ISODate; done: boolean }[];
   tasks: { id: string; title: string; status: 'todo' | 'doing' | 'done'; due: ISODate }[] }
