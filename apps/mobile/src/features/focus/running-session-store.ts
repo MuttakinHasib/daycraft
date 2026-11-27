@@ -1,7 +1,8 @@
-import { type FocusTimer, recoveredSession } from '@daycraft/domain';
+import { type FocusSessionInput, type FocusTimer, recoveredSession } from '@daycraft/domain';
 import { Storage } from 'expo-sqlite/kv-store';
 
 import { focusSessionRepository } from '@/data/focus-store';
+import { cancelAllFocusEndNotifications } from '@/features/focus/focus-notification';
 
 // Device-only, like the onboarding flag (the focus spec's persistence-on-close): the running
 // session's state, kept in the key-value store so it survives the app closing.
@@ -30,7 +31,7 @@ function isStoredTimer(value: unknown): value is FocusTimer {
 }
 
 /** The stored session, or null when nothing usable was stored: unreadable counts as never written. */
-function readRunningSession(): RunningSession | null {
+export function readRunningSession(): RunningSession | null {
   const raw = Storage.getItemSync(RUNNING_SESSION_KEY);
   if (raw === null) return null;
   try {
@@ -57,13 +58,18 @@ export function clearRunningSession() {
 }
 
 /**
- * Saves the session that the app closing interrupted, once, at open: the stored state becomes a
- * session record and is cleared in the same step, so a second open finds nothing and never saves
- * the session twice. The recovery is silent — the app opens on Plan, not on Focus.
+ * Saves the session that the app closing interrupted, once, and returns the record it saved — or
+ * null when nothing usable was stored. Whatever was pending of its end notification is cancelled
+ * with it: a session that ends at its last recorded time must not still announce its planned end.
+ * The stored state is cleared in the same step, so a second open finds nothing and never saves the
+ * session twice. The recovery is silent — the app opens on Plan, not on Focus — unless the launch
+ * came from the end notification, whose Focus shows the returned record as its Done state.
  */
-export function recoverInterruptedSession() {
+export function recoverInterruptedSession(): FocusSessionInput | null {
+  cancelAllFocusEndNotifications();
   const stored = readRunningSession();
   const record = stored === null ? null : recoveredSession(stored);
   if (record !== null) focusSessionRepository.saveSession(record);
   clearRunningSession();
+  return record;
 }

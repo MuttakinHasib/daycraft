@@ -8,12 +8,15 @@ import {
   canMarkTaskDone,
   doneLine,
   endedSession,
+  focusEndNotificationAt,
   formatRange,
   isComplete,
   pauseFocus,
   remainingSeconds,
   resumeFocus,
   startFocus,
+  StoredSessionAction,
+  storedSessionAction,
   subtractFiveMinutes,
   type Activity,
   type FocusTimer,
@@ -38,9 +41,17 @@ import {
 } from '@/components/ui';
 import { activityRepository, useActivity } from '@/data/activity-store';
 import { focusSessionRepository } from '@/data/focus-store';
+import {
+  clearFocusEndNotification,
+  focusNotificationsGranted,
+  focusNotificationUndetermined,
+  requestFocusNotifications,
+  scheduleFocusEndNotification,
+} from '@/features/focus/focus-notification';
 import { savedFocusSound, saveFocusSound } from '@/features/focus/focus-sound-store';
 import {
   clearRunningSession,
+  readRunningSession,
   recoverInterruptedSession,
   saveRunningSession,
 } from '@/features/focus/running-session-store';
@@ -228,6 +239,48 @@ function DoneView({ hue, line, canMarkDone, onMarkDone, onAnotherSession }: Done
   );
 }
 
+/** What Focus opens on, decided once at mount from the session the key-value store still holds. */
+interface FocusMountState {
+  /** The live timer to open on: a stored session restored while it still has time, or null for setup. */
+  timer: FocusTimer | null;
+  /** The setup length: the restored session's own length, otherwise the default. */
+  lengthMinutes: number;
+  /** The Done line when a stored session had run out and was saved, or null. */
+  endedLine: string | null;
+  /** Whether a stored session was restored as the live timer, so its sound and record follow it. */
+  restored: boolean;
+}
+
+/**
+ * What Focus opens on. A session stored for this activity is restored while it still has time — the
+ * × never ended it — and saved at its last recorded time with the Done state only once its time has
+ * run out, which is what a notification tap finds. A session stored for another activity is left
+ * untouched for Start focus to recover, and nothing stored opens setup.
+ */
+function focusMountState(activityId: string | null, activityTitle: string | null): FocusMountState {
+  const stored = readRunningSession();
+  const owned = stored !== null && stored.activityId === activityId ? stored : null;
+  const action = storedSessionAction({ timer: owned?.timer ?? null, now: Date.now() });
+  if (action === StoredSessionAction.RESTORE && owned !== null) {
+    return {
+      timer: owned.timer,
+      lengthMinutes: owned.timer.lengthSeconds / 60,
+      endedLine: null,
+      restored: true,
+    };
+  }
+  if (action === StoredSessionAction.RECOVER) {
+    const record = recoverInterruptedSession();
+    return {
+      timer: null,
+      lengthMinutes: DEFAULT_LENGTH_MINUTES,
+      endedLine: record === null ? null : doneLine({ focusedSeconds: record.focusedSeconds, activityTitle }),
+      restored: false,
+    };
+  }
+  return { timer: null, lengthMinutes: DEFAULT_LENGTH_MINUTES, endedLine: null, restored: false };
+}
+
 interface FocusScreenProps {
   /** The activity the session focuses on, or null when it has none (the route without an id). */
   activityId: string | null;
@@ -237,24 +290,35 @@ interface FocusScreenProps {
  * Focus (navigation-and-modules): the full-screen timer. Setup picks a length and an ambient sound, the run
  * fills the ring with the activity's hue, and ending — by **End session** or by running out — saves the session
  * through the focus repository and shows the Done state: **Mark task as done** reuses the activity repository's
- * toggle, and **Another session** returns to setup. The timer's rules are the domain's, and so is the sound's
- * play rule; the screen holds none of its own.
+ * toggle, and **Another session** returns to setup. The timer's rules are the domain's, and so are the sound's
+ * play rule and the end notification's scheduling rule; the screen holds none of its own. A launch from that
+ * notification recovers the stored session into the Done state the tap promised; the permission is asked once,
+ * at the first start, after setup has shown the reason.
  */
 export function FocusScreen({ activityId }: FocusScreenProps) {
   const colors = useThemeColors();
   const topInset = useTopInset();
   const activity = useActivity(activityId);
   const activityTitle = activity?.title ?? null;
-  const [lengthMinutes, setLengthMinutes] = useState<number>(DEFAULT_LENGTH_MINUTES);
+  // What the first frame opens on, read once: a stored session for this activity restored as the
+  // live timer, a run-out one saved into its Done state, or setup. Reopening after the × therefore
+  // carries on the session instead of ending it.
+  const [opened] = useState(() => focusMountState(activityId, activityTitle));
+  const [lengthMinutes, setLengthMinutes] = useState<number>(opened.lengthMinutes);
   // The picked ambient sound, preselected from the key-value store (the onboarding-flag pattern).
   const [sound, setSound] = useState<AmbientSound>(savedFocusSound);
-  // The live session: null in setup, and again once it has ended.
-  const [timer, setTimer] = useState<FocusTimer | null>(null);
+  // The live session: a restored stored session, null in setup, and again once it has ended.
+  const [timer, setTimer] = useState<FocusTimer | null>(opened.timer);
   const [now, setNow] = useState(() => Date.now());
-  // The domain's Done line once the session ended; null while it runs and in setup.
-  const [endedLine, setEndedLine] = useState<string | null>(null);
+  // The domain's Done line once the session ended; set at mount when a stored session had run out.
+  const [endedLine, setEndedLine] = useState<string | null>(opened.endedLine);
   // Whether the app is in the foreground: the sound pauses when it is not (the spec's rule).
   const [foregrounded, setForegrounded] = useState(AppState.currentState === 'active');
+  // Whether the end notification may be scheduled for this session: the permission, asked once at
+  // the first start. False until then, so nothing schedules before the ask.
+  const [notificationPermission, setNotificationPermission] = useState(false);
+  // Whether setup shows the short notification reason: only while the permission is undecided.
+  const [showNotificationReason, setShowNotificationReason] = useState(false);
 
   // One loop player for the screen, created directly rather than with useAudioPlayer: the compiler's
   // immutability rule forbids touching a hook's return, and the loop flag is set once at creation.
@@ -270,6 +334,21 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
       playerRef.current = null;
     };
   }, []);
+
+  // A restored session was never closed: its loop is the persisted choice, loaded here so the play
+  // rule finds it, and its stored state is refreshed to this clock reading so a kill from this
+  // screen still recovers at the latest time. Once per mount: a later sound change belongs to a
+  // new setup, not the session that was restored.
+  const restoredSessionLoaded = useRef(false);
+  useEffect(() => {
+    if (restoredSessionLoaded.current || !opened.restored || opened.timer === null) return;
+    restoredSessionLoaded.current = true;
+    saveRunningSession({ timer: opened.timer, activityId, recordedAt: Date.now() });
+    if (sound === AmbientSound.NONE || playerRef.current === null) return;
+    setAudioModeAsync({ playsInSilentMode: true });
+    playerRef.current.replace(SOUND_SOURCES[sound]);
+    playerRef.current.loop = true;
+  }, [opened, activityId, sound]);
 
   const paused = timer !== null && timer.pausedAt !== null;
   // In setup the ring shows the chosen length; from Start focus on, the domain decides what is left.
@@ -297,10 +376,16 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     [activityId, activityTitle],
   );
 
-  const beginSession = () => {
-    // A session left stored by the × is saved first: starting must never overwrite focused time.
-    // Recovery saves and clears in one step, so the new state below is all the store holds.
+  const beginSession = async () => {
+    // A session stored for another activity is saved before this one starts: starting must never
+    // overwrite focused time. (A session for this activity was restored when the screen mounted.)
+    // The notification permission, asked once with the reason shown in setup first: declining leaves
+    // the session running with no notification. The clock starts after the ask, so the prompt
+    // costs the session no time.
     recoverInterruptedSession();
+    const permission = await requestFocusNotifications();
+    setNotificationPermission(permission);
+    setShowNotificationReason(false);
     const at = Date.now();
     setNow(at);
     const started = startFocus({ lengthMinutes, now: at });
@@ -362,6 +447,13 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     setEndedLine(null);
   };
 
+  // The permission is read once at mount: the reason shows only while it is still undecided, and a
+  // restored session reuses a permission already granted instead of asking again.
+  useEffect(() => {
+    void focusNotificationsGranted().then(setNotificationPermission);
+    void focusNotificationUndetermined().then(setShowNotificationReason);
+  }, []);
+
   // While the session runs, the clock ticks once a second; a session whose time is up ends by itself.
   useEffect(() => {
     if (!timer || timer.pausedAt !== null || endedLine !== null) return;
@@ -407,6 +499,24 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     if (soundPlaying) player.play();
     else player.pause();
   }, [soundPlaying]);
+
+  // The end notification follows the domain's rule alone, asked whenever the live timer or the
+  // permission changes — start, −5, +5, resume: a fire time schedules for the end they leave,
+  // replacing what was pending, and the rule's null (no permission, a pause, the session ended)
+  // cancels it. Nothing here reads the ticking clock: the timer object is what changed.
+  useEffect(() => {
+    const fireAt = focusEndNotificationAt({
+      timer: liveTimer,
+      now: Date.now(),
+      notificationPermission,
+    });
+    if (fireAt === null) void clearFocusEndNotification();
+    else void scheduleFocusEndNotification({ fireAt, activityId });
+  }, [liveTimer, notificationPermission, activityId]);
+
+  // Leaving Focus (the ×) cancels the pending notification: the session keeps counting in the
+  // store, but nothing announces the end of a screen nobody is watching.
+  useEffect(() => () => void clearFocusEndNotification(), []);
 
   return (
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
@@ -473,6 +583,11 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
                     Start focus
                   </Button>
                 </View>
+                {showNotificationReason && (
+                  <Text className="text-center type-body-sm text-ink-muted">
+                    A notification announces the end while you’re away.
+                  </Text>
+                )}
               </View>
             ) : (
               <View className="items-center gap-5.5">

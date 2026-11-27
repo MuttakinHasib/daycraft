@@ -53,11 +53,15 @@ export { completionToggled, dailyProgress, type DailyProgress } from './completi
 export {
   endedSession,
   recoveredSession,
+  StoredSessionAction,
+  storedSessionAction,
   type EndedSessionInput,
   type FocusSession,
   type FocusSessionInput,
   type RecoveredSessionInput,
+  type StoredSessionInput,
 } from './focus-session';
+export { focusEndNotificationAt, type FocusEndNotificationInput } from './focus-notification';
 export {
   checkInId,
   completionPercent,
