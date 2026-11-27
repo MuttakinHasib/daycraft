@@ -24,6 +24,14 @@ export {
   type HexColor,
 } from './activity-hue';
 export {
+  ambientSoundName,
+  ambientSoundPlaying,
+  AMBIENT_SOUNDS,
+  AmbientSound,
+  isAmbientSound,
+  type AmbientSoundPlayingInput,
+} from './ambient-sound';
+export {
   addDays,
   addMonths,
   datePartsOf,

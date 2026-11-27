@@ -1,5 +1,9 @@
 import { durations } from '@daycraft/design-tokens';
 import {
+  AMBIENT_SOUNDS,
+  AmbientSound,
+  ambientSoundName,
+  ambientSoundPlaying,
   addFiveMinutes,
   canMarkTaskDone,
   doneLine,
@@ -14,8 +18,9 @@ import {
   type Activity,
   type FocusTimer,
 } from '@daycraft/domain';
+import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
 import { router } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
@@ -33,6 +38,7 @@ import {
 } from '@/components/ui';
 import { activityRepository, useActivity } from '@/data/activity-store';
 import { focusSessionRepository } from '@/data/focus-store';
+import { savedFocusSound, saveFocusSound } from '@/features/focus/focus-sound-store';
 import {
   clearRunningSession,
   recoverInterruptedSession,
@@ -45,6 +51,16 @@ import { useThemeColors } from '@/theme/app-theme';
 const LENGTH_MINUTES = [15, 25, 45, 60, 90] as const;
 const DEFAULT_LENGTH_MINUTES = 25;
 const SECOND_MS = 1_000;
+
+// The bundled loops behind the picker's sounds. Each one's source page and licence line are
+// recorded next to the files, in assets/focus-sounds/CREDITS.md; the silent choice has no file.
+const SOUND_SOURCES: Record<Exclude<AmbientSound, typeof AmbientSound.NONE>, number> = {
+  [AmbientSound.RAIN]: require('../../../assets/focus-sounds/rain.m4a'),
+  [AmbientSound.FOREST]: require('../../../assets/focus-sounds/forest.m4a'),
+  [AmbientSound.CAFE]: require('../../../assets/focus-sounds/cafe.m4a'),
+  [AmbientSound.WAVES]: require('../../../assets/focus-sounds/waves.m4a'),
+  [AmbientSound.BROWN_NOISE]: require('../../../assets/focus-sounds/brown-noise.m4a'),
+};
 
 // The 250pt ring (navigation-and-modules, Focus): a 10pt stroke around a 110pt-radius circle.
 const RING_SIZE = 250;
@@ -218,10 +234,11 @@ interface FocusScreenProps {
 }
 
 /**
- * Focus (navigation-and-modules): the full-screen timer. Setup picks a length, the run fills the ring with the
- * activity's hue, and ending — by **End session** or by running out — saves the session through the focus
- * repository and shows the Done state: **Mark task as done** reuses the activity repository's toggle, and
- * **Another session** returns to setup. The timer's rules are the domain's; the screen holds none of its own.
+ * Focus (navigation-and-modules): the full-screen timer. Setup picks a length and an ambient sound, the run
+ * fills the ring with the activity's hue, and ending — by **End session** or by running out — saves the session
+ * through the focus repository and shows the Done state: **Mark task as done** reuses the activity repository's
+ * toggle, and **Another session** returns to setup. The timer's rules are the domain's, and so is the sound's
+ * play rule; the screen holds none of its own.
  */
 export function FocusScreen({ activityId }: FocusScreenProps) {
   const colors = useThemeColors();
@@ -229,11 +246,30 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
   const activity = useActivity(activityId);
   const activityTitle = activity?.title ?? null;
   const [lengthMinutes, setLengthMinutes] = useState<number>(DEFAULT_LENGTH_MINUTES);
+  // The picked ambient sound, preselected from the key-value store (the onboarding-flag pattern).
+  const [sound, setSound] = useState<AmbientSound>(savedFocusSound);
   // The live session: null in setup, and again once it has ended.
   const [timer, setTimer] = useState<FocusTimer | null>(null);
   const [now, setNow] = useState(() => Date.now());
   // The domain's Done line once the session ended; null while it runs and in setup.
   const [endedLine, setEndedLine] = useState<string | null>(null);
+  // Whether the app is in the foreground: the sound pauses when it is not (the spec's rule).
+  const [foregrounded, setForegrounded] = useState(AppState.currentState === 'active');
+
+  // One loop player for the screen, created directly rather than with useAudioPlayer: the compiler's
+  // immutability rule forbids touching a hook's return, and the loop flag is set once at creation.
+  // The ref holds it for the screen's life; the release on unmount is also what stops the sound when
+  // the × closes Focus.
+  const playerRef = useRef<AudioPlayer | null>(null);
+  useEffect(() => {
+    const created = createAudioPlayer(null);
+    created.loop = true;
+    playerRef.current = created;
+    return () => {
+      created.release();
+      playerRef.current = null;
+    };
+  }, []);
 
   const paused = timer !== null && timer.pausedAt !== null;
   // In setup the ring shows the chosen length; from Start focus on, the domain decides what is left.
@@ -242,6 +278,12 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
   const fill = timer === null ? 0 : Math.min(1, Math.max(0, 1 - remaining / timer.lengthSeconds));
   const hue = activity ? colorValue(activity.hue) : colors.accent;
   const wholeRemaining = Math.round(remaining);
+
+  // The session the sound follows: a live one, not one already saved to its Done line. The
+  // domain's rule then says whether the chosen loop plays — running and foregrounded, never
+  // paused, ended, backgrounded, or set to No sound.
+  const liveTimer = timer !== null && endedLine === null ? timer : null;
+  const soundPlaying = ambientSoundPlaying({ timer: liveTimer, foregrounded, sound });
 
   // Saving is shared by End session and the session running out. useCallback because the ticking effect
   // depends on it — a referential-identity need, not a reflex.
@@ -264,6 +306,13 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     const started = startFocus({ lengthMinutes, now: at });
     setTimer(started);
     saveRunningSession({ timer: started, activityId, recordedAt: at });
+    // The chosen loop is loaded here and only here — picking in setup plays nothing. It loops,
+    // and playsInSilentMode keeps a chosen session audible past the device's silent switch.
+    if (sound !== AmbientSound.NONE && playerRef.current !== null) {
+      setAudioModeAsync({ playsInSilentMode: true });
+      playerRef.current.replace(SOUND_SOURCES[sound]);
+      playerRef.current.loop = true;
+    }
   };
 
   const toggleRunning = () => {
@@ -291,10 +340,12 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
 
   const leaveFocus = () => {
     // Leaving does not end the session (spec): the state stays stored, recorded at the moment of
-    // leaving, so a closing that follows recovers the session ended at that moment.
+    // leaving, so a closing that follows recovers the session ended at that moment. The sound
+    // stops with the screen; the player's release on unmount backs the pause up.
     if (timer !== null && endedLine === null) {
       saveRunningSession({ timer, activityId, recordedAt: Date.now() });
     }
+    playerRef.current?.pause();
     router.back();
   };
 
@@ -327,9 +378,11 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
   // Backgrounding must not stop the timer: it counts from its start, and the clock is recomputed on
   // return, so the ring shows the right remaining time at once rather than at the next tick. Leaving
   // the foreground also records the state, so a kill in the background recovers the session ended at
-  // that moment, not at its start.
+  // that moment, not at its start. The foreground state feeds the sound's rule, which pauses it the
+  // moment the app leaves and resumes it only if the session is still running on return.
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (next) => {
+      setForegrounded(next === 'active');
       if (next === 'active') {
         const at = Date.now();
         setNow(at);
@@ -344,6 +397,16 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     });
     return () => subscription.remove();
   }, [timer, activityId, endedLine, conclude]);
+
+  // The sound plays and pauses by the domain's rule alone: while the session runs and the app is
+  // foregrounded, and nowhere else. Pause keeps the loop's position, so resuming continues where
+  // it stood instead of starting the loop over.
+  useEffect(() => {
+    const player = playerRef.current;
+    if (player === null) return;
+    if (soundPlaying) player.play();
+    else player.pause();
+  }, [soundPlaying]);
 
   return (
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
@@ -387,6 +450,21 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
                       onPress={() => setLengthMinutes(minutes)}
                     >
                       {`${minutes}m`}
+                    </Chip>
+                  ))}
+                </View>
+                <View className="flex-row flex-wrap justify-center gap-2">
+                  {[AmbientSound.NONE, ...AMBIENT_SOUNDS].map((choice) => (
+                    <Chip
+                      key={choice}
+                      selected={sound === choice}
+                      accessibilityLabel={`Ambient sound: ${ambientSoundName(choice)}`}
+                      onPress={() => {
+                        setSound(choice);
+                        saveFocusSound(choice);
+                      }}
+                    >
+                      {ambientSoundName(choice)}
                     </Chip>
                   ))}
                 </View>
