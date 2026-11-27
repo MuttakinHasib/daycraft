@@ -1,3 +1,5 @@
+import type { Activity } from './activity';
+
 /** Seconds in one minute. */
 const SECONDS_PER_MINUTE = 60;
 /** Milliseconds in one second: the one place clock readings become seconds. */
@@ -105,4 +107,12 @@ export function doneLine({ focusedSeconds, activityTitle }: DoneLineInput): stri
   const minutes = Math.floor(total / SECONDS_PER_MINUTE);
   const seconds = total % SECONDS_PER_MINUTE;
   return `You focused for ${minutes} min ${seconds} s on ${activityTitle ?? 'no activity'}`;
+}
+
+/**
+ * Whether the Done screen offers **Mark task as done**: only for a session on an activity that is not
+ * already done, so the offer is never a no-op. A session with no activity never sees it.
+ */
+export function canMarkTaskDone(activity: Activity | null): boolean {
+  return activity !== null && !activity.done;
 }

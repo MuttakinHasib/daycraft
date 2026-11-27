@@ -1,5 +1,7 @@
+import { durations } from '@daycraft/design-tokens';
 import {
   addFiveMinutes,
+  canMarkTaskDone,
   doneLine,
   endedSession,
   formatRange,
@@ -15,10 +17,21 @@ import {
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
-import { Button, Chip, colorValue, Icon, IconButton, IconButtonSize, inkClassOn } from '@/components/ui';
-import { useActivity } from '@/data/activity-store';
+import {
+  Button,
+  ButtonVariant,
+  Chip,
+  colorValue,
+  Icon,
+  IconButton,
+  IconButtonSize,
+  inkClassOn,
+  popIn,
+} from '@/components/ui';
+import { activityRepository, useActivity } from '@/data/activity-store';
 import { focusSessionRepository } from '@/data/focus-store';
 import { useTopInset } from '@/lib/use-top-inset';
 import { useThemeColors } from '@/theme/app-theme';
@@ -152,6 +165,48 @@ function StepButton({ label, accessibilityLabel, onPress }: StepButtonProps) {
   );
 }
 
+interface DoneViewProps {
+  /** What the 96pt circle is filled with: the activity's hue, or the accent when the session had none. */
+  hue: string;
+  /** The domain's Done line: the time actually focused and what it focused on. */
+  line: string;
+  /** Whether **Mark task as done** shows: the domain's rule, already applied to the focused activity. */
+  canMarkDone: boolean;
+  onMarkDone: () => void;
+  onAnotherSession: () => void;
+}
+
+/**
+ * The Done state (navigation-and-modules, Focus): the 96pt hue circle with a check — the pop the
+ * focus-complete badge was given its keyframes for — "Session complete", the domain's Done line,
+ * then **Mark task as done** when the task is not done yet and **Another session** back to setup.
+ */
+function DoneView({ hue, line, canMarkDone, onMarkDone, onAnotherSession }: DoneViewProps) {
+  return (
+    <Animated.View entering={FadeIn.duration(durations.fadeIn)} className="items-center gap-3.5">
+      <Animated.View
+        entering={popIn}
+        style={{ backgroundColor: hue }}
+        className="size-24 items-center justify-center rounded-full"
+      >
+        <Icon name="check" size={44} strokeWidth={2.6} colorClassName="text-on-hue" />
+      </Animated.View>
+      <Text accessibilityRole="header" className="type-title text-ink">
+        Session complete
+      </Text>
+      <Text style={TABULAR} className="w-70 text-center type-body text-ink-muted">
+        {line}
+      </Text>
+      <View className="mt-2.5 w-70 gap-2.5">
+        {canMarkDone && <Button onPress={onMarkDone}>Mark task as done</Button>}
+        <Button variant={ButtonVariant.SECONDARY} onPress={onAnotherSession}>
+          Another session
+        </Button>
+      </View>
+    </Animated.View>
+  );
+}
+
 interface FocusScreenProps {
   /** The activity the session focuses on, or null when it has none (the route without an id). */
   activityId: string | null;
@@ -160,7 +215,8 @@ interface FocusScreenProps {
 /**
  * Focus (navigation-and-modules): the full-screen timer. Setup picks a length, the run fills the ring with the
  * activity's hue, and ending — by **End session** or by running out — saves the session through the focus
- * repository and shows its Done line. The timer's rules are the domain's; the screen holds none of its own.
+ * repository and shows the Done state: **Mark task as done** reuses the activity repository's toggle, and
+ * **Another session** returns to setup. The timer's rules are the domain's; the screen holds none of its own.
  */
 export function FocusScreen({ activityId }: FocusScreenProps) {
   const colors = useThemeColors();
@@ -171,7 +227,7 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
   // The live session: null in setup, and again once it has ended.
   const [timer, setTimer] = useState<FocusTimer | null>(null);
   const [now, setNow] = useState(() => Date.now());
-  // The Done line once the session ended; ticket 04 builds the real Done screen on this state.
+  // The domain's Done line once the session ended; null while it runs and in setup.
   const [endedLine, setEndedLine] = useState<string | null>(null);
 
   const paused = timer !== null && timer.pausedAt !== null;
@@ -218,6 +274,19 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     if (timer && endedLine === null) conclude(timer, Date.now());
   };
 
+  const markTaskDone = () => {
+    // The activity repository's own done toggle (spec: not a new code path); then Focus closes.
+    if (!activity) return;
+    activityRepository.toggleDone(activity.id);
+    router.back();
+  };
+
+  const anotherSession = () => {
+    // Back to setup for the same activity — the route still names it — with the chosen length kept.
+    setTimer(null);
+    setEndedLine(null);
+  };
+
   // While the session runs, the clock ticks once a second; a session whose time is up ends by itself.
   useEffect(() => {
     if (!timer || timer.pausedAt !== null || endedLine !== null) return;
@@ -246,7 +315,13 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
       {activity && <ActivityCard activity={activity} />}
       <View className="flex-1 items-center justify-center gap-5.5 px-6 pb-10">
         {endedLine !== null ? (
-          <Text className="w-70 text-center type-body text-ink-muted">{endedLine}</Text>
+          <DoneView
+            hue={hue}
+            line={endedLine}
+            canMarkDone={canMarkTaskDone(activity)}
+            onMarkDone={markTaskDone}
+            onAnotherSession={anotherSession}
+          />
         ) : (
           <>
             <FocusRing

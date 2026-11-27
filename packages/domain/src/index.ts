@@ -78,6 +78,7 @@ export {
 } from './goal';
 export {
   addFiveMinutes,
+  canMarkTaskDone,
   doneLine,
   focusedSeconds,
   isComplete,
