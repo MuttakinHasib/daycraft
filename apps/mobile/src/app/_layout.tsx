@@ -20,6 +20,9 @@ const ACTIVITY_SHEET: NativeStackNavigationOptions = {
   sheetGrabberVisible: false,
 };
 
+// Focus is full-screen, outside the tabs: the tab bar is hidden and × returns to Plan (navigation-and-modules).
+const FOCUS_MODAL: NativeStackNavigationOptions = { presentation: 'fullScreenModal' };
+
 function RootStack() {
   const statusBarStyle = useScreenStatusBarStyle();
   const navigationKey = useRootNavigationState()?.key;
@@ -46,6 +49,8 @@ function RootStack() {
       <Stack.Screen name="habit/new" options={ACTIVITY_SHEET} />
       <Stack.Screen name="goal/new" options={ACTIVITY_SHEET} />
       <Stack.Screen name="month-picker" options={monthPickerSheet} />
+      <Stack.Screen name="focus/index" options={FOCUS_MODAL} />
+      <Stack.Screen name="focus/[activityId]" options={FOCUS_MODAL} />
       <Stack.Screen name="onboarding" options={{ presentation: 'fullScreenModal', gestureEnabled: false }} />
     </Stack>
   );

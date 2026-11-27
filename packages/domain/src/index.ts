@@ -42,7 +42,12 @@ export {
   type MinutesOfDay,
 } from './calendar';
 export { completionToggled, dailyProgress, type DailyProgress } from './completion';
-export { type FocusSession, type FocusSessionInput } from './focus-session';
+export {
+  endedSession,
+  type EndedSessionInput,
+  type FocusSession,
+  type FocusSessionInput,
+} from './focus-session';
 export {
   checkInId,
   completionPercent,

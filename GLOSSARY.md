@@ -110,7 +110,7 @@ The run of consecutive periods in which a habit met its frequency: days for a da
 Completed activities plus checked-in habits, divided by the total for the date. Derived.
 
 **Focus session**:
-A timed run of attention on one activity, started from its activity sheet.
+A timed run of attention on one activity, or on none, recorded once when it ends. Started from a task's ⋯ menu or the Start focus button in its sheet; a session with no activity starts from Focus itself.
 _Avoid_: pomodoro
 
 ### Longer horizons

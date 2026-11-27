@@ -35,6 +35,8 @@ interface SheetHeaderProps {
   onChangeKind: (kind: Kind) => void;
   onToggleDone: () => void;
   onOpenColour: () => void;
+  /** Opens Focus on this task. Left out for events: the docs give Start focus to tasks only. */
+  onStartFocus?: () => void;
   onDuplicate: () => void;
   onDelete: () => void;
 }
@@ -48,6 +50,7 @@ export function SheetHeader({
   onChangeKind,
   onToggleDone,
   onOpenColour,
+  onStartFocus,
   onDuplicate,
   onDelete,
 }: SheetHeaderProps) {
@@ -82,7 +85,7 @@ export function SheetHeader({
             />
           </View>
         ) : (
-          <MoreMenu onDuplicate={onDuplicate} onDelete={onDelete} />
+          <MoreMenu onStartFocus={onStartFocus} onDuplicate={onDuplicate} onDelete={onDelete} />
         )}
         {isNew && <View className={cn({ 'size-11': !largeType, 'w-11': largeType })} />}
       </View>

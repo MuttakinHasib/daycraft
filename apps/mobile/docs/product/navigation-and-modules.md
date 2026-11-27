@@ -47,7 +47,8 @@ src/app/
       projects/index.tsx
       projects/[projectId].tsx
       journal.tsx
-  focus/[activityId].tsx      # full-screen modal
+  focus/index.tsx             # full-screen modal, no activity
+  focus/[activityId].tsx      # full-screen modal, on one activity
   activity/new.tsx            # activity sheet, creating (formSheet presentation)
   activity/[activityId].tsx   # activity sheet, opened editable; no separate edit route
   habit/new.tsx

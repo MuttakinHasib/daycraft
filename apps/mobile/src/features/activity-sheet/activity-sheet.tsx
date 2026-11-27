@@ -234,6 +234,12 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
     if (activityId) router.replace({ pathname: '/activity/new', params: { from: activityId } });
   };
 
+  // Both Start focus entries (the ⋯ menu and the button on the sheet) open Focus on this task, in the
+  // sheet's place: Focus is full-screen, and its × returns to Plan.
+  const startFocus = () => {
+    if (activityId) router.replace({ pathname: '/focus/[activityId]', params: { activityId } });
+  };
+
   const relative = formatRelativeDate(draft.date, today);
   const short = formatShortDate(draft.date);
   const time = timeRow(draft);
@@ -254,6 +260,7 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
         }
         onToggleDone={toggleDone}
         onOpenColour={() => openPanel(Panel.COLOUR)}
+        onStartFocus={isEvent ? undefined : startFocus}
         onDuplicate={duplicate}
         onDelete={remove}
       />
@@ -325,6 +332,11 @@ export function ActivitySheet({ initial, activityId, today }: ActivitySheetProps
             onToggleSubtask={toggleSubtask}
             onChangeNotes={(notes) => change({ notes })}
           />
+          {!isNew && !isEvent && (
+            <Button icon="timer" onPress={startFocus}>
+              Start focus
+            </Button>
+          )}
           {!isNew && (
             <Pressable
               accessibilityRole="button"

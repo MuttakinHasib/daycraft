@@ -36,7 +36,11 @@ export function useUsedCustomColors(): HexColor[] {
   });
 }
 
-/** One activity, or null once it is deleted. */
-export function useActivity(id: string): Activity | null {
-  return useLive({ read: () => activityRepository.readActivity(id), key: id, repository: activityRepository });
+/** One activity, or null once it is deleted; null while no activity is in focus. */
+export function useActivity(id: string | null): Activity | null {
+  return useLive({
+    read: () => (id === null ? null : activityRepository.readActivity(id)),
+    key: id ?? 'none',
+    repository: activityRepository,
+  });
 }

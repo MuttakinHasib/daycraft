@@ -15,8 +15,8 @@ import type { MoreMenuProps } from './more-menu-types';
 
 const TRIGGER_SIZE = 44;
 
-/** The band's ⋯: a native iOS glass button that opens the menu with Duplicate and Delete. */
-export function MoreMenu({ onDuplicate, onDelete }: MoreMenuProps) {
+/** The band's ⋯: a native iOS glass button that opens the menu with Start focus, Duplicate and Delete. */
+export function MoreMenu({ onStartFocus, onDuplicate, onDelete }: MoreMenuProps) {
   const scheme = useColorScheme();
   const colors = useThemeColors();
   // Matches the band's text: ink on the light tint, on-hue on the solid dark band.
@@ -41,6 +41,7 @@ export function MoreMenu({ onDuplicate, onDelete }: MoreMenuProps) {
         }
         modifiers={[menuStyle('button'), buttonStyle('plain'), menuIndicator('hidden'), accessibilityLabel('More')]}
       >
+        {onStartFocus && <Button label="Start focus" systemImage="timer" onPress={onStartFocus} />}
         <Button label="Duplicate" systemImage="plus.square.on.square" onPress={onDuplicate} />
         <Divider />
         <Button label="Delete" systemImage="trash" role="destructive" onPress={onDelete} />
