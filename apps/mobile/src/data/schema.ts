@@ -143,6 +143,23 @@ export const goalMilestone = sqliteTable(
   (table) => [index('goal_milestone_goal_idx').on(table.goalId, table.position)],
 );
 
+// A focus session (glossary): one timed run of attention, written once when the session ends and never edited
+// in v1, so it has no deleted_at. The activity it focused on is null when it had none.
+export const focusSession = sqliteTable(
+  'focus_session',
+  {
+    id: text('id').primaryKey(),
+    activityId: text('activity_id').references(() => activity.id),
+    // The local date the session ran on (glossary), as on activities and check-ins.
+    sessionDate: text('session_date').notNull(),
+    plannedSeconds: integer('planned_seconds').notNull(),
+    focusedSeconds: integer('focused_seconds').notNull(),
+    createdAt: text('created_at').notNull(),
+    updatedAt: text('updated_at').notNull(),
+  },
+  (table) => [index('focus_session_date_idx').on(table.sessionDate)],
+);
+
 // Created now so that sync can be added without a migration that touches every write. Nothing reads it yet.
 export const syncOutbox = sqliteTable('sync_outbox', {
   id: text('id').primaryKey(),
@@ -160,3 +177,4 @@ export type HabitRow = typeof habit.$inferSelect;
 export type HabitCheckInRow = typeof habitCheckIn.$inferSelect;
 export type GoalRow = typeof goal.$inferSelect;
 export type GoalMilestoneRow = typeof goalMilestone.$inferSelect;
+export type FocusSessionRow = typeof focusSession.$inferSelect;
