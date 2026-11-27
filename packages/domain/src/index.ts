@@ -71,6 +71,20 @@ export {
   type MilestoneChange,
   type MilestoneInput,
 } from './goal';
+export {
+  addFiveMinutes,
+  doneLine,
+  focusedSeconds,
+  isComplete,
+  pauseFocus,
+  remainingSeconds,
+  resumeFocus,
+  startFocus,
+  subtractFiveMinutes,
+  type DoneLineInput,
+  type FocusTimer,
+  type StartFocusInput,
+} from './focus';
 export { ACTIVITY_ICONS, IconName, INTERFACE_ICONS, isIconName, MOOD_ICONS } from './icon-name';
 export { DAYCRAFT_NAMESPACE, uuidV5, uuidV7 } from './ids';
 export {
