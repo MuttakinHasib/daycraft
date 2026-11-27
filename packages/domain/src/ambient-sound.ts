@@ -1,4 +1,4 @@
-import type { FocusTimer } from './focus';
+import { isComplete, type FocusTimer } from './focus';
 
 /** The ambient sounds Focus offers: the five bundled loops, plus the silent choice. */
 export const AmbientSound = {
@@ -44,10 +44,12 @@ export function ambientSoundName(sound: AmbientSound): string {
   return AMBIENT_SOUND_NAMES[sound];
 }
 
-/** What the play rule is decided from: the live timer, the app's foreground state, and the chosen sound. */
+/** What the play rule is decided from: the live timer, the clock, the app's foreground state, and the chosen sound. */
 export interface AmbientSoundPlayingInput {
   /** The live timer, or null when no session is running: setup, or once it has ended. */
   timer: FocusTimer | null;
+  /** The clock reading in epoch milliseconds at the moment of the decision. */
+  now: number;
   /** Whether the app is in the foreground; the sound pauses when it is not. */
   foregrounded: boolean;
   /** The chosen ambient sound, from the picker. */
@@ -59,6 +61,12 @@ export interface AmbientSoundPlayingInput {
  * is in the foreground, and never in setup, past the end, in a pause, in the background, or for the
  * **No sound** choice.
  */
-export function ambientSoundPlaying({ timer, foregrounded, sound }: AmbientSoundPlayingInput): boolean {
-  return sound !== AmbientSound.NONE && foregrounded && timer !== null && timer.pausedAt === null;
+export function ambientSoundPlaying({ timer, now, foregrounded, sound }: AmbientSoundPlayingInput): boolean {
+  return (
+    sound !== AmbientSound.NONE &&
+    foregrounded &&
+    timer !== null &&
+    timer.pausedAt === null &&
+    !isComplete(timer, now)
+  );
 }

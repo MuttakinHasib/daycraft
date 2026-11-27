@@ -371,7 +371,7 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
   // domain's rule then says whether the chosen loop plays — running and foregrounded, never
   // paused, ended, backgrounded, or set to No sound.
   const liveTimer = timer !== null && endedLine === null ? timer : null;
-  const soundPlaying = ambientSoundPlaying({ timer: liveTimer, foregrounded, sound });
+  const soundPlaying = ambientSoundPlaying({ timer: liveTimer, now, foregrounded, sound });
 
   // Saving is shared by End session and the session running out. useCallback because the ticking effect
   // depends on it — a referential-identity need, not a reflex.
