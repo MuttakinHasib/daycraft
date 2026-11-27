@@ -44,9 +44,11 @@ export {
 export { completionToggled, dailyProgress, type DailyProgress } from './completion';
 export {
   endedSession,
+  recoveredSession,
   type EndedSessionInput,
   type FocusSession,
   type FocusSessionInput,
+  type RecoveredSessionInput,
 } from './focus-session';
 export {
   checkInId,

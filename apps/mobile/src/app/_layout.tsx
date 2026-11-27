@@ -6,6 +6,7 @@ import { Uniwind } from 'uniwind';
 
 import { ToastProvider } from '@/components/ui';
 import { MigrationsGate } from '@/data/migrations-gate';
+import { recoverInterruptedSession } from '@/features/focus/running-session-store';
 import { hasOnboarded } from '@/features/onboarding/onboarding-store';
 import { AnimatedSplash } from '@/features/splash/animated-splash';
 import { AppTheme, useScreenStatusBarStyle, useThemeColors } from '@/theme/app-theme';
@@ -34,6 +35,14 @@ function RootStack() {
     onboardingOpened.current = true;
     router.push('/onboarding');
   }, [navigationKey]);
+  // A session the last closing interrupted is saved once per launch, silently, here at open — the
+  // app opens on Plan, not on Focus. RootStack sits inside MigrationsGate, so the database is ready.
+  const interruptedSessionRecovered = useRef(false);
+  useEffect(() => {
+    if (interruptedSessionRecovered.current) return;
+    interruptedSessionRecovered.current = true;
+    recoverInterruptedSession();
+  }, []);
   const colors = useThemeColors();
   // The month picker sizes to its grid; the sheet's own background fills the space under it.
   const monthPickerSheet: NativeStackNavigationOptions = {

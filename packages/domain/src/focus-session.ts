@@ -48,3 +48,27 @@ export function endedSession({ timer, now, activityId }: EndedSessionInput): Foc
     focusedSeconds: Math.round(focusedSeconds(timer, now)),
   };
 }
+
+/** What the app hands the domain at open, when a session may have been interrupted by the app closing. */
+export interface RecoveredSessionInput {
+  /** The timer kept in the key-value store, or null when no session was stored. */
+  timer: FocusTimer | null;
+  /** The activity the stored session focused on, or null when it had none. */
+  activityId: string | null;
+  /** The clock reading when the stored state was last written, in epoch milliseconds. */
+  recordedAt: number;
+}
+
+/**
+ * The record an interrupted session saves when the app opens again, or null when none was stored. The
+ * session ends at its last recorded time — the paused time while paused, the last write while running —
+ * so the clock at reopen never pads the record with time nobody focused for.
+ */
+export function recoveredSession({
+  timer,
+  activityId,
+  recordedAt,
+}: RecoveredSessionInput): FocusSessionInput | null {
+  if (timer === null) return null;
+  return endedSession({ timer, now: timer.pausedAt ?? recordedAt, activityId });
+}

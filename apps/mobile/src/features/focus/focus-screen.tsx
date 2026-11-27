@@ -16,7 +16,7 @@ import {
 } from '@daycraft/domain';
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { AppState, Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
@@ -33,6 +33,11 @@ import {
 } from '@/components/ui';
 import { activityRepository, useActivity } from '@/data/activity-store';
 import { focusSessionRepository } from '@/data/focus-store';
+import {
+  clearRunningSession,
+  recoverInterruptedSession,
+  saveRunningSession,
+} from '@/features/focus/running-session-store';
 import { useTopInset } from '@/lib/use-top-inset';
 import { useThemeColors } from '@/theme/app-theme';
 
@@ -244,34 +249,53 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     (ended: FocusTimer, at: number) => {
       const record = endedSession({ timer: ended, now: at, activityId });
       focusSessionRepository.saveSession(record);
+      clearRunningSession();
       setEndedLine(doneLine({ focusedSeconds: record.focusedSeconds, activityTitle }));
     },
     [activityId, activityTitle],
   );
 
   const beginSession = () => {
+    // A session left stored by the × is saved first: starting must never overwrite focused time.
+    // Recovery saves and clears in one step, so the new state below is all the store holds.
+    recoverInterruptedSession();
     const at = Date.now();
     setNow(at);
-    setTimer(startFocus({ lengthMinutes, now: at }));
+    const started = startFocus({ lengthMinutes, now: at });
+    setTimer(started);
+    saveRunningSession({ timer: started, activityId, recordedAt: at });
   };
 
   const toggleRunning = () => {
     if (!timer) return;
     const at = Date.now();
     setNow(at);
-    setTimer(timer.pausedAt === null ? pauseFocus(timer, at) : resumeFocus(timer, at));
+    const next = timer.pausedAt === null ? pauseFocus(timer, at) : resumeFocus(timer, at);
+    setTimer(next);
+    saveRunningSession({ timer: next, activityId, recordedAt: at });
   };
 
   const adjust = (change: (current: FocusTimer, at: number) => FocusTimer) => () => {
     if (!timer) return;
     const at = Date.now();
     setNow(at);
-    setTimer(change(timer, at));
+    const next = change(timer, at);
+    setTimer(next);
+    saveRunningSession({ timer: next, activityId, recordedAt: at });
   };
 
   const endSession = () => {
     // The endedLine check keeps a press that lands with the timer's own completion from saving twice.
     if (timer && endedLine === null) conclude(timer, Date.now());
+  };
+
+  const leaveFocus = () => {
+    // Leaving does not end the session (spec): the state stays stored, recorded at the moment of
+    // leaving, so a closing that follows recovers the session ended at that moment.
+    if (timer !== null && endedLine === null) {
+      saveRunningSession({ timer, activityId, recordedAt: Date.now() });
+    }
+    router.back();
   };
 
   const markTaskDone = () => {
@@ -300,6 +324,27 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
     return () => clearInterval(interval);
   }, [timer, endedLine, conclude]);
 
+  // Backgrounding must not stop the timer: it counts from its start, and the clock is recomputed on
+  // return, so the ring shows the right remaining time at once rather than at the next tick. Leaving
+  // the foreground also records the state, so a kill in the background recovers the session ended at
+  // that moment, not at its start.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (next) => {
+      if (next === 'active') {
+        const at = Date.now();
+        setNow(at);
+        if (timer !== null && timer.pausedAt === null && endedLine === null && isComplete(timer, at)) {
+          conclude(timer, at);
+        }
+        return;
+      }
+      if (timer !== null && endedLine === null) {
+        saveRunningSession({ timer, activityId, recordedAt: Date.now() });
+      }
+    });
+    return () => subscription.remove();
+  }, [timer, activityId, endedLine, conclude]);
+
   return (
     <View style={{ paddingTop: topInset }} className="flex-1 bg-canvas">
       <View className="flex-row items-center justify-between px-5 pt-6">
@@ -307,7 +352,7 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
           icon="x"
           size={IconButtonSize.LG}
           accessibilityLabel="Leave focus"
-          onPress={() => router.back()}
+          onPress={leaveFocus}
         />
         <Text className="type-label text-ink-subtle">FOCUS</Text>
         <View className="size-11" />
