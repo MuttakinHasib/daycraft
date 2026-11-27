@@ -115,4 +115,9 @@ Use the phone content and behavior with these adaptations:
   - the **right panel** when the flow starts from a selected item (detail, edit);
   - a **centered dialog** (radius 24, `bg-surface`, `shadow-float`, scrim) for create flows (new habit, new routine, new event).
 - **Calendar:** month and week views get the full main width; the week view uses the desktop time scale and the same event/task styling rules as on phone.
-- **Focus** stays full-screen (no sidebar), centered, with the same ring and controls.
+- **Focus:** full-screen (no sidebar), centered, with the same ring and controls as the phone.
+  - **Entry:** the activity panel's **Focus** button opens it on that activity. There is no plain Focus entry in v1.
+  - **Screens:** setup (length chips 15/25/45/60/90, ambient sound chips, **Start focus**), run (the ring, "Focusing" or "Paused", −5 · play/pause · +5, **End session**) and done (96pt hue circle with a check, "Session complete", the focused line, **Mark task as done** when the task is not done yet, **Another session**).
+  - **Background:** the timer counts from its start time across tab switches and sleep, and the sound pauses while the page is hidden or the session is paused. Notifications are mobile-only.
+  - **Ending early** saves and shows the time actually focused. The × leaves a running or paused session restorable while it has time; one whose time ran out saves once and opens on done.
+  - Sessions are recorded on the phone; the web app does not record focus sessions in v1.

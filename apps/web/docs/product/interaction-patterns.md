@@ -106,10 +106,13 @@ These follow the person's reference app and replace the matching parts above whe
 
 ## Focus
 
-- **States:** setup, then run, then done. The timer keeps running while paused only in the sense of preserving the remaining time.
-  - −5 / +5 adjust the remaining time and the total (minimum 30s remaining).
-  - **End session** goes to done with the elapsed time.
-- Production must survive tab switches and sleep (browsers throttle timers in background tabs): store `endsAt` (a timestamp), not a ticking counter. **Proposed:** a local notification at `endsAt`.
+- **States:** setup, then run, then done.
+  - Setup picks a length (15/25/45/60/90, opening on 25) and an ambient sound (Rain, Forest, Café, Waves, Brown noise or No sound), then **Start focus**.
+  - −5 / +5 adjust the remaining time and the planned total (never below 30 seconds remaining); play/pause holds the clock; **End session** goes to done with the time actually focused.
+- **Background:** the timer counts from its start time, not a ticking counter, so it survives tab switches and sleep (browsers throttle timers in background tabs) and the screen shows the right remaining time on return. The ambient sound pauses when the page is hidden and when the session is paused; it plays again on return only while the session is still running. The phone's local notification at the end is the mobile-only part; the web app has no notification in v1.
+- **Reopening:** the × leaves without ending the session. Reopening Focus restores a running or paused session while it still has time; once its time has run out, the next open saves it once and shows done.
+- **Done:** the time actually focused and the activity ("on no activity" with none), **Mark task as done** when the task is not done yet, and **Another session** back to setup with the length kept.
+- **Sessions:** the phone app records every session it runs; the web app does not record focus sessions in v1.
 
 ## Theme switching
 

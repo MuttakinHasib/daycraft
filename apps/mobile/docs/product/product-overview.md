@@ -35,7 +35,7 @@ It should feel like a **personal life-management workspace**, not a task manager
 | **All tasks** | Every task with filters Open / Today / Unscheduled / Done; place unscheduled tasks on the timeline | More → All tasks |
 | **Routines** | Reusable step sequences; "Add to today" drops one onto the timeline as a single block with steps as subtasks | More → Routines |
 | **Projects** | Progress, deadline, milestones, tasks in List or Board (To do / In progress / Done) | More → Projects |
-| **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task | From an activity's sheet (⋯ → Start focus), or More → Focus |
+| **Focus** | Timer for one activity: choose 15/25/45/60/90 min, pause/resume, ±5 min, end, complete the task. Every session that ran is saved against its activity (or none) and local date, with the planned and actually focused time | From a task's ⋯ menu or the activity sheet's Start focus; no plain Focus entry in v1 |
 | **Journal** | Mood (5 levels), rotating reflection prompt, free text, history | More → Journal |
 | **Settings / Appearance** | System / Light / Dark (System by default; saved per device) | More → Appearance |
 
@@ -108,6 +108,13 @@ interface Habit {
 
 interface Routine { id: string; name: string; icon: IconName; hue: ActivityHue;
   steps: { title: string; minutes: number }[] }                       // [steps: {t, d}]
+interface FocusSession {      // written once when a session ends; append-only in v1
+  id: string;
+  activityId: string | null;  // null when the session focused on no activity
+  sessionDate: ISODate;       // the local date the session ran on
+  plannedSeconds: number;     // the length the −5/+5 controls left
+  focusedSeconds: number;     // actually focused, excluding paused time; less than planned when ended early
+}
 interface Goal {
   id: string; title: string; hue: ActivityHue;   // goals have no icon; the ring in the hue is the visual
   description: string | null;         // null when it has none

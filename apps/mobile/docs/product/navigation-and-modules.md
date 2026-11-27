@@ -177,18 +177,24 @@ Prefer Expo Router modal / form-sheet presentation for sheets so they get native
 
 ### Focus
 
-- Full-screen.
-- **Header:** close × (40pt), a "FOCUS" label, and a card for the activity (hue capsule, time, title).
+- Full-screen, outside the tab bar. The × closes it without ending a running or paused session.
+- **Entry:** a task's ⋯ menu (Start focus) and the activity sheet's **Start focus** button both open Focus on that task. Focus with no activity opens on `/focus`, but no UI entry leads there in v1 (the spec keeps a plain Focus out of v1).
+- **Header:** close × (44pt), a "FOCUS" label, and a card for the activity (hue capsule, time, title).
 - **Setup:**
-  - 250pt ring showing the time in the `clock` preset (56) with "Ready when you are".
+  - 250pt ring showing the chosen length in the `clock` preset (56) with "Ready when you are". It opens on 25 minutes.
   - Length chips 15m / 25m / 45m / 60m / 90m.
-  - **Start focus** button.
+  - Ambient sound chips below the lengths: Rain, Forest, Café, Waves, Brown noise and No sound. The choice is remembered and preselected next time.
+  - **Start focus**. The end-notification permission is asked once, at the first start, after a one-line reason; declining leaves Focus working silently.
 - **Running:**
-  - The ring fills with the hue each second; the state reads "Focusing" or "Paused".
+  - The ring fills with the activity's hue as time passes; the state reads "Focusing" or "Paused".
   - Controls: −5 · play/pause (76pt accent circle) · +5. Below: **End session**.
+  - −5 never takes the remaining time below 30 seconds; +5 adds five minutes. Neither changes the time already focused.
+- **Background:** the timer counts from its start time, so leaving the app does not stop or drift it, and the ring shows the right remaining time as soon as the app returns. The ambient sound pauses while the app is away — and when the session is paused — and plays again on return only while the session is still running. With the permission granted, a local notification announces the end while away, and tapping it opens Focus at the session's Done state.
+- **Ending early:** **End session** saves the time actually focused, not the planned length, and Done shows that length. Every session that ran saves once — the activity or none, the local date, the planned length and the focused time, rounded to the whole second. Sessions are written but no history screen reads them yet.
+- **Reopening:** a running or paused session is kept in the key-value store when the × closes Focus, and reopening Focus restores it as it was while its time remains. Once its time has run out, the next open saves it once and shows Done.
 - **Done:**
-  - 96pt hue circle with a check, "Session complete" (`title`), and "You focused for X min Y s on …".
-  - Buttons: **Mark task as done** (only if not done yet) and **Another session**.
+  - 96pt hue circle with a check, "Session complete" (`title`), and "You focused for X min Y s on {title}" — "on no activity" when the session had none.
+  - Buttons: **Mark task as done** (only if not done yet, then Focus closes) and **Another session** (back to setup for the same activity with the length kept).
 
 ### Sheets
 

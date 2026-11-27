@@ -101,7 +101,11 @@ interface FocusRingProps {
   remainingLabel: string;
 }
 
-/** The 250pt timer ring: a sunken track, the hue's fill, the clock and the state inside. */
+/**
+ * The 250pt timer ring: a sunken track, the hue's fill, the clock and the state inside. The fill is a
+ * plain strokeDasharray prop rather than an animated value, so the ring jumps to each new reading and
+ * has nothing to reduce when Reduce Motion is on.
+ */
 function FocusRing({ hue, fill, clock, state, remainingLabel }: FocusRingProps) {
   const colors = useThemeColors();
   return (
@@ -226,7 +230,12 @@ function DoneView({ hue, line, canMarkDone, onMarkDone, onAnotherSession }: Done
       <Text accessibilityRole="header" className="type-title text-ink">
         Session complete
       </Text>
-      <Text style={TABULAR} className="w-70 text-center type-body text-ink-muted">
+      <Text
+        accessibilityRole="text"
+        accessibilityLabel={line}
+        style={TABULAR}
+        className="w-70 text-center type-body text-ink-muted"
+      >
         {line}
       </Text>
       <View className="mt-2.5 w-70 gap-2.5">
@@ -547,7 +556,11 @@ export function FocusScreen({ activityId }: FocusScreenProps) {
               fill={fill}
               clock={clockText(remaining)}
               state={timer === null ? 'Ready when you are' : paused ? 'Paused' : 'Focusing'}
-              remainingLabel={`${Math.floor(wholeRemaining / 60)} minutes ${wholeRemaining % 60} seconds remaining`}
+              remainingLabel={
+                timer === null
+                  ? `${lengthMinutes} minutes`
+                  : `${Math.floor(wholeRemaining / 60)} minutes ${wholeRemaining % 60} seconds remaining`
+              }
             />
             {timer === null ? (
               <View className="items-center gap-5.5">

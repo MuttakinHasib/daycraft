@@ -108,10 +108,12 @@ These follow the person's reference app and replace the matching parts above whe
 
 ## Focus
 
-- **States:** setup, then run, then done. The timer keeps running while paused only in the sense of preserving the remaining time.
-  - −5 / +5 adjust the remaining time and the total (minimum 30s remaining).
-  - **End session** goes to done with the elapsed time.
-- Production must survive backgrounding: store `endsAt` (a timestamp), not a ticking counter. **Proposed:** a local notification at `endsAt`.
+- **States:** setup, then run, then done.
+  - Setup picks a length (15/25/45/60/90, opening on 25) and an ambient sound (Rain, Forest, Café, Waves, Brown noise or No sound), then **Start focus**.
+  - −5 / +5 adjust the remaining time and the planned total (never below 30 seconds remaining); play/pause holds the clock; **End session** goes to done with the time actually focused.
+- **Background:** the timer counts from its start time, so it keeps counting while the app is away and the screen shows the right remaining time on return. The ambient sound pauses when the app leaves the foreground and when the session is paused; it plays again on return only while the session is still running. With the permission granted, a local notification announces the end while away, and its tap opens Focus at done.
+- **Reopening:** the × leaves without ending the session. Reopening Focus restores a running or paused session while it still has time; once its time has run out, the next open saves it once and shows done.
+- **Done:** the time actually focused and the activity ("on no activity" with none), **Mark task as done** when the task is not done yet, and **Another session** back to setup with the length kept.
 
 ## Theme switching
 
